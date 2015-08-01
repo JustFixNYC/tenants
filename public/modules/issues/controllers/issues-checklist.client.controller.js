@@ -9,7 +9,7 @@ angular.module('issues').controller('IssuesChecklistController', ['$scope', 'Iss
 
     // detects if checklist is included in the update view or the onboarding form
     // used mainly to switch CTA at the bottom
-    if($scope.updateView == undefined) $scope.updateView = false;
+    if($scope.updateView === undefined) $scope.updateView = false;
 
     IssuesChecklist.get().then(function (data) {
       var i = 0;
