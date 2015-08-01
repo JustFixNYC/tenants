@@ -171,6 +171,7 @@ module.exports = function(grunt) {
 		      compass: false
 		    },
 		    files: {
+		    	'public/dist/bootstrap.min.css': 'app/styles/bootstrap-config.scss',
 		      'public/dist/style.min.css': 'app/styles/main.scss'
 		    }
 		  }
