@@ -1,0 +1,15 @@
+{
+  "name": "tenant inspector",
+  "version": "0.0.1",
+  "description": "TBD",
+  "dependencies": {
+    "angular": "~1.2",
+    "angular-resource": "~1.2",
+    "angular-mocks": "~1.2",
+    "angular-animate": "~1.2",
+    "angular-bootstrap": "~0.11.2",
+    "angular-ui-utils": "~0.1.1",
+    "angular-ui-router": "~0.2.11",
+    "bootstrap-sass-official": "~3.3.5"
+  }
+}

@@ -1,0 +1,74 @@
+.create-issue-tabs {
+  li.active > a {
+    background-color: $gray-lighter;
+  }
+}
+
+.create-issue-container {
+  background-color: $gray-lighter;
+  padding-top: 15px;
+
+  hr {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-top: 1px solid #ddd;
+  }
+
+}
+
+.create-issue-form {
+  
+  .form-group {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .btn {
+    margin: 2px 0;
+
+    &.btn-step {
+      width: 100%;
+    }
+  }
+}
+
+.create-issue-checklist {
+
+  .badge {
+    float: right;
+    background-color: #999;
+  }
+
+  .panel-group {
+    margin-bottom: 0;
+  }
+
+  .panel-title {
+
+    .checklist-title {
+      display: inline-block;
+      width: 85%;
+    }
+  }
+
+  .panel-body {
+    padding: 0;
+
+    .list-group {
+      margin-bottom: 0;
+    }
+
+    .list-group-item {
+      border-left: 0;
+      border-right: 0;
+
+      &:first-child, &:last-child {
+        border-radius: 0;
+      }
+
+      &:first-child {
+        border-top: 0;
+      }
+    }
+  }
+}

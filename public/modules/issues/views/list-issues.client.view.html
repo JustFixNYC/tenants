@@ -1,0 +1,28 @@
+<section data-ng-controller="IssuesController">
+    <div class="page-header">
+        <h1>Issues</h1>
+    </div>
+    <div data-ng-show="hasIssues()">
+        <div class="row">
+            <div class="col-xs-12">
+                <a ui-sref="updateIssues" class="btn btn-primary btn-block">
+                Update Room Checklist
+                </a>
+            </div>
+        </div>
+        <div data-ng-repeat="(area,obj) in issues">
+            <div data-ng-hide="obj.length === 0">
+                <h4 data-ng-bind="area"></h4>
+                <div class="list-group">
+                    <p  data-ng-repeat="item in obj" 
+                        data-ng-bind="item"
+                        class="list-group-item">
+                    </p>
+                </div>
+            </div>
+        </div>        
+    </div>
+    <div class="alert alert-warning text-center" data-ng-show="!hasIssues()">
+    	No issues recorded! why don't you <a ui-sref="updateIssues">add some</a>?
+    </div>
+</section>

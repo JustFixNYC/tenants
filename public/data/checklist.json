@@ -1,0 +1,138 @@
+[
+  {
+    "Inside Whole Apartment":
+    [
+      "Painting overdue (3 years)",
+      "Peeling/flaking paint",
+      "Heat: inadequate // none",
+      "Hot water: inadequate // none",
+      "Inadequate water pressure",
+      "Rusty water",
+      "Exposed wiring",
+      "Weak electrical current (lights dim)",
+      "Window guards missing",
+      "Missing/broken smoke/Co2 detector",
+      "Fumes/smoke entering apartment",
+      "Vermin: rats // mice // roaches" 
+    ],
+    "Entry/Hallway Inside Apartment": 
+    [
+      "Door defective / not self-closing",
+      "Door frame broken or sagging",
+      "Door lock loose or defective",
+      "Peephole missing or broken",
+      "Bell not working",
+      "No chain on door",
+      "Defective intercom",
+      "Floors rotted broken or buckling",
+      "Walls/ceilings cracked/buckling/holes",
+      "Collapsed ceiling",
+      "Defective / leaking radiator",
+      "Defective electrical switches / fixtures",
+      "Missing face plates on switches or fixtures",
+      "Defective/broken/inoperative windows",
+      "Mold"
+    ],
+    "Kitchen":
+    [
+      "Defective stove",
+      "Defective refrigerator",
+      "Gas leaks",
+      "Plumbing leaks",
+      "Cracks / holes / rust around sink",
+      "Leaking faucets",
+      "Drain obstructed",
+      "Defective cabinets",
+      "Floors rotted / broken / buckling",
+      "Walls/ceilings cracked/buckling/holes",
+      "Collapsed ceiling",
+      "Defective / leaking radiator",
+      "Defective electrical switches / fixtures",
+      "Missing face plates on switches or fixtures",
+      "Defective/broken/inoperative windows",
+      "Mold"
+    ],
+    "Bathroom": 
+    [
+      "Defective appliances:",
+      "sink // bathtub // shower // toilet",
+      "Missing or cracked bathroom tile",
+      "Leaking faucets",
+      "Drain obstructed",
+      "Plumbing leaks",
+      "Floors rotted / broken / buckling",
+      "Walls / ceilings cracked / buckling / holes",
+      "Collapsed ceiling",
+      "Defective / leaking radiator",
+      "Defective electrical switches / fixtures",
+      "Missing face plates on switches or fixtures",
+      "Defective/broken/inoperative windows",
+      "Mold"
+    ],
+    "Dining Room": 
+    [
+      "Floors rotted / broken / buckling",
+      "Walls/ceilings cracked/buckling/holes",
+      "Collapsed ceiling",
+      "Defective / leaking radiator",
+      "Defective electrical switches / fixtures",
+      "Missing face plates on switches or fixtures",
+      "Defective/broken/inoperative windows",
+      "Mold"
+    ],
+    "Living Room / Sitting Room":
+    [
+      "Floors rotted / broken / buckling",
+      "Walls/ceilings cracked/buckling/holes",
+      "Collapsed ceiling",
+      "Defective / leaking radiator",
+      "Defective electrical switches / fixtures",
+      "Missing face plates on switches or fixtures",
+      "Defective/broken/inoperative windows",
+      "Mold"
+    ],
+    "Bedrooms":
+    [
+      "Floors rotted / broken / buckling",
+      "Walls/ ceilings cracked / buckling / holes",
+      "Collapsed ceiling",
+      "Defective / leaking radiator",
+      "Defective electrical switches / fixtures",
+      "Missing face plates on switches or fixtures",
+      "Defective/broken/inoperative windows",
+      "Defective doors",
+      "Mold"
+    ],
+    "Public Areas of Building":
+    [
+      "Broken or no locks on front door(s)",
+      "Front door(s) defective",
+      "Broken stoop steps",
+      "Broken or no intercom",
+      "Inadequate light: entrance // courtyard/alley // hallways",
+      "Broken mailboxes",
+      "Defective/broken/inoperative windows",
+      "Walls/ceilings cracked/buckling/holes",
+      "Paint in hallways dirty or peeling",
+      "Hallways not cleaned",
+      "Elevator not working",
+      "Stairs broken or loose",
+      "Laundry room: dirty // machines broken",
+      "Mold _________________________",
+      "Inadequate garbage cans",
+      "Garbage cans not covered",
+      "Garbage not collected / not put out for collection",
+      "Fire escapes rusty / broken / defective / missing",
+      "Basement not secure",
+      "Roof not secure",
+      "Exposed wiring in basement",
+      "Many vacant apartments",
+      "Great tenant turnover",
+      "Drug dealing on stoop / in hallways",
+      "Illegal apartments in basement",
+      "No rent receipts given",
+      "Rent receipts incomplete (no date/ NYC address for landlord, etc.)",
+      "Inadequate / no super service"
+    ]
+  }
+]

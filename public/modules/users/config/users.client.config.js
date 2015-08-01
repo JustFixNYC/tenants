@@ -1,0 +1,38 @@
+'use strict';
+
+// Config HTTP Error Handling
+angular.module('users').config(['$httpProvider',
+	function($httpProvider) {
+		// Set the httpProvider "not authorized" interceptor
+		$httpProvider.interceptors.push(['$rootScope', '$q', '$location', 'Authentication',
+			function($rootScope, $q, $location, Authentication) {
+				return {
+					responseError: function(rejection) {
+						
+						switch (rejection.status) {
+							case 401:
+
+								// Deauthenticate the global user
+								Authentication.user = null;
+
+								// store the issue data
+								if(rejection.config.method === 'POST' && rejection.config.url === 'issues') {
+									$rootScope.tempNewIssue = rejection.config.data;
+									//$location.path('signin').search({ newissue: 'true' });
+								}
+
+								// Redirect to signin page
+								$location.path('signin');
+								break;
+							case 403:
+								// Add unauthorized behaviour 
+								break;
+						}
+
+						return $q.reject(rejection);
+					}
+				};
+			}
+		]);
+	}
+]);

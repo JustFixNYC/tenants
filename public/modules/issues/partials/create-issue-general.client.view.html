@@ -1,0 +1,33 @@
+<div class="form-group">
+    <label class="control-label" for="category">Category</label>
+    <div class="controls">
+        <label class="btn btn-default" data-ng-model="newIssue.category" btn-radio="'General'">General</label>
+        <label class="btn btn-default" data-ng-model="newIssue.category" btn-radio="'Heat'">Heat</label>
+        <label class="btn btn-default" data-ng-model="newIssue.category" btn-radio="'Hot Water'">Hot Water</label>
+        <label class="btn btn-default" data-ng-model="newIssue.category" btn-radio="'Plumbing'">Plumbing</label>
+        <label class="btn btn-default" data-ng-model="newIssue.category" btn-radio="'Flooring/Stairs'">Flooring/Stairs</label>
+        <label class="btn btn-default" data-ng-model="newIssue.category" btn-radio="'Unsanitary'">Unsanitary</label>
+        <label class="btn btn-default" data-ng-model="newIssue.category" btn-radio="'Safety'">Safety</label>
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="description">Brief Description</label>
+    <div class="controls">
+        <textarea name="description" data-ng-model="newIssue.description" id="description" class="form-control" cols="30" rows="5" maxlength="500" placeholder="Please be brief..."></textarea>
+    </div>
+</div>    
+<div class="form-group">
+    <label class="control-label" for="urgency">Urgency Level</label>
+    <div class="controls btn-group">
+        <label class="btn btn-default" data-ng-model="newIssue.urgency" btn-radio="'Immediate'">Immediate</label>
+        <label class="btn btn-default" data-ng-model="newIssue.urgency" btn-radio="'Soon'">Soon</label>
+        <label class="btn btn-default" data-ng-model="newIssue.urgency" btn-radio="'Not Urgent'">Not Urgent</label>
+    </div>
+</div>   
+<div class="form-group">
+    <div class="col-xs-6 col-xs-offset-6">
+        <a ui-sref="createIssue.personal" class="btn btn-primary btn-step">
+        Next <span class="glyphicon glyphicon-circle-arrow-right"></span>
+        </a>
+    </div>
+</div>

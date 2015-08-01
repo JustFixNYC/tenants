@@ -1,0 +1,41 @@
+<section data-ng-controller="IssuesController" data-ng-init="findOne()">
+	<div class="page-header">
+		<h1 data-ng-bind="issue.name"></h1>
+	</div>
+	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == issue.user._id))">
+		<a class="btn btn-primary" href="/#!/issues/{{issue._id}}/edit">
+			<i class="glyphicon glyphicon-edit"></i>
+		</a>
+		<a class="btn btn-primary" data-ng-click="remove();">
+			<i class="glyphicon glyphicon-trash"></i>
+		</a>
+	</div>
+	<small>
+		<em class="text-muted">
+			Posted on
+			<span data-ng-bind="issue.created | date:'mediumDate'"></span>
+			by
+			<span data-ng-bind="issue.user.fullName"></span>
+		</em>
+	</small>
+	<h3>General</h3>
+	<b>Category: </b><span data-ng-bind="issue.category"></span>
+	<br />
+	<b>Description: </b><span data-ng-bind="issue.description"></span>
+	<br />
+	<b>Urgency: </b><span data-ng-bind="issue.urgency"></span>
+	<h3>Contact</h3>
+	<b>Type: </b><span data-ng-bind="issue.contactType"></span>
+	<br />
+	<b>Name: </b><span data-ng-bind="issue.contactName"></span>
+	<br />
+	<b>Phone: </b><span data-ng-bind="issue.contactPhone"></span>
+	<br />
+	<h3>Location</h3>
+	<b>Borough: </b><span data-ng-bind="issue.borough"></span>
+	<br />
+	<b>Street Number: </b><span data-ng-bind="issue.streetNumber"></span>
+	<br />
+	<b>Street Name: </b><span data-ng-bind="issue.streetName"></span>
+	<br />	
+</section>

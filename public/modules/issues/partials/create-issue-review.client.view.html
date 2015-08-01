@@ -1,0 +1,19 @@
+<div class="form-group">
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque interdum rutrum sodales. Nullam mattis fermentum libero, non volutpat.</p>
+</div>
+<div class="form-group" data-ng-hide="authentication.user">
+    <label for="password">Create a password</label>
+    <input type="password" id="password" name="password" class="form-control" data-ng-model="newIssue.password" placeholder="Password"> 
+</div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-xs-6">
+            <a ui-sref="createIssue.personal" class="btn btn-default btn-step">
+            <span class="glyphicon glyphicon-circle-arrow-left"></span> Previous
+            </a>
+        </div>
+        <div class="col-xs-6">
+            <input type="submit" class="btn btn btn-primary btn-step">
+        </div>
+    </div>
+</div>
