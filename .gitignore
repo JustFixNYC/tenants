@@ -8,4 +8,3 @@ app/tests/coverage/
 .bower-*/
 .idea/
 app/data
-public/dist
