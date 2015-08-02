@@ -44,17 +44,13 @@
 </head>
 
 <body class="ng-cloak">
-	<header data-ng-include="'/modules/core/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
+	<header data-ng-include="'/modules/core/views/header.client.view.html'" class="navbar"></header>
 	<section class="content">
 		<section class="container">
 			{% block content %}{% endblock %}
 		</section>
 	</section>
-	<nav data-ng-show="authentication.user" class="navbar navbar-inverse navbar-fixed-bottom">
-	  <div class="container">
-	    dslkfjnsdlakfjfns
-	  </div>
-	</nav>
+	<section data-ng-include="'/modules/core/views/nav.client.view.html'"></section>
 
 	<!--Embedding The User Object-->
 	<script type="text/javascript">

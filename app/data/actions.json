@@ -1,0 +1,39 @@
+{
+  "actions": [
+    {
+      "title": "Message Super/Landlord",
+      "step": 1,
+      "addIf": []
+    }, 
+    {
+      "title": "Call 311",
+      "step": 2,
+      "addIf": ["hasEmergencyIssues"]
+    },      
+    {
+      "title": "Get Rental History",
+      "step": 3,
+      "addIf": ["isRentStabilized"]
+    },
+    {
+      "title": "Call Hotline",
+      "step": 4,
+      "addIf": []
+    },
+    {
+      "title": "Send Letter of Complaint",
+      "step": 5,
+      "addIf": []
+    }, 
+    {
+      "title": "DHCR Decreased Services App",
+      "step": 5,
+      "addIf": []
+    },  
+    {
+      "title": "HP Action",
+      "step": 6,
+      "addIf": []
+    }                        
+  ]
+}

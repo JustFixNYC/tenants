@@ -46,7 +46,13 @@ var UserSchema = new Schema({
 	issues: {
 		type: Schema.Types.Mixed,
 		default: {}
-	},  
+	}, 
+	toDoActions: [{
+		title: String,
+		step: Number,
+		addIf: [String],
+		added: { type: Date, default: Date.now }
+	}], 
 	// email: {
 	// 	type: String,
 	// 	trim: true,
@@ -56,7 +62,7 @@ var UserSchema = new Schema({
 	// },
 	phone: {
 		type: String,
-		unique: 'testing error message',
+		unique: true,
 		trim: true,
 		default: '',
 		validate: [validateLocalStrategyProperty, 'Please fill in your phone number'],
@@ -113,7 +119,6 @@ UserSchema.pre('save', function(next) {
 		this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
 		this.password = this.hashPassword(this.password);
 	}
-
 	next();
 });
 
@@ -134,6 +139,25 @@ UserSchema.methods.hashPassword = function(password) {
 UserSchema.methods.authenticate = function(password) {
 	return this.password === this.hashPassword(password);
 };
+
+// UserSchema.methods.addToDo = function(title, step, addIf) {
+// 	var _this = this;
+
+// 	//console.log(_this);
+// 	_this.findById( _this._id, function(err, user) {
+// 		console.log(_this);
+
+// 		_this.toDoActions.push({
+// 			title: title,
+// 			step: step,
+// 			addIf: addIf
+// 		});
+
+// 		_this.save(function (err) {
+// 			if(err) throw new Error("something bad");
+// 		})
+// 	})
+// };
 
 /**
  * Find possible not used username

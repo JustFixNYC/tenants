@@ -13,6 +13,17 @@
 .ng-valid.ng-dirty {
   border-color: #78FA89; }
 
+.navbar-brand {
+  color: #454545; }
+
+.navbar-toggle {
+  border-color: #454545; }
+  .navbar-toggle .icon-bar {
+    background-color: #454545; }
+
+.navbar-collapse {
+  /*background-color: #454545;*/ }
+
 @media (min-width: 992px) {
   .nav-users {
     position: fixed; } }
