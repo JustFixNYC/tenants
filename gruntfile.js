@@ -5,7 +5,8 @@ module.exports = function(grunt) {
 	var watchFiles = {
 		serverViews: ['app/views/**/*.*'],
 		serverJS: ['gruntfile.js', 'server.js', 'config/**/*.js', 'app/**/*.js'],
-		serverSASS: ['app/styles/{,*/}*.{scss,sass}', '!app/styles/bootstrap-config.scss'],
+		serverSASS: ['app/styles/{,*/}*.{scss,sass}'],
+		//serverSASS: ['app/styles/{,*/}*.{scss,sass}', '!app/styles/bootstrap-config.scss'],
 		clientViews: ['public/modules/**/views/**/*.html'],
 		clientJS: ['public/js/*.js', 'public/modules/**/*.js'],
 		clientCSS: ['public/styles/*.css', '!public/styles/bootstrap.css'],
@@ -154,7 +155,8 @@ module.exports = function(grunt) {
 		sass: {
 		  dev: {
 		  	options: {
-		  		loadPath: ['public/lib/bootstrap-sass-official/assets/stylesheets']
+		  		loadPath: ['public/lib/bootstrap-sass-official/assets/stylesheets'],
+		  		update: true
 		  	},		    
 		    files: {
 		      'public/styles/style.css': 'app/styles/main.scss',

@@ -1,15 +1,15 @@
 'use strict';
 
 // Issues controller
-angular.module('actions').controller('UpdateActivityController', function ($scope, $modalInstance) {
+angular.module('actions').controller('UpdateActivityController', function ($scope, $modalInstance, newUpdate) {
 
-  // $scope.items = items;
+  $scope.newUpdate = newUpdate;
   // $scope.selected = {
   //   item: $scope.items[0]
   // };
 
-  $scope.ok = function () {
-    $modalInstance.close();
+  $scope.addUpdate = function () {
+    $modalInstance.close($scope.newUpdate);
   };
 
   $scope.cancel = function () {

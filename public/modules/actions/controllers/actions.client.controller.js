@@ -6,23 +6,27 @@ angular.module('actions').controller('ActionsController', ['$scope', '$location'
     $scope.authentication = Authentication;
 
     //$scope.actions = $scope.authentication.user.actions;
-    $scope.openModal = function (size) {
+    $scope.openModal = function(title) {
+
+      $scope.newUpdate = {};
+      $scope.newUpdate.title = title;
 
       var modalInstance = $modal.open({
         animation: false,
         templateUrl: 'modules/actions/partials/update-activity.client.view.html',
         controller: 'UpdateActivityController',
         resolve: {
-          // items: function () {
-          //   return $scope.items;
-          // }
+          newUpdate: function () {
+            return $scope.newUpdate;
+          }
         }
       });
 
-      // modalInstance.result.then(function (selectedItem) {
-      //   $scope.selected = selectedItem;
-      // }, function () {
-      // });
+      modalInstance.result.then(function (newUpdate) {
+        $scope.newUpdate = newUpdate;
+        console.log('submitted:', $scope.newUpdate);
+      }, function () {
+      });
     };
 
 
