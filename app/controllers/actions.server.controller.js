@@ -6,8 +6,6 @@ var _ = require('lodash'),
   User = mongoose.model('User'),
   fullActions = require('../data/actions.json');
 
-
-
 /* things:
 
 add item to list
@@ -24,6 +22,20 @@ once user logs in, start child process...
 
 */
 
+var areaTitle = function(area) {
+  switch(area) {
+    case 'generalApt': return 'Inside Whole Apartment';
+    case 'entryHallway': return 'Entry/Hallway Inside Apartment';
+    case 'kitchen': return 'Kitchen';
+    case 'bathroom': return 'Bathroom';
+    case 'diningRoom': return 'Dining Room';
+    case 'livingRoom': return 'Living Room / Sitting Room';
+    case 'bedrooms': return 'Bedrooms';
+    case 'publicAreas': return 'Public Areas of Building';
+    default: return '';
+  }  
+};
+
 var getAreaActions = function(issues) {
 
   var areaActions = []
@@ -31,7 +43,7 @@ var getAreaActions = function(issues) {
   for(var area in issues) {
     if(issues[area].length) {
       areaActions.push({
-        "title": area,
+        "title": areaTitle(area),
         "key": area,
         "addIf": ["initial"]       
       });

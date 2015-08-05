@@ -155,12 +155,16 @@ module.exports = function(grunt) {
 		sass: {
 		  dev: {
 		  	options: {
-		  		loadPath: ['public/lib/bootstrap-sass-official/assets/stylesheets'],
+		  		loadPath: [
+		  			'public/lib/bootstrap-sass-official/assets/stylesheets',
+		  			'public/lib/Bootflat/bootflat/scss'
+		  		],
 		  		update: true
 		  	},		    
 		    files: {
 		      'public/styles/style.css': 'app/styles/main.scss',
 		      'public/styles/bootstrap.css': 'app/styles/bootstrap-config.scss',
+		      'public/styles/bootflat.css': 'app/styles/bootflat-config.scss'
 		      //next line is not necessary if you include your bootstrap into the *.scss files
 		      //'public/styles/bootstrap.css': 'public/lib/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss'		      		     
 		    }

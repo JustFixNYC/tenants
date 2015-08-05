@@ -1,12 +1,12 @@
 .create-issue-tabs {
   li.active > a {
-    background-color: $gray-lighter;
+    /*background-color: $gray-lighter;*/
   }
 }
 
 .create-issue-container {
-  background-color: $gray-lighter;
   padding-top: 15px;
+  background-color: #fff;
 
   hr {
     margin-top: 5px;
@@ -36,7 +36,7 @@
 
   .badge {
     float: right;
-    background-color: #999;
+    // background-color: #999;
   }
 
   .panel-group {

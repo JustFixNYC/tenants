@@ -1,3 +1,6 @@
+body {
+  background-color: #f1f2f6; }
+
 .content {
   margin-bottom: 50px; }
 
@@ -58,11 +61,11 @@
     width: 100%; }
 
 .create-issue-tabs li.active > a {
-  background-color: #eeeeee; }
+  /*background-color: $gray-lighter;*/ }
 
 .create-issue-container {
-  background-color: #eeeeee;
-  padding-top: 15px; }
+  padding-top: 15px;
+  background-color: #fff; }
   .create-issue-container hr {
     margin-top: 5px;
     margin-bottom: 10px;
@@ -77,8 +80,7 @@
     width: 100%; }
 
 .create-issue-checklist .badge {
-  float: right;
-  background-color: #999; }
+  float: right; }
 .create-issue-checklist .panel-group {
   margin-bottom: 0; }
 .create-issue-checklist .panel-title .checklist-title {

@@ -2,41 +2,79 @@
   {
     "title": "Message Super",
     "key": "messageSuper",
-    "addIf": ["initial"]
+    "addIf": ["initial"],
+    "cta": {
+      "type": "modal",
+      "template": "message-super.client.view.html",
+      "controller": "MessageSuperController"
+    }
   }, 
   {
     "title": "Message Landlord",
     "key": "messageLandlord",
-    "addIf": ["messageSuper"]
+    "addIf": ["messageSuper"],
+    "cta": {
+      "type": "modal",
+      "template": "message-landlord.client.view.html",
+      "controller": "MessageLandlordController"
+    }
   },   
   {
     "title": "Call 311",
     "key": "contact311",    
-    "addIf": ["hasEmergencyIssues"]
+    "addIf": ["hasEmergencyIssues"],
+    "cta": {
+      "type": "call",
+      "phone": 5555555555
+    }
   },      
   {
     "title": "Get Rental History",
     "key": "getRentalHistory",    
-    "addIf": ["isRentStabilized"]
+    "addIf": ["isRentStabilized"],
+    "cta": {
+      "type": "modal",
+      "template": "rental-history.client.view.html",
+      "controller": "RentalHistoryController"
+    }
   },
   {
     "title": "Call Hotline",
     "key": "callHotline",    
-    "addIf": ["initial"]
+    "addIf": ["initial"],
+    "cta": {
+      "type": "call",
+      "phone": 5555555555
+    }    
   },
   {
     "title": "Send Letter of Complaint",
     "key": "sendLetter",
-    "addIf": ["hasEmergencyIssues", "messageLandlord"]
+    "addIf": ["hasEmergencyIssues", "messageLandlord"],
+    "cta": {
+      "type": "modal",
+      "template": "complaint-letter.client.view.html",
+      "controller": "ComplaintLetterController"
+    }    
   }, 
   {
     "title": "DHCR Decreased Services App",
     "key": "decreasedServices",    
-    "addIf": ["isRentStabilized"]
+    "addIf": ["isRentStabilized"],
+    "cta": {
+      "type": "modal",
+      "template": "decreased-services.client.view.html",
+      "controller": "DecreasedServicesController"
+    }  
   },  
   {
     "title": "HP Action",
     "key": "HPAction", 
-    "addIf": ["hasEmergencyIssues", "sendLetter"]
+    "addIf": ["hasEmergencyIssues", "sendLetter"],
+    "cta": {
+      "type": "modal",
+      "template": "hp-action.client.view.html",
+      "controller": "HPActionController"
+    }  
   }                        
 ]

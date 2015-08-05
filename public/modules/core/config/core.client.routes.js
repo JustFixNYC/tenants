@@ -5,11 +5,14 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 	function($stateProvider, $urlRouterProvider, $provide) {
 
 		$provide.decorator('accordionGroupDirective', function($delegate) {
-	    //we now get an array of all the datepickerDirectives, 
-	    //and use the first one
 	    $delegate[0].templateUrl = 'bootstrap-templates/accordion/accordion-group.html';
 	    return $delegate;
 	  });
+		$provide.decorator('accordionDirective', function($delegate) {
+	    $delegate[0].templateUrl = 'bootstrap-templates/accordion/accordion.html';
+	    return $delegate;
+	  });
+
 
 		// Redirect to home view when route not found
 		$urlRouterProvider.otherwise('/');
