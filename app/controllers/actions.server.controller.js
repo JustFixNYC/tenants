@@ -67,8 +67,6 @@ var generateActions = function(user) {
 
   });
 
-  console.log(actions);
-
   return actions;
 };
 
