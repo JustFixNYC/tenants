@@ -1,0 +1,21 @@
+#bottom-nav {
+  background-color: $gray-lighter;
+  border-top: 1px solid $gray-light;
+
+  .navbar-nav {
+    margin: 0;
+  }
+
+  li {
+    border-right: 1px solid $gray-light;
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  .nav > li > a {
+    padding-top: 7.5px;
+    padding-bottom: 0;
+  }
+}

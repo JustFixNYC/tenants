@@ -1,5 +1,5 @@
 .content {
-  margin-top: 50px; }
+  margin-bottom: 50px; }
 
 .undecorated-link:hover {
   text-decoration: none; }
@@ -23,6 +23,19 @@
 
 .navbar-collapse {
   /*background-color: #454545;*/ }
+
+#bottom-nav {
+  background-color: #eeeeee;
+  border-top: 1px solid #777777; }
+  #bottom-nav .navbar-nav {
+    margin: 0; }
+  #bottom-nav li {
+    border-right: 1px solid #777777; }
+    #bottom-nav li:last-child {
+      border-right: none; }
+  #bottom-nav .nav > li > a {
+    padding-top: 7.5px;
+    padding-bottom: 0; }
 
 @media (min-width: 992px) {
   .nav-users {

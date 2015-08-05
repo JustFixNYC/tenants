@@ -4,13 +4,13 @@
     <accordion close-others="oneAtATime" class="create-issue-checklist">
         <accordion-group data-ng-repeat="(area, obj) in checklist" is-open="open[$index]">
             <accordion-heading>
-                <div class="checklist-title">{{ area }}</div>
+                <div class="checklist-title">{{ area | areaTitle }}</div>
                 <span class="badge">{{ obj.numChecked }}</span>
             </accordion-heading>
             <div class="list-group">
                 <button type="button" 
                         class="list-group-item" 
-                        data-ng-repeat="item in obj.values"
+                        data-ng-repeat="item in obj.issues"
                         data-ng-click="select(area, item)"
                         data-ng-class="{ 'list-group-item-info': isSelected(area, item) }">
                         {{ item }}

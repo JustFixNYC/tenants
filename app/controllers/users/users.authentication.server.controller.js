@@ -4,8 +4,6 @@
  * Module dependencies.
  */
 var _ = require('lodash'),
-  fs = require('fs'),
-  q = require('q'),
   errorHandler = require('../errors.server.controller'),
   actionsHandler = require('../actions.server.controller'),
   mongoose = require('mongoose'),
@@ -27,27 +25,27 @@ exports.signup = function(req, res) {
   user.provider = 'local';
   //user.displayName = user.firstName + ' ' + user.lastName;
 
-  actionsHandler.populateToDos(user).then(function() {
-    // Then save the user 
-    user.save(function(err) {
-      if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        // Remove sensitive data before login
-        user.password = undefined;
-        user.salt = undefined;
+  user.actionFlags.push('initial');
 
-        req.login(user, function(err) {
-          if (err) {
-            res.status(400).send(err);
-          } else {
-            res.json(user);
-          }
-        });
-      }
-    });
+  //Then save the user 
+  user.save(function(err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      // Remove sensitive data before login
+      user.password = undefined;
+      user.salt = undefined;
+
+      req.login(user, function(err) {
+        if (err) {
+          res.status(400).send(err);
+        } else {
+          res.json(user);
+        }
+      });
+    }
   });
 };
 
@@ -63,10 +61,14 @@ exports.signin = function(req, res, next) {
       user.password = undefined;
       user.salt = undefined;
 
+      console.log(user);
+
       req.login(user, function(err) {
         if (err) {
           res.status(400).send(err);
         } else {
+
+
           res.json(user);
         }
       });

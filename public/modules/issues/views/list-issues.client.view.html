@@ -12,7 +12,7 @@
         </div>
         <div data-ng-repeat="(area,obj) in issues">
             <div data-ng-hide="obj.length === 0">
-                <h4 data-ng-bind="area"></h4>
+                <h4 data-ng-bind="area | areaTitle"></h4>
                 <div class="list-group">
                     <p  data-ng-repeat="item in obj" 
                         data-ng-bind="item"

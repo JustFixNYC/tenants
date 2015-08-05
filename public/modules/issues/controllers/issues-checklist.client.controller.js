@@ -14,17 +14,24 @@ angular.module('issues').controller('IssuesChecklistController', ['$scope', 'Iss
     IssuesChecklist.get().then(function (data) {
       var i = 0;
       for(var area in data[0]) {
-        var items = data[0][area];
+        var issues = data[0][area].issues;
+
+        // add to checklist object
         $scope.checklist[area] = {
-          'numChecked' : $scope.newIssue.issues[area] ? $scope.newIssue.issues[area].length : 0,
-          'values' : items
+          numChecked : $scope.newIssue.issues[area] ? $scope.newIssue.issues[area].length : 0,
+          issues: issues
         };
+
+        // initialize newIssues
         if(!$scope.newIssue.issues[area]) $scope.newIssue.issues[area] = [];
-        items.forEach(function (item) {
-          if($scope.issues[area] && $scope.issues[area].indexOf(item) !== -1) {
-            $scope.select(area,item);
+
+        // add issues that are already selected
+        issues.forEach(function (issue) {
+          if($scope.issues[area] && $scope.issues[area].indexOf(issue) !== -1) {
+            $scope.select(area,issue);
           }
         });
+
         $scope.open[i++] = false;
 
       }
@@ -37,19 +44,19 @@ angular.module('issues').controller('IssuesChecklistController', ['$scope', 'Iss
       isFirstDisabled: false
     };
 
-    $scope.select = function(area, item) {
-      if(!this.isSelected(area, item)) {
-        $scope.newIssue.issues[area].push(item);
+    $scope.select = function(area, issue) {
+      if(!this.isSelected(area, issue)) {
+        $scope.newIssue.issues[area].push(issue);
         $scope.checklist[area].numChecked++;
       } else {
-        var i = $scope.newIssue.issues[area].indexOf(item);
+        var i = $scope.newIssue.issues[area].indexOf(issue);
         $scope.newIssue.issues[area].splice(i, 1);
         $scope.checklist[area].numChecked--;
       }
     };
-    $scope.isSelected = function(area, item) {
+    $scope.isSelected = function(area, issue) {
       if(!$scope.newIssue.issues[area]) return false; 
-      return $scope.newIssue.issues[area].indexOf(item) !== -1;
+      return $scope.newIssue.issues[area].indexOf(issue) !== -1;
     };
     // $scope.prevGroup = function(idx) {
     //   $scope.open[idx] = false;

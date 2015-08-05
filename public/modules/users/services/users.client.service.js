@@ -6,10 +6,11 @@ angular.module('users').factory('Users', ['$resource',
 		return $resource('users', {}, {
 			update: {
 				method: 'PUT'
-			},
-      getIssues: {
-        method: 'GET'
-      }
+			}
+      // ,
+      // getIssues: {
+      //   method: 'GET'
+      // }
 		});
 	}
 ]);
