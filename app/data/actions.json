@@ -5,6 +5,7 @@
     "addIf": ["initial"],
     "cta": {
       "type": "modal",
+      "buttonTitle": "Contact",
       "template": "message-super.client.view.html",
       "controller": "MessageSuperController"
     }
@@ -15,6 +16,7 @@
     "addIf": ["messageSuper"],
     "cta": {
       "type": "modal",
+      "buttonTitle": "Contact",
       "template": "message-landlord.client.view.html",
       "controller": "MessageLandlordController"
     }
@@ -25,25 +27,39 @@
     "addIf": ["hasEmergencyIssues"],
     "cta": {
       "type": "call",
+      "buttonTitle": "Call",
       "phone": 5555555555
     }
-  },      
+  },  
+  {
+    "title": "Call NYCHA Help Center",
+    "key": "contactNYCHA",    
+    "addIf": ["isNYCHA"],
+    "cta": {
+      "type": "call",
+      "buttonTitle": "Call",
+      "phone": 5555555555
+    }
+  },        
   {
     "title": "Get Rental History",
     "key": "getRentalHistory",    
     "addIf": ["isRentStabilized"],
     "cta": {
       "type": "modal",
+      "buttonTitle": "Contact DHCR",
       "template": "rental-history.client.view.html",
       "controller": "RentalHistoryController"
     }
   },
   {
     "title": "Call Hotline",
+    "respTitle": "How did it go?",
     "key": "callHotline",    
     "addIf": ["initial"],
     "cta": {
       "type": "call",
+      "buttonTitle": "Call MetCouncil Hotline",
       "phone": 5555555555
     }    
   },
@@ -53,6 +69,7 @@
     "addIf": ["hasEmergencyIssues", "messageLandlord"],
     "cta": {
       "type": "modal",
+      "buttonTitle": "Create Letter",
       "template": "complaint-letter.client.view.html",
       "controller": "ComplaintLetterController"
     }    
@@ -63,6 +80,7 @@
     "addIf": ["isRentStabilized"],
     "cta": {
       "type": "modal",
+      "buttonTitle": "Contact DHCR",
       "template": "decreased-services.client.view.html",
       "controller": "DecreasedServicesController"
     }  
@@ -73,6 +91,7 @@
     "addIf": ["hasEmergencyIssues", "sendLetter"],
     "cta": {
       "type": "modal",
+      "buttonTitle": "Start HP Action",
       "template": "hp-action.client.view.html",
       "controller": "HPActionController"
     }  

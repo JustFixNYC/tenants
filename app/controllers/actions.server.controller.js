@@ -38,14 +38,20 @@ var areaTitle = function(area) {
 
 var getAreaActions = function(issues) {
 
-  var areaActions = []
+  var areaActions = [];
 
   for(var area in issues) {
     if(issues[area].length) {
       areaActions.push({
-        "title": areaTitle(area),
-        "key": area,
-        "addIf": ["initial"]       
+        title: areaTitle(area),
+        key: area,
+        addIf: ['initial'],
+        cta: {
+          type: 'initialContent',
+          buttonTitle: 'Add Text/Photos',
+          template: 'update-activity.client.view.html',
+          controller: 'UpdateActivityController'
+        }       
       });
     }
   }
@@ -80,26 +86,6 @@ var generateActions = function(user) {
   });
 
   return actions;
-};
-
-
-var getInitialActions = function() {
-  var deferred = q.defer();
-  fs.readFile('app/data/actions.json', 
-    function (err, data) {
-      if (err) {
-        new Error('Failed to load default actions');
-        deferred.reject();
-      }
-      var obj = JSON.parse(data);
-
-
-      // obj.actions.forEach(function(action) {
-      //   user.actions.push(action);
-      // });
-      deferred.resolve(obj.actions);
-  });
-  return deferred.promise;
 };
 
 var populateActions = function(id) {
@@ -177,24 +163,10 @@ var addActionFlag = function(id, flag) {
 
 var list = function(req, res) {
 
-
   var user = req.user;
   if(user) {
-
     var actions = generateActions(user);
-    //console.log(actions);
-
     res.json(actions);
-
-    // populateActions(user._id)
-    //   .then(function() {
-    //     //console.log(user.actions);
-        
-    //   })
-    //   .catch(function(err) {
-    //     new Error(err);
-    //   });
-
   } else {
     res.status(400).send({
       message: 'User is not signed in'

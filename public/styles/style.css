@@ -16,6 +16,11 @@ body {
 .ng-valid.ng-dirty {
   border-color: #78FA89; }
 
+.page-header {
+  margin-top: 0; }
+  .page-header h1 {
+    margin-top: 0; }
+
 .navbar-brand {
   color: #454545; }
 
@@ -83,19 +88,31 @@ body {
   float: right; }
 .create-issue-checklist .panel-group {
   margin-bottom: 0; }
+.create-issue-checklist .panel-group-lists .panel:first-child {
+  border-top: 1px solid #E6E9ED; }
 .create-issue-checklist .panel-title .checklist-title {
   display: inline-block;
   width: 85%; }
 .create-issue-checklist .panel-body {
-  padding: 0; }
+  padding: 0 !important; }
   .create-issue-checklist .panel-body .list-group {
     margin-bottom: 0; }
   .create-issue-checklist .panel-body .list-group-item {
     border-left: 0;
-    border-right: 0; }
+    border-right: 0;
+    background-color: #F5F7FA; }
     .create-issue-checklist .panel-body .list-group-item:first-child, .create-issue-checklist .panel-body .list-group-item:last-child {
       border-radius: 0; }
     .create-issue-checklist .panel-body .list-group-item:first-child {
       border-top: 0; }
+  .create-issue-checklist .panel-body .list-group-item-info:hover,
+  .create-issue-checklist .panel-body .list-group-item-info:focus,
+  .create-issue-checklist .panel-body .list-group-item-info {
+    color: #F5F7FA;
+    border-color: #AAB2BD;
+    background-color: #3BAFDA; }
+
+.action-panel .panel-content {
+  margin-bottom: 5px; }
 
 /*# sourceMappingURL=style.css.map */

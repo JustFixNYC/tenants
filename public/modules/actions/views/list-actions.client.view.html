@@ -3,10 +3,10 @@
         <h1>Actions</h1>
     </div>
     <div>
-      <button data-ng-click="openModal()" class="btn btn-primary btn-block">Add an update</button>
+      <button data-ng-click="openDefaultModal()" class="btn btn-primary btn-block">Add an update</button>
     </div>
     <div>
-      <div data-ng-repeat="action in actions" class="panel panel-default">
+      <div data-ng-repeat="action in actions" class="panel panel-default action-panel">
         <div class="panel-heading">
           <h3 class="panel-title" data-ng-bind="action.title"></h3>
         </div>
@@ -14,9 +14,21 @@
           <div class="panel-content">
             Lorem Ipsum etc etc etc 
           </div>
-          <div class="center-block">
-            <button class="btn btn-success" ng-click="openModal('sample title')">CTA</button>
-          </div>
+          <button class="btn btn-success btn-block" 
+                  data-ng-if="action.cta.type === 'initialContent' || action.cta.type === 'modal'" 
+                  data-ng-click="openModal(action.title, action.cta.template, action.cta.controller)"
+                  data-ng-bind="action.cta.buttonTitle">
+          </button>
+          <a  class="btn btn-warning btn-block" 
+              data-ng-if="action.cta.type === 'call'" 
+              data-ng-href="tel:{{action.cta.phone}}"
+              data-ng-bind="action.cta.buttonTitle">
+          </a>  
+          <a  class="btn btn-link btn-block" 
+              data-ng-if="action.cta.type !== 'initialContent'" 
+              data-ng-click="resolveAction(action.title)">
+              or mark as resolved
+          </a>                
         </div>
       </div>       
     </div>

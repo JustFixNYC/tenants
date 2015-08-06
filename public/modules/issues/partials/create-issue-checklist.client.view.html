@@ -5,7 +5,7 @@
         <accordion-group data-ng-repeat="(area, obj) in checklist" is-open="open[$index]">
             <accordion-heading>
                 <div class="checklist-title">{{ area | areaTitle }}</div>
-                <span class="badge">{{ obj.numChecked }}</span>
+                <span class="badge" data-ng-class="{ 'badge-primary' : obj.numChecked }">{{ obj.numChecked }}</span>
             </accordion-heading>
             <div class="list-group">
                 <button type="button" 
@@ -18,7 +18,7 @@
                 </button>
             </div>
             <div class="col-xs-12">
-                <a data-ng-click="closeGroup($index)" class="btn btn-step">
+                <a data-ng-click="closeGroup($index)" class="btn btn-link btn-block">
                     Done with this area <span class="glyphicon glyphicon-circle-arrow-right"></span>
                 </a>
             </div>

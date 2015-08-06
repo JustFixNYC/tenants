@@ -43,6 +43,13 @@
     margin-bottom: 0;
   }
 
+  .panel-group-lists {
+
+    .panel:first-child {
+      border-top: 1px solid #E6E9ED;
+    }
+  }
+
   .panel-title {
 
     .checklist-title {
@@ -52,7 +59,7 @@
   }
 
   .panel-body {
-    padding: 0;
+    padding: 0 !important;
 
     .list-group {
       margin-bottom: 0;
@@ -61,6 +68,7 @@
     .list-group-item {
       border-left: 0;
       border-right: 0;
+      background-color: $lightgray-light;
 
       &:first-child, &:last-child {
         border-radius: 0;
@@ -69,6 +77,14 @@
       &:first-child {
         border-top: 0;
       }
+    }
+
+    .list-group-item-info:hover, 
+    .list-group-item-info:focus,
+    .list-group-item-info {
+      color: $lightgray-light;
+      border-color: $mediumgray-dark;
+      background-color: $aqua-dark;
     }
   }
 }

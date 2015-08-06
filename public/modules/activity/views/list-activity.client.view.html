@@ -1,0 +1,21 @@
+<section data-ng-controller="ActivityController">
+    <div class="page-header">
+        <h1>Activity Log</h1>
+    </div>
+    <div data-ng-show="hasActivity()">
+        <div data-ng-repeat="(area,obj) in issues">
+            <div data-ng-hide="obj.length === 0">
+                <h4 data-ng-bind="area | areaTitle"></h4>
+                <div class="list-group">
+                    <p  data-ng-repeat="item in obj" 
+                        data-ng-bind="item"
+                        class="list-group-item">
+                    </p>
+                </div>
+            </div>
+        </div>        
+    </div>
+    <div class="alert alert-warning text-center" data-ng-show="!hasActivity()">
+    	No issues recorded! why don't you <a ui-sref="updateIssues">add some</a>?
+    </div>
+</section>

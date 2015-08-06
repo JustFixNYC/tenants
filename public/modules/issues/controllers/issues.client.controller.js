@@ -14,9 +14,9 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
     $scope.newIssue = {};
     $scope.newIssue.issues = {};          
 
-    // $scope.newIssue.name = "test";
-    // $scope.newIssue.phone = (Math.floor(Math.random() * 9999999999) + 1111111111).toString();
-    // $scope.newIssue.password = "testtest";
+    $scope.newIssue.name = "test";
+    $scope.newIssue.phone = (Math.floor(Math.random() * 9999999999) + 1111111111).toString();
+    $scope.newIssue.password = "testtest";
 
     // Saves state between tabs
 

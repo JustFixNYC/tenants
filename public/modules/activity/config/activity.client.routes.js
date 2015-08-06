@@ -1,7 +1,7 @@
 'use strict';
 
 //Setting up route
-angular.module('actions').config(['$stateProvider', '$urlRouterProvider',
+angular.module('activity').config(['$stateProvider', '$urlRouterProvider',
 	function($stateProvider, $urlRouterProvider) {
 		
 		// Jump to first child state
@@ -9,9 +9,9 @@ angular.module('actions').config(['$stateProvider', '$urlRouterProvider',
 
 		// Issues state routing
 		$stateProvider.	
-		state('listActions', {
-			url: '/actions',
-			templateUrl: 'modules/actions/views/list-actions.client.view.html'
+		state('listActivity', {
+			url: '/activity',
+			templateUrl: 'modules/actions/views/list-activity.client.view.html'
 		});					
 
 	}

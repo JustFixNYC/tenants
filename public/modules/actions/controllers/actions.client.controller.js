@@ -5,16 +5,15 @@ angular.module('actions').controller('ActionsController', ['$scope', '$location'
   function($scope, $location, $modal, Authentication, Actions) {
     $scope.authentication = Authentication;
 
-    //$scope.actions = $scope.authentication.user.actions;
-    $scope.openModal = function(title) {
+    $scope.openModal = function(title, template, controller) {
 
       $scope.newUpdate = {};
       $scope.newUpdate.title = title;
 
       var modalInstance = $modal.open({
         animation: false,
-        templateUrl: 'modules/actions/partials/update-activity.client.view.html',
-        controller: 'UpdateActivityController',
+        templateUrl: 'modules/actions/partials/' + template,
+        controller: controller,
         resolve: {
           newUpdate: function () {
             return $scope.newUpdate;
@@ -29,6 +28,32 @@ angular.module('actions').controller('ActionsController', ['$scope', '$location'
       });
     };
 
+    $scope.openDefaultModal = function() {
+      $scope.openModal('', 'update-activity.client.view.html', 'UpdateActivityController');
+    };
+
+    $scope.resolveAction = function(title) {
+
+      $scope.newAction = {};
+      $scope.newAction.title = title;
+
+      var modalInstance = $modal.open({
+        animation: false,
+        templateUrl: 'modules/actions/partials/resolve-action.client.view.html',
+        controller: 'ResolveActionController',
+        resolve: {
+          newAction: function () {
+            return $scope.newAction;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (newAction) {
+        $scope.newAction = newAction;
+        console.log('submitted:', $scope.newAction);
+      }, function () {
+      });
+    };
 
     $scope.list = function() {
       // console.log(Actions.query());

@@ -51,7 +51,14 @@ var UserSchema = new Schema({
     type: String,
     default: []
   }],
-
+  activity: [{
+    date: { type: Date, default: Date.now },
+    title: String,
+    description: String
+    // ,
+    // photos: [
+    // ]
+  }],
 
   // email: {
   //  type: String,

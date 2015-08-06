@@ -23,6 +23,8 @@ angular.module('users').controller('AuthenticationController', ['$rootScope', '$
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;
         // And redirect to the issues page
+
+        console.log($scope.authentication.user);
         $location.path('/issues');
       }).error(function(response) {
         $scope.error = response.message;
