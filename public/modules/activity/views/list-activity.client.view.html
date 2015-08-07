@@ -3,7 +3,7 @@
         <h1>Activity Log</h1>
     </div>
     <div data-ng-show="activities.length">
-        <div data-ng-repeat="activity in activities" class="panel panel-default">
+        <div data-ng-repeat="activity in activities | orderBy:'date':true" class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">{{ activity.date | date:'longDate' }}</h3>
             </div>

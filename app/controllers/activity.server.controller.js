@@ -8,7 +8,6 @@ var _ = require('lodash'),
 var list = function(req, res) {
 
   if(req.user) {
-    //var actions = generateActions(user);
     res.json(req.user.activity);
   } else {
     res.status(400).send({
