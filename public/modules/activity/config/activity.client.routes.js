@@ -10,8 +10,8 @@ angular.module('activity').config(['$stateProvider', '$urlRouterProvider',
 		// Issues state routing
 		$stateProvider.	
 		state('listActivity', {
-			url: '/activity',
-			templateUrl: 'modules/actions/views/list-activity.client.view.html'
+			url: '/log',
+			templateUrl: 'modules/activity/views/list-activity.client.view.html'
 		});					
 
 	}

@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('activity').controller('ActivityController', ['$scope', '$location', '$http', 'Authentication', 'Users',
-  function($scope, $location, $http, Authentication, Users) {
+angular.module('activity').controller('ActivityController', ['$scope', '$location', '$http', 'Authentication', 'Users', 'Activity',
+  function($scope, $location, $http, Authentication, Users, Activity) {
 
     $scope.list = function() {
-      $scope.activity = Activity.query();
+      $scope.activities = Activity.query();
     };
 
 	}

@@ -4,7 +4,7 @@
 angular.module('core').run(['$rootScope', '$state', 'Authentication',
   function($rootScope, $state, Authentication) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-      if(Authentication.user && toState.name == 'home') {
+      if(Authentication.user && toState.name === 'home') {
         //console.log(toState.name);
         event.preventDefault();
         $state.go('listActions');

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('actions')
-  .directive('toDoItem', ['$modal', 'Actions', function ($modal, Actions) {
+  .directive('toDoItem', ['$modal', '$sce', 'Actions', function ($modal, $sce, Actions) {
     return {
       restrict: 'E',
       scope: {
@@ -9,6 +9,9 @@ angular.module('actions')
       },
       //template: '<div class="map"></div>',
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
+      controller: function($scope, $element, $attrs) {
+        $scope.action.contentHTML = $sce.trustAsHtml($scope.action.content);
+      },
       link: function (scope, element, attrs) {
 
         //scope.action is a $resource!
@@ -24,7 +27,7 @@ angular.module('actions')
             case 'modal': return true;
             default: return false;
           }
-        }
+        };
 
         scope.openModal = function() {
 

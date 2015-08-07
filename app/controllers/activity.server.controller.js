@@ -1,38 +1,15 @@
 'use strict';
 
 var _ = require('lodash'),
-  q = require('q'),
+  errorHandler = require('./errors.server.controller'),
   mongoose = require('mongoose'),
-  User = mongoose.model('User'),
-  fullActions = require('../data/actions.json');
-
-/* things:
-
-  action
-  gave 
-
-*/
-
-
-// var addActionFlag = function(id, flag) {
-//   var deferred = q.defer();
-
-//   User.update({ '_id': id },
-//     {$push: { 'actionFlags': flag }},
-//     function(err, numAffected) {
-//       if(err) deferred.reject(err);
-//       else deferred.resolve();
-//     });
-
-//   return deferred.promise;
-// };
+  User = mongoose.model('User');
 
 var list = function(req, res) {
 
-  var user = req.user;
-  if(user) {
+  if(req.user) {
     //var actions = generateActions(user);
-    res.json(user.activity);
+    res.json(req.user.activity);
   } else {
     res.status(400).send({
       message: 'User is not signed in'
@@ -47,10 +24,16 @@ var create = function(req, res) {
 
   if(user) {
 
-    // add to action flag
-    user.followUpFlags.push(activity.key);
+    // remove from follow up flags
+    var idx = user.followUpFlags.indexOf(activity.key);
+    if(idx < 0) return res.status(500).send({ message: 'Follow up key not found, this is bad' });
+    else user.followUpFlags.splice(idx, 1);
 
-    // add 
+    // add to action flags
+    user.actionFlags.push(activity.key);
+
+    // create activity object
+    user.activity.create(activity);
 
     user.save(function(err) {
       if (err) {

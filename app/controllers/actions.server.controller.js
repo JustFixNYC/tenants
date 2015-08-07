@@ -43,13 +43,13 @@ var getAreaActions = function(issues) {
   for(var area in issues) {
     if(issues[area].length) {
       areaActions.push({
-        title: areaTitle(area),
-        content: 'Add some initial information about your ' + areaTitle(area) + ' issues.',
+        title: 'Add Text/Photos',
+        content: 'Add some initial information about your <b>' + areaTitle(area) + '</b> issues.',
         key: area,
         addIf: ['initial'],
         cta: {
           type: 'initialContent',
-          buttonTitle: 'Add Text/Photos',
+          buttonTitle: 'Add Info',
           template: 'update-activity.client.view.html',
           controller: 'UpdateActivityController'
         },
@@ -67,7 +67,7 @@ var getAreaActions = function(issues) {
  *
  */
 var generateActions = function(user) {
-  
+
   var actions = getAreaActions(user.issues);
 
   //iterate through full list of actions, push 

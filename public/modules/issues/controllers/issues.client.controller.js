@@ -14,23 +14,19 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
     $scope.newIssue = {};
     $scope.newIssue.issues = {};          
 
-    // $scope.newIssue.name = "test";
-    // $scope.newIssue.phone = (Math.floor(Math.random() * 9999999999) + 1111111111).toString();
-    // $scope.newIssue.password = "testtest";
+    $scope.newIssue.name = "test";
+    $scope.newIssue.phone = (Math.floor(Math.random() * 9999999999) + 1111111111).toString();
+    $scope.newIssue.password = "testtest";
 
-    // Saves state between tabs
+      $scope.currentStep = 60;
+      console.log($scope.currentStep);
 
-    // if($scope.authentication) {
-    //   $scope.newIssue.name          = $scope.authentication.user.fullName;
-    //   $scope.newIssue.phone         = $scope.authentication.user.phone;
-    //   $scope.newIssue.borough       = $scope.authentication.user.borough;
-    //   $scope.newIssue.streetName    = $scope.authentication.user.streetName;
-    //   $scope.newIssue.streetNumber  = $scope.authentication.user.streetNumber;
-    // }
-
-    // $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-    //   $scope.currentStateTitle = toState.title;
-    // });
+    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+      $scope.currentStateTitle = toState.title;
+      // console.log(toState.name);
+      // $scope.currentStep = 50;
+      // console.log($scope.currentStep);
+    });
 
     // Create new Issue
     $scope.create = function() {

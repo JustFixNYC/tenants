@@ -4,8 +4,9 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
-  crypto = require('crypto');
+    Schema = mongoose.Schema,
+    crypto = require('crypto'),
+    ActivitySchema = require('./activity.server.model.js');
 
 /**
  * A Validation function for local strategy properties
@@ -55,15 +56,7 @@ var UserSchema = new Schema({
     type: String,
     default: []
   }],  
-  activity: [{
-    date: { type: Date, default: Date.now },
-    title: String,
-    description: String
-    // ,
-    // photos: [
-    // ]
-  }],
-
+  activity: [ActivitySchema],
   // email: {
   //  type: String,
   //  trim: true,
@@ -78,13 +71,7 @@ var UserSchema = new Schema({
     default: '',
     validate: [validateLocalStrategyProperty, 'Please fill in your phone number'],
     match: [/[0-9]{7}/, 'Please fill a valid phone number']
-  },  
-  // username: {
-  //  type: String,
-  //  unique: 'testing error message',
-  //  required: 'Please fill in a username',
-  //  trim: true
-  // },
+  },
   password: {
     type: String,
     default: '',
