@@ -67,7 +67,7 @@ var getAreaActions = function(issues) {
  *
  */
 var generateActions = function(user) {
-
+  
   var actions = getAreaActions(user.issues);
 
   //iterate through full list of actions, push 
