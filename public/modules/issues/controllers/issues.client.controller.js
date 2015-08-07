@@ -14,9 +14,9 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
     $scope.newIssue = {};
     $scope.newIssue.issues = {};          
 
-    $scope.newIssue.name = "test";
-    $scope.newIssue.phone = (Math.floor(Math.random() * 9999999999) + 1111111111).toString();
-    $scope.newIssue.password = "testtest";
+    // $scope.newIssue.name = "test";
+    // $scope.newIssue.phone = (Math.floor(Math.random() * 9999999999) + 1111111111).toString();
+    // $scope.newIssue.password = "testtest";
 
     // Saves state between tabs
 
@@ -50,7 +50,7 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
       $http.post('/auth/signup', newUser).success(function(response) {
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;
-        $location.path('/issues');
+        $location.path('/');
       }).error(function(response) {
         $scope.error = response.message;
       });

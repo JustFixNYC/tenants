@@ -10,7 +10,7 @@ angular.module('actions').config(['$stateProvider', '$urlRouterProvider',
 		// Issues state routing
 		$stateProvider.	
 		state('listActions', {
-			url: '/actions',
+			url: '/home',
 			templateUrl: 'modules/actions/views/list-actions.client.view.html'
 		});					
 

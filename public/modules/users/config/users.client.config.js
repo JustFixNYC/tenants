@@ -15,12 +15,6 @@ angular.module('users').config(['$httpProvider',
 								// Deauthenticate the global user
 								Authentication.user = null;
 
-								// store the issue data
-								if(rejection.config.method === 'POST' && rejection.config.url === 'issues') {
-									$rootScope.tempNewIssue = rejection.config.data;
-									//$location.path('signin').search({ newissue: 'true' });
-								}
-
 								// Redirect to signin page
 								$location.path('signin');
 								break;
