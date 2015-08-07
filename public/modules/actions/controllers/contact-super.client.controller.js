@@ -1,14 +1,13 @@
 'use strict';
 
-// Issues controller
-angular.module('actions').controller('UpdateActivityController', function ($scope, $modalInstance) {
+angular.module('actions').controller('ContactSuperController', function ($scope, $modalInstance) {
 
   //$scope.newUpdate = newUpdate;
   // $scope.selected = {
   //   item: $scope.items[0]
   // };
 
-  $scope.addUpdate = function () {
+  $scope.done = function () {
     $modalInstance.close();
   };
 

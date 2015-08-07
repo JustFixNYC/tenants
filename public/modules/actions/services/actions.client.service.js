@@ -4,9 +4,14 @@
 angular.module('actions').factory('Actions', ['$resource',
   function($resource) {
     return $resource('actions', {}, {
-      // update: {
-      //   method: 'PUT'
-      // }
+      followUp: {
+        method: 'POST',
+      }
+      // ,
+      // removeFollowUp: {
+      //   method: 'POST',
+      //   url: 'actions/removeFollowUp'
+      // },     
     });
   }
 ]);

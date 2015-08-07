@@ -51,6 +51,10 @@ var UserSchema = new Schema({
     type: String,
     default: []
   }],
+  followUpFlags: [{
+    type: String,
+    default: []
+  }],  
   activity: [{
     date: { type: Date, default: Date.now },
     title: String,

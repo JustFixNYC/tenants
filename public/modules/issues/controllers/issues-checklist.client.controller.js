@@ -12,6 +12,7 @@ angular.module('issues').controller('IssuesChecklistController', ['$scope', 'Iss
     if($scope.updateView === undefined) $scope.updateView = false;
 
     IssuesChecklist.get().then(function (data) {
+      
       var i = 0;
       for(var area in data[0]) {
         var issues = data[0][area].issues;
@@ -35,6 +36,8 @@ angular.module('issues').controller('IssuesChecklistController', ['$scope', 'Iss
         $scope.open[i++] = false;
 
       }
+    }, function (err) {
+      console.error(err);
     });
 
     $scope.oneAtATime = true;

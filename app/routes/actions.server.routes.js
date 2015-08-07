@@ -3,9 +3,12 @@
 /**
  * Module dependencies.
  */
-var actions = require('../../app/controllers/actions.server.controller');
+var users = require('../../app/controllers/users.server.controller'),
+    actions = require('../../app/controllers/actions.server.controller');
 
 module.exports = function(app) {
 	app.route('/actions')
-		.get(actions.list);
+		.get(actions.list)
+    .post(users.requiresLogin, actions.followUp);
+
 };

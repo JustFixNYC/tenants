@@ -7,11 +7,14 @@ angular.module('issues').factory('IssuesChecklist', ['$http', '$q',
     var request = function(url) {
       var deferred = $q.defer();
 
-      $http.get(url)
-      .success(function(data) { deferred.resolve(data); })
-      .error(function() { deferred.reject(); });
-
-      return deferred.promise;         
+      $http.get(url).
+        then(function(response) {
+          deferred.resolve(response.data);
+        }, function(err) {
+          deferred.reject();
+        });
+        
+      return deferred.promise;          
     };
 
     return {

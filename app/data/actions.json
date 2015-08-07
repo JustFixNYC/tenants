@@ -1,48 +1,81 @@
 [     
   {
-    "title": "Message Super",
-    "key": "messageSuper",
+    "title": "Contact Super",
+    "content": "Lorem ipsum etc etc etc",
+    "key": "contactSuper",
     "addIf": ["initial"],
     "cta": {
       "type": "modal",
       "buttonTitle": "Contact",
-      "template": "message-super.client.view.html",
-      "controller": "MessageSuperController"
-    }
+      "template": "contact-super.client.view.html",
+      "controller": "ContactSuperController"
+    },
+    "followUp": {
+      "title": "What did your super say?"
+    }    
   }, 
   {
-    "title": "Message Landlord",
-    "key": "messageLandlord",
-    "addIf": ["messageSuper"],
+    "title": "Email Landlord",
+    "content": "Lorem ipsum etc etc etc",
+    "key": "emailLandlord",
+    "addIf": ["contactSuper"],
     "cta": {
       "type": "modal",
       "buttonTitle": "Contact",
       "template": "message-landlord.client.view.html",
       "controller": "MessageLandlordController"
+    },
+    "followUp": {
+      "title": "What did your landlord say?"
     }
   },   
   {
     "title": "Call 311",
+    "content": "Lorem ipsum etc etc etc",
     "key": "contact311",    
     "addIf": ["hasEmergencyIssues"],
     "cta": {
       "type": "call",
       "buttonTitle": "Call",
       "phone": 5555555555
-    }
+    },
+    "followUp": {
+      "title": "How did your 311 call go?",
+      "fields": ["tracking"]
+    } 
   },  
   {
     "title": "Call NYCHA Help Center",
+    "content": "Lorem ipsum etc etc etc",
     "key": "contactNYCHA",    
     "addIf": ["isNYCHA"],
     "cta": {
       "type": "call",
       "buttonTitle": "Call",
       "phone": 5555555555
+    },
+    "followUp": {
+      "title": "How did your call to NYCHA go?",
+      "fields": ["tracking"]
     }
-  },        
+  },
+  {
+    "title": "Call Legal Services",
+    "content": "Lorem ipsum etc etc etc",
+    "key": "contactLegalServices",    
+    "addIf": ["contactSuper"],
+    "cta": {
+      "type": "call",
+      "buttonTitle": "Call",
+      "phone": 5555555555
+    },
+    "followUp": {
+      "title": "What did legal services say?"
+    }
+  },           
   {
     "title": "Get Rental History",
+    "content": "Lorem ipsum etc etc etc",
     "key": "getRentalHistory",    
     "addIf": ["isRentStabilized"],
     "cta": {
@@ -50,43 +83,59 @@
       "buttonTitle": "Contact DHCR",
       "template": "rental-history.client.view.html",
       "controller": "RentalHistoryController"
+    },
+    "followUp": {
+      "title": "Did you get your DHCR letter yet?",
+      "fields": ["rentStabilized"]
     }
   },
   {
     "title": "Call Hotline",
-    "respTitle": "How did it go?",
+    "content": "Lorem ipsum etc etc etc",
     "key": "callHotline",    
     "addIf": ["initial"],
     "cta": {
       "type": "call",
-      "buttonTitle": "Call MetCouncil Hotline",
+      "buttonTitle": "Call",
       "phone": 5555555555
+    },
+    "followUp": {
+      "title": "What did the hotline say?"
     }    
   },
   {
     "title": "Send Letter of Complaint",
+    "content": "Lorem ipsum etc etc etc",
     "key": "sendLetter",
-    "addIf": ["hasEmergencyIssues", "messageLandlord"],
+    "addIf": ["contact311", "hasEmergencyIssues", "emailLandlord"],
     "cta": {
       "type": "modal",
       "buttonTitle": "Create Letter",
       "template": "complaint-letter.client.view.html",
       "controller": "ComplaintLetterController"
-    }    
+    },
+    "followUp": {
+      "title": "Have you heard back about the letter yet?"
+    }      
   }, 
   {
     "title": "DHCR Decreased Services App",
+    "content": "Lorem ipsum etc etc etc",
     "key": "decreasedServices",    
-    "addIf": ["isRentStabilized"],
+    "addIf": ["getRentalHistory"],
     "cta": {
       "type": "modal",
       "buttonTitle": "Contact DHCR",
       "template": "decreased-services.client.view.html",
       "controller": "DecreasedServicesController"
-    }  
+    },
+    "followUp": {
+      "title": "Have you heard back from DHCR yet?"
+    }     
   },  
   {
     "title": "HP Action",
+    "content": "Lorem ipsum etc etc etc",
     "key": "HPAction", 
     "addIf": ["hasEmergencyIssues", "sendLetter"],
     "cta": {
@@ -94,6 +143,21 @@
       "buttonTitle": "Start HP Action",
       "template": "hp-action.client.view.html",
       "controller": "HPActionController"
+    },
+    "followUp": {
+      "title": "Did you go to court yet?"
+    }   
+  },
+  {
+    "title": "Other (generic update)",
+    "content": "Lorem ipsum etc etc etc",
+    "key": "Other", 
+    "addIf": ["initial"],
+    "cta": {
+      "type": "initialContent",
+      "buttonTitle": "Add Text/Photos",
+      "template": "update-activity.client.view.html",
+      "controller": "UpdateActivityController"
     }  
-  }                        
+  }                          
 ]

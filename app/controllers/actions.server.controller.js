@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('lodash'),
-  q = require('q'),
+  errorHandler = require('./errors.server.controller'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
   fullActions = require('../data/actions.json');
@@ -44,6 +44,7 @@ var getAreaActions = function(issues) {
     if(issues[area].length) {
       areaActions.push({
         title: areaTitle(area),
+        content: 'Add some initial information about your ' + areaTitle(area) + ' issues.',
         key: area,
         addIf: ['initial'],
         cta: {
@@ -51,7 +52,8 @@ var getAreaActions = function(issues) {
           buttonTitle: 'Add Text/Photos',
           template: 'update-activity.client.view.html',
           controller: 'UpdateActivityController'
-        }       
+        },
+        isFollowUp: false       
       });
     }
   }
@@ -65,10 +67,8 @@ var getAreaActions = function(issues) {
  *
  */
 var generateActions = function(user) {
-
-  var actions = [];
   
-  actions = actions.concat(getAreaActions(user.issues));
+  var actions = getAreaActions(user.issues);
 
   //iterate through full list of actions, push 
   fullActions.forEach(function (action) {
@@ -81,6 +81,10 @@ var generateActions = function(user) {
     // [TODO] check against time since completion
     var reject = user.actionFlags.indexOf(action.key) !== -1;
 
+    // checks if action is a followup or not
+    if(user.followUpFlags.indexOf(action.key) !== -1) action.isFollowUp = true;
+    else action.isFollowUp = false;
+
     if(add && !reject) actions.push(action);
 
   });
@@ -88,81 +92,7 @@ var generateActions = function(user) {
   return actions;
 };
 
-var populateActions = function(id) {
-  var deferred = q.defer();
-  // var action = {
-  //   "title": "New Action",
-  //   "step": 0,
-  //   "addIf": []
-  // };
-  //getInitialActions().then(function (actions) {
-
-    //console.log('actions', actions);
-
-    User.update({ '_id': id },
-      {$push: { 'actions': { $each: actions }}},
-      function(err, numAffected) {
-        if(err) deferred.reject(err);
-        else deferred.resolve();
-    }); 
- // });
-
-  return deferred.promise;
-};
-
-var replaceActions = function(id, newActions) {
-  var deferred = q.defer();
-  var action = {
-    'title': 'New Action',
-    'step': 0,
-    'addIf': []
-  };
-
-  User.update({ '_id': id },
-    {$push: { 'actions': action }},
-    function(err, numAffected) {
-      if(err) deferred.reject(err);
-      else deferred.resolve();
-  });
-
-  return deferred.promise;
-};
-
-
-var emptyActions = function(id) {
-  var deferred = q.defer();
-  // var action = {
-  //   "title": "New Action",
-  //   "step": 0,
-  //   "addIf": []
-  // };
-
-  User.update({ '_id': id },
-      {$set: { 'actions': [] }},
-      function(err, numAffected) {
-        if(err) deferred.reject(err);
-        else deferred.resolve();
-      });
-
-  return deferred.promise;
-};
-
-var addActionFlag = function(id, flag) {
-  var deferred = q.defer();
-
-
-  User.update({ '_id': id },
-    {$push: { 'actionFlags': flag }},
-    function(err, numAffected) {
-      if(err) deferred.reject(err);
-      else deferred.resolve();
-    });
-
-  return deferred.promise;
-};
-
 var list = function(req, res) {
-
   var user = req.user;
   if(user) {
     var actions = generateActions(user);
@@ -172,11 +102,32 @@ var list = function(req, res) {
       message: 'User is not signed in'
     });
   }
+};
+
+
+var followUp = function(req, res) { 
+  
+  var id = req.user._id,
+      key = req.body.key;
+  var query;
+
+  if(req.query.type === 'add') {
+    query = User.update({ '_id': id }, {$addToSet: { 'followUpFlags': key }});
+    req.body.isFollowUp = true;
+  }
+  else {
+    query = User.update({ '_id': id }, {$pull: { 'followUpFlags': key }});
+    req.body.isFollowUp = false;
+  }
+  
+  query.exec(function(err, numAffected) {
+    if(err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+    else res.json(req.body);
+  });
 
 };
 
 module.exports = {
-  addActionFlag: addActionFlag,
-  populateActions: populateActions,
-  list: list
+  list: list,
+  followUp: followUp
 };

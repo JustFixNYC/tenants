@@ -1,0 +1,70 @@
+<div class="panel action-panel" data-ng-if="!completed" data-ng-class="action.isFollowUp ? 'panel-primary' : 'panel-default'">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      {{ action.title }}{{ action.isFollowUp ? ' - Follow Up' : '' }}
+    </h3>
+  </div>
+  <div class="panel-body" data-ng-if="!action.isFollowUp">
+    <div class="panel-content" data-ng-bind="action.content"></div>
+    <div class="row">
+      <div class="col-xs-6">
+        <a  class="btn btn-default btn-block" 
+            data-ng-if="action.cta.type !== 'initialContent'" 
+            data-ng-click="triggerFollowUp()">
+            I've done this
+        </a>  
+      </div> 
+      <div ng-class="action.cta.type === 'initialContent' ? 'col-xs-12' : 'col-xs-6'">   
+        <button class="btn btn-success btn-block" 
+                data-ng-if="isModal()" 
+                data-ng-click="openModal()"
+                data-ng-bind="action.cta.buttonTitle">
+        </button>
+        <a  class="btn btn-success btn-block" 
+            data-ng-if="action.cta.type === 'call'" 
+            data-ng-href="tel:{{action.cta.phone}}"
+            data-ng-click="triggerFollowUp()"
+            data-ng-bind="action.cta.buttonTitle">
+        </a>
+      </div>  
+    </div>              
+  </div>
+  <div class="panel-body" data-ng-if="action.isFollowUp">
+    <div class="panel-content">
+      <form class="resolve-action-form" novalidate>
+          <div class="form-group">
+              <label class="control-label" for="title">Date of {{ action.cta.buttonTitle }}</label>
+              <div class="controls">
+                  <p class="input-group">
+                    <input type="date" class="form-control" datepicker-popup ng-model="newActivity.date" is-open="openedDatepicker" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+<!--                     <span class="input-group-btn">
+                      <button type="button" class="btn btn-default" ng-click="openDP($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span> -->
+                  </p>
+              </div>
+          </div>            
+          <div class="form-group">
+              <label class="control-label" for="description">{{ action.followUp.title }}</label>
+              <div class="controls">
+                  <textarea name="description" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="3" maxlength="500" placeholder="Briefly describe what happened."></textarea>
+              </div>
+          </div>     
+        </form>      
+    </div>
+    <div class="row">
+      <div class="col-xs-6">
+        <a  class="btn btn-default btn-block" 
+            data-ng-click="cancelFollowUp()">
+            Cancel
+        </a>  
+      </div> 
+      <div class="col-xs-6">   
+        <button class="btn btn-primary btn-block" 
+                data-ng-click="createActivity()">
+            Submit
+        </button>
+      </div>  
+    </div>               
+  </div>  
+</div> 
+<alert data-ng-if="completed" data-ng-show="!closeAlert" type="success" close="closeAlert = true"><strong>Well done!</strong> You successfully read this important alert message.</alert>
