@@ -36,25 +36,32 @@ var areaTitle = function(area) {
   }  
 };
 
-var getAreaActions = function(issues) {
+var getAreaActions = function(user) {
 
   var areaActions = [];
+  var issues = user.issues;
 
   for(var area in issues) {
     if(issues[area].length) {
-      areaActions.push({
-        title: 'Add Text/Photos',
-        content: 'Add some initial information about your <b>' + areaTitle(area) + '</b> issues.',
-        key: area,
-        addIf: ['initial'],
-        cta: {
-          type: 'initialContent',
-          buttonTitle: 'Add Info',
-          template: 'update-activity.client.view.html',
-          controller: 'UpdateActivityController'
-        },
-        isFollowUp: false       
-      });
+
+      // make sure that area isn't already in action flags
+      if(user.actionFlags.indexOf(area + 'Content') === -1) {
+
+        areaActions.push({
+          title: 'Text/Photos',
+          content: 'Add some initial information about your <b>' + areaTitle(area) + '</b> issues.',
+          key: area + 'Content',
+          addIf: ['initial'],
+          cta: {
+            type: 'initialContent',
+            buttonTitle: 'Add Info',
+            template: 'update-activity.client.view.html',
+            controller: 'UpdateActivityController'
+          },
+          isFollowUp: false       
+        });
+
+      }
     }
   }
 
@@ -68,7 +75,7 @@ var getAreaActions = function(issues) {
  */
 var generateActions = function(user) {
   
-  var actions = getAreaActions(user.issues);
+  var actions = getAreaActions(user);
 
   //iterate through full list of actions, push 
   fullActions.forEach(function (action) {

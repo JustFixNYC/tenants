@@ -26,6 +26,12 @@
             data-ng-click="triggerFollowUp()"
             data-ng-bind="action.cta.buttonTitle">
         </a>
+        <a  class="btn btn-success btn-block" 
+            data-ng-if="action.cta.type === 'link'" 
+            data-ng-href="{{action.cta.link}}"
+            data-ng-click="triggerFollowUp()"
+            data-ng-bind="action.cta.buttonTitle">
+        </a>        
       </div>  
     </div>              
   </div>
@@ -64,7 +70,8 @@
             Submit
         </button>
       </div>  
-    </div>               
+    </div>
   </div>  
-</div> 
-<alert data-ng-if="completed" data-ng-show="!closeAlert" type="success" close="closeAlert = true"><strong>Well done!</strong> You successfully read this important alert message.</alert>
+</div>
+<alert data-ng-if="completed" data-ng-show="!closeAlert" type="success" close="closeAlert = true"><strong>Well done!</strong> We've added this action to your <a ui-sref="listActivity">Activity Log</a></alert>
+<alert data-ng-if="error.length" data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert>

@@ -4,20 +4,14 @@
 <div class="modal-body">
   <form class="update-activity-form" novalidate>
     <div class="form-group">
-        <label class="control-label" for="title">Title</label>
-        <div class="controls">
-            <input type="text" data-ng-model="newUpdate.title" id="title" class="form-control" placeholder="Please give this a title.">
-        </div>
-    </div> 
-    <div class="form-group">
         <label class="control-label" for="description">Description</label>
         <div class="controls">
-            <textarea name="description" data-ng-model="newUpdate.description" id="description" class="form-control" cols="30" rows="5" maxlength="500" placeholder="What's going on?"></textarea>
+            <textarea name="description" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="5" maxlength="500" placeholder="What's going on?"></textarea>
         </div>
     </div>     
   </form>
 </div>
 <div class="modal-footer">
   <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-  <button class="btn btn-primary" ng-click="addUpdate()">Submit</button>
+  <button class="btn btn-primary" ng-click="done()">Submit</button>
 </div>

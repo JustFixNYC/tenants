@@ -1,14 +1,14 @@
 'use strict';
 
-angular.module('actions').controller('MessageLandlordController', function ($scope, $modalInstance, newUpdate) {
+angular.module('actions').controller('MessageLandlordController', function ($scope, $modalInstance, newActivity) {
 
-  $scope.newUpdate = newUpdate;
+  $scope.newActivity = newActivity;
   // $scope.selected = {
   //   item: $scope.items[0]
   // };
 
-  $scope.addUpdate = function () {
-    $modalInstance.close($scope.newUpdate);
+  $scope.done = function () {
+    $modalInstance.close($scope.newActivity);
   };
 
   $scope.cancel = function () {

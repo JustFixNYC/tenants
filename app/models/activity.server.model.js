@@ -26,7 +26,7 @@ var ActivitySchema = new Schema({
     description: {
       type: String,
       default: ''
-    },
+    }
     // ,
     // photos: [
     // ]

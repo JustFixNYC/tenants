@@ -24,16 +24,19 @@ var create = function(req, res) {
 
   if(user) {
 
-    // remove from follow up flags
-    var idx = user.followUpFlags.indexOf(activity.key);
-    if(idx < 0) return res.status(500).send({ message: 'Follow up key not found, this is bad' });
-    else user.followUpFlags.splice(idx, 1);
+    // ignore Content related activities from follow up check
+    if(!_.contains(activity.key, 'Content')) {
+      // remove from follow up flags
+      var idx = user.followUpFlags.indexOf(activity.key);
+      if(idx < 0) return res.status(500).send({ message: 'Follow up key not found, this is bad' });
+      else user.followUpFlags.splice(idx, 1);
+    }
 
     // add to action flags
     user.actionFlags.push(activity.key);
 
     // create activity object
-    user.activity.create(activity);
+    user.activity.push(activity);
 
     user.save(function(err) {
       if (err) {

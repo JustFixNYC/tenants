@@ -124,10 +124,9 @@
     "key": "decreasedServices",    
     "addIf": ["getRentalHistory"],
     "cta": {
-      "type": "modal",
-      "buttonTitle": "Contact DHCR",
-      "template": "decreased-services.client.view.html",
-      "controller": "DecreasedServicesController"
+      "type": "link",
+      "buttonTitle": "Go to site",
+      "url": "http://google.com"
     },
     "followUp": {
       "title": "Have you heard back from DHCR yet?"
@@ -139,10 +138,9 @@
     "key": "HPAction", 
     "addIf": ["hasEmergencyIssues", "sendLetter"],
     "cta": {
-      "type": "modal",
-      "buttonTitle": "Start HP Action",
-      "template": "hp-action.client.view.html",
-      "controller": "HPActionController"
+      "type": "link",
+      "buttonTitle": "Go to site",
+      "url": "http://google.com"
     },
     "followUp": {
       "title": "Did you go to court yet?"
@@ -151,7 +149,7 @@
   {
     "title": "Other (generic update)",
     "content": "Lorem ipsum etc etc etc",
-    "key": "Other", 
+    "key": "otherContent", 
     "addIf": ["initial"],
     "cta": {
       "type": "initialContent",

@@ -1,14 +1,14 @@
 'use strict';
 
-angular.module('actions').controller('ContactSuperController', function ($scope, $modalInstance) {
+angular.module('actions').controller('ContactSuperController', function ($scope, $modalInstance, newActivity) {
 
-  //$scope.newUpdate = newUpdate;
+  $scope.newActivity = newActivity;
   // $scope.selected = {
   //   item: $scope.items[0]
   // };
 
   $scope.done = function () {
-    $modalInstance.close();
+    $modalInstance.close($scope.newActivity);
   };
 
   $scope.cancel = function () {

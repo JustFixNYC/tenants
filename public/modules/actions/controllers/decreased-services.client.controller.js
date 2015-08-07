@@ -1,14 +1,11 @@
 'use strict';
 
-angular.module('actions').controller('DecreasedServicesController', function ($scope, $modalInstance, newUpdate) {
+angular.module('actions').controller('DecreasedServicesController', function ($scope, $modalInstance, newActivity) {
 
-  $scope.newUpdate = newUpdate;
-  // $scope.selected = {
-  //   item: $scope.items[0]
-  // };
+  $scope.newActivity = newActivity;
 
   $scope.addUpdate = function () {
-    $modalInstance.close($scope.newUpdate);
+    $modalInstance.close($scope.newActivity);
   };
 
   $scope.cancel = function () {
