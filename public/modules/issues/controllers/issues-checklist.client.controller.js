@@ -1,8 +1,8 @@
 'use strict';
 
 // Issues controller
-angular.module('issues').controller('IssuesChecklistController', ['$scope', 'IssuesChecklist',
-  function($scope, IssuesChecklist) {
+angular.module('issues').controller('IssuesChecklistController', ['$scope', 'Issues',
+  function($scope, Issues) {
 
     $scope.checklist = {};
     $scope.open = [];
@@ -11,7 +11,7 @@ angular.module('issues').controller('IssuesChecklistController', ['$scope', 'Iss
     // used mainly to switch CTA at the bottom
     if($scope.updateView === undefined) $scope.updateView = false;
 
-    IssuesChecklist.get().then(function (data) {
+    Issues.getChecklist().then(function (data) {
       
       var i = 0;
       for(var area in data[0]) {

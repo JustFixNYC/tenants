@@ -48,6 +48,10 @@ var UserSchema = new Schema({
     type: Schema.Types.Mixed,
     default: {}
   }, 
+  geo: {
+    type: Schema.Types.Mixed,
+    default: {}
+  },   
   actionFlags: [{
     type: String,
     default: []
@@ -57,6 +61,8 @@ var UserSchema = new Schema({
     default: []
   }],  
   activity: [ActivitySchema],
+
+
   // email: {
   //  type: String,
   //  trim: true,

@@ -1,23 +1,35 @@
-<section data-ng-controller="HomeController">
-  <div class="jumbotron text-center">
+<section data-ng-controller="HomeController" id="landing">
+  <section  class="above-fold text-center" 
+            above-fold>
+            <!-- backstretch backstretch-images="'http://ak.picdn.net/offset/photos/551307925a10fc50d2d07055/medium/offset_202646.jpg'" -->
+    <div class="above-fold-content">
+      <h3>Healthy and safe homes for all.</h3>
       <p class="lead">
-        trowel!
-      </p>
-<!--       <div class="col-xs-6">
-          <a ui-sref="signin" class="btn btn-primary btn-block">
-          Sign In
-          </a>
-      </div>  
-      <div class="col-xs-6">
-          <a ui-sref="signup" class="btn btn-primary btn-block">
-          Sign Up
-          </a>
-      </div>   
-      <br /><br />   -->      
-      <div class="col-sm-12">
-          <a ui-sref="createIssue.checklist" class="btn btn-primary btn-block">
-          Get Started
-          </a>
+        CaseBuilder.nyc is a tool for New Yorkers to document, organize, and take action in getting repairs made on your apartment.
+      </p>   
+      <a ui-sref="createIssue.checklist" class="btn btn-primary btn-block">Get Started</a>
+    </div>
+    <div class="bg-image" full-bg></div>
+  </section>
+  <section class="features row text-center">
+    <h4>What we're doing:</h4>
+    <div class="col-sm-4">
+      <div class="box">
+        <h5>Key Feature 1</h5>
+        <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris id tellus aliquam, posuere nunc non, porttitor lacus.</p>
       </div>
-  </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="box">
+        <h5>Key Feature 2</h5>
+        <p>Mauris sollicitudin sodales augue, eget maximus turpis congue a. Donec scelerisque condimentum dignissim. Vivamus at dignissim massa. Nunc nec auctor sem. Integer sollicitudin enim ut mi fringilla, nec vehicula felis lacinia.</p>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="box">
+        <h5>Key Feature 3</h5>
+        <p>Pellentesque quis quam consectetur, pellentesque lectus ut, cursus massa. Donec eu sem sit amet metus tincidunt placerat. Aliquam interdum est ac mattis maximus.</p>
+      </div>
+    </div>
+  </section>
 </section>

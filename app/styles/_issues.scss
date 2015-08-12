@@ -4,9 +4,18 @@
   }
 }
 
+.emergency-icon {
+  padding-left: 5px;
+  color: $sunflower-dark;
+}
+
 .create-issue-container {
   padding-top: 15px;
   background-color: #fff;
+
+  h4 {
+    margin-top: 0;
+  }
 
   hr {
     margin-top: 5px;
@@ -48,14 +57,19 @@
     .panel:first-child {
       border-top: 1px solid #E6E9ED;
     }
-  }
 
-  .panel-title {
+    .panel-title {
 
-    .checklist-title {
-      display: inline-block;
-      width: 85%;
+      .checklist-title {
+        display: inline-block;
+        width: 85%;
+      }
+
+      a:hover, a:focus, a:active {
+        color: $darkgray-dark;
+      }
     }
+
   }
 
   .panel-body {
@@ -69,13 +83,21 @@
       border-left: 0;
       border-right: 0;
       background-color: $lightgray-light;
+      padding-right: 50px;
+      position: relative;
 
       &:first-child, &:last-child {
         border-radius: 0;
       }
 
       &:first-child {
-        border-top: 0;
+        border-top: 1px solid $mediumgray-dark;
+      }
+
+      .selected-icon {
+        position: absolute;
+        right: 15px;
+        top: 12px;  
       }
     }
 
@@ -85,6 +107,16 @@
       color: $lightgray-light;
       border-color: $mediumgray-dark;
       background-color: $aqua-dark;
+    }
+
+    .area-done-button {
+      background-color: $lightgray-light;
+      border-top: 1px solid $lightgray-dark;
+      border-bottom: 1px solid $mediumgray-dark;
+
+      .btn {
+        margin: 10px auto;
+      }
     }
   }
 }

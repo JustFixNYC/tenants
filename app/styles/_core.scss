@@ -4,6 +4,10 @@ body {
 
 .content {
 	margin-bottom: 50px;
+
+  section.container {
+    min-height: 300px;
+  }
 }
 .undecorated-link:hover {
 	text-decoration: none;
@@ -23,5 +27,15 @@ body {
 
   h1 {
     margin-top: 0;
+    margin-bottom: 0;
+    font-size: 35px;
   }
+
+  p {
+    margin: 10px 0 0 0;
+  }
+}
+
+footer {
+  margin-top: 75px;
 }

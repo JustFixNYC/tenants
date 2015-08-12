@@ -5,6 +5,8 @@ var _ = require('lodash'),
   mongoose = require('mongoose'),
   User = mongoose.model('User');
 
+var aptSpaces = ['generalApt', 'entryHallway', 'kitchen', 'bathroom', 'diningRoom', 'livingRoom', 'bedrooms', 'publicAreas'];
+
 var list = function(req, res) {
 
   if(req.user) {
@@ -23,8 +25,8 @@ var create = function(req, res) {
 
   if(user) {
 
-    // ignore Content related activities from follow up check
-    if(!_.contains(activity.key, 'Content')) {
+    // ignore area related activities from follow up check
+    if(aptSpaces.indexOf(activity.key) === -1) {
       // remove from follow up flags
       var idx = user.followUpFlags.indexOf(activity.key);
       if(idx < 0) return res.status(500).send({ message: 'Follow up key not found, this is bad' });

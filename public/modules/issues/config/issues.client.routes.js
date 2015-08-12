@@ -20,7 +20,7 @@ angular.module('issues').config(['$stateProvider', '$urlRouterProvider',
 		}).
 		state('createIssue.checklist', {
 			url: '/checklist',
-			title: 'Room Checklist',
+			title: 'Issues Checklist',
 			templateUrl: 'modules/issues/partials/create-issue-checklist.client.view.html'
 		}).		
 		state('createIssue.general', {

@@ -5,13 +5,13 @@
     </h3>
   </div>
   <div class="panel-body" data-ng-if="!action.isFollowUp">
-    <div class="panel-content" data-ng-bind-html="action.contentHTML"></div>
+    <div class="panel-content" data-ng-bind-html="filterContentHTML()"></div>
     <div class="row">
       <div class="col-xs-6">
         <a  class="btn btn-default btn-block" 
             data-ng-if="action.cta.type !== 'initialContent'" 
             data-ng-click="triggerFollowUp()">
-            I've done this
+            I've tried this
         </a>  
       </div> 
       <div ng-class="action.cta.type === 'initialContent' ? 'col-xs-12' : 'col-xs-6'">   
@@ -73,5 +73,5 @@
     </div>
   </div>  
 </div>
-<alert data-ng-if="completed" data-ng-show="!closeAlert" type="success" close="closeAlert = true"><strong>Well done!</strong> We've added this action to your <a ui-sref="listActivity">Activity Log</a></alert>
+<alert data-ng-if="completed" data-ng-show="!closeAlert" type="success" close="closeAlert = true"><strong>Well done!</strong> We've added this action to your <a ui-sref="listActivity">Activity Log</a>.</alert>
 <alert data-ng-if="error.length" data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert>

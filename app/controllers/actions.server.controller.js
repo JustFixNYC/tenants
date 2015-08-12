@@ -2,6 +2,7 @@
 
 var _ = require('lodash'),
   errorHandler = require('./errors.server.controller'),
+  addressHandler = require('../services/address.server.service'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
   fullActions = require('../data/actions.json');
@@ -24,14 +25,14 @@ once user logs in, start child process...
 
 var areaTitle = function(area) {
   switch(area) {
-    case 'generalApt': return 'Inside Whole Apartment';
-    case 'entryHallway': return 'Entry/Hallway Inside Apartment';
+    case 'generalApt': return 'Whole Apartment';
+    case 'entryHallway': return 'Entry/Hallway';
     case 'kitchen': return 'Kitchen';
-    case 'bathroom': return 'Bathroom';
+    case 'bathroom': return 'Bathrooms';
     case 'diningRoom': return 'Dining Room';
-    case 'livingRoom': return 'Living Room / Sitting Room';
+    case 'livingRoom': return 'Living Room';
     case 'bedrooms': return 'Bedrooms';
-    case 'publicAreas': return 'Public Areas of Building';
+    case 'publicAreas': return 'Public Areas';
     default: return '';
   }  
 };
@@ -45,16 +46,16 @@ var getAreaActions = function(user) {
     if(issues[area].length) {
 
       // make sure that area isn't already in action flags
-      if(user.actionFlags.indexOf(area + 'Content') === -1) {
+      if(user.actionFlags.indexOf(area) === -1) {
 
         areaActions.push({
           title: 'Text/Photos',
-          content: 'Add some initial information about your <b>' + areaTitle(area) + '</b> issues.',
-          key: area + 'Content',
+          content: 'Add some initial information about your <b>' + areaTitle(area) + '</b> issues. This will help to provide evidence for the issues you selected.',
+          key: area,
           addIf: ['initial'],
           cta: {
             type: 'initialContent',
-            buttonTitle: 'Add Info',
+            buttonTitle: 'Add Details',
             template: 'update-activity.client.view.html',
             controller: 'UpdateActivityController'
           },

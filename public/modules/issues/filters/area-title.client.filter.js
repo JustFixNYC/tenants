@@ -5,30 +5,22 @@ angular.module('issues').filter('areaTitle', function() {
 
     switch(input) {
       case 'generalApt': 
-      case 'generalAptContent': 
-        return 'Inside Whole Apartment';
+        return 'Whole Apartment';
       case 'entryHallway': 
-      case 'entryHallwayContent': 
-        return 'Entry/Hallway Inside Apartment';
+        return 'Entry/Hallway';
       case 'kitchen': 
-      case 'kitchenContent': 
         return 'Kitchen';
       case 'bathroom': 
-      case 'bathroomContent': 
-        return 'Bathroom';
+        return 'Bathrooms';
       case 'diningRoom': 
-      case 'diningRoomContent': 
         return 'Dining Room';
       case 'livingRoom': 
-      case 'livingRoomContent': 
-        return 'Living Room / Sitting Room';
+        return 'Living Room';
       case 'bedrooms': 
-      case 'bedroomsContent': 
         return 'Bedrooms';
       case 'publicAreas': 
-      case 'publicAreasContent': 
-        return 'Public Areas of Building';
-      default: return '';
+        return 'Public Areas';
+      default: return input;
     }
   };
 });

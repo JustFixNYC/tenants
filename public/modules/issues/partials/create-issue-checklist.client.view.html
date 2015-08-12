@@ -1,6 +1,10 @@
 <div class="form-group" data-ng-controller="IssuesChecklistController">
-    <em>Select all that apply - you can also come back to this whenever you want.</em>
-    <br />
+    <p>
+        Please go from room-to-room and select the issues you need fixed - we'll ask for details later. 
+        <br />
+        <br />
+        <em>You can come back to this checklist anytime.</em>
+    </p>
     <accordion close-others="oneAtATime" class="create-issue-checklist">
         <accordion-group data-ng-repeat="(area, obj) in checklist" is-open="open[$index]">
             <accordion-heading>
@@ -13,12 +17,13 @@
                         data-ng-repeat="item in obj.issues"
                         data-ng-click="select(area, item)"
                         data-ng-class="{ 'list-group-item-info': isSelected(area, item) }">
-                        {{ item }}
-                        <span data-ng-show="isSelected(area, item)" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        {{ item.title }}
+                        <span data-ng-show="item.emergency" class="emergency-icon glyphicon glyphicon-alert" aria-hidden="true"></span>
+                        <span data-ng-show="isSelected(area, item)" class="selected-icon glyphicon glyphicon-ok" aria-hidden="true"></span>
                 </button>
             </div>
-            <div class="col-xs-12">
-                <a data-ng-click="closeGroup($index)" class="btn btn-link btn-block">
+            <div class="col-xs-12 area-done-button">
+                <a data-ng-click="closeGroup($index)" class="btn btn-default btn-block">
                     Done with this area <span class="glyphicon glyphicon-circle-arrow-right"></span>
                 </a>
             </div>

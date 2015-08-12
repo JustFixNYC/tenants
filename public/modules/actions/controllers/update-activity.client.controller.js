@@ -1,14 +1,12 @@
 'use strict';
 
 // Issues controller
-angular.module('actions').controller('UpdateActivityController', function ($scope, $modalInstance, newActivity) {
+angular.module('actions').controller('UpdateActivityController', ['$scope', '$modalInstance', 'newActivity', 'Issues',
+  function ($scope, $modalInstance, newActivity, Issues) {
 
   $scope.newActivity = newActivity;
-
-  //$scope.newActivity.
-
+  $scope.issues = Issues.getUserIssuesByKey($scope.newActivity.key);
   
-
   $scope.done = function () {
     $modalInstance.close($scope.newActivity);
   };
@@ -16,4 +14,4 @@ angular.module('actions').controller('UpdateActivityController', function ($scop
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
-});
+}]);

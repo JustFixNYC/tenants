@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('issues').factory('IssuesChecklist', ['$http', '$q', 
-  function IssuesChecklist($http, $q) {
+angular.module('issues').factory('Issues', ['$http', '$q', 'Authentication',
+  function Issues($http, $q, Authentication) {
 
     var checklist = 'data/checklist.json';
     var request = function(url) {
@@ -18,8 +18,11 @@ angular.module('issues').factory('IssuesChecklist', ['$http', '$q',
     };
 
     return {
-      get: function() {
+      getChecklist: function() {
         return request(checklist);
+      },
+      getUserIssuesByKey: function(key) {
+        return Authentication.user.issues[key];
       }
     };
   }

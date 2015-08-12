@@ -5,6 +5,7 @@ module.exports = function(grunt) {
 	var watchFiles = {
 		serverViews: ['app/views/**/*.*'],
 		serverJS: ['gruntfile.js', 'server.js', 'config/**/*.js', 'app/**/*.js'],
+		serverJSON: ['app/data/*.json'],
 		serverSASS: ['app/styles/{,*/}*.{scss,sass}'],
 		//serverSASS: ['app/styles/{,*/}*.{scss,sass}', '!app/styles/bootstrap-config.scss'],
 		clientViews: ['public/modules/**/views/**/*.html'],
@@ -30,6 +31,12 @@ module.exports = function(grunt) {
 					livereload: true
 				}
 			},
+			serverJSON: {
+				files: watchFiles.serverJSON,
+				options: {
+					livereload: true,
+				}
+			},			
 			serverSASS: {
 			    files: watchFiles.serverSASS,
 			    tasks: ['sass:dev'],
@@ -159,7 +166,8 @@ module.exports = function(grunt) {
 		  			'public/lib/bootstrap-sass-official/assets/stylesheets',
 		  			'public/lib/Bootflat/bootflat/scss'
 		  		],
-		  		update: true
+		  		update: true,
+		  		sourcemap: 'none',
 		  	},		    
 		    files: {
 		      'public/styles/style.css': 'app/styles/main.scss',

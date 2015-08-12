@@ -26,15 +26,24 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label" for="streetNumber">Street Number</label>
+            <label class="control-label" for="address">Street Address</label>
             <div class="controls">
-                <input type="text" data-ng-model="user.streetNumber" id="streetNumber" class="form-control" placeholder="Please enter your street number.">
+                <input type="text" data-ng-model="user.address" id="address" class="form-control" placeholder="Example: 456 23rd St or 45-51 Myrtle Ave">
             </div>
-        </div>    
+        </div>     
         <div class="form-group">
-            <label class="control-label" for="streetName">Street Name</label>
+            <label class="control-label" for="unit">Apartment #</label>
             <div class="controls">
-                <input type="text" data-ng-model="user.streetName" id="streetName" class="form-control" placeholder="Please enter your street name.">
+                <input type="text" data-ng-model="user.unit" id="unit" class="form-control" placeholder="Example: A or C4">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="nycha">NYCHA housing</label>
+            <div class="controls">
+                <div class="btn-group">
+                    <label class="btn btn-default" data-ng-model="user.nycha" btn-radio="'yes'">Yes</label>
+                    <label class="btn btn-default" data-ng-model="user.nycha" btn-radio="'no'">No</label>            
+                </div>
             </div>
         </div>
         <div class="text-center form-group">

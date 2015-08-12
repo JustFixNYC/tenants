@@ -4,11 +4,38 @@
  * Module dependencies.
  */
 var _ = require('lodash'),
+  Q = require('q'),
   errorHandler = require('../errors.server.controller'),
   actionsHandler = require('../actions.server.controller'),
+  addressHandler = require('../../services/address.server.service'),  
   mongoose = require('mongoose'),
   passport = require('passport'),
   User = mongoose.model('User');
+
+var saveUser = function(req, user) {
+
+  var saved = Q.defer();
+
+  user.save(function(err) {
+    if (err) {
+      saved.reject(errorHandler.getErrorMessage(err));
+    } else {
+      // Remove sensitive data before login
+      user.password = undefined;
+      user.salt = undefined;  
+
+      req.login(user, function(err) {
+        if (err) {
+          saved.reject(errorHandler.getErrorMessage(err));
+        } else {
+          saved.resolve(user);
+        }
+      });
+    }
+  });
+
+  return saved.promise;
+};
 
 /**
  * Signup
@@ -21,32 +48,41 @@ exports.signup = function(req, res) {
   var user = new User(req.body);
   var message = null;
 
+  var save = function() {
+    saveUser(req, user)
+      .then(function (user) { res.json(user); })
+      .fail(function (err) { res.status(400).send(err); });
+  };
+
   // Add missing user fields
   user.provider = 'local';
-  //user.displayName = user.firstName + ' ' + user.lastName;
-
   user.actionFlags.push('initial');
 
-  //Then save the user 
-  user.save(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      // Remove sensitive data before login
-      user.password = undefined;
-      user.salt = undefined;  
+  // check issues for emergency ones
+  for(var area in user.issues) {
+    user.issues[area].forEach(function (i) {
+      if(i.emergency) user.actionFlags.push('hasEmergencyIssues');
+    });
+  }
 
-      req.login(user, function(err) {
-        if (err) {
-          res.status(400).send(err);
-        } else {
-          res.json(user);
-        }
-      });
-    }
-  });
+  // check some address stuff
+  addressHandler.requestGeoclient(user.borough, user.address)
+    .then(function (geo) {
+      user.geo = geo;
+      return addressHandler.requestRentStabilized(geo.bbl, geo.lat, geo.lon);
+    })
+    .then(function (rs) {
+      if(rs) user.actionFlags.push('isRentStabilized');
+      save();
+    })
+    .fail(function (e) {
+      console.log(e);
+      save();
+    });
+
+
+
+
 };
 
 /**

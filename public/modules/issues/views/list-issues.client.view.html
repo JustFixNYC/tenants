@@ -15,8 +15,9 @@
                 <h4 data-ng-bind="area | areaTitle"></h4>
                 <div class="list-group">
                     <p  data-ng-repeat="item in obj" 
-                        data-ng-bind="item"
                         class="list-group-item">
+                        {{ item.title }}
+                        <span data-ng-show="item.emergency" class="emergency-icon glyphicon glyphicon-alert" aria-hidden="true"></span>
                     </p>
                 </div>
             </div>

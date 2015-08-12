@@ -4,12 +4,9 @@ angular.module('actions')
   .directive('toDoItem', ['$modal', '$sce', 'Activity', function ($modal, $sce, Activity) {
     return {
       restrict: 'E',
-      scope: {
-        action: '=',
-      },
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
       controller: function($scope, $element, $attrs) {
-        $scope.action.contentHTML = $sce.trustAsHtml($scope.action.content);
+        $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
       },
       link: function (scope, element, attrs) {
 
@@ -36,7 +33,8 @@ angular.module('actions')
             templateUrl: 'modules/actions/partials/modals/' + scope.action.cta.template,
             controller: scope.action.cta.controller,
             resolve: {
-              newActivity: function () { return scope.newActivity; }
+              newActivity: function () { return scope.newActivity; }//,
+             // user: function () { return scope.user; },
             }
           });
 
@@ -72,6 +70,7 @@ angular.module('actions')
             scope.closeErrorAlert = false;
           });
         };
+
 
       }
     };

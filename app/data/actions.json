@@ -1,7 +1,7 @@
 [     
   {
     "title": "Contact Super",
-    "content": "Lorem ipsum etc etc etc",
+    "content": "Your first step should always be to contact the person directly responsible for making repairs in your home.",
     "key": "contactSuper",
     "addIf": ["initial"],
     "cta": {
@@ -14,6 +14,22 @@
       "title": "What did your super say?"
     }    
   }, 
+  {
+    "title": "Get Rental History",
+    "content": "<b>It seems like you might live in a rent stabilized apartment!</b> Request your rental history to make sure.",
+    "key": "getRentalHistory",    
+    "addIf": ["isRentStabilized"],
+    "cta": {
+      "type": "modal",
+      "buttonTitle": "Contact DHCR",
+      "template": "rental-history.client.view.html",
+      "controller": "RentalHistoryController"
+    },
+    "followUp": {
+      "title": "Did you get your DHCR letter yet?",
+      "fields": ["rentStabilized"]
+    }
+  },    
   {
     "title": "Email Landlord",
     "content": "Lorem ipsum etc etc etc",
@@ -60,6 +76,20 @@
     }
   },
   {
+    "title": "Call Tenant Harrasment Hotline",
+    "content": "Lorem ipsum etc etc etc",
+    "key": "contactHarrasment",    
+    "addIf": ["hasEmergencyIssues", "contactSuper"],
+    "cta": {
+      "type": "call",
+      "buttonTitle": "Call",
+      "phone": 9176614500
+    },
+    "followUp": {
+      "title": "What did the hotline say?"
+    }
+  },   
+  {
     "title": "Call Legal Services",
     "content": "Lorem ipsum etc etc etc",
     "key": "contactLegalServices",    
@@ -74,24 +104,8 @@
     }
   },           
   {
-    "title": "Get Rental History",
-    "content": "Lorem ipsum etc etc etc",
-    "key": "getRentalHistory",    
-    "addIf": ["isRentStabilized"],
-    "cta": {
-      "type": "modal",
-      "buttonTitle": "Contact DHCR",
-      "template": "rental-history.client.view.html",
-      "controller": "RentalHistoryController"
-    },
-    "followUp": {
-      "title": "Did you get your DHCR letter yet?",
-      "fields": ["rentStabilized"]
-    }
-  },
-  {
     "title": "Call Hotline",
-    "content": "Lorem ipsum etc etc etc",
+    "content": "The MetCouncil provides a free tenants’ rights telephone hotline that can give brief answers to your rights as a tenant.",
     "key": "callHotline",    
     "addIf": ["initial"],
     "cta": {
@@ -148,7 +162,7 @@
   },
   {
     "title": "Other (generic update)",
-    "content": "Lorem ipsum etc etc etc",
+    "content": "If you have any other updates to your housing issues case, please note them, so they can be added to the Activity Log.",
     "key": "otherContent", 
     "addIf": ["initial"],
     "cta": {

@@ -37,7 +37,8 @@
     "passport": "~0.2.0",
     "passport-local": "~1.0.0",
     "swig": "~1.4.1",
-    "q": "latest"
+    "q": "latest",
+    "request": "latest"
   },
   "devDependencies": {
     "supertest": "~0.14.0",

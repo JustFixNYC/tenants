@@ -2,15 +2,89 @@
   color: #454545;
 }
 
+.navbar-header {
+  // @media (min-width: $grid-float-breakpoint) {
+  //   float: none !important;
+  // }
+}
 
 .navbar-toggle {
-  border-color: #454545;
+  background-color: $white;
+  border-color: #AAB2BD;
+  color: #434A54;
+  border-radius: 7px;
+  padding: 5px 8px;
 
   .icon-bar {
     background-color: #454545;
   }
 }
 
+.sign-in-button {
+  margin-top: 10px;
+  margin-right: 15px;
+
+  @media (min-width: $grid-float-breakpoint) {
+    display: none;
+  }
+}
+
 .navbar-collapse {
-  /*background-color: #454545;*/
+  padding: 0;
+
+  &.collapse {
+    @media (min-width: $grid-float-breakpoint) {
+      display: none !important;
+    }    
+  }
+}
+
+.navbar-desktop {
+  @media (max-width: $grid-float-breakpoint) {
+    display: none;
+  }  
+}
+
+ul.navbar-mobile {
+  border: none;
+  background-color: $darkgray-dark;
+  padding: 5px 15px;
+
+  & .dropdown-header {
+    padding: 5px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    color: $mediumgray-dark;
+  }
+
+  & li {
+    margin: 10px 0;
+  }
+
+  & li a {
+    padding: 5px 0;
+    color: $white;
+  }
+  & li a:hover,
+  & li a:focus,
+  & .active a,
+  & .active a:hover,
+  & .active a:focus{
+    color: $white;
+    background-color: $darkgray-light;
+    outline: none;
+  }
+  & .disabled a,
+  & .disabled a:hover,
+  & .disabled a:focus {
+    color: $darkgray-light;
+    cursor: default;
+  }
+  & .divider {
+    height: 1px;
+    margin: 9px 0;
+    overflow: hidden;    
+    background-color: $darkgray-light;
+    border-bottom: none;
+  }
 }
