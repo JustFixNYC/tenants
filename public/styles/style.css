@@ -27,6 +27,10 @@ body {
   .page-header p {
     margin: 10px 0 0 0; }
 
+.btn:not(.btn-sm) {
+  padding-top: 10px;
+  padding-bottom: 10px; }
+
 footer {
   margin-top: 75px; }
 
@@ -166,6 +170,7 @@ ul.navbar-mobile {
 
 .create-issue-container {
   padding-top: 15px;
+  padding-bottom: 15px;
   background-color: #fff; }
   .create-issue-container h4 {
     margin-top: 0; }
@@ -191,6 +196,8 @@ ul.navbar-mobile {
 .create-issue-checklist .panel-group-lists .panel-title .checklist-title {
   display: inline-block;
   width: 85%; }
+.create-issue-checklist .panel-group-lists .panel-title a {
+  padding: 15px; }
 .create-issue-checklist .panel-group-lists .panel-title a:hover, .create-issue-checklist .panel-group-lists .panel-title a:focus, .create-issue-checklist .panel-group-lists .panel-title a:active {
   color: #434A54; }
 .create-issue-checklist .panel-body {

@@ -1,9 +1,6 @@
 <div class="form-group" data-ng-controller="IssuesChecklistController">
     <p>
-        Please go from room-to-room and select the issues you need fixed - we'll ask for details later. 
-        <br />
-        <br />
-        <em>You can come back to this checklist anytime.</em>
+        Please go from room-to-room and select the issues you need fixed - we'll ask for details later. <em>You can come back to this checklist anytime.</em>
     </p>
     <accordion close-others="oneAtATime" class="create-issue-checklist">
         <accordion-group data-ng-repeat="(area, obj) in checklist" is-open="open[$index]">

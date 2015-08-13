@@ -79,7 +79,7 @@
     "title": "Call Tenant Harrasment Hotline",
     "content": "Lorem ipsum etc etc etc",
     "key": "contactHarrasment",    
-    "addIf": ["hasEmergencyIssues", "contactSuper"],
+    "addIf": ["hasEmergencyIssues", "emailLandlord"],
     "cta": {
       "type": "call",
       "buttonTitle": "Call",
@@ -93,7 +93,7 @@
     "title": "Call Legal Services",
     "content": "Lorem ipsum etc etc etc",
     "key": "contactLegalServices",    
-    "addIf": ["contactSuper"],
+    "addIf": ["emailLandlord"],
     "cta": {
       "type": "call",
       "buttonTitle": "Call",
@@ -121,7 +121,7 @@
     "title": "Send Letter of Complaint",
     "content": "Lorem ipsum etc etc etc",
     "key": "sendLetter",
-    "addIf": ["contact311", "hasEmergencyIssues", "emailLandlord"],
+    "addIf": ["contact311", "emailLandlord"],
     "cta": {
       "type": "modal",
       "buttonTitle": "Create Letter",
@@ -150,7 +150,7 @@
     "title": "HP Action",
     "content": "Lorem ipsum etc etc etc",
     "key": "HPAction", 
-    "addIf": ["hasEmergencyIssues", "sendLetter"],
+    "addIf": ["sendLetter"],
     "cta": {
       "type": "link",
       "buttonTitle": "Go to site",

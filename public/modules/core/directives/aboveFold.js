@@ -2,6 +2,8 @@
 
 angular.module('core').directive('aboveFold', function($window) {
     return function (scope, element, attrs) {
-        element.css('height', $window.outerHeight * 0.6 + 'px');
+        var w = angular.element($window);
+        element.css('height', w.height() * 0.6 + 'px');
+        //console.log($window.screen);
     };
 });

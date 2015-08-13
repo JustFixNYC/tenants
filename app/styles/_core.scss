@@ -36,6 +36,11 @@ body {
   }
 }
 
+.btn:not(.btn-sm) {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 footer {
   margin-top: 75px;
 }

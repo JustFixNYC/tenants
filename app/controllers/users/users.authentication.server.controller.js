@@ -18,7 +18,7 @@ var saveUser = function(req, user) {
 
   user.save(function(err) {
     if (err) {
-      saved.reject(errorHandler.getErrorMessage(err));
+      saved.reject(err);
     } else {
       // Remove sensitive data before login
       user.password = undefined;

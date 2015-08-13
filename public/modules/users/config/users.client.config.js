@@ -10,7 +10,6 @@ angular.module('users').config(['$httpProvider',
 					responseError: function(rejection) {
 						
 						switch (rejection.status) {
-							case 400:
 							case 401:
 
 								// Deauthenticate the global user

@@ -17,7 +17,9 @@
             <div data-ui-view></div>
             <fieldset>
                 <div data-ng-show="error" class="text-danger">
-                    <strong data-ng-bind="error"></strong>
+                    <strong data-ng-repeat="err in error.errors">
+                        <p data-ng-bind="err.message"></p>
+                    </strong>
                 </div>
             </fieldset>
         </form>
