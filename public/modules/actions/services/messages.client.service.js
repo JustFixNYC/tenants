@@ -45,10 +45,11 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', 'Authen
             title = $filter('areaTitle')(key),
             vals = user.issues[issue];
 
-        var activityIdx = user.activity.map(function(i) { return i.key; }).indexOf(key);
-        if(activityIdx !== -1) var activity = user.activity[activityIdx];
-
         if(vals.length) {
+
+          var activityIdx = user.activity.map(function(i) { return i.key; }).indexOf(key);
+          if(activityIdx !== -1) var activity = user.activity[activityIdx];
+
           issuesContent += title + ':\n';
           vals.forEach(function(v) {
             issuesContent += ' - ' + v.title;
