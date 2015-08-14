@@ -38,7 +38,8 @@
     "passport-local": "~1.0.0",
     "swig": "~1.4.1",
     "q": "latest",
-    "request": "latest"
+    "request": "latest",
+    "s3-uploader": "latest"
   },
   "devDependencies": {
     "supertest": "~0.14.0",

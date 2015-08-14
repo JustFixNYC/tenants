@@ -25,6 +25,8 @@ var create = function(req, res) {
 
   if(user) {
 
+    console.log(activity);
+
     // ignore area related activities from follow up check
     if(aptSpaces.indexOf(activity.key) === -1) {
       // remove from follow up flags

@@ -12,6 +12,7 @@
     "angular-ui-router": "~0.2.11",
     "bootstrap-sass-official": "~3.3.5",
     "Bootflat": "latest",
-    "ng-device-detector": "~1.1.8"
+    "ng-device-detector": "~1.1.8",
+    "ng-file-upload-shim": "~6.1.2"
   }
 }

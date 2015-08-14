@@ -7,6 +7,8 @@ angular.module('actions').controller('UpdateActivityController', ['$scope', '$mo
   $scope.newActivity = newActivity;
   $scope.issues = Issues.getUserIssuesByKey($scope.newActivity.key);
   
+  console.log($scope.newActivity);
+
   $scope.done = function () {
     $modalInstance.close($scope.newActivity);
   };

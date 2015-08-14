@@ -33,25 +33,20 @@ angular.module('actions')
             templateUrl: 'modules/actions/partials/modals/' + scope.action.cta.template,
             controller: scope.action.cta.controller,
             resolve: {
-              newActivity: function () { return scope.newActivity; }//,
-             // user: function () { return scope.user; },
+              newActivity: function () { return scope.newActivity; }
             }
           });
 
           modalInstance.result.then(function (newActivity) {
+            console.log('newActivity', newActivity);
             scope.newActivity = newActivity;
             if(scope.action.cta.type !== 'initialContent') scope.triggerFollowUp();
             else scope.createActivity();
           }, function () {
-            //console.log('modal cancelled');
             // modal cancelled
           });
         };
 
-        // scope.openDefaultModal = function() {
-        //   scope.openModal('', 'update-activity.client.view.html', 'UpdateActivityController');
-        // };
-        
         scope.triggerFollowUp = function() {
           scope.action.$followUp({ type: 'add' });
         };
@@ -60,13 +55,13 @@ angular.module('actions')
           scope.action.$followUp({ type: 'remove' });         
         };
 
-// <alert data-ng-if="completed" data-ng-show="!closeAlert" type="success" close="closeAlert = true"><strong>Well done!</strong> We've added <em>{{ action.title }}</em> to your <a ui-sref="listActivity">Timeline</a>.</alert>
-
-
         scope.createActivity = function() {
 
+          var key = scope.newActivity.key;
           // var key = scope.newActivity.key,
           //     idx = scope.actions.map(function(a) { return a.key; }).indexOf(key);
+
+          console.log(scope.newActivity);
 
           var activity = new Activity(scope.newActivity);
           activity.$save(function(response) {
@@ -78,6 +73,8 @@ angular.module('actions')
             //       scope.actions.splice(++idx, 0, action);
             //     }); 
             //   });
+
+
             
             scope.completed = true;
             scope.closeAlert = false; 
