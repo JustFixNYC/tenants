@@ -9,6 +9,6 @@ var users = require('../../app/controllers/users.server.controller'),
 module.exports = function(app) {
 	app.route('/actions')
 		.get(actions.list)
-    .post(users.requiresLogin, actions.followUp);
+    .post(users.requiresLogin, actions.followUp);   
 
 };

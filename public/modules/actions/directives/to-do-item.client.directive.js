@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('actions')
-  .directive('toDoItem', ['$modal', '$sce', 'Activity', function ($modal, $sce, Activity) {
+  .directive('toDoItem', ['$modal', '$sce', '$timeout', 'Activity', 'Actions', function ($modal, $sce, $timeout, Activity, Actions) {
     return {
       restrict: 'E',
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
@@ -9,7 +9,7 @@ angular.module('actions')
         $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
       },
       link: function (scope, element, attrs) {
-
+        
         //scope.action is a $resource!
         scope.completed = false;
         scope.newActivity = {
@@ -43,7 +43,7 @@ angular.module('actions')
             if(scope.action.cta.type !== 'initialContent') scope.triggerFollowUp();
             else scope.createActivity();
           }, function () {
-            console.log('modal cancelled');
+            //console.log('modal cancelled');
             // modal cancelled
           });
         };
@@ -60,11 +60,28 @@ angular.module('actions')
           scope.action.$followUp({ type: 'remove' });         
         };
 
+// <alert data-ng-if="completed" data-ng-show="!closeAlert" type="success" close="closeAlert = true"><strong>Well done!</strong> We've added <em>{{ action.title }}</em> to your <a ui-sref="listActivity">Timeline</a>.</alert>
+
+
         scope.createActivity = function() {
+
+          // var key = scope.newActivity.key,
+          //     idx = scope.actions.map(function(a) { return a.key; }).indexOf(key);
+
           var activity = new Activity(scope.newActivity);
           activity.$save(function(response) {
+
+            // var newActions = Actions.query(
+            //   {key: scope.newActivity.key}, 
+            //   function() {
+            //     newActions.forEach(function (action) {
+            //       scope.actions.splice(++idx, 0, action);
+            //     }); 
+            //   });
+            
             scope.completed = true;
-            scope.closeAlert = false;
+            scope.closeAlert = false; 
+
           }, function(errorResponse) {
             scope.error = errorResponse.data.message;
             scope.closeErrorAlert = false;

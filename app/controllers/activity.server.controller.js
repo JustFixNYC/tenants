@@ -5,7 +5,7 @@ var _ = require('lodash'),
   mongoose = require('mongoose'),
   User = mongoose.model('User');
 
-var aptSpaces = ['generalApt', 'entryHallway', 'kitchen', 'bathroom', 'diningRoom', 'livingRoom', 'bedrooms', 'publicAreas'];
+var aptSpaces = ['generalApt', 'entryHallway', 'kitchen', 'bathroom', 'diningRoom', 'livingRoom', 'bedrooms', 'publicAreas', 'otherContent'];
 
 var list = function(req, res) {
 
@@ -34,7 +34,7 @@ var create = function(req, res) {
     }
 
     // add to action flags
-    user.actionFlags.push(activity.key);
+    if(activity.key !== 'otherContent') user.actionFlags.push(activity.key);
 
     var allInitial = true;
     // for every area in issues

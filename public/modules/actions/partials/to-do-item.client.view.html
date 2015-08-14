@@ -1,7 +1,7 @@
 <div class="panel action-panel" data-ng-if="!completed">
   <div class="panel-heading">
     <h3 class="panel-title">
-      {{ action.title }}{{ action.isFollowUp ? ' - Follow Up' : '' }}
+      {{ ::action.title }}{{ action.isFollowUp ? ' - Follow Up' : '' }}
     </h3>
   </div>
   <div class="panel-body" data-ng-if="!action.isFollowUp">
@@ -25,7 +25,7 @@
             data-ng-href="tel:{{action.cta.phone}}"
             data-ng-click="triggerFollowUp()">
             <span class="glyphicon glyphicon-earphone pull-left"></span>
-            {{ action.cta.buttonTitle }}
+            {{ ::action.cta.buttonTitle }}
         </a>
         <a  class="btn btn-success btn-block" 
             data-ng-if="action.cta.type === 'link'" 
@@ -33,7 +33,7 @@
             data-ng-click="triggerFollowUp()"
             target="_blank">
             <span class="glyphicon glyphicon-link pull-left"></span>
-            {{ action.cta.buttonTitle }}
+            {{ ::action.cta.buttonTitle }}
         </a>        
       </div>  
     </div>              
@@ -42,7 +42,7 @@
     <div class="panel-content">
       <form class="resolve-action-form" novalidate>
           <div class="form-group">
-              <label class="control-label" for="title">Date of {{ action.cta.buttonTitle }}</label>
+              <label class="control-label" for="title">Date of {{ ::action.cta.buttonTitle }}</label>
               <div class="controls">
                   <!-- <p class="input-group"> -->
                     <input type="date" class="form-control" datepicker-popup ng-model="newActivity.date" is-open="openedDatepicker" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
@@ -53,7 +53,7 @@
               </div>
           </div>            
           <div class="form-group">
-              <label class="control-label" for="description">{{ action.followUp.title }}</label>
+              <label class="control-label" for="description">{{ ::action.followUp.title }}</label>
               <div class="controls">
                   <textarea name="description" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="3" maxlength="500" placeholder="Briefly describe what happened."></textarea>
               </div>

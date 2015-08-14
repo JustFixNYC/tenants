@@ -103,7 +103,13 @@ var generateActions = function(user) {
 
 var list = function(req, res) {
   var user = req.user;
-  if(user) {
+  var key = req.query.key;
+  if(user && key) {
+    var newActions = fullActions.filter(function (action) {
+      return _.contains(action.addIf, key);
+    });
+    res.json(newActions);   
+  } else if(user) {
     var actions = generateActions(user);
     res.json(actions);
   } else {

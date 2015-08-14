@@ -61,7 +61,7 @@
   },   
   {
     "title": "Call 311",
-    "content": "Calling 311 puts the landlord on notice and courts will take violations more seriously. Be careful of illegal retributions! <b>Please write down the tracking number they give you.</b>",
+    "content": "It seems like some of your issues might be serious. Calling 311 puts the landlord on notice and courts will take violations more seriously. Be careful of illegal retributions! <b>Please write down the tracking number they give you.</b>",
     "key": "contact311",    
     "addIf": ["hasEmergencyIssues"],
     "cta": {
