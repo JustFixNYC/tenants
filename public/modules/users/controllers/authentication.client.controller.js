@@ -7,6 +7,7 @@ angular.module('users').controller('AuthenticationController', ['$rootScope', '$
     // If user is signed in then redirect back home
     if ($scope.authentication.user) $location.path('/ssues');
 
+    // signup moved to issues module...
     // $scope.signup = function() {
     //   $http.post('/auth/signup', $scope.credentials).success(function(response) {
     //     // If successful we assign the response to the global user model
@@ -25,7 +26,7 @@ angular.module('users').controller('AuthenticationController', ['$rootScope', '$
         // And redirect to the issues page
 
         console.log($scope.authentication.user);
-        $location.path('/issues');
+        $location.path('/home');
       }).error(function(response) {
         $scope.error = response.message;
       });

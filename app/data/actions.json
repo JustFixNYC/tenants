@@ -46,7 +46,7 @@
   },        
   {
     "title": "Email Landlord",
-    "content": "If your super is unresponsive, its time to email your landlord. <b>We've drafted a letter that you can send, including a list of the issues that need repair.</b>",
+    "content": "If your super is unresponsive, its time to email your landlord. <b>We've drafted an email that you can send, including a list of the issues that need repair.</b>",
     "key": "emailLandlord",
     "addIf": ["contactSuper"],
     "cta": {
@@ -148,7 +148,7 @@
   },  
   {
     "title": "HP Action",
-    "content": "HP Actions are summary proceedings that offer quick and cheap resolution to repair issues, and legal recourse if your landlord doesn't comply. <b>You must go to your borough’s Housing Court at to file the HP Action.</b>",
+    "content": "HP Actions are summary proceedings that offer quick and cheap resolution to repair issues, and legal recourse if your landlord doesn't comply. <b>You must go to your borough’s Housing Court to file the HP Action.</b>",
     "key": "HPAction", 
     "addIf": ["sendLetter"],
     "cta": {

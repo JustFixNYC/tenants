@@ -140,9 +140,7 @@
         { "title": "Roof not secure", "emergency": true },
         { "title": "Exposed wiring in basement", "emergency": true },
         { "title": "Many vacant apartments", "emergency": false },
-        { "title": "Great tenant turnover", "emergency": true },
-        { "title": "Drug dealing on stoop / in hallways", "emergency": true }
-      ]
+        { "title": "Great tenant turnover", "emergency": true }      ]
     }
   }
 ]

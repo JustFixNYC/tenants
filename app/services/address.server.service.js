@@ -48,8 +48,9 @@ var requestGeoclient = function(boro, address) {
 
   request({ url: config.geoclient.url, qs:params }, function (error, response, body) {
 
-    if(error) geoclient.reject('[GEOCLIENT ERROR - 0] ' + error);
-    if(!error && response.statusCode === 200) {
+    if(error) {
+      geoclient.reject('[GEOCLIENT ERROR - 0] ' + error);
+    } else if(!error && response.statusCode === 200) {
 
       // check out the response
       var json = JSON.parse(body).address;
@@ -57,7 +58,6 @@ var requestGeoclient = function(boro, address) {
       // address not found in geoclient
       if(json.geosupportReturnCode !== '00')  {
         geoclient.reject('[GEOCLIENT ERROR - 1] ' + json.message);
-        return;
       }
 
       // address found in geoclient
