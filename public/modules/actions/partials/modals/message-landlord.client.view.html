@@ -2,22 +2,28 @@
   <h3 class="modal-title">Message Landlord</h3>
 </div>
 <div class="modal-body">
-  <form class="update-activity-form" novalidate>
-    <div class="form-group">
-        <label class="control-label" for="title">Title</label>
+  <p>If your super is unresponsive, email or call your landlord to notify them of your issues and your attempts to contact the super.</p>
+  <form novalidate>
+    <div class="form-group" data-ng-submit="done()">
+        <label class="control-label" for="description">Here's what we'll send:</label>
         <div class="controls">
-            <input type="text" data-ng-model="newActivity.title" id="title" class="form-control" placeholder="Please give this a title.">
+            <textarea name="description" data-ng-model="email.content" id="description" class="form-control" cols="30" rows="5" maxlength="500" placeholder="What to send to your landlord"></textarea>
         </div>
     </div> 
     <div class="form-group">
-        <label class="control-label" for="description">Description</label>
-        <div class="controls">
-            <textarea name="description" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="5" maxlength="500" placeholder="What's going on?"></textarea>
-        </div>
-    </div>     
-  </form>
-</div>
+          <label class="control-label" for="landlord">An email that your landlord can be reached at (look on leases or other notices):</label>
+          <div class="controls">
+            <input type="email" class="form-control" id="landlord" data-ng-model="email.landlord" placeholder="ex: alphamanagement@gmail.com" required>
+          </div>
+    </div>  
+  </div>
+</form>
+
+
 <div class="modal-footer">
-  <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-  <button class="btn btn-primary" ng-click="done()">Submit</button>
+  <button class="btn btn-default pull-left" ng-click="cancel()">Cancel</button>
+  <a data-ng-href="{{ emailHref }}" target="_blank" class="btn btn-success pull-right" data-ng-click="done()">
+    <span class="glyphicon glyphicon-envelope pull-left"></span>
+    Send Email
+  </a>
 </div>

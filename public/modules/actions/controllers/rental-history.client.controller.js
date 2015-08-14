@@ -1,17 +1,18 @@
 'use strict';
 
-angular.module('actions').controller('RentalHistoryController', function ($scope, $modalInstance, newActivity) {
+angular.module('actions').controller('RentalHistoryController', ['$scope','$modalInstance', 'Messages', 'newActivity',
+  function ($scope, $modalInstance, Messages, newActivity) {
 
-  $scope.newActivity = newActivity;
-  // $scope.selected = {
-  //   item: $scope.items[0]
-  // };
+    $scope.newActivity = newActivity;
+    $scope.emailContent = Messages.getRentalHistoryMessage();
 
-  $scope.done = function () {
-    $modalInstance.close($scope.newActivity);
-  };
+    $scope.emailHref = 'mailto:' + encodeURI('rentinfo@nyshcr.org?subject=Request For Rental History&body=' + $scope.emailContent);
 
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
-});
+    $scope.done = function () {
+      $modalInstance.close($scope.newActivity);
+    };
+
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+}]);

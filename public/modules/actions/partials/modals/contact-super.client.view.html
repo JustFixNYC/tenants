@@ -2,9 +2,18 @@
   <h3 class="modal-title">Contact Your Super</h3>
 </div>
 <div class="modal-body">
-  Ask for phone number, give call or text options
+  <p>We recommend your first step should be to contact the superintendent for your building -- the person directly responsible for making repairs in your home.  Call or text your super at least two times before contacting your landlord.</p>
+  <label class="control-label" for="superphone">What is your super's phone pumber? (can sometimes be found in the lobby of your building):</label>
+  <input type="tel" class="form-control" id="superphone" data-ng-model="superphone" placeholder="ex: 1234567890" phone-input>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-  <button class="btn btn-primary" ng-click="done()">Submit</button>
+  <button class="btn btn-default pull-left" ng-click="cancel()">Cancel</button>
+  <a sms-message phone="superphone" class="btn btn-success pull-right" data-ng-click="done()">
+    <span class="glyphicon glyphicon-comment pull-left"></span>
+    Text
+  </a>
+  <a data-ng-href="tel:superphone" class="btn btn-success pull-right" data-ng-click="done()">
+    <span class="glyphicon glyphicon-earphone pull-left"></span>
+    Call
+  </a>
 </div>

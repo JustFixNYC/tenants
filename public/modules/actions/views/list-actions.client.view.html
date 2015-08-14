@@ -1,6 +1,9 @@
 <section data-ng-controller="ActionsController" data-ng-init="list()">
     <div class="page-header">
-        <h1>Build Your Case</h1>
+        <h1>Things To Do</h1>
+        <p><em>Here are some actions you can take to build out your case.</em></p>
     </div>
-    <to-do-item data-ng-repeat="action in actions"></to-do-item> 
+    <div class="actions-container">
+      <to-do-item data-ng-repeat="action in actions"></to-do-item> 
+    </div>
 </section>

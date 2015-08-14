@@ -11,6 +11,7 @@
     "angular-ui-utils": "~0.1.1",
     "angular-ui-router": "~0.2.11",
     "bootstrap-sass-official": "~3.3.5",
-    "Bootflat": "latest"
+    "Bootflat": "latest",
+    "ng-device-detector": "~1.1.8"
   }
 }

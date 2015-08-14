@@ -3,8 +3,8 @@
 // Init the application configuration module for AngularJS application
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
-	var applicationModuleName = 'trowel';
-	var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate',  'ui.router', 'ui.bootstrap', 'ui.utils'];
+	var applicationModuleName = 'justfix';
+	var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate',  'ui.router', 'ui.bootstrap', 'ui.utils', 'ng.deviceDetector'];
 
 	// Add a new vertical module
 	var registerModule = function(moduleName, dependencies) {

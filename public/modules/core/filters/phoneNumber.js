@@ -2,6 +2,7 @@
 
 angular.module('core').filter('tel', function () {
   return function (tel) {
+
     if (!tel) { return ''; }
     
     var value = tel.toString().trim().replace(/^\+/, '');

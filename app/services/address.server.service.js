@@ -106,7 +106,13 @@ var requestRentStabilized = function(bbl, lat, lon) {
   return stabilized.promise;
 };
 
+var harrasmentHelp = function (zip) {
+  var zips = ['10452', '10453', '11207', '11208', '11212', '11233', '10029', '10035', '11101', '11354', '11358', '10301', '10304'];
+  return zips.indexOf(zip) !== -1;
+};
+
 module.exports = {
   requestGeoclient: requestGeoclient,
-  requestRentStabilized: requestRentStabilized
+  requestRentStabilized: requestRentStabilized,
+  harrasmentHelp: harrasmentHelp
 };

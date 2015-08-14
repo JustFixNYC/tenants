@@ -1,4 +1,4 @@
-<div class="panel action-panel" data-ng-if="!completed" data-ng-class="action.isFollowUp ? 'panel-primary' : 'panel-default'">
+<div class="panel action-panel" data-ng-if="!completed">
   <div class="panel-heading">
     <h3 class="panel-title">
       {{ action.title }}{{ action.isFollowUp ? ' - Follow Up' : '' }}
@@ -15,7 +15,7 @@
         </a>  
       </div> 
       <div ng-class="action.cta.type === 'initialContent' ? 'col-xs-12' : 'col-xs-6'">   
-        <button class="btn btn-success btn-block" 
+        <button class="btn btn-primary btn-block" 
                 data-ng-if="isModal()" 
                 data-ng-click="openModal()"
                 data-ng-bind="action.cta.buttonTitle">
@@ -23,14 +23,17 @@
         <a  class="btn btn-success btn-block" 
             data-ng-if="action.cta.type === 'call'" 
             data-ng-href="tel:{{action.cta.phone}}"
-            data-ng-click="triggerFollowUp()"
-            data-ng-bind="action.cta.buttonTitle">
+            data-ng-click="triggerFollowUp()">
+            <span class="glyphicon glyphicon-earphone pull-left"></span>
+            {{ action.cta.buttonTitle }}
         </a>
         <a  class="btn btn-success btn-block" 
             data-ng-if="action.cta.type === 'link'" 
-            data-ng-href="{{action.cta.link}}"
+            data-ng-href="{{action.cta.url}}"
             data-ng-click="triggerFollowUp()"
-            data-ng-bind="action.cta.buttonTitle">
+            target="_blank">
+            <span class="glyphicon glyphicon-link pull-left"></span>
+            {{ action.cta.buttonTitle }}
         </a>        
       </div>  
     </div>              
@@ -41,12 +44,12 @@
           <div class="form-group">
               <label class="control-label" for="title">Date of {{ action.cta.buttonTitle }}</label>
               <div class="controls">
-                  <p class="input-group">
+                  <!-- <p class="input-group"> -->
                     <input type="date" class="form-control" datepicker-popup ng-model="newActivity.date" is-open="openedDatepicker" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
 <!--                     <span class="input-group-btn">
                       <button type="button" class="btn btn-default" ng-click="openDP($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span> -->
-                  </p>
+                  <!-- </p> -->
               </div>
           </div>            
           <div class="form-group">
@@ -58,20 +61,21 @@
         </form>      
     </div>
     <div class="row">
-      <div class="col-xs-6">
+      <div class="col-xs-4">
         <a  class="btn btn-default btn-block" 
             data-ng-click="cancelFollowUp()">
             Cancel
         </a>  
       </div> 
-      <div class="col-xs-6">   
-        <button class="btn btn-primary btn-block" 
+      <div class="col-xs-8">   
+        <button class="btn btn-info btn-block" 
                 data-ng-click="createActivity()">
-            Submit
+            <span class="glyphicon glyphicon-ok pull-left" style="padding-top:1px"></span>
+            Add To Timeline
         </button>
       </div>  
     </div>
   </div>  
 </div>
-<alert data-ng-if="completed" data-ng-show="!closeAlert" type="success" close="closeAlert = true"><strong>Well done!</strong> We've added this action to your <a ui-sref="listActivity">Activity Log</a>.</alert>
+<alert data-ng-if="completed" data-ng-show="!closeAlert" type="success" close="closeAlert = true"><strong>Well done!</strong> We've added <em>{{ action.title }}</em> to your <a ui-sref="listActivity">Timeline</a>.</alert>
 <alert data-ng-if="error.length" data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert>

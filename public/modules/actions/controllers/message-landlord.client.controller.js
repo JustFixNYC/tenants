@@ -1,17 +1,20 @@
 'use strict';
 
-angular.module('actions').controller('MessageLandlordController', function ($scope, $modalInstance, newActivity) {
+angular.module('actions').controller('MessageLandlordController', ['$scope','$modalInstance', 'Messages', 'newActivity', 
+  function ($scope, $modalInstance, Messages, newActivity) {
 
-  $scope.newActivity = newActivity;
-  // $scope.selected = {
-  //   item: $scope.items[0]
-  // };
+    $scope.newActivity = newActivity;
 
-  $scope.done = function () {
-    $modalInstance.close($scope.newActivity);
-  };
+    $scope.email = {};
+    $scope.email.content = Messages.getLandlordEmailMessage();
 
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
-});
+    $scope.done = function () {
+      $scope.email.contact = $scope.email.landlord + '?subject=' + Messages.getLandlordEmailSubject();
+      $scope.emailHref = 'mailto:' + encodeURI($scope.email.contact + '&body=' + $scope.email.content);
+      $modalInstance.close($scope.newActivity);
+    };
+
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+}]);

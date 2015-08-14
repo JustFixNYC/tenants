@@ -14,11 +14,12 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
     $scope.newIssue = {};
     $scope.newIssue.issues = {};          
 
-    // $scope.newIssue.name = "test";
+    // $scope.newIssue.name = 'Maris Hernandez';
     // $scope.newIssue.phone = (Math.floor(Math.random() * 9999999999) + 1111111111).toString();
-    // $scope.newIssue.password = "testtest";
-    // $scope.newIssue.borough = "Brooklyn";
-    // $scope.newIssue.address = "846 Prospect Pl";
+    // $scope.newIssue.password = 'testtest';
+    // $scope.newIssue.borough = 'Brooklyn';
+    // $scope.newIssue.address = '846 Prospect Pl';
+    // $scope.newIssue.unit = '10F';
 
       // $scope.currentStep = 60;
       // console.log($scope.currentStep);
@@ -41,10 +42,11 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
         borough:      $scope.newIssue.borough,
         address:      $scope.newIssue.address,
         unit:         $scope.newIssue.unit,
+        nycha:        $scope.newIssue.nycha, 
         issues:       $scope.newIssue.issues,
         password:     $scope.newIssue.password        
       };
-
+      
       $http.post('/auth/signup', newUser).success(function(response) {
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;

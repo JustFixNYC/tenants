@@ -93,7 +93,8 @@ var generateActions = function(user) {
     if(user.followUpFlags.indexOf(action.key) !== -1) action.isFollowUp = true;
     else action.isFollowUp = false;
 
-    if(add && !reject) actions.push(action);
+    //if(add && !reject) 
+      actions.push(action);
 
   });
 
@@ -106,7 +107,7 @@ var list = function(req, res) {
     var actions = generateActions(user);
     res.json(actions);
   } else {
-    res.status(400).send({
+    res.status(401).send({
       message: 'User is not signed in'
     });
   }

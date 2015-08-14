@@ -28,8 +28,11 @@ angular.module('issues').controller('IssuesChecklistController', ['$scope', 'Iss
 
         // add issues that are already selected
         issues.forEach(function (issue) {
-          if($scope.issues[area] && $scope.issues[area].indexOf(issue) !== -1) {
-            $scope.select(area,issue);
+
+          // ugly ugly ugly
+          if($scope.issues[area] && 
+            $scope.issues[area].map(function(i) { return i.title; }).indexOf(issue.title) !== -1) {
+              $scope.select(area,issue);
           }
         });
 
@@ -48,6 +51,7 @@ angular.module('issues').controller('IssuesChecklistController', ['$scope', 'Iss
     };
 
     $scope.select = function(area, issue) {
+
       if(!this.isSelected(area, issue)) {
         $scope.newIssue.issues[area].push(issue);
         $scope.checklist[area].numChecked++;

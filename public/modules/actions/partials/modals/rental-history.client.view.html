@@ -2,22 +2,18 @@
   <h3 class="modal-title">Rental History</h3>
 </div>
 <div class="modal-body">
-  <form class="update-activity-form" novalidate>
-    <div class="form-group">
-        <label class="control-label" for="title">Title</label>
-        <div class="controls">
-            <input type="text" data-ng-model="newActivity.title" id="title" class="form-control" placeholder="Please give this a title.">
-        </div>
-    </div> 
-    <div class="form-group">
-        <label class="control-label" for="description">Description</label>
-        <div class="controls">
-            <textarea name="description" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="5" maxlength="500" placeholder="What's going on?"></textarea>
-        </div>
-    </div>     
-  </form>
+  <p> In order to assist you in a holdover or nonpayment proceeding, requesting your rental history from NYS HCR will help you determine what you're supposed to be paying in rent. It also provides many additional rights to tenants. You will probably need it when talking to a judge or legal services.</p>
+  <div class="form-group">
+      <label class="control-label" for="description">Here's what we'll send:</label>
+      <div class="controls">
+          <textarea name="description" data-ng-model="emailContent" id="description" class="form-control" cols="30" rows="5" maxlength="500" placeholder="What to send to DHCR"></textarea>
+      </div>
+  </div>     
 </div>
 <div class="modal-footer">
-  <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-  <button class="btn btn-primary" ng-click="done()">Submit</button>
+  <button class="btn btn-default pull-left" ng-click="cancel()">Cancel</button>
+  <a data-ng-href="{{ emailHref }}" target="_blank" class="btn btn-success pull-right" data-ng-click="done()">
+    <span class="glyphicon glyphicon-envelope pull-left"></span>
+    Send Email
+  </a>
 </div>

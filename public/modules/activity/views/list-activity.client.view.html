@@ -2,7 +2,7 @@
     <div class="page-header">
         <h1>Activity Log</h1>
     </div>
-    <div data-ng-show="activities.length">
+    <div data-ng-if="activities.length">
         <div data-ng-repeat="activity in activities | orderBy:'date':true" class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">{{ activity.date | date:'longDate' }}</h3>
@@ -13,7 +13,7 @@
             </div>            
         </div>     
     </div>
-    <div class="alert alert-warning text-center" data-ng-hide="activities.length">
+    <div class="alert alert-warning text-center" data-ng-if="!activities.length">
     	Nothing has been added to your activity log yet! <a ui-sref="listActions">Click here</a> to see some things to do.
     </div>
 </section>

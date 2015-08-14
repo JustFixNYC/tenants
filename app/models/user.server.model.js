@@ -43,7 +43,11 @@ var UserSchema = new Schema({
   unit: {
     type: String,
     default: ''
-  },  
+  },
+  nycha: {
+    type: String,
+    default: ''
+  },      
   issues: {
     type: Schema.Types.Mixed,
     default: {}

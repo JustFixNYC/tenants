@@ -10,7 +10,7 @@ angular.module('activity').config(['$stateProvider', '$urlRouterProvider',
 		// Issues state routing
 		$stateProvider.	
 		state('listActivity', {
-			url: '/log',
+			url: '/timeline',
 			templateUrl: 'modules/activity/views/list-activity.client.view.html'
 		});					
 

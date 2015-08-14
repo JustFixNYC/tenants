@@ -10,6 +10,13 @@ angular.module(ApplicationConfiguration.applicationModuleName).config(['$locatio
 	}
 ]);
 
+// whitelisting URLs
+angular.module(ApplicationConfiguration.applicationModuleName).config(['$compileProvider',
+  function ($compileProvider) {
+      $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|tel|sms|mailto):/);
+  }
+]);
+
 //Then define the init function for starting up the application
 angular.element(document).ready(function() {
 	//Fixing facebook bug with redirect

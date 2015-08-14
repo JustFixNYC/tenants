@@ -36,6 +36,21 @@ var create = function(req, res) {
     // add to action flags
     user.actionFlags.push(activity.key);
 
+    var allInitial = true;
+    // for every area in issues
+    for(var area in user.issues) {
+      // if the area has issues...
+      if(user.issues[area].length) {
+        // if the area content hasn't been done yet
+        if(user.actionFlags.indexOf(area) === -1) allInitial = false;
+      }
+    }
+    if(allInitial) user.actionFlags.push('allInitial');
+    else {
+      var idx = user.actionFlags.indexOf('allInitial');
+      if(idx !== -1) user.actionFlags.splice(idx, 1);
+    }
+
     // create activity object
     user.activity.push(activity);
 

@@ -1,6 +1,31 @@
+.actions-container {
+
+  .panel-title {
+    font-size: 22px;
+    color: #434A54;
+    font-weight: 100;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    line-height: 1.3;
+  }
+
+  .panel-body {
+    padding-top: 0;
+  }
+}
+
 .action-panel {
 
   .panel-content {
-    margin-bottom: 5px;
+    margin-bottom: 15px;
+  }
+}
+
+.input-group {
+
+  .form-control {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: 41px;
   }
 }
