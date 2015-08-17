@@ -44,6 +44,13 @@ body {
   padding-left: 30px;
   margin-bottom: 0; }
 
+.img-thumbnail {
+  border-radius: 0;
+  padding: 0; }
+
+.no-gutter [class*="col"] {
+  padding: 0; }
+
 footer {
   margin-top: 75px; }
 
@@ -261,3 +268,26 @@ ul.navbar-mobile {
   padding-top: 10px;
   padding-bottom: 10px;
   height: 41px; }
+
+.activities-container .panel-body {
+  padding-bottom: 0; }
+.activities-container .thumb-list {
+  margin-top: 15px; }
+  .activities-container .thumb-list > div {
+    padding: 0; }
+
+.lightbox-nav .close {
+  font-size: 40px;
+  z-index: 10; }
+.lightbox-nav .btn-group {
+  display: none; }
+
+.lightbox-image-container {
+  top: 40px; }
+
+.upload-thumb {
+  clip: rect(0px, 60px, 200px, 0px); }
+
+.photo-uploads-container {
+  height: 150px;
+  overflow: hidden; }

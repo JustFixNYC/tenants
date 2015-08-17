@@ -7,7 +7,11 @@ angular.module('actions').controller('UpdateActivityController', ['$scope', '$mo
   $scope.newActivity = newActivity;
   $scope.issues = Issues.getUserIssuesByKey($scope.newActivity.key);
   
-  console.log($scope.newActivity);
+  console.log('update activity cntrl',$scope.newActivity);
+
+  $scope.onFileSelect = function(files) {
+    console.log(files);
+  };
 
   $scope.done = function () {
     $modalInstance.close($scope.newActivity);

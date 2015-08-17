@@ -61,7 +61,10 @@ exports.signup = function(req, res) {
   // check issues for emergency ones
   for(var area in user.issues) {
     user.issues[area].forEach(function (i) {
-      if(i.emergency) user.actionFlags.push('hasEmergencyIssues');
+      if(i.emergency && user.actionFlags.indexOf('hasEmergencyIssues') === -1) {
+        user.actionFlags.push('hasEmergencyIssues');
+      }        
+        
     });
   }
 

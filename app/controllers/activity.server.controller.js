@@ -1,9 +1,12 @@
 'use strict';
 
 var _ = require('lodash'),
-  errorHandler = require('./errors.server.controller'),
-  mongoose = require('mongoose'),
-  User = mongoose.model('User');
+    Q = require('q'),
+    errorHandler = require('./errors.server.controller'),
+    s3Handler = require('../services/s3.server.service'),
+    mongoose = require('mongoose'),
+    User = mongoose.model('User');
+
 
 var aptSpaces = ['generalApt', 'entryHallway', 'kitchen', 'bathroom', 'diningRoom', 'livingRoom', 'bedrooms', 'publicAreas', 'otherContent'];
 
@@ -16,16 +19,49 @@ var list = function(req, res) {
       message: 'User is not signed in'
     });
   }
+};
+
+var s3upload = function(file) {
+
+  var uploaded = Q.defer();
+
+  // this is mainly for user friendliness. this field can be freely tampered by attacker.
+  // if (!/^image\/(jpe?g|png|gif)$/i.test(file.type)) {
+  //     return uploaded.reject('images only');
+  // }
+
+  if(!file) {
+    console.log('nothing');
+    uploaded.resolve()
+  }
+
+  var type = file.originalFilename.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[0];
+
+  s3Handler.uploadFile(file.path, type)
+    .then(function (data) {
+      console.log('s3 file success!', data);
+      var url = data.Location;
+      var resizedUrl = url.replace( /justfix/i, 'justfixresized' );
+
+      uploaded.resolve({ url: data.Location, thumb: resizedUrl });
+    }).fail(function (err) {
+      console.log('FAIL FAIL FAIL', err);
+      uploaded.reject(err);
+    });
+
+  return uploaded.promise;
 
 };
 
 var create = function(req, res) {
   var user = req.user;
   var activity = req.body;
+  //var files = req.files;
+
+  //console.log(req.body, req.files);
+  // don't forget to delete all req.files when done
 
   if(user) {
-
-    console.log(activity);
 
     // ignore area related activities from follow up check
     if(aptSpaces.indexOf(activity.key) === -1) {
@@ -53,18 +89,41 @@ var create = function(req, res) {
       if(idx !== -1) user.actionFlags.splice(idx, 1);
     }
 
-    // create activity object
-    user.activity.push(activity);
+    // init photos array
+    activity.photos = [];
 
-    user.save(function(err) {
-      if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
+    var files = req.files;
+
+    // init photos queue
+    var uploadQueue = [];
+
+    for(var file in files) uploadQueue.push(s3upload(files[file]));
+
+    Q.allSettled(uploadQueue).then(function (results) {
+
+      results.forEach(function (r) {
+        if(r.state !== 'fulfilled') res.status(500).send({ message: err });
+
+        activity.photos.push({
+          url: r.value.url, 
+          thumb: r.value.thumb
         });
-      } else {
-        res.jsonp(user);
-      }
-    });
+      });
+
+      // add activity object
+      user.activity.push(activity);
+
+      // add activity to db
+      user.save(function(err) {
+        if(err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(user);
+        }
+      });
+    });  // end of Q.allSettled
 
   } else {
     res.status(400).send({

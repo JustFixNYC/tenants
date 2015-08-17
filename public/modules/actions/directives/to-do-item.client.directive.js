@@ -13,7 +13,7 @@ angular.module('actions')
         //scope.action is a $resource!
         scope.completed = false;
         scope.newActivity = {
-          date: new Date(),
+          date: '',
           title: scope.action.title,
           key: scope.action.key
         };
@@ -61,10 +61,15 @@ angular.module('actions')
           // var key = scope.newActivity.key,
           //     idx = scope.actions.map(function(a) { return a.key; }).indexOf(key);
 
-          console.log(scope.newActivity);
+          console.log('create activity pre creation', scope.newActivity);
 
           var activity = new Activity(scope.newActivity);
+
+          console.log('create activity post creation', scope.newActivity);
+
           activity.$save(function(response) {
+
+            console.log('create activity post save', response);
 
             // var newActions = Actions.query(
             //   {key: scope.newActivity.key}, 

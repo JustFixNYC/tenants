@@ -26,10 +26,12 @@ var ActivitySchema = new Schema({
     description: {
       type: String,
       default: ''
-    }
-    // ,
-    // photos: [
-    // ]
+    },
+    photos: [{
+      url : { type : String}, 
+      thumb : { type : String}, 
+      created : { type : Date, default : Date.now }
+    }]
 });
 
 module.exports = ActivitySchema;

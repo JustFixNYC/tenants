@@ -1,0 +1,41 @@
+.activities-container {
+
+  .panel-body {
+    padding-bottom: 0;
+  }
+
+  .thumb-list {
+
+    margin-top: 15px;
+
+    & > div {
+      padding: 0;
+    }
+  }
+
+}
+
+.lightbox-nav {
+
+  .close {
+    font-size: 40px;
+    z-index: 10;
+  }
+
+  .btn-group {
+    display: none;
+  }
+}
+
+.lightbox-image-container {
+  top: 40px;
+} 
+
+.upload-thumb {
+  clip: rect(0px,60px,200px,0px);
+}
+
+.photo-uploads-container {
+  height: 150px;
+  overflow: hidden;
+}

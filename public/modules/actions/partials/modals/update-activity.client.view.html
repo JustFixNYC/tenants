@@ -21,11 +21,28 @@
             <!-- </p> -->
         </div>
     </div>  
-    <div class="form-group">
+    <div class="form-group photo-uploads-container">
         <label class="control-label" for="photos">Add some photos</label>
         <div class="controls">
-            <button ngf-select ngf-capture="'camera'" accept="image/*" data-ng-model="newActivity.photo1" id="photo1" class="btn btn-default">Photo 1</button>
- <!--            <input type="file" capture="'camera'" accept="image/*" data-ng-model="newActivity.photo1" id="photo1" class="btn btn-default">Photo 1</button> -->
+          <div class="no-gutter">
+            <div class="col-xs-4">
+               <button ngf-select ngf-capture="'camera'" accept="image/*" ng-model="newActivity.photo1" name="photos" id="photos" class="btn btn-default btn-block">Photo 1</button>
+              <img ngf-src="newActivity.photo1" class="img-thumbnail">             
+            </div>
+            <div class="col-xs-4">
+               <button ngf-select ngf-capture="'camera'" accept="image/*" ng-model="newActivity.photo2" name="photos" id="photos" class="btn btn-default btn-block">Photo 2</button>
+              <img ngf-src="newActivity.photo2" class="img-thumbnail">             
+            </div>
+            <div class="col-xs-4">
+               <button ngf-select ngf-capture="'camera'" accept="image/*" ng-model="newActivity.photo3" name="photos" id="photos" class="btn btn-default btn-block">Photo 3</button>
+              <img ngf-src="newActivity.photo3" class="img-thumbnail">             
+            </div>            
+          </div>
+
+<!--             <button ngf-select ngf-capture="'camera'" accept="image/*" ng-model="newActivity.photo2" id="photo2" class="btn btn-default">Photo 2</button>
+            <img ngf-src="newActivity.photo1">
+            <button ngf-select ngf-capture="'camera'" accept="image/*" ng-model="newActivity.photo3" id="photo3" class="btn btn-default">Photo 3</button>
+            <img ngf-src="newActivity.photo3"> -->
         </div>
     </div>        
     <div class="form-group">

@@ -61,6 +61,16 @@ body {
   }
 }
 
+.img-thumbnail {
+  border-radius: 0;  
+  padding: 0;
+}
+
+.no-gutter [class*="col"] {
+  padding: 0;
+}
+
+
 footer {
   margin-top: 75px;
 }

@@ -2,14 +2,30 @@
     <div class="page-header">
         <h1>Timeline</h1>
     </div>
-    <div data-ng-if="activities.length">
+    <div data-ng-if="activities.length" class="activities-container">
         <div data-ng-repeat="activity in activities | orderBy:'date':true" class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">{{ activity.date | date:'longDate' }}</h3>
             </div>
             <div class="panel-body">
+ 
                 <b>{{ activity.key | areaTitle }} {{ activity.title }}</b>
                 {{ activity.description }}
+
+                <div class="row thumb-list">
+
+
+                    <div data-ng-repeat="photo in activity.photos" class="col-xs-4">
+
+                <!-- $parent.$index -->
+                        <a ng-click="openLightboxModal(activity.photos, $index)">
+                            <img ng-src="{{ activity.photos[$index].thumb }}" alt="{{ activity.key | areaTitle }}" class="img-thumbnail" />
+                        </a>
+                    </div>
+                    
+                </div>                    
+
+
             </div>            
         </div>     
     </div>
