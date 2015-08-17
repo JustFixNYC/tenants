@@ -215,7 +215,7 @@ ul.navbar-mobile {
   border-top: 1px solid #E6E9ED; }
 .create-issue-checklist .panel-group-lists .panel-title .checklist-title {
   display: inline-block;
-  width: 85%; }
+  width: 50%; }
 .create-issue-checklist .panel-group-lists .panel-title a {
   padding: 15px; }
 .create-issue-checklist .panel-group-lists .panel-title a:hover, .create-issue-checklist .panel-group-lists .panel-title a:focus, .create-issue-checklist .panel-group-lists .panel-title a:active {
