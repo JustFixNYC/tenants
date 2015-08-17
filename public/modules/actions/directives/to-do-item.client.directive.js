@@ -9,9 +9,9 @@ angular.module('actions')
         $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
       },
       link: function (scope, element, attrs) {
-        
+
         //scope.action is a $resource!
-        scope.completed = false;
+        if(!scope.action.completed) scope.action.completed = false;
         scope.newActivity = {
           date: '',
           title: scope.action.title,
@@ -38,7 +38,6 @@ angular.module('actions')
           });
 
           modalInstance.result.then(function (newActivity) {
-            console.log('newActivity', newActivity);
             scope.newActivity = newActivity;
             if(scope.action.cta.type !== 'initialContent') scope.triggerFollowUp();
             else scope.createActivity();
@@ -55,40 +54,41 @@ angular.module('actions')
           scope.action.$followUp({ type: 'remove' });         
         };
 
+        scope.closeAlert = function() {
+          scope.action.closeAlert = true;
+          scope.actions.splice(scope.$index,1);        
+        };
+
         scope.createActivity = function() {
 
-          var key = scope.newActivity.key;
-          // var key = scope.newActivity.key,
-          //     idx = scope.actions.map(function(a) { return a.key; }).indexOf(key);
-
-          console.log('create activity pre creation', scope.newActivity);
+          //console.log('create activity pre creation', scope.newActivity);
 
           var activity = new Activity(scope.newActivity);
 
-          console.log('create activity post creation', scope.newActivity);
+          //console.log('create activity post creation', scope.newActivity);
 
           activity.$save(function(response) {
 
-            console.log('create activity post save', response);
+            //console.log('create activity post save', response);
 
-            // var newActions = Actions.query(
-            //   {key: scope.newActivity.key}, 
-            //   function() {
-            //     newActions.forEach(function (action) {
-            //       scope.actions.splice(++idx, 0, action);
-            //     }); 
-            //   });
+            scope.action.completed = true;
+            scope.action.closeAlert = false; 
 
-
-            
-            scope.completed = true;
-            scope.closeAlert = false; 
+            // load new actions
+            var idx = scope.$index;
+            var newActions = Actions.query(
+              {key: scope.newActivity.key}, 
+              function() {
+                newActions.forEach(function (action) {
+                  scope.actions.splice(++idx, 0, action);
+                }); 
+              });
 
           }, function(errorResponse) {
             scope.error = errorResponse.data.message;
             scope.closeErrorAlert = false;
           });
-        };
+        }; // end of create activity
 
 
       }

@@ -75,6 +75,7 @@ angular.module('issues').controller('IssuesChecklistController', ['$scope', 'Iss
     // };
     $scope.closeGroup = function(idx) {
       $scope.open[idx] = false;
+      //$window.scrollTo(0, 0);
     };
 
   }

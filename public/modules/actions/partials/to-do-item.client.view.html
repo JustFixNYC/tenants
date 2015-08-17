@@ -1,4 +1,4 @@
-<div class="panel action-panel" data-ng-if="!completed">
+<div class="panel action-panel" data-ng-if="!action.completed">
   <div class="panel-heading">
     <h3 class="panel-title">
       {{ ::action.title }}{{ action.isFollowUp ? ' - Follow Up' : '' }}
@@ -77,5 +77,5 @@
     </div>
   </div>  
 </div>
-<alert data-ng-if="completed" data-ng-show="!closeAlert" type="success" close="closeAlert = true"><strong>Well done!</strong> We've added <em>{{ action.title }}</em> to your <a ui-sref="listActivity">Timeline</a>.</alert>
+<alert data-ng-if="action.completed" data-ng-show="!action.closeAlert" type="success" close="closeAlert()"><strong>Well done!</strong> We've added <em>{{ action.title }}</em> to your <a ui-sref="listActivity">Timeline</a>.</alert>
 <alert data-ng-if="error.length" data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert>

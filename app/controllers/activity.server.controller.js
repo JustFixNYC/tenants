@@ -30,10 +30,7 @@ var s3upload = function(file) {
   //     return uploaded.reject('images only');
   // }
 
-  if(!file) {
-    console.log('nothing');
-    uploaded.resolve()
-  }
+  if(!file) uploaded.reject('no file?');
 
   var type = file.originalFilename.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[0];
 
@@ -45,7 +42,7 @@ var s3upload = function(file) {
 
       uploaded.resolve({ url: data.Location, thumb: resizedUrl });
     }).fail(function (err) {
-      console.log('FAIL FAIL FAIL', err);
+      console.log(err);
       uploaded.reject(err);
     });
 
