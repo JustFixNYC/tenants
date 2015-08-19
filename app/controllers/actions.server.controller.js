@@ -93,7 +93,7 @@ var generateActions = function(user) {
     if(user.followUpFlags.indexOf(action.key) !== -1) action.isFollowUp = true;
     else action.isFollowUp = false;
 
-    if(add && !reject) 
+    //if(add && !reject) 
       actions.push(action);
 
   });
