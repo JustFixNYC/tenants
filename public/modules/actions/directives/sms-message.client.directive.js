@@ -39,7 +39,7 @@ angular.module('actions')
           }
         };
 
-        element.bind('click', function (event) { generateURL(); });
+        element.bind('click', function (event) { console.log('something'); generateURL(); });
         
       }
     };
