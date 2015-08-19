@@ -2,6 +2,20 @@
 
 angular.module('core').directive('fullBg', function($window) {
     return function (scope, element, attrs) {
-        element.css('width', $window.outerWidth + 'px');
+
+      function getWidth() {
+        if (self.innerHeight) {
+          return self.innerWidth;
+        }
+
+        if (document.documentElement && document.documentElement.clientHeight) {
+          return document.documentElement.clientWidth;
+        }
+
+        if (document.body) {
+          return document.body.clientWidth;
+        }
+      }
+        element.css('width', getWidth() + 'px');
     };
 });
