@@ -8,11 +8,11 @@
 </div>
 <div class="modal-footer">
   <button class="btn btn-default pull-left" ng-click="cancel()">Cancel</button>
-  <a sms-message phone="superphone" class="btn btn-success pull-right" data-ng-click="done()">
+  <a class="btn btn-success pull-right" data-ng-click="done('sms', $event)">
     <span class="glyphicon glyphicon-comment pull-left"></span>
     Text
   </a>
-  <a data-ng-href="tel:superphone" class="btn btn-success pull-right" data-ng-click="done()">
+  <a class="btn btn-success pull-right" data-ng-click="done('tel', $event)">
     <span class="glyphicon glyphicon-earphone pull-left"></span>
     Call
   </a>

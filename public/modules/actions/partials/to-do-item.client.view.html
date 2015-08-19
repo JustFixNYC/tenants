@@ -23,15 +23,13 @@
         </button>
         <a  class="btn btn-success btn-block pull-right" 
             data-ng-if="action.cta.type === 'call'" 
-            data-ng-href="tel:{{action.cta.phone}}"
-            data-ng-click="triggerFollowUp()">
+            data-ng-click="triggerFollowUp('tel:' + action.cta.phone, 'tel')">
             <span class="glyphicon glyphicon-earphone pull-left"></span>
             {{ action.cta.buttonTitle }}
         </a>
         <a  class="btn btn-success btn-block pull-right" 
             data-ng-if="action.cta.type === 'link'" 
-            data-ng-href="{{action.cta.url}}"
-            data-ng-click="triggerFollowUp()"
+            data-ng-click="triggerFollowUp(action.cta.url, 'link')"
             target="_blank">
             <span class="glyphicon glyphicon-link pull-left"></span>
             {{ action.cta.buttonTitle }}

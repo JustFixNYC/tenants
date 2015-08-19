@@ -20,7 +20,9 @@ angular.module('issues').filter('areaTitle', function() {
         return 'Bedrooms';
       case 'publicAreas': 
         return 'Public Areas';
-      default: return input;
+      default: 
+        return '';
+        break;
     }
   };
 });

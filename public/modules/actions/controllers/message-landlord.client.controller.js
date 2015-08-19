@@ -12,6 +12,7 @@ angular.module('actions').controller('MessageLandlordController', ['$scope','$mo
       $scope.email.contact = $scope.email.landlord + '?subject=' + Messages.getLandlordEmailSubject();
       $scope.emailHref = 'mailto:' + encodeURI($scope.email.contact + '&body=' + $scope.email.content);
       $modalInstance.close($scope.newActivity);
+      window.location.href = $scope.emailHref;
     };
 
     $scope.cancel = function () {

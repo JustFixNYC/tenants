@@ -1,6 +1,7 @@
 <section data-ng-controller="ActivityController" data-ng-init="list()">
     <div class="page-header">
         <h1>Your Case</h1>
+        <p><em>Share your case with case workers, attorneys, and judges as a way to tell your story. Your case can be found anytime you need it by going to <b style="text-decoration:underline;">JustFix.nyc/{{ authentication.user.phone }}</b> (thats your phone number!)</em></p>
     </div>
     <div data-ng-if="activities.length" class="activities-container">
         <div data-ng-repeat="activity in activities | orderBy:'date':true" class="panel panel-default">
@@ -9,7 +10,7 @@
             </div>
             <div class="panel-body">
  
-                <b>{{ activity.key | areaTitle }} {{ activity.title }}</b>
+                <p><b>{{ activity.key | areaTitle }} {{ activity.title === 'Text/Photos' ? 'Details' : activity.title }}</b></p>
                 {{ activity.description }}
 
                 <div class="row thumb-list">

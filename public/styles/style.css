@@ -1,10 +1,8 @@
 body {
   background-color: #f1f2f6; }
 
-.content {
-  margin-bottom: 50px; }
-  .content section.container {
-    min-height: 300px; }
+.content section.container {
+  min-height: 300px; }
 
 .undecorated-link:hover {
   text-decoration: none; }
@@ -151,7 +149,7 @@ header.navbar {
   width: 100%; }
   @media (min-width: 480px) {
     .navbar-collapse {
-      top: 102px; } }
+      top: 104px; } }
   .navbar-collapse.ng-animate {
     -webkit-transition: height 100ms cubic-bezier(0.19, 1, 0.22, 1);
     -moz-transition: height 100ms cubic-bezier(0.19, 1, 0.22, 1);
@@ -437,6 +435,9 @@ ul.navbar-mobile {
   margin-top: 15px; }
   .activities-container .thumb-list > div {
     padding: 0; }
+.activities-container img {
+  height: 100%;
+  max-height: 125px; }
 
 .lightbox-nav .close {
   font-size: 40px;

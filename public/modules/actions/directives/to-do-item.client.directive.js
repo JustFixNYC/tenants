@@ -65,9 +65,13 @@ angular.module('actions')
           });
         };
 
-        scope.triggerFollowUp = function() {
+        scope.triggerFollowUp = function(url, type) {
+
           scope.action.$followUp({ type: 'add' });
-        };
+
+          if(url && type === 'tel') window.location.href = url;
+          else if(url && type === 'link') window.open(url, '_blank');
+         };
 
         scope.cancelFollowUp = function() {
           scope.action.$followUp({ type: 'remove' });         

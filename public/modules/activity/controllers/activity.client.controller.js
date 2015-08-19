@@ -10,6 +10,8 @@
 angular.module('activity').controller('ActivityController', ['$scope', '$location', '$http', 'Authentication', 'Users', 'Activity', 'Lightbox',
   function($scope, $location, $http, Authentication, Users, Activity, Lightbox) {
 
+    $scope.authentication = Authentication;
+
     $scope.list = function() {
       $scope.activities = Activity.query();
     };
