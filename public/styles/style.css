@@ -88,6 +88,9 @@ header.navbar {
   color: #454545;
   padding: 0 15px;
   height: 100%; }
+  @media (min-width: 768px) {
+    .navbar-brand {
+      padding-left: 0; } }
   .navbar-brand > .logo > svg {
     margin-top: 10px;
     height: 20px;
@@ -98,9 +101,9 @@ header.navbar {
         height: 25px;
         width: 131px; } }
     .navbar-anon .navbar-brand > .logo > svg {
-      margin-top: 14px;
-      height: 28px;
-      width: 147px; }
+      margin-top: 15px;
+      height: 25px;
+      width: 131px; }
       @media (min-width: 480px) {
         .navbar-anon .navbar-brand > .logo > svg {
           margin-top: 23px;

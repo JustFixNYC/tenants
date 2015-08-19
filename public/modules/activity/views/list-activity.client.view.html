@@ -1,6 +1,6 @@
 <section data-ng-controller="ActivityController" data-ng-init="list()">
     <div class="page-header">
-        <h1>Timeline</h1>
+        <h1>Your Case</h1>
     </div>
     <div data-ng-if="activities.length" class="activities-container">
         <div data-ng-repeat="activity in activities | orderBy:'date':true" class="panel panel-default">
@@ -30,6 +30,6 @@
         </div>     
     </div>
     <div class="alert alert-warning text-center" data-ng-if="!activities.length">
-    	Nothing has been added to your activity log yet! <a ui-sref="listActions">Click here</a> to see some things to do.
+    	Nothing has been added to your case yet! <a ui-sref="listActions">Click here</a> to see some things to do.
     </div>
 </section>

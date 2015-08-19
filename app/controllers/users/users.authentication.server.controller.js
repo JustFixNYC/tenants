@@ -85,7 +85,7 @@ exports.signup = function(req, res) {
       save();
     })
     .fail(function (e) {
-      console.log(e);
+      console.log('[GEO]', e);
       save();
     });
 

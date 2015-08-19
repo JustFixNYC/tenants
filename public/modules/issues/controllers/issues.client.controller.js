@@ -14,9 +14,9 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
     $scope.newIssue = {};
     $scope.newIssue.issues = {};          
 
-    // $scope.newIssue.name = 'Maris Hernandez';
-    // //$scope.newIssue.phone = (Math.floor(Math.random() * 9999999999) + 1111111111).toString();
-    // $scope.newIssue.phone = '1234567890';
+    // $scope.newIssue.name = 'Marîa Hernandez';
+    // $scope.newIssue.phone = (Math.floor(Math.random() * 9999999999) + 1111111111).toString();
+    // //$scope.newIssue.phone = '1234567890';
     // $scope.newIssue.password = 'testtest';
     // $scope.newIssue.borough = 'Bronx';
     // $scope.newIssue.address = '3031 bronxwood ave';

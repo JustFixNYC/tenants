@@ -58,6 +58,10 @@ header.navbar {
   padding: 0 15px;
   height: 100%;
 
+  @media (min-width: $screen-sm-min) { 
+    padding-left: 0;
+  }    
+
 
   & > .logo > svg {
 
@@ -76,9 +80,9 @@ header.navbar {
     .navbar-anon & {
 
       // anon mobile
-      margin-top: 14px;
-      height: 28px;
-      width: 147px;
+      margin-top: 15px;
+      height: 25px;
+      width: 131px;
 
       @media (min-width: $screen-xs-min) { 
         // anon not mobile
