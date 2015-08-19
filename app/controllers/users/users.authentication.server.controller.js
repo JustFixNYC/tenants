@@ -18,6 +18,7 @@ var saveUser = function(req, user) {
 
   user.save(function(err) {
     if (err) {
+      console.log('yee',errorHandler.getErrorMessage(err));
       saved.reject(errorHandler.getErrorMessage(err));
     } else {
       // Remove sensitive data before login
@@ -51,7 +52,7 @@ exports.signup = function(req, res) {
   var save = function() {
     saveUser(req, user)
       .then(function (user) { res.json(user); })
-      .fail(function (err) { res.status(400).send(err); });
+      .fail(function (err) { res.status(400).send(err) });
   };
 
   // Add missing user fields

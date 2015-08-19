@@ -1,12 +1,12 @@
 body {
   background-color: rgb(241, 242, 246);
 
-  &.modal-open {
-    #modal-open-wrapper {
-      position:relative; //that's it
-      overflow:hidden;
-    }
-  }
+  // &.modal-open {
+  //   #modal-open-wrapper {
+  //     position:relative; //that's it
+  //     overflow:hidden;
+  //   }
+  // }
 }
 
 .content {

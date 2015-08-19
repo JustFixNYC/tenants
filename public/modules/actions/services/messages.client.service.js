@@ -28,7 +28,7 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', 'Authen
     var getRentalHistoryMessage = function() {
       var message = 'Hello,\n\nI, ' + user.fullName + ', ' +
             'am currently residing at ' + user.address + ',' +
-            ' Apt. ' + user.unit + ' in ' + user.borough + ', NY ' + user.geo.zip +
+            ' Apt. ' + user.unit + ' in ' + user.borough + ', NY ' +
             ' and would like to request the rental history for this apartment. Any information you can provide me would be greatly appreciated.\n\n' +
             'Thank you, \n\n' + user.fullName; 
       return message;
@@ -88,7 +88,7 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', 'Authen
                   user.fullName + '\n' +
                   user.address + '\n' +                
                   'Apt. ' + user.unit + '\n' +                
-                  user.borough + ', NY ' + user.geo.zip + '\n' +
+                  user.borough + ', NY ' + '\n' +
                   $filter('tel')(user.phone);
 
       return message;

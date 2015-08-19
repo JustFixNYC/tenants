@@ -24,11 +24,13 @@ exports.getErrorMessage = function(err) {
 	var message = '';
 
 	console.log('[ERROR]', err);
+	console.log('[ERROR????]', err.code);
 
 	if (err.code) {
 		switch (err.code) {
 			case 11000:
 			case 11001:
+				console.log('hello!');
 				message = getUniqueErrorMessage(err);
 				break;
 			default:
@@ -42,5 +44,6 @@ exports.getErrorMessage = function(err) {
 		return err;
 	}
 
+	console.log(message);
 	return message;
 };

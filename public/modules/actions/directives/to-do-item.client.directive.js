@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('actions')
-  .directive('toDoItem', ['$modal', '$sce', '$timeout', 'Activity', 'Actions', function ($modal, $sce, $timeout, Activity, Actions) {
+  .directive('toDoItem', ['$modal', '$sce', '$timeout', 'Activity', 'Actions',
+    function ($modal, $sce, $timeout, Activity, Actions) {
     return {
       restrict: 'E',
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
@@ -9,6 +10,8 @@ angular.module('actions')
         $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
       },
       link: function (scope, element, attrs) {
+
+        // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
 
         //scope.action is a $resource!
         if(!scope.action.completed) scope.action.completed = false;
@@ -28,8 +31,24 @@ angular.module('actions')
 
         scope.openModal = function() {
 
+          // ModalService.showModal({
+          //   templateUrl: 'modules/actions/partials/modals/' + scope.action.cta.template,
+          //   controller: scope.action.cta.controller,
+          //   inputs: {
+          //     newActivity: scope.newActivity
+          //   }
+          // }).then(function(modal) {
+
+          //   console.log(modal);
+
+          //   modal.element.modal();
+          //   // modal.close.then(function(result) {
+          //   //   $scope.yesNoResult = result ? "You said Yes" : "You said No";
+          //   // });
+          // });
+
           var modalInstance = $modal.open({
-            animation: false,
+            //animation: false,
             templateUrl: 'modules/actions/partials/modals/' + scope.action.cta.template,
             controller: scope.action.cta.controller,
             resolve: {

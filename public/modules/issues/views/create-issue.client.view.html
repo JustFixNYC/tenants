@@ -16,11 +16,14 @@
         <form class="form-horizontal create-issue-form" data-ng-submit="create()" novalidate>
             <div data-ui-view></div>
             <fieldset>
-                <div data-ng-show="error" class="text-danger">
+                <div data-ng-show="error.errors" class="text-danger">
                     <strong data-ng-repeat="err in error.errors">
                         <p data-ng-bind="err.message"></p>
                     </strong>
                 </div>
+                <div data-ng-show="error && !error.errors" class="text-danger">
+                    <strong><p data-ng-bind="error"></p></strong>
+                </div>                
             </fieldset>
         </form>
     </div>

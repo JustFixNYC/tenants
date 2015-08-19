@@ -2,7 +2,7 @@
 
 // Issues controller
 angular.module('actions').controller('UpdateActivityController', ['$scope', '$modalInstance', 'newActivity', 'Issues',
-  function ($scope, $modalInstance, newActivity, Issues) {
+  function ($scope, $modalInstance, newActivity, Issues, close) {
 
   $scope.newActivity = newActivity;
   $scope.issues = Issues.getUserIssuesByKey($scope.newActivity.key);

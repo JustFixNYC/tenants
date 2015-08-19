@@ -4,8 +4,8 @@
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'justfix';
-	var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ngTouch', 'ui.router', 'ui.bootstrap', 'ui.utils', 'ng.deviceDetector', 'ngFileUpload'];
-// 'ngAnimate',  'ngTouch', , 'bootstrapLightbox'
+	var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ui.router', 'ui.bootstrap', 'ui.utils', 'ng.deviceDetector', 'ngFileUpload', 'bootstrapLightbox'];
+// 'ngAnimate',  'ngTouch', , 'bootstrapLightbox' , 'angularModalService'
 
 
 	// Add a new vertical module

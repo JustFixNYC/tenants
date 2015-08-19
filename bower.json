@@ -7,7 +7,7 @@
     "angular-resource": "~1.4",
     "angular-mocks": "~1.4",
     "angular-animate": "~1.4",
-    "angular-bootstrap": "~0.13.3",
+    "angular-bootstrap": "~0.11.2",
     "angular-ui-utils": "~0.1.1",
     "angular-ui-router": "~0.2.11",
     "bootstrap-sass-official": "~3.3.5",
@@ -16,6 +16,7 @@
     "ng-file-upload-shim": "~6.1.2",
     "angular-bootstrap-lightbox": "~0.8.0",
     "angular-touch": "~1.4.4",
-    "angular-modal-service": "~0.6.7"
+    "angular-modal-service": "~0.6.7",
+    "jquery": "~2.1.3"
   }
 }
