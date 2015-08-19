@@ -13,8 +13,9 @@ angular.module('core').directive('justfixHeader', function($document, $window, $
       };
 
       // Collapsing the menu after navigation
-      scope.$on('$stateChangeSuccess', function() {
+      scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         scope.isCollapsed = false;
+        scope.stateName = toState.name;
       });
 
       // var wrapper = $document[0].getElementById('header-wrapper');

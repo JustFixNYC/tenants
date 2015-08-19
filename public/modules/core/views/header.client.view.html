@@ -1,4 +1,4 @@
-<div id="header-wrapper" justfix-header data-ng-class="authentication.user ? 'wrapper-user' : 'wrapper-anon'">
+<div id="header-wrapper" justfix-header data-ng-class="(authentication.user ? 'wrapper-user' : 'wrapper-anon') + ' ' + (stateName === 'home' ? 'home' : 'not-home')">
 
 	<div id="header" data-ng-class="authentication.user ? 'navbar-fixed-top' : 'navbar-anon'">
 		<div class="container">

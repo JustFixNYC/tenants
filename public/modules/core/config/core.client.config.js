@@ -13,6 +13,5 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
       $window.scrollTo(0, 0);
     });   
-
   }
 ]);

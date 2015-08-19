@@ -47,8 +47,20 @@ header.navbar {
       // height: $xs-header-height + $anon-height;
 
       & * {
-        fill: $darkgray-dark;        
+
+        fill: $darkgray-dark;
+
+
+        .home & {
+          fill: #fff;          
+        }
+
+         @media (min-width: $screen-xs-min) { 
+            fill: $darkgray-dark;  
+        }        
       }
+
+
 
     }
   }

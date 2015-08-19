@@ -16,6 +16,9 @@ angular.module('core').directive('fullBg', function($window) {
           return document.body.clientWidth;
         }
       }
+
+      $window.addEventListener('resize', function () {
         element.css('width', getWidth() + 'px');
+      });
     };
 });

@@ -52,7 +52,7 @@ exports.signup = function(req, res) {
   var save = function() {
     saveUser(req, user)
       .then(function (user) { res.json(user); })
-      .fail(function (err) { res.status(400).send(err) });
+      .fail(function (err) { res.status(400).send(err); });
   };
 
   // Add missing user fields

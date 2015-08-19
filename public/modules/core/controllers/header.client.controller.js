@@ -3,6 +3,9 @@
 angular.module('core').controller('HeaderController', ['$scope', 'Authentication', 'Menus',
 	function($scope, Authentication, Menus) {
 
+
+		// NOTE: using justfix directive instead....
+
 		// $scope.$watch(function(Authentication) { 
 		// 	console.log('auth'); return $scope.authentication; 
 		// });
@@ -15,9 +18,14 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 			$scope.isCollapsed = !$scope.isCollapsed;
 		};
 
+
 		// Collapsing the menu after navigation
-		$scope.$on('$stateChangeSuccess', function() {
+		$scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 			$scope.isCollapsed = false;
+			//$scope.currentStateTitle = toState.title;
+			//console.log(toState.title);
 		});
+
+
 	}
 ]);

@@ -34,7 +34,9 @@ module.exports = {
 		    'public/lib/re-tree/re-tree.min.js',
 		    'public/lib/ng-device-detector/ng-device-detector.min.js',
 		    'public/lib/ng-file-upload-shim/ng-file-upload-shim.min.js',
-		    'public/lib/ng-file-upload/ng-file-upload.min.js'
+		    'public/lib/ng-file-upload/ng-file-upload.min.js',
+		    'public/lib/fastclick/lib/fastclick.js'
+
 		  ]
 	  },
 	  css: [
