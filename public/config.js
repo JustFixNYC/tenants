@@ -4,7 +4,7 @@
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'justfix';
-	var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ngTouch', 'ui.router', 'ui.bootstrap', 'ui.utils', 'ng.deviceDetector', 'ngFileUpload', 'bootstrapLightbox'];
+	var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ngTouch', 'ui.router', 'ui.bootstrap', 'ui.utils', 'ng.deviceDetector', 'ngFileUpload'];
 // 'ngAnimate',  'ngTouch', , 'bootstrapLightbox'
 
 

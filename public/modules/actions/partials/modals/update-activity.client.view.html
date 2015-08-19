@@ -4,24 +4,26 @@
 <div class="modal-body">
   <p>
   Please add some details for the following issues:
-  <ul>
+<!--   <ul>
     <li data-ng-repeat="issue in issues" data-ng-bind="issue.title"></li>
-  </ul>
+  </ul> -->
   </p>
   <form class="update-activity-form" novalidate>
     <div class="form-group">
         <label class="control-label" for="title">When did these issues start to happen?</label>
         <div class="controls">
-            <!-- <p class="input-group"> -->
-              <input type="date" class="form-control" ng-model="newActivity.date" />
-  <!--             <input type="date" class="form-control" datepicker-popup ng-model="newActivity.date" is-open="openedDatepicker" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" /> -->
-<!--                     <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="openDP($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-              </span> -->
-            <!-- </p> -->
+<!--            <p class="input-group">
+              <input type="date" class="form-control" datepicker-popup ng-model="newActivity.date" is-open="dp.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="openDp()"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p> -->
+
+             <!-- <input type="date" class="form-control"  ng-model="newActivity.date"  /> -->
+             <input type="text" class="form-control"  ng-model="newActivity.date"  />
         </div>
     </div>  
-    <div class="form-group photo-uploads-container">
+<!--     <div class="form-group photo-uploads-container">
         <label class="control-label" for="photos">Add some photos</label>
         <div class="controls">
           <div class="no-gutter">
@@ -38,18 +40,13 @@
               <img ngf-src="newActivity.photo3" class="img-thumbnail">             
             </div>            
           </div>
-
-<!--             <button ngf-select ngf-capture="'camera'" accept="image/*" ng-model="newActivity.photo2" id="photo2" class="btn btn-default">Photo 2</button>
-            <img ngf-src="newActivity.photo1">
-            <button ngf-select ngf-capture="'camera'" accept="image/*" ng-model="newActivity.photo3" id="photo3" class="btn btn-default">Photo 3</button>
-            <img ngf-src="newActivity.photo3"> -->
         </div>
-    </div>        
+    </div>   -->      
     <div class="form-group">
-        <label class="control-label" for="description">Description</label>
-        <div class="controls">
-            <textarea name="description" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="5" maxlength="500" placeholder="Please describe these issues in more detail."></textarea>
-        </div>
+      <label class="control-label" for="description">Description</label>
+      <div class="controls">
+          <textarea name="description" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="5" maxlength="500" placeholder="Please describe these issues in more detail."></textarea>
+      </div>
     </div>     
   </form>
 </div>

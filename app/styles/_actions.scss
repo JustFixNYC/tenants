@@ -19,6 +19,15 @@
   .panel-content {
     margin-bottom: 15px;
   }
+
+  .btn-block {
+    max-width: 300px;
+    margin: 0 auto;
+
+    &.initial {
+      float: none !important;
+    }
+  }
 }
 
 .input-group {

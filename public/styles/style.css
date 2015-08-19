@@ -1,5 +1,8 @@
 body {
   background-color: #f1f2f6; }
+  body.modal-open #modal-open-wrapper {
+    position: relative;
+    overflow: hidden; }
 
 .content {
   margin-bottom: 50px; }
@@ -54,34 +57,127 @@ body {
 footer {
   margin-top: 75px; }
 
+#header-wrapper {
+  height: 85px;
+  margin-bottom: 0; }
+  @media (min-width: 480px) {
+    #header-wrapper {
+      height: 105px; } }
+  #header-wrapper.wrapper-user {
+    margin-bottom: 15px; }
+
+header.navbar {
+  min-height: 0;
+  margin-bottom: 0; }
+
+#header {
+  background-color: #2494be;
+  height: 35px; }
+  @media (min-width: 480px) {
+    #header {
+      height: 55px; } }
+  #header > .container {
+    height: 100%; }
+  #header.navbar-anon {
+    height: 50px;
+    background-color: transparent; }
+    @media (min-width: 480px) {
+      #header.navbar-anon {
+        height: 70px; } }
+    #header.navbar-anon .navbar-brand > .logo > svg * {
+      fill: #434A54; }
+
 .navbar-brand {
-  color: #454545; }
+  color: #454545;
+  padding: 0 15px;
+  height: 100%; }
+  .navbar-brand > .logo > svg {
+    margin-top: 10px;
+    height: 20px;
+    width: 105px; }
+    @media (min-width: 480px) {
+      .navbar-brand > .logo > svg {
+        margin-top: 17px;
+        height: 25px;
+        width: 131px; } }
+    .navbar-anon .navbar-brand > .logo > svg {
+      margin-top: 14px;
+      height: 28px;
+      width: 147px; }
+      @media (min-width: 480px) {
+        .navbar-anon .navbar-brand > .logo > svg {
+          margin-top: 23px;
+          height: 32px;
+          width: 168px; } }
+
+.navbar-header {
+  height: 100%; }
+  @media (max-width: 768px) {
+    .navbar-header {
+      width: 100%; } }
+  @media (max-width: 767px) {
+    .navbar-header {
+      width: auto; } }
 
 .navbar-toggle {
-  background-color: #FFF;
-  border-color: #AAB2BD;
-  color: #434A54;
+  border-color: #fff;
+  color: #fff;
   border-radius: 7px;
-  padding: 5px 8px; }
+  padding: 3px 6px;
+  font-size: 13px;
+  margin-bottom: 4px;
+  margin-top: 5px; }
+  @media (min-width: 480px) {
+    .navbar-toggle {
+      margin-top: 15px; } }
   .navbar-toggle .icon-bar {
-    background-color: #454545; }
+    background-color: #fff; }
 
 .sign-in-button {
-  margin-top: 10px;
-  margin-right: 15px; }
-  @media (min-width: 768px) {
+  margin-top: 15px;
+  margin-right: 15px;
+  display: none; }
+  @media (max-width: 768px) {
     .sign-in-button {
-      display: none; } }
+      display: inline-block; } }
+  @media (min-width: 480px) {
+    .sign-in-button {
+      margin-top: 20px; } }
 
 .navbar-collapse {
-  padding: 0; }
+  padding: 0;
+  position: fixed;
+  top: 84px;
+  width: 100%; }
+  @media (min-width: 480px) {
+    .navbar-collapse {
+      top: 102px; } }
+  .navbar-collapse.ng-animate {
+    -webkit-transition: height 100ms cubic-bezier(0.19, 1, 0.22, 1);
+    -moz-transition: height 100ms cubic-bezier(0.19, 1, 0.22, 1);
+    -o-transition: height 100ms cubic-bezier(0.19, 1, 0.22, 1);
+    transition: height 100ms cubic-bezier(0.19, 1, 0.22, 1);
+    /* easeOutExpo */ }
   @media (min-width: 768px) {
     .navbar-collapse.collapse {
       display: none !important; } }
 
-@media (max-width: 768px) {
-  .navbar-desktop {
-    display: none; } }
+.navbar-desktop {
+  margin-right: 15px; }
+  .navbar-anon .navbar-desktop ul a {
+    line-height: 40px; }
+  .navbar-desktop ul.navbar-right {
+    margin-right: -15px; }
+  .navbar-desktop ul .dropdown .dropdown-toggle {
+    line-height: 25px; }
+    .navbar-desktop ul .dropdown .dropdown-toggle:hover, .navbar-desktop ul .dropdown .dropdown-toggle:focus {
+      background-color: #fff;
+      color: #2494be; }
+  .navbar-desktop ul .dropdown a {
+    color: #fff; }
+  @media (max-width: 768px) {
+    .navbar-desktop {
+      display: none; } }
 
 ul.navbar-mobile {
   border: none;
@@ -93,7 +189,7 @@ ul.navbar-mobile {
     font-weight: 700;
     color: #AAB2BD; }
   ul.navbar-mobile li {
-    margin: 10px 0; }
+    margin: 8px 0; }
   ul.navbar-mobile li a {
     padding: 5px 0;
     color: #FFF; }
@@ -111,18 +207,58 @@ ul.navbar-mobile {
     background-color: #656D78;
     border-bottom: none; }
 
-#bottom-nav {
-  background-color: #eeeeee;
-  border-top: 1px solid #777777; }
-  #bottom-nav .navbar-nav {
-    margin: 0; }
-  #bottom-nav li {
-    border-right: 1px solid #777777; }
-    #bottom-nav li:last-child {
-      border-right: none; }
-  #bottom-nav .nav > li > a {
-    padding-top: 7.5px;
-    padding-bottom: 0; }
+#top-nav {
+  background-color: #434A54;
+  border-top: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  top: 35px; }
+  @media (min-width: 480px) {
+    #top-nav {
+      top: 55px; } }
+  #top-nav .navbar-nav {
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0; }
+    @media (min-width: 768px) {
+      #top-nav .navbar-nav {
+        padding-left: 15px;
+        padding-right: 15px; } }
+    @media (min-width: 768px) {
+      #top-nav .navbar-nav {
+        float: none;
+        margin-right: auto;
+        margin-left: auto; } }
+    #top-nav .navbar-nav > li {
+      border-right: 1px solid #333333;
+      border-left: 1px solid #333333;
+      background-color: #434A54;
+      padding-bottom: 3px; }
+      @media (max-width: 767px) {
+        #top-nav .navbar-nav > li:last-child {
+          border-right: none; }
+        #top-nav .navbar-nav > li:first-child {
+          border-left: none; } }
+      #top-nav .navbar-nav > li:first-child {
+        border-left: 1px solid #333333; }
+      #top-nav .navbar-nav > li.active {
+        background-color: #2c3138; }
+        #top-nav .navbar-nav > li.active .glyphicon {
+          color: #3BAFDA; }
+      #top-nav .navbar-nav > li > a {
+        padding: 4px 0 0 0;
+        color: #E6E9ED; }
+        #top-nav .navbar-nav > li > a .glyphicon {
+          font-size: 24px; }
+        #top-nav .navbar-nav > li > a:hover, #top-nav .navbar-nav > li > a:focus {
+          text-decoration: none;
+          background-color: transparent; }
+        #top-nav .navbar-nav > li > a div {
+          font-size: 12px;
+          line-height: 12px; }
 
 #landing section {
   margin: 15px 0; }
@@ -263,6 +399,11 @@ ul.navbar-mobile {
 
 .action-panel .panel-content {
   margin-bottom: 15px; }
+.action-panel .btn-block {
+  max-width: 300px;
+  margin: 0 auto; }
+  .action-panel .btn-block.initial {
+    float: none !important; }
 
 .input-group .form-control {
   padding-top: 10px;

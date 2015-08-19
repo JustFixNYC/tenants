@@ -43,15 +43,22 @@
 	<![endif]-->
 </head>
 
-<body class="ng-cloak">
-	<header data-ng-include="'/modules/core/views/header.client.view.html'" class="navbar"></header>
+<body class="ng-cloak" data-ng-class="{{ $root.user.authenticated ? 'trufgfe' : 'fsdfdfd' }}">
+
+<div id="modal-open-wrapper">
+
+	<header class="navbar">
+		<div data-ng-include="'/modules/core/views/header.client.view.html'"></div>
+	</header>
 	<section class="content">
 		<section class="container">
 			{% block content %}{% endblock %}
 		</section>
 		<footer class="container" data-ng-include="'/modules/core/views/footer.client.view.html'"></footer>
 	</section>
-	<section data-ng-include="'/modules/core/views/nav.client.view.html'"></section>
+
+</div>
+
 
 	<!--Embedding The User Object-->
 	<script type="text/javascript">

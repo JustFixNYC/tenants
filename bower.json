@@ -15,6 +15,7 @@
     "ng-device-detector": "~1.1.8",
     "ng-file-upload-shim": "~6.1.2",
     "angular-bootstrap-lightbox": "~0.8.0",
-    "angular-touch": "~1.4.4"
+    "angular-touch": "~1.4.4",
+    "angular-modal-service": "~0.6.7"
   }
 }

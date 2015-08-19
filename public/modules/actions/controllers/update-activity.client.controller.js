@@ -9,6 +9,19 @@ angular.module('actions').controller('UpdateActivityController', ['$scope', '$mo
   
   console.log('update activity cntrl',$scope.newActivity);
 
+  $scope.dp = {
+    opened: false,
+  };
+
+  $scope.openDp = function() {
+
+      $scope.dp.opened = !$scope.dp.opened;
+      console.log('wtf');
+    };
+
+
+ // $scope.open
+
   $scope.onFileSelect = function(files) {
     console.log(files);
   };

@@ -2,6 +2,11 @@
 
 angular.module('core').controller('HeaderController', ['$scope', 'Authentication', 'Menus',
 	function($scope, Authentication, Menus) {
+
+		// $scope.$watch(function(Authentication) { 
+		// 	console.log('auth'); return $scope.authentication; 
+		// });
+
 		$scope.authentication = Authentication;
 		$scope.isCollapsed = false;
 		$scope.menu = Menus.getMenu('topbar');
