@@ -180,12 +180,13 @@ module.exports = function(grunt) {
 		  dist: {
 		  	//you could use this as part of the build job (instead of using cssmin)
 		    options: {
-		    	loadPath: ['public/lib/bootstrap-sass-official/assets/stylesheets','app/styles'],
+		    	loadPath: ['public/lib/bootstrap-sass-official/assets/stylesheets','public/lib/Bootflat/bootflat/scss','app/styles'],
 		      style: 'compressed',
 		      compass: false
 		    },
 		    files: {
 		    	'public/dist/bootstrap.min.css': 'app/styles/bootstrap-config.scss',
+		    	'public/dist/bootflat.min.css': 'app/styles/bootflat-config.scss',
 		      'public/dist/style.min.css': 'app/styles/main.scss'
 		    }
 		  }

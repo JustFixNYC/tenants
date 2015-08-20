@@ -20,5 +20,6 @@ angular.module('core').directive('fullBg', function($window) {
       $window.addEventListener('resize', function () {
         element.css('width', getWidth() + 'px');
       });
+      element.css('width', getWidth() + 'px');
     };
 });

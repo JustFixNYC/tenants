@@ -22,6 +22,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 		state('home', {
 			url: '/',
 			templateUrl: 'modules/core/views/home.client.view.html'
+		})
+		.state('manifesto', {
+			url: '/manifesto',
+			templateUrl: 'modules/core/views/manifesto.client.view.html'
 		});
 	}
 ]);

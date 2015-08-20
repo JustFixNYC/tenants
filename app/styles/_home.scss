@@ -1,4 +1,12 @@
+
+$justfix-blue: #0096d7;
+
 #landing {
+
+  margin-top: -87px;
+  @media (min-width: $screen-xs-min) { 
+    margin-top: -107px;
+  }
 
   .bg-image {
     position: absolute;
@@ -12,13 +20,11 @@
   }
 
   section {
-    margin: 15px 0;
+    padding: 15px 0;
 
     &.above-fold {
 
-      position: relative;
-      top: -51px;
-      top: -130px;
+      margin-top: 0;
 
       .above-fold-content {
         position: absolute;
@@ -33,20 +39,38 @@
         color: #fff;
 
         @media (max-width: $screen-sm-max) { 
-          width: 100%;
+          width: 90%;
         }
 
         h3 {
           margin-top: 0;
+        
+          @media (min-width: $screen-xs-min) { 
+            font-size: 45px;
+          }
+        }
+
+        p.lead {
+          font-weight: 500;
         }
 
         .btn {
           max-width: 300px;
           margin: 0 auto;
+          font-weight: 600;
           @media (min-width: $screen-sm-min) { 
             font-size: 20px;
             line-height: 1.6;
             height: 50px;
+          }
+
+          &.btn-primary {
+            background-color: $justfix-blue;
+
+            &:hover, &:focus, &:active {
+              background-color: lighten($justfix-blue, 10%);
+            }
+
           }
 
           &.btn-link {
@@ -57,7 +81,15 @@
       }
     }
 
+
+
     &.features {
+
+      @media (min-width: $screen-xs-min) {
+        padding: 150px 0;
+      } 
+       
+
       div {
         &:first-child {
           margin-left: 0;
@@ -72,13 +104,102 @@
         background-color: #fff;
         border: 1px solid #eee;          
       }
+
+      .manifesto-link {
+        text-decoration: underline;
+        color: $justfix-blue;
+
+        &:hover, &:focus, &:active {
+          color: lighten($justfix-blue, 10%);
+        }
+      }
+
+      h1 {
+          @media (max-width: $screen-xs-max) {
+            font-size: 30px;
+          }
+      }
+
+      &.main-idea {
+        position: relative;
+
+        &:before {
+          content: "";
+          position: absolute;
+          display: block;
+          top: 0;
+          bottom: 0;
+          width: 200%;
+          left: -50%;
+          height: 100%;
+          background-color: #fff;
+          z-index: -1;
+        }
+
+        @media (max-width: $screen-md-max) {
+          padding-left: 15px;
+          padding-right: 15px;
+        }
+
+        .features-content {
+          position: absolute;
+          width: 100%;
+          top: 50%;
+          left: 50%;
+          -webkit-transform: translate(-50%, -50%);
+          -moz-transform: translate(-50%, -50%);
+          -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+          z-index: 1000;
+        }
+
+        p.lead {
+          max-width: 960px;
+          margin: 0 auto;
+        }
+      }
+
+      &.your-case {
+
+        @media (max-width: $screen-xs-max) {
+          padding: 15px;
+
+          & > div {
+            padding: 0;
+          }
+        }  
+
+
+
+      }
+
+      &.manifesto-idea {
+        position: relative;
+
+        @media (max-width: $screen-xs-max) {
+          padding: 75px 0;
+        } 
+        @media (min-width: $screen-xs-min) {
+          padding-left: 15px;
+          padding-right: 15px;
+        }
+
+        &:before {
+          content: "";
+          position: absolute;
+          display: block;
+          top: 0;
+          bottom: 0;
+          width: 200%;
+          left: -50%;
+          height: 100%;
+          background-color: #fff;
+          z-index: -1;
+        }
+      }
+
     }
 
-    &.manifesto {
-      height: 250px;
-      background-color: #fff;
-      text-align: center;
-    }
   }
 
 }

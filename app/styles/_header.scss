@@ -20,6 +20,7 @@ $anon-height: 15px;
 header.navbar {
   min-height: 0;
   margin-bottom: 0;
+  z-index: 1000;
 }
 
 #header {
@@ -48,16 +49,15 @@ header.navbar {
 
       & * {
 
-        fill: $darkgray-dark;
+        fill: #fff;
 
-
-        .home & {
-          fill: #fff;          
+        .not-home & {
+          fill: $darkgray-dark;         
         }
 
-         @media (min-width: $screen-xs-min) { 
-            fill: $darkgray-dark;  
-        }        
+        //  @media (min-width: $screen-xs-min) { 
+        //     fill: $darkgray-dark;  
+        // }        
       }
 
 
@@ -219,6 +219,21 @@ header.navbar {
 
     &.navbar-right {
       margin-right: -15px;
+    }
+
+    &:first-child {
+
+
+      .home & > li > a {
+        color: #fff;
+      }
+
+      .home & > li > a:hover,
+      .home & > li > a:focus, 
+      .home & > li > a:active {
+        color: #fff;
+        background-color: transparent;
+      }
     }
 
     .dropdown {

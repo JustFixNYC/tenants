@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('core').directive('aboveFold', function($window) {
+angular.module('core').directive('aboveFold', ['$window', 'deviceDetector', function($window, deviceDetector) {
     return function (scope, element, attrs) {
-        var w = angular.element($window);
+        //var w = angular.element($window);
 
         function getHeight() {
           if (self.innerWidth) {
@@ -19,9 +19,13 @@ angular.module('core').directive('aboveFold', function($window) {
         }
 
 
-
-        //element.css('height', getHeight() * 0.8 + 'px');
+        if(!deviceDetector.isMobile()) {
+          $window.addEventListener('resize', function () {
+            element.css('height', getHeight() + 'px');
+          });         
+        }
         element.css('height', getHeight() + 'px');
+
         //console.log($window.screen);
     };
-});
+}]);
