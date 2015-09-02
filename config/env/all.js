@@ -13,14 +13,11 @@ module.exports = {
 	assets: {
 	  lib: {
 		  css: [
-		    // 'public/lib/bootstrap/dist/css/bootstrap.css',
-		    // 'public/lib/bootstrap/dist/css/bootstrap-theme.css',
 		    'lib/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.css',
 		    'public/styles/bootstrap.css',
 		    'public/styles/bootflat.css'
 		  ],
-		  js: [
-		    // 'public/lib/jquery/dist/jquery.min.js',		  
+		  js: [	  
 		    'public/lib/angular/angular.js',
 		    'public/lib/angular-resource/angular-resource.js', 
 		    'public/lib/angular-animate/angular-animate.js', 
@@ -29,14 +26,13 @@ module.exports = {
 		    'public/lib/angular-ui-utils/ui-utils.js',
 		    'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
 		    'public/lib/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.js',
-		    // 'public/lib/bootstrap-sass-official/javascripts/bootstrap/bootstrap.min.js',
-		    // 'public/lib/angular-modal-service/dst/angular-modal-service.min.js',
+		    'public/lib/angular-lazy-img/release/angular-lazy-img.min.js',
+		    'public/lib/angular-scroll/angular-scroll.min.js',
 		    'public/lib/re-tree/re-tree.min.js',
 		    'public/lib/ng-device-detector/ng-device-detector.min.js',
 		    'public/lib/ng-file-upload-shim/ng-file-upload-shim.min.js',
 		    'public/lib/ng-file-upload/ng-file-upload.min.js',
 		    'public/lib/fastclick/lib/fastclick.js'
-
 		  ]
 	  },
 	  css: [

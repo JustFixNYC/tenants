@@ -3,7 +3,9 @@
 module.exports = {
   db: process.env.MONGOLAB_URI,
   app: {
-    title: 'JustFix.nyc'
+    title: 'JustFix.nyc',
+    description: 'JustFix.nyc is a tool for New Yorkers to document, organize, and take action in getting repairs made on your apartment.',
+    keywords: 'something'
   },
   mailer: {
     from: process.env.MAILER_FROM || 'MAILER_FROM',
