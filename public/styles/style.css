@@ -317,9 +317,13 @@ ul.navbar-mobile {
         left: 0%;
         width: 100%;
         height: 125%;
-        background: url("/modules/core/img/brownstones.jpg") no-repeat center;
+        background: url("/modules/core/img/brownstones_small.jpg") no-repeat center;
         background-size: cover;
         z-index: -1; }
+      @media (min-width: 480px) {
+        #landing section.above-fold:before {
+          background: url("/modules/core/img/brownstones.jpg") no-repeat center;
+          background-size: cover; } }
     #landing section.features {
       position: relative; }
       @media (min-width: 480px) {

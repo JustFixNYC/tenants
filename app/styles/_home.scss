@@ -77,9 +77,16 @@ $justfix-blue: #0096d7;
         left: 0%;          
         width: 100%;
         height: 125%;
-        background: url("/modules/core/img/brownstones.jpg") no-repeat center;
+        background: url("/modules/core/img/brownstones_small.jpg") no-repeat center;
         background-size: cover;
         z-index: -1;
+      }
+
+      @media (min-width: $screen-xs-min) {
+        &:before {
+          background: url("/modules/core/img/brownstones.jpg") no-repeat center;
+          background-size: cover;
+        }
       }
 
     }
