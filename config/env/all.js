@@ -3,7 +3,7 @@
 module.exports = {
 	app: {
 	  title: 'JustFix.nyc',
-	  description: 'JustFix.nyc is a tool for New Yorkers to document, organize, and take action in getting repairs made on your apartment.',
+	  description: 'JustFix.nyc is a tool for New Yorkers to document, organize, and take action in getting repairs made on their apartment.',
 	  keywords: 'something'
 	},
 	port: process.env.PORT || 3000,
