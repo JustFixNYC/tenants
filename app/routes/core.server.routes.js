@@ -17,13 +17,13 @@ module.exports = function(app) {
   app.route('/demo').get(function (req, res) {
 
     var demoUser = {
-      name: "Amy Moore",
+      name: 'Amy Moore',
       phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
-      borough: "Brooklyn",
-      address: "654 Park Place",
-      unit: "10F",
-      nycha: "no",
-      password: "password"
+      borough: 'Brooklyn',
+      address: '654 Park Place',
+      unit: '10F',
+      nycha: 'no',
+      password: 'password'
     };
 
     //console.log(serialize(demoUser));

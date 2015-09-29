@@ -1353,6 +1353,20 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
     $scope.newIssue = {};
     $scope.newIssue.issues = {};          
 
+    if($location.search().address) {
+
+      var query = $location.search();
+      console.log('string');
+
+      $scope.newIssue.name = query.name;
+      $scope.newIssue.phone = query.phone;
+      $scope.newIssue.address = query.address;
+      $scope.newIssue.borough = query.borough;
+      $scope.newIssue.unit = query.unit;
+      $scope.newIssue.nycha = query.nycha;
+      $scope.newIssue.password = query.password;    
+    }
+
     // $scope.newIssue.name = 'Marîa Hernandez';
     // $scope.newIssue.phone = (Math.floor(Math.random() * 9999999999) + 1111111111).toString();
     // //$scope.newIssue.phone = '1234567890';
