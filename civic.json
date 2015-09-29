@@ -1,0 +1,19 @@
+{
+    "status": "Alpha",
+    "thumbnailUrl": "http://degy28l8twq8c.cloudfront.net/justfixnyc.png",
+    "bornAt": "Blue Ridge Labs",
+    "geography": "NYC",
+    "type":"Web App",
+    "needs": [
+        {"need": "UI/UX Designer"},
+        {"need": "Community Partners"},
+        {"need": "Government Partners"}
+    ],
+    "categories": [
+        {"category": "Community"},
+        {"category": "Legal Services"},
+        {"category": "Housing"},
+        {"category": "Affordable Housing"},
+        {"category": "Open Data"}
+    ]
+}
