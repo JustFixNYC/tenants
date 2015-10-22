@@ -4,7 +4,20 @@
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'justfix';
-	var applicationModuleVendorDependencies = ['ngResource', 'ui.router', 'ui.bootstrap', 'ui.utils', 'ng.deviceDetector', 'ngFileUpload', 'bootstrapLightbox', 'angularLazyImg', 'duScroll'];
+	var applicationModuleVendorDependencies = [
+		'ngResource', 
+		'ngCookies',
+		'ui.router', 
+		'ui.bootstrap', 
+		'ui.utils', 
+		'ng.deviceDetector', 
+		'ngFileUpload', 
+		'bootstrapLightbox', 
+		'angularLazyImg', 
+		'duScroll',
+		'pascalprecht.translate',	// angular-translate
+ 		'tmh.dynamicLocale'// angular-dynamic-locale
+	];
 // 'ngAnimate',  'ngTouch', , 'bootstrapLightbox' , 'angularModalService'
 
 
@@ -28,19 +41,42 @@ var ApplicationConfiguration = (function() {
 //Start by defining the main module and adding the module dependencies
 angular.module(ApplicationConfiguration.applicationModuleName, ApplicationConfiguration.applicationModuleVendorDependencies);
 
-// Setting HTML5 Location Mode
-angular.module(ApplicationConfiguration.applicationModuleName).config(['$locationProvider',
-	function($locationProvider) {
-		$locationProvider.hashPrefix('!');
-	}
-]);
 
-// whitelisting URLs
-angular.module(ApplicationConfiguration.applicationModuleName).config(['$compileProvider',
-  function ($compileProvider) {
-      $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|tel|sms|mailto):/);
-  }
-]);
+angular.module(ApplicationConfiguration.applicationModuleName)
+  // Setting HTML5 Location Mode
+  .config(['$locationProvider', function($locationProvider) {
+		$locationProvider.hashPrefix('!');
+  }])
+  // whitelisting URLs
+  .config(['$compileProvider', function ($compileProvider) {
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|tel|sms|mailto):/);
+  }])
+  // internationalization constants
+  .constant('LOCALES', {
+    'locales': {
+        'en_US': 'English',      
+        'es': 'Español'
+    },
+    'preferredLocale': 'en_US'
+  })
+  // enable logging for missing IDs
+  .config(["$translateProvider", function ($translateProvider) {
+    $translateProvider.useMissingTranslationHandlerLog();
+  }])
+  // async loading for templates
+  .config(["$translateProvider", function ($translateProvider) {
+    $translateProvider.useStaticFilesLoader({
+        prefix: 'languages/locale-',// path to translations files
+        suffix: '.json'// suffix, currently- extension of the translations
+    });
+    $translateProvider.preferredLanguage('en_US');// is applied on first load
+    $translateProvider.useLocalStorage();// saves selected language to localStorage
+  }])
+  // location of the locale settings
+  .config(["tmhDynamicLocaleProvider", function (tmhDynamicLocaleProvider) {
+    tmhDynamicLocaleProvider.localeLocationPattern('lib/angular-i18n/angular-locale_{{locale}}.js');
+  }]);  
+
 
 //Then define the init function for starting up the application
 angular.element(document).ready(function() {
@@ -48,7 +84,7 @@ angular.element(document).ready(function() {
 	if (window.location.hash === '#_=_') window.location.hash = '#!';
 
   // Fastclick
-  FastClick.attach(document.body);
+  if (FastClick) FastClick.attach(document.body);
 
 	//Then init the app
 	angular.bootstrap(document, [ApplicationConfiguration.applicationModuleName]);
@@ -875,6 +911,25 @@ angular.module('core').directive('justfixHeader', ["$document", "$window", "$tim
 }]);
 'use strict';
 
+angular.module('core').directive('languageSelect', ["LocaleService", function (LocaleService) { 'use strict';
+  return {
+    restrict: 'A',
+    replace: true,
+    templateUrl: 'modules/core/partials/language-select.client.view.html',
+    controller: ["$scope", function ($scope) {
+      $scope.currentLocaleDisplayName = LocaleService.getLocaleDisplayName();
+      $scope.localesDisplayNames = LocaleService.getLocalesDisplayNames();
+      $scope.visible = $scope.localesDisplayNames &&
+      $scope.localesDisplayNames.length > 1;
+
+      $scope.changeLanguage = function (locale) {
+        LocaleService.setLocaleByDisplayName(locale);
+      };
+    }]
+  };
+}]);
+'use strict';
+
 angular.module('core').directive('phoneInput', ["$filter", "$browser", function($filter, $browser) {
   return {
     require: 'ngModel',
@@ -1018,6 +1073,68 @@ angular.module('core').filter('tel', function () {
     }
   };
 });
+'use strict';
+
+//Menu service used for managing  menus
+angular.module('core').service('LocaleService', ["$translate", "LOCALES", "$rootScope", "tmhDynamicLocale", function ($translate, LOCALES, $rootScope, tmhDynamicLocale) {
+
+  // PREPARING LOCALES INFO
+  var localesObj = LOCALES.locales;
+
+  // locales and locales display names
+  var _LOCALES = Object.keys(localesObj);
+  if (!_LOCALES || _LOCALES.length === 0) {
+    console.error('There are no _LOCALES provided');
+  }
+  var _LOCALES_DISPLAY_NAMES = [];
+  _LOCALES.forEach(function (locale) {
+    _LOCALES_DISPLAY_NAMES.push(localesObj[locale]);
+  });
+  
+  // STORING CURRENT LOCALE
+  var currentLocale = $translate.proposedLanguage();// because of async loading
+  
+  // METHODS
+  var checkLocaleIsValid = function (locale) {
+    return _LOCALES.indexOf(locale) !== -1;
+  };
+  
+  var setLocale = function (locale) {
+    if (!checkLocaleIsValid(locale)) {
+      console.error('Locale name "' + locale + '" is invalid');
+      return;
+    }
+    currentLocale = locale;// updating current locale
+  
+    // asking angular-translate to load and apply proper translations
+    $translate.use(locale);
+  };
+  
+  // EVENTS
+  // on successful applying translations by angular-translate
+  $rootScope.$on('$translateChangeSuccess', function (event, data) {
+    document.documentElement.setAttribute('lang', data.language);// sets "lang" attribute to html
+  
+     // asking angular-dynamic-locale to load and apply proper AngularJS $locale setting
+    tmhDynamicLocale.set(data.language.toLowerCase().replace(/_/g, '-'));
+  });
+  
+  return {
+    getLocaleDisplayName: function () {
+      return localesObj[currentLocale];
+    },
+    setLocaleByDisplayName: function (localeDisplayName) {
+      setLocale(
+        _LOCALES[
+          _LOCALES_DISPLAY_NAMES.indexOf(localeDisplayName)// get locale index
+          ]
+      );
+    },
+    getLocalesDisplayNames: function () {
+      return _LOCALES_DISPLAY_NAMES;
+    }
+  };
+}]);
 'use strict';
 
 //Menu service used for managing  menus

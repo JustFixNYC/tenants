@@ -84,6 +84,19 @@ body {
   padding: 0;
 }
 
+.language-select {
+  position: relative;
+
+  .language-select-toggle {
+    display: inline-block;
+    padding-top: 15px;
+  }
+
+  .language-select-menu {
+    top: 55px;
+  }
+}
+
 .no-gutter [class*="col"] {
   padding: 0;
 }

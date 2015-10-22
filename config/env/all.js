@@ -20,7 +20,8 @@ module.exports = {
 		  js: [	  
 		    'public/lib/angular/angular.js',
 		    'public/lib/angular-resource/angular-resource.js', 
-		    'public/lib/angular-animate/angular-animate.js', 
+		    'public/lib/angular-cookies/angular-cookies.js', 
+		    // 'public/lib/angular-animate/angular-animate.js', 
 		    'public/lib/angular-ui-router/release/angular-ui-router.js',
 		    'public/lib/angular-touch/angular-touch.min.js',
 		    'public/lib/angular-ui-utils/ui-utils.js',
@@ -32,7 +33,13 @@ module.exports = {
 		    'public/lib/ng-device-detector/ng-device-detector.min.js',
 		    'public/lib/ng-file-upload-shim/ng-file-upload-shim.min.js',
 		    'public/lib/ng-file-upload/ng-file-upload.min.js',
-		    'public/lib/fastclick/lib/fastclick.js'
+		    'public/lib/fastclick/lib/fastclick.js',
+				'public/lib/angular-translate/angular-translate.js',
+				'public/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
+				'public/lib/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
+				'public/lib/angular-translate-storage-local/angular-translate-storage-local.js',
+				'public/lib/angular-translate-handler-log/angular-translate-handler-log.js',
+				'public/lib/angular-dynamic-locale/src/tmhDynamicLocale.js'	    
 		  ]
 	  },
 	  css: [

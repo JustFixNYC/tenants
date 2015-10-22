@@ -49,6 +49,14 @@ body {
   border-radius: 0;
   padding: 0; }
 
+.language-select {
+  position: relative; }
+  .language-select .language-select-toggle {
+    display: inline-block;
+    padding-top: 15px; }
+  .language-select .language-select-menu {
+    top: 55px; }
+
 .no-gutter [class*="col"] {
   padding: 0; }
 
@@ -170,8 +178,6 @@ header.navbar {
   margin-right: 15px; }
   .navbar-anon .navbar-desktop ul a {
     line-height: 40px; }
-  .navbar-desktop ul.navbar-right {
-    margin-right: -15px; }
   .home .navbar-desktop ul:first-child > li > a {
     color: #fff; }
   .home .navbar-desktop ul:first-child > li > a:hover, .home .navbar-desktop ul:first-child > li > a:focus, .home .navbar-desktop ul:first-child > li > a:active {

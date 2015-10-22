@@ -4,7 +4,20 @@
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'justfix';
-	var applicationModuleVendorDependencies = ['ngResource', 'ui.router', 'ui.bootstrap', 'ui.utils', 'ng.deviceDetector', 'ngFileUpload', 'bootstrapLightbox', 'angularLazyImg', 'duScroll'];
+	var applicationModuleVendorDependencies = [
+		'ngResource', 
+		'ngCookies',
+		'ui.router', 
+		'ui.bootstrap', 
+		'ui.utils', 
+		'ng.deviceDetector', 
+		'ngFileUpload', 
+		'bootstrapLightbox', 
+		'angularLazyImg', 
+		'duScroll',
+		'pascalprecht.translate',	// angular-translate
+ 		'tmh.dynamicLocale'// angular-dynamic-locale
+	];
 // 'ngAnimate',  'ngTouch', , 'bootstrapLightbox' , 'angularModalService'
 
 
