@@ -293,6 +293,9 @@ ul.navbar-mobile {
         transform: translateY(-50%);
         z-index: 10;
         color: #fff; }
+        @media (max-width: 767px) {
+          #landing section.above-fold .above-fold-content {
+            top: 45%; } }
         #landing section.above-fold .above-fold-content h3 {
           margin-top: 0; }
           @media (min-width: 480px) {
