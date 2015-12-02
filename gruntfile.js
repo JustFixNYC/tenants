@@ -174,7 +174,7 @@ module.exports = function(grunt) {
 		  			'public/lib/Bootflat/bootflat/scss'
 		  		],
 		  		update: true,
-		  		sourcemap: 'none',
+		  		sourceMap: false
 		  	},		    
 		    files: {
 		      'public/styles/style.css': 'app/styles/main.scss',

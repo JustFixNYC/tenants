@@ -2,6 +2,20 @@
     <div class="page-header">
         <h1>Your Case</h1>
         <p><em>Share your case with case workers, attorneys, and judges as a way to tell your story. Your case can be found anytime you need it by going to <b style="text-decoration:underline;">JustFix.nyc/{{ authentication.user.phone }}</b> (thats your phone number!)</em></p>
+        <br />
+        <div class="row">
+          <div class="col-xs-6">
+            <a  class="btn btn-primary disabled btn-block pull-left">
+                Export PDF
+            </a>  
+          </div> 
+          <div class="col-xs-6">   
+            <button class="btn btn-primary disabled btn-block pull-right">
+                <!-- <span class="glyphicon glyphicon-ok pull-left" style="padding-top:1px"></span> -->
+                Share Case
+            </button>
+          </div>  
+        </div>
     </div>
     <div data-ng-if="activities.length" class="activities-container">
         <div data-ng-repeat="activity in activities | orderBy:'date':true" class="panel panel-default">
