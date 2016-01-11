@@ -7,7 +7,7 @@ var _ = require('lodash'),
   Q = require('q'),
   errorHandler = require('../errors.server.controller'),
   actionsHandler = require('../actions.server.controller'),
-  addressHandler = require('../../services/address.server.service'),  
+  addressHandler = require('../../services/address.server.service'),
   mongoose = require('mongoose'),
   passport = require('passport'),
   User = mongoose.model('User');
@@ -23,7 +23,7 @@ var saveUser = function(req, user) {
     } else {
       // Remove sensitive data before login
       user.password = undefined;
-      user.salt = undefined;  
+      user.salt = undefined;
 
       req.login(user, function(err) {
         if (err) {
@@ -64,8 +64,8 @@ exports.signup = function(req, res) {
     user.issues[area].forEach(function (i) {
       if(i.emergency && user.actionFlags.indexOf('hasEmergencyIssues') === -1) {
         user.actionFlags.push('hasEmergencyIssues');
-      }        
-        
+      }
+
     });
   }
 
@@ -76,8 +76,8 @@ exports.signup = function(req, res) {
   addressHandler.requestGeoclient(user.borough, user.address)
     .then(function (geo) {
       user.geo = geo;
-      // check for tenant harrasment hotline
-      if(addressHandler.harrasmentHelp(user.geo.zip)) user.actionFlags.push('isHarrasmentElligible');
+      // check for tenant harassment hotline
+      if(addressHandler.harassmentHelp(user.geo.zip)) user.actionFlags.push('isHarassmentElligible');
       return addressHandler.requestRentStabilized(geo.bbl, geo.lat, geo.lon);
     })
     .then(function (rs) {

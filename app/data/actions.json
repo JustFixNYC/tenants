@@ -31,17 +31,17 @@
     }
   },
   {
-    "title": "Call Tenant Harrassment Hotline",
+    "title": "Call Tenant Harassment Hotline",
     "content": "It looks like you live in an area that experiences a <b>large amount of turnover and harassment</b> and are eligible to call the New York City Tenant Protection Hotline. Hours: Monday – Friday, 10AM – 4PM.",
-    "key": "contactHarrasment",
-    "addIf": ["isHarrasmentElligible"],
+    "key": "contactHarassment",
+    "addIf": ["isHarassmentElligible"],
     "cta": {
       "type": "call",
       "buttonTitle": "Call",
       "phone": 9176614500
     },
     "followUp": {
-      "title": "What did the anti-harrassment hotline say?"
+      "title": "What did the anti-harassment hotline say?"
     }
   },
   {
@@ -93,7 +93,7 @@
     "title": "Call Legal Services",
     "content": "Housing Court Answers is a great resource to go for information about legal issues. Telephone assistance is from 9 am to 5 pm, Tuesday through Thursday",
     "key": "contactLegalServices",
-    "addIf": ["emailLandlord", "contactHarrasment"],
+    "addIf": ["emailLandlord", "contactHarassment"],
     "cta": {
       "type": "call",
       "buttonTitle": "Call",

@@ -20,17 +20,17 @@ var parseAddressInput = function(input) {
 
 // function trQuery(lat, lon) {
 //   // construct the tenants rights group query
-//   var query = "SELECT description, full_address, name, email, phone, website_url " + 
+//   var query = "SELECT description, full_address, name, email, phone, website_url " +
 //               "FROM nyc_tenants_rights_service_areas " +
 //               "WHERE " +
 //               "ST_Contains(" +
 //                 "nyc_tenants_rights_service_areas.the_geom," +
 //                 "ST_GeomFromText(" +
 //                  "'Point(" + lon + " " + lat + ")', 4326" +
-//                 ")" +      
-//               ");";  
+//                 ")" +
+//               ");";
 //   return query;
-// }  
+// }
 
 var requestGeoclient = function(boro, address) {
 
@@ -39,8 +39,8 @@ var requestGeoclient = function(boro, address) {
   var addr = parseAddressInput(address);
 
   var params = {
-      street: addr.street,   
-      houseNumber: addr.num, 
+      street: addr.street,
+      houseNumber: addr.num,
       borough: boro,
       app_id: config.geoclient.id,
       app_key: config.geoclient.key
@@ -72,7 +72,7 @@ var requestGeoclient = function(boro, address) {
           zip : json.zipCode,
           cd: json.communityDistrict,
           bin : json.giBuildingIdentificationNumber1
-        };  
+        };
 
       geoclient.resolve(geo);
 
@@ -92,8 +92,8 @@ var requestRentStabilized = function(bbl, lat, lon) {
 
   var rsCartoUrl = 'https://chenrick.cartodb.com/api/v2/sql?q=';
   var sql = 'SELECT bbl FROM map_pluto_likely_rs ' +
-                'WHERE bbl = ' + bbl;    
-  //var sql2 = trQuery(lat, lon);                  
+                'WHERE bbl = ' + bbl;
+  //var sql2 = trQuery(lat, lon);
 
   request(rsCartoUrl + sql, function (error, response, body) {
     if(JSON.parse(body).rows.length > 0) stabilized.resolve(true);
@@ -102,11 +102,11 @@ var requestRentStabilized = function(bbl, lat, lon) {
   // request(rsCartoURL + sql2, function (error, response, body) {
   //   console.log(body);
   // });
-  
+
   return stabilized.promise;
 };
 
-var harrasmentHelp = function (zip) {
+var harassmentHelp = function (zip) {
   var zips = ['10452', '10453', '11207', '11208', '11212', '11233', '10029', '10035', '11101', '11354', '11358', '10301', '10304'];
   return zips.indexOf(zip) !== -1;
 };
@@ -114,5 +114,5 @@ var harrasmentHelp = function (zip) {
 module.exports = {
   requestGeoclient: requestGeoclient,
   requestRentStabilized: requestRentStabilized,
-  harrasmentHelp: harrasmentHelp
+  harassmentHelp: harassmentHelp
 };
