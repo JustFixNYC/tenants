@@ -3,16 +3,16 @@
 //Setting up route
 angular.module('activity').config(['$stateProvider', '$urlRouterProvider',
 	function($stateProvider, $urlRouterProvider) {
-		
+
 		// Jump to first child state
-		//$urlRouterProvider.when('/issues/create', '/issues/create/checklist');		
+		//$urlRouterProvider.when('/issues/create', '/issues/create/checklist');
 
 		// Issues state routing
-		$stateProvider.	
+		$stateProvider.
 		state('listActivity', {
-			url: '/timeline',
+			url: '/yourcase',
 			templateUrl: 'modules/activity/views/list-activity.client.view.html'
-		});					
+		});
 
 	}
 ]);

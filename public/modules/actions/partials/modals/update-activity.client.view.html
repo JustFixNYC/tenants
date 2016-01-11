@@ -20,38 +20,38 @@
             </p> -->
             <input type="date" class="form-control"  ng-model="newActivity.date"  />
         </div>
-    </div>  
+    </div>
     <div class="form-group photo-uploads-container">
         <label class="control-label" for="photos">Add some photos</label>
         <div class="controls">
           <div class="no-gutter">
             <div class="col-xs-4">
                <button ngf-select ngf-capture="'camera'" accept="image/*" ng-model="newActivity.photo1" name="photos" id="photos" class="btn btn-default btn-block">Photo 1</button>
-              <img ngf-src="newActivity.photo1" class="img-thumbnail">             
+              <img ngf-src="newActivity.photo1" class="img-thumbnail">
             </div>
             <div class="col-xs-4">
                <button ngf-select ngf-capture="'camera'" accept="image/*" ng-model="newActivity.photo2" name="photos" id="photos" class="btn btn-default btn-block">Photo 2</button>
-              <img ngf-src="newActivity.photo2" class="img-thumbnail">             
+              <img ngf-src="newActivity.photo2" class="img-thumbnail">
             </div>
             <div class="col-xs-4">
                <button ngf-select ngf-capture="'camera'" accept="image/*" ng-model="newActivity.photo3" name="photos" id="photos" class="btn btn-default btn-block">Photo 3</button>
-              <img ngf-src="newActivity.photo3" class="img-thumbnail">             
-            </div>            
+              <img ngf-src="newActivity.photo3" class="img-thumbnail">
+            </div>
           </div>
         </div>
-    </div>        
+    </div>
     <div class="form-group">
       <label class="control-label" for="description">Description</label>
       <div class="controls">
           <textarea name="description" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="5" maxlength="500" placeholder="Please describe these issues in more detail."></textarea>
       </div>
-    </div>     
+    </div>
   </form>
 </div>
 <div class="modal-footer">
   <button class="btn btn-default pull-left" ng-click="cancel()">Cancel</button>
   <button class="btn btn-info" data-ng-click="done()">
       <span class="glyphicon glyphicon-ok pull-left" style="padding-top:1px"></span>
-      Add To Timeline
+      Add To Your Case
   </button>
 </div>
