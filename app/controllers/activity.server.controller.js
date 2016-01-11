@@ -7,11 +7,9 @@ var _ = require('lodash'),
     mongoose = require('mongoose'),
     User = mongoose.model('User');
 
-
 var aptSpaces = ['generalApt', 'entryHallway', 'kitchen', 'bathroom', 'diningRoom', 'livingRoom', 'bedrooms', 'publicAreas', 'otherContent'];
 
 var list = function(req, res) {
-
   if(req.user) {
     res.json(req.user.activity);
   } else {
@@ -58,9 +56,10 @@ var create = function(req, res) {
   //console.log(req.body, req.files);
   // don't forget to delete all req.files when done
 
+  // if we're coming from users.requiresLogin, is this still necessary?
   if(user) {
 
-    // ignore area related activities from follow up check
+    // make sure activity is not related to an aptSpace (i.e. doesn't have a followup state)
     if(aptSpaces.indexOf(activity.key) === -1) {
       // remove from follow up flags
       var idx = user.followUpFlags.indexOf(activity.key);
@@ -71,20 +70,25 @@ var create = function(req, res) {
     // add to action flags
     if(activity.key !== 'otherContent') user.actionFlags.push(activity.key);
 
-    var allInitial = true;
-    // for every area in issues
-    for(var area in user.issues) {
-      // if the area has issues...
-      if(user.issues[area].length) {
-        // if the area content hasn't been done yet
-        if(user.actionFlags.indexOf(area) === -1) allInitial = false;
+    if(_.contains(aptSpaces, activity.key)) {
+      var allInitial = true;
+      // for every area in issues
+      for(var area in user.issues) {
+        // if the area has issues...
+        if(user.issues[area].length) {
+          // if the area content hasn't been done yet
+          if(user.actionFlags.indexOf(area) === -1) allInitial = false;
+        }
       }
+      if(allInitial && user.actionFlags.indexOf('allInitial') === -1) user.actionFlags.push('allInitial');
+      // [TODO] account for the case where a user has allInitial set, then updates the issues checklist
+      //        with a new area.
+      // else {
+      //   var idx = user.actionFlags.indexOf('allInitial');
+      //   if(idx !== -1) user.actionFlags.splice(idx, 1);
+      // }
     }
-    if(allInitial) user.actionFlags.push('allInitial');
-    else {
-      var idx = user.actionFlags.indexOf('allInitial');
-      if(idx !== -1) user.actionFlags.splice(idx, 1);
-    }
+
 
     // init photos array
     activity.photos = [];
@@ -102,7 +106,7 @@ var create = function(req, res) {
         if(r.state !== 'fulfilled') res.status(500).send({ message: err });
 
         activity.photos.push({
-          url: r.value.url, 
+          url: r.value.url,
           thumb: r.value.thumb
         });
       });

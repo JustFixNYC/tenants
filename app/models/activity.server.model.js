@@ -11,13 +11,17 @@ var mongoose = require('mongoose'),
  */
 var ActivitySchema = new Schema({
 
-    date: { 
-      type: Date, 
+    date: {
+      type: Date,
+      default: Date.now
+    },
+    created: {
+      type: Date,
       default: Date.now
     },
     key: {
       type: String,
-      default: '' 
+      default: ''
     },
     title: {
       type: String,
