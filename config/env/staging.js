@@ -1,11 +1,23 @@
 'use strict';
 
 module.exports = {
-  db: process.env.MONGOLAB_URI,
+  db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/trowel',
   app: {
-    title: 'JustFix.nyc',
-    description: 'JustFix.nyc is a tool for New Yorkers to document, organize, and take action in getting repairs made on your apartment.',
-    keywords: 'something'
+    title: '[testing] JustFix.nyc'
+  },
+  assets: {
+    lib: {
+      css: [
+        'public/dist/bootstrap.min.css',
+        'public/dist/bootflat.min.css',
+        'public/lib/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.css'
+      ],
+      js: [
+        'public/dist/vendor.min.js'
+      ]
+    },
+    css: 'public/dist/style.min.css',
+    js: 'public/dist/application.min.js'
   },
   mailer: {
     from: process.env.MAILER_FROM || 'MAILER_FROM',
