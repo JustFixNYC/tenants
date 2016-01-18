@@ -380,10 +380,13 @@ angular.module('actions')
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
       controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
         $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
+        $scope.closeErrorAlert = true;
       }],
       link: function (scope, element, attrs) {
 
         // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
+
+        //console.log(scope.action);
 
         //scope.action is a $resource!
         if(!scope.action.completed) scope.action.completed = false;
@@ -392,6 +395,13 @@ angular.module('actions')
           title: scope.action.title,
           key: scope.action.key
         };
+
+        if(scope.action.followUp && scope.action.followUp.fields) {
+          scope.newActivity.fields = [];
+          angular.forEach(scope.action.followUp.fields, function(field, idx) {
+            scope.newActivity.fields.push({ title: field.title });
+          });
+        }
 
         scope.isModal = function() {
           switch(scope.action.cta.type) {
@@ -446,49 +456,51 @@ angular.module('actions')
          };
 
         scope.cancelFollowUp = function() {
-          scope.action.$followUp({ type: 'remove' });         
+          scope.action.$followUp({ type: 'remove' });
         };
 
         scope.closeAlert = function() {
           scope.action.closeAlert = true;
-          scope.actions.splice(scope.$index,1);        
+          scope.actions.splice(scope.$index,1);
         };
 
         scope.createActivity = function() {
 
-          //console.log('create activity pre creation', scope.newActivity);
+          console.log('create activity pre creation', scope.newActivity);
 
           var activity = new Activity(scope.newActivity);
 
-          //console.log('create activity post creation', scope.newActivity);
+          console.log('create activity post creation', scope.newActivity);
 
           activity.$save(function(response) {
 
-            //console.log('create activity post save', response);
+            console.log('create activity post save', response);
 
             scope.action.completed = true;
-            scope.action.closeAlert = false; 
+            scope.action.closeAlert = false;
 
             // load new actions
             var idx = scope.$index;
             var newActions = Actions.query(
-              {key: scope.newActivity.key}, 
+              {key: scope.newActivity.key},
               function() {
                 newActions.forEach(function (action) {
                   scope.actions.splice(++idx, 0, action);
-                }); 
+                });
               });
 
           }, function(errorResponse) {
             scope.error = errorResponse.data.message;
             scope.closeErrorAlert = false;
           });
+
         }; // end of create activity
 
 
       }
     };
   }]);
+
 'use strict';
 
 //Issues service used to communicate Issues REST endpoints
@@ -649,6 +661,7 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
 
     $scope.list = function() {
       $scope.activities = Activity.query();
+      console.log($scope.activities);
     };
 
     $scope.openLightboxModal = function (photos, index) {
@@ -657,6 +670,7 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
 
 	}
 ]);
+
 'use strict';
 
 //Issues service used to communicate Issues REST endpoints
@@ -670,9 +684,12 @@ angular.module('activity').factory('Activity', ['$resource',
       if (data === undefined)
         return data;
 
+        console.log(data);
+
       var fd = new FormData();
       angular.forEach(data, function(value, key) {
-        // console.log(key + ' ' + value);
+
+        console.log(key, value);
 
         if (value instanceof FileList) {
           if (value.length === 1) {
@@ -682,27 +699,80 @@ angular.module('activity').factory('Activity', ['$resource',
               fd.append(key + '_' + index, file);
             });
           }
+        } else if (value instanceof Object) {
+          console.log(JSON.stringify(value));
+          fd.append(key, JSON.stringify(value));
         } else {
           fd.append(key, value);
         }
 
-        // console.log('fd', fd);
+        //console.log('fd', fd);
       });
-      // console.log('fd', fd);
+      //console.log('fd', fd.toString());
       return fd;
     };
 
+    var objectToFormData = function(obj, form, namespace) {
+
+      var fd = form || new FormData();
+      var formKey;
+
+      for(var property in obj) {
+        if(obj.hasOwnProperty(property)) {
+
+          if(namespace) {
+            formKey = namespace + '[' + property + ']';
+          } else {
+            formKey = property;
+          }
+
+          // if the property is an object, but not a File,
+          // use recursivity.
+          if(typeof obj[property] === 'object' && !(obj[property] instanceof File)) {
+            
+            objectToFormData(obj[property], fd, formKey);
+
+          } else {
+
+            // if it's a string or a File object
+            fd.append(formKey, obj[property]);
+          }
+
+        }
+      }
+
+      return fd;
+
+    };
+
+    // wrap object to formdata method,
+    // to use it as a transform with angular's http.
+    var formDataTransform = function(data, headersGetter) {
+
+      // we need to set Content-Type to undefined,
+      // to make the browser set it to multipart/form-data
+      // and fill in the correct *boundary*.
+      // setting Content-Type to multipart/form-data manually
+      // will fail to fill in the boundary parameter of the request.
+      //headersGetter()['Content-Type'] = undefined;
+
+      return objectToFormData(data);
+
+    };
+
+
     return $resource('activity', {}, {
-      save: { 
-          method: 'POST', 
-          transformRequest: transformRequest, 
-          headers: { 
+      save: {
+          method: 'POST',
+          transformRequest: formDataTransform,
+          headers: {
             'Content-Type': undefined
           }
-      } 
+      }
     });
   }
 ]);
+
 'use strict';
 
 // Setting up route
