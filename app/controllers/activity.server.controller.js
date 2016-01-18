@@ -114,6 +114,8 @@ var create = function(req, res) {
       // add activity object
       user.activity.push(activity);
 
+      console.log(activity);
+
       // add activity to db
       user.save(function(err) {
         if(err) {
@@ -124,6 +126,7 @@ var create = function(req, res) {
           res.jsonp(user);
         }
       });
+
     });  // end of Q.allSettled
 
   } else {

@@ -34,7 +34,7 @@ var areaTitle = function(area) {
     case 'bedrooms': return 'Bedrooms';
     case 'publicAreas': return 'Public Areas';
     default: return '';
-  }  
+  }
 };
 
 var getAreaActions = function(user) {
@@ -59,7 +59,7 @@ var getAreaActions = function(user) {
             template: 'update-activity.client.view.html',
             controller: 'UpdateActivityController'
           },
-          isFollowUp: false       
+          isFollowUp: false
         });
 
       }
@@ -70,15 +70,15 @@ var getAreaActions = function(user) {
 };
 
 /**
- * Iterate through full list of actions and detirmine where the 
+ * Iterate through full list of actions and detirmine where the
  * user is at. Return that list.
  *
  */
 var generateActions = function(user) {
-  
+
   var actions = getAreaActions(user);
 
-  //iterate through full list of actions, push 
+  //iterate through full list of actions, push
   fullActions.forEach(function (action) {
 
     // check addIf array against user.actionFlags
@@ -93,7 +93,7 @@ var generateActions = function(user) {
     if(user.followUpFlags.indexOf(action.key) !== -1) action.isFollowUp = true;
     else action.isFollowUp = false;
 
-    if(add && !reject) 
+    //if(add && !reject) 
       actions.push(action);
 
   });
@@ -108,7 +108,7 @@ var list = function(req, res) {
     var newActions = fullActions.filter(function (action) {
       return _.contains(action.addIf, key);
     });
-    res.json(newActions);   
+    res.json(newActions);
   } else if(user) {
     var actions = generateActions(user);
     res.json(actions);
@@ -120,8 +120,8 @@ var list = function(req, res) {
 };
 
 
-var followUp = function(req, res) { 
-  
+var followUp = function(req, res) {
+
   var id = req.user._id,
       key = req.body.key;
   var query;
@@ -134,7 +134,7 @@ var followUp = function(req, res) {
     query = User.update({ '_id': id }, {$pull: { 'followUpFlags': key }});
     req.body.isFollowUp = false;
   }
-  
+
   query.exec(function(err, numAffected) {
     if(err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
     else res.json(req.body);

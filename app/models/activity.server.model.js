@@ -35,6 +35,10 @@ var ActivitySchema = new Schema({
       url : { type : String}, 
       thumb : { type : String}, 
       created : { type : Date, default : Date.now }
+    }],
+    fields: [{
+      title: { type: String },
+      value: { type: String }
     }]
 });
 

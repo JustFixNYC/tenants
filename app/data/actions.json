@@ -27,7 +27,11 @@
     },
     "followUp": {
       "title": "Did you get your DHCR letter yet?",
-      "fields": ["rentStabilized"]
+      "fields": [{
+        "prompt": "Are you rent stabilized?",
+        "title":  "Rent stabilized:",
+        "type":   "binary"
+      }]
     }
   },
   {
@@ -71,7 +75,11 @@
     },
     "followUp": {
       "title": "How did your 311 call go?",
-      "fields": ["tracking"]
+      "fields": [{
+        "prompt": "Enter your confirmation number:",
+        "title": "Confirmation number:",
+        "type": "text",
+        "placeholder": "Begins with C1-1-, followed by 9 or 10 numbers." }]
     }
   },
   {
@@ -86,7 +94,12 @@
     },
     "followUp": {
       "title": "How did your call to NYCHA go?",
-      "fields": ["tracking"]
+      "fields": [{
+        "prompt": "Enter your tracking number:", 
+        "title": "Tracking number:",
+        "type": "text",
+        "placeholder": "The number you were given to track your Work Order."
+      }]
     }
   },
   {

@@ -41,7 +41,7 @@ exports.getErrorMessage = function(err) {
 			if (err.errors[errName].message) message = err.errors[errName].message;
 		}
 	} else {
-		return err;
+		message = err;
 	}
 
 	console.log(message);

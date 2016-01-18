@@ -8,34 +8,34 @@
     <div class="panel-content" data-ng-bind-html="filterContentHTML()"></div>
     <div class="row">
       <div class="col-xs-6">
-        <a  class="btn btn-default btn-block pull-left" 
-            data-ng-if="action.cta.type !== 'initialContent'" 
+        <a  class="btn btn-default btn-block pull-left"
+            data-ng-if="action.cta.type !== 'initialContent'"
             data-ng-click="triggerFollowUp()">
             I've tried this
-        </a>  
-      </div> 
-      <div ng-class="action.cta.type === 'initialContent' ? 'col-xs-12' : 'col-xs-6'">   
-        <button class="btn btn-primary btn-block pull-right" 
-                data-ng-if="isModal()" 
-                data-ng-class="action.cta.type === 'initialContent' ? 'initial' : 'regular'" 
+        </a>
+      </div>
+      <div ng-class="action.cta.type === 'initialContent' ? 'col-xs-12' : 'col-xs-6'">
+        <button class="btn btn-primary btn-block pull-right"
+                data-ng-if="isModal()"
+                data-ng-class="action.cta.type === 'initialContent' ? 'initial' : 'regular'"
                 data-ng-click="openModal()"
                 data-ng-bind="action.cta.buttonTitle">
         </button>
-        <a  class="btn btn-success btn-block pull-right" 
-            data-ng-if="action.cta.type === 'call'" 
+        <a  class="btn btn-success btn-block pull-right"
+            data-ng-if="action.cta.type === 'call'"
             data-ng-click="triggerFollowUp('tel:' + action.cta.phone, 'tel')">
             <span class="glyphicon glyphicon-earphone pull-left"></span>
             {{ action.cta.buttonTitle }}
         </a>
-        <a  class="btn btn-success btn-block pull-right" 
-            data-ng-if="action.cta.type === 'link'" 
+        <a  class="btn btn-success btn-block pull-right"
+            data-ng-if="action.cta.type === 'link'"
             data-ng-click="triggerFollowUp(action.cta.url, 'link')"
             target="_blank">
             <span class="glyphicon glyphicon-link pull-left"></span>
             {{ action.cta.buttonTitle }}
-        </a>        
-      </div>  
-    </div>              
+        </a>
+      </div>
+    </div>
   </div>
   <div class="panel-body" data-ng-if="action.isFollowUp">
     <div class="panel-content">
@@ -52,31 +52,41 @@
 
                   <input type="date" class="form-control"  ng-model="newActivity.date"  />
               </div>
-          </div>            
+          </div>
+          <div class="form-group" data-ng-if="action.followUp.fields">
+            <div data-ng-repeat="field in action.followUp.fields">
+              <label class="control-label" for="field">{{ field.prompt }}</label>
+              <div class="controls">
+                  <input type="text" class="form-control" ng-model="newActivity.fields[$index].value" placeholder="{{field.placeholder}}" />
+                  <!-- <textarea name="field" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="3" maxlength="500" placeholder="Briefly describe what happened."></textarea> -->
+              </div>
+            </div>
+          </div>
           <div class="form-group">
               <label class="control-label" for="description">{{ action.followUp.title }}</label>
               <div class="controls">
                   <textarea name="description" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="3" maxlength="500" placeholder="Briefly describe what happened."></textarea>
               </div>
-          </div>     
-        </form>      
+          </div>
+        </form>
     </div>
     <div class="row">
       <div class="col-xs-4">
-        <a  class="btn btn-default btn-block pull-left" 
+        <a  class="btn btn-default btn-block pull-left"
             data-ng-click="cancelFollowUp()">
             Cancel
-        </a>  
-      </div> 
-      <div class="col-xs-8">   
-        <button class="btn btn-info btn-block pull-right" 
+        </a>
+      </div>
+      <div class="col-xs-8">
+        <button class="btn btn-info btn-block pull-right"
                 data-ng-click="createActivity()">
             <span class="glyphicon glyphicon-ok pull-left" style="padding-top:1px"></span>
             Add To Your Case
         </button>
-      </div>  
+      </div>
     </div>
-  </div>  
+  </div>
 </div>
 <alert data-ng-if="action.completed" data-ng-show="!action.closeAlert" type="success" close="closeAlert()"><strong>Well done!</strong> We've added <em>{{ action.title }}</em> to <a ui-sref="listActivity">Your Case</a>.</alert>
-<alert data-ng-if="error.length" data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert>
+<alert data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert>
+<!-- <alert data-ng-if="error.length" data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert> -->
