@@ -74,6 +74,7 @@
 		</section>
 		<footer class="container" data-ng-include="'/modules/core/views/footer.client.view.html'"></footer>
 	</section>
+	<loading ng-if="$root.loading"></loading>
 
 	<!--Embedding The User Object-->
 	<script type="text/javascript">
@@ -92,7 +93,7 @@
 	</script>
 
 	<!--Application JavaScript Files-->
-	{% for jsFile in jsFiles %}<script type="text/javascript" src="{{jsFile}}"></script>{% endfor %} 
+	{% for jsFile in jsFiles %}<script type="text/javascript" src="{{jsFile}}"></script>{% endfor %}
 
 	{% if process.env.NODE_ENV === 'development' %}
 	<!--Livereload script rendered -->

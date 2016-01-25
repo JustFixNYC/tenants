@@ -13,20 +13,20 @@
         <label class="control-label" for="description">What is this update about?</label>
         <div class="controls">
 
-          <label  data-ng-if="areas.length < 4"
+          <label  data-ng-if="areas.length < 5"
                   class="btn btn-default btn-mult"
                   data-ng-repeat="area in areas"
-                  data-ng-model="newActivity.description"
+                  data-ng-model="newActivity.area"
                   data-ng-bind="area"
                   btn-radio="area">
           </label>
 
-          <ui-select data-ng-if="areas.length >= 4"
-                     ng-model="newActivity.description"
+          <ui-select data-ng-if="areas.length >= 5"
+                     ng-model="newActivity.area"
                      theme="bootstrap"
                      ng-disabled="disabled"
                      reset-search-input="false">
-            <ui-select-match placeholder="Select an issue area">{{ newActivity.description }}</ui-select-match>
+            <ui-select-match placeholder="Select an issue area">{{ newActivity.area }}</ui-select-match>
             <ui-select-choices repeat="area in areas">
               <div> {{ area }}</div>
             </ui-select-choices>

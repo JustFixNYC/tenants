@@ -6,6 +6,7 @@ var ApplicationConfiguration = (function() {
 	var applicationModuleName = 'justfix';
 	var applicationModuleVendorDependencies = [
 		'ngResource',
+		'ngAnimate',
 		'ngCookies',
 		'ui.router',
 		'ui.bootstrap',

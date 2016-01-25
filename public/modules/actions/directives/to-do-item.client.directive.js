@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('actions')
-  .directive('toDoItem', ['$modal', '$sce', '$timeout', 'Activity', 'Actions',
-    function ($modal, $sce, $timeout, Activity, Actions) {
+  .directive('toDoItem', ['$rootScope', '$modal', '$sce', '$timeout', 'Activity', 'Actions',
+    function ($rootScope, $modal, $sce, $timeout, Activity, Actions) {
     return {
       restrict: 'E',
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
@@ -94,6 +94,8 @@ angular.module('actions')
 
         scope.createActivity = function() {
 
+          $rootScope.loading = true;
+
           console.log('create activity pre creation', scope.newActivity);
 
           var activity = new Activity(scope.newActivity);
@@ -103,6 +105,8 @@ angular.module('actions')
           activity.$save(function(response) {
 
             console.log('create activity post save', response);
+
+            $rootScope.loading = false;
 
             // show the completed alert
             scope.action.completed = true;

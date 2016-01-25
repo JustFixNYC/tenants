@@ -97,6 +97,10 @@ body {
 
   .ui-select-bootstrap .dropdown-menu li a {
     color: #fff;
+
+    &:hover, &:focus {
+      color: #262626;
+    }
   }
   .ui-select-toggle {
     min-height: 40px;

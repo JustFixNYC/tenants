@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('actions')
-  .directive('statusUpdate', ['$modal', '$sce', '$timeout', 'Activity', 'Actions', 'Issues',
-    function ($modal, $sce, $timeout, Activity, Actions) {
+  .directive('statusUpdate', ['$rootScope', '$modal', '$sce', '$timeout', 'Activity', 'Actions', 'Issues',
+    function ($rootScope, $modal, $sce, $timeout, Activity, Actions) {
     return {
       restrict: 'E',
       templateUrl: 'modules/actions/partials/status-update.client.view.html',
@@ -48,7 +48,7 @@ angular.module('actions')
           openModal('modules/actions/partials/modals/check-in.client.view.html', 'UpdateActivityController');
         };
         scope.openPhotoPreview = function(file) {
-          scope.newActivity.date = file.lastModifiedDate;
+          if(file.lastModifiedDate) scope.newActivity.date = file.lastModifiedDate;
           openModal('modules/actions/partials/modals/photo-preview.client.view.html', 'UpdateActivityController');
         };
 
@@ -58,16 +58,25 @@ angular.module('actions')
 
         scope.createActivity = function() {
 
+          $rootScope.loading = true;
+
           console.log('create activity pre creation', scope.newActivity);
+
+          // [TODO] have an actual section for the 'area' field in the activity log
+          if(scope.newActivity.description && scope.newActivity.area) scope.newActivity.description = scope.newActivity.area + ' - ' + scope.newActivity.description;
+          else if(scope.newActivity.area) scope.newActivity.description = scope.newActivity.area;
 
           var activity = new Activity(scope.newActivity);
 
           console.log('create activity post creation', scope.newActivity);
 
+
+
           activity.$save(function(response) {
 
             console.log('create activity post save', response);
 
+            $rootScope.loading = false;
             scope.completed = true;
             scope.closeAlert = false;
 
