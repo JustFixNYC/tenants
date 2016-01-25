@@ -59,17 +59,20 @@ var create = function(req, res) {
   // if we're coming from users.requiresLogin, is this still necessary?
   if(user) {
 
-    // make sure activity is not related to an aptSpace (i.e. doesn't have a followup state)
-    if(aptSpaces.indexOf(activity.key) === -1) {
-      // remove from follow up flags
-      var idx = user.followUpFlags.indexOf(activity.key);
-      if(idx < 0) return res.status(500).send({ message: 'Follow up key not found, this is bad' });
-      else user.followUpFlags.splice(idx, 1);
-    }
+    // remove from follow up flags
+    var idx = user.followUpFlags.indexOf(activity.key);
+    //  if(idx < 0) return res.status(500).send({ message: 'Follow up key not found, this is bad' });
+    if(idx !== -1) user.followUpFlags.splice(idx, 1);
 
     // add to action flags
-    if(activity.key !== 'otherContent') user.actionFlags.push(activity.key);
+    if(activity.key !== 'statusUpdate') user.actionFlags.push(activity.key);
 
+    // check date
+    //console.log('date', activity.date);
+    if(!activity.date) activity.date = Date.now();
+    //console.log('new date', activity.date);
+
+    // check to see if allInitial should be set
     if(_.contains(aptSpaces, activity.key)) {
       var allInitial = true;
       // for every area in issues
@@ -88,7 +91,6 @@ var create = function(req, res) {
       //   if(idx !== -1) user.actionFlags.splice(idx, 1);
       // }
     }
-
 
     // init photos array
     activity.photos = [];
@@ -113,8 +115,6 @@ var create = function(req, res) {
 
       // add activity object
       user.activity.push(activity);
-
-      console.log(activity);
 
       // add activity to db
       user.save(function(err) {

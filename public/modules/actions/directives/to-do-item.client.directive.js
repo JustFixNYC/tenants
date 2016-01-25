@@ -13,10 +13,9 @@ angular.module('actions')
       link: function (scope, element, attrs) {
 
         // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
+        // scope.action is a $resource!
 
-        //console.log(scope.action);
-
-        //scope.action is a $resource!
+        // used to hide the completed alert
         if(!scope.action.completed) scope.action.completed = false;
         scope.newActivity = {
           date: '',
@@ -24,6 +23,7 @@ angular.module('actions')
           key: scope.action.key
         };
 
+        // if action has custom fields, initialize those in the newActivity object
         if(scope.action.followUp && scope.action.followUp.fields) {
           scope.newActivity.fields = [];
           angular.forEach(scope.action.followUp.fields, function(field, idx) {
@@ -104,6 +104,7 @@ angular.module('actions')
 
             console.log('create activity post save', response);
 
+            // show the completed alert
             scope.action.completed = true;
             scope.action.closeAlert = false;
 

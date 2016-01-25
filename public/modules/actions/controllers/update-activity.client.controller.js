@@ -1,13 +1,14 @@
 'use strict';
 
 // Issues controller
-angular.module('actions').controller('UpdateActivityController', ['$scope', '$modalInstance', 'newActivity', 'Issues',
-  function ($scope, $modalInstance, newActivity, Issues, close) {
+angular.module('actions').controller('UpdateActivityController', ['$scope', '$filter', '$modalInstance', 'newActivity', 'Issues',
+  function ($scope, $filter, $modalInstance, newActivity, Issues, close) {
 
   $scope.newActivity = newActivity;
   $scope.issues = Issues.getUserIssuesByKey($scope.newActivity.key);
-  
-  console.log('update activity cntrl',$scope.newActivity);
+  $scope.areas = Issues.getUserAreas().map(function (a) { return $filter('areaTitle')(a) });
+
+  //console.log('update activity cntrl',$scope.newActivity);
 
   $scope.dp = {
     opened: false,

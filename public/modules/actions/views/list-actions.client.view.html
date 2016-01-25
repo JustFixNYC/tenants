@@ -4,6 +4,7 @@
         <p><em>Here are some actions you can take to build out your case.</em></p>
     </div>
     <div class="actions-container">
+      <status-update data-ng-if="showStatusUpdates()"></status-update>
       <to-do-item data-ng-repeat="action in actions"></to-do-item>
     </div>
     <div class="alert alert-warning text-center" data-ng-show="actions.length === 0">

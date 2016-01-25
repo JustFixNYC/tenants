@@ -14,18 +14,20 @@ module.exports = {
 	  lib: {
 		  css: [
 		    'lib/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.css',
+				'public/lib/ui-select/dist/select.min.css',
 		    'public/styles/bootstrap.css',
 		    'public/styles/bootflat.css'
 		  ],
-		  js: [	  
+		  js: [
 		    'public/lib/angular/angular.js',
-		    'public/lib/angular-resource/angular-resource.js', 
-		    'public/lib/angular-cookies/angular-cookies.js', 
-		    // 'public/lib/angular-animate/angular-animate.js', 
+		    'public/lib/angular-resource/angular-resource.js',
+		    'public/lib/angular-cookies/angular-cookies.js',
+		    // 'public/lib/angular-animate/angular-animate.js',
 		    'public/lib/angular-ui-router/release/angular-ui-router.js',
 		    'public/lib/angular-touch/angular-touch.min.js',
 		    'public/lib/angular-ui-utils/ui-utils.js',
 		    'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
+		    'public/lib/ui-select/dist/select.min.js',
 		    'public/lib/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.js',
 		    'public/lib/angular-lazy-img/release/angular-lazy-img.min.js',
 		    'public/lib/angular-scroll/angular-scroll.min.js',
@@ -39,7 +41,7 @@ module.exports = {
 				'public/lib/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
 				'public/lib/angular-translate-storage-local/angular-translate-storage-local.js',
 				'public/lib/angular-translate-handler-log/angular-translate-handler-log.js',
-				'public/lib/angular-dynamic-locale/src/tmhDynamicLocale.js'	    
+				'public/lib/angular-dynamic-locale/src/tmhDynamicLocale.js'
 		  ]
 	  },
 	  css: [
@@ -64,6 +66,5 @@ module.exports = {
 	aws: {
 		id: process.env.AWS_ACCESS_KEY_ID,
 		key: process.env.AWS_SECRET_ACCESS_KEY
-	}     
+	}
 };
-

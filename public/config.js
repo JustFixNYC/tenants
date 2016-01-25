@@ -5,15 +5,16 @@ var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'justfix';
 	var applicationModuleVendorDependencies = [
-		'ngResource', 
+		'ngResource',
 		'ngCookies',
-		'ui.router', 
-		'ui.bootstrap', 
-		'ui.utils', 
-		'ng.deviceDetector', 
-		'ngFileUpload', 
-		'bootstrapLightbox', 
-		'angularLazyImg', 
+		'ui.router',
+		'ui.bootstrap',
+		'ui.select',
+		'ui.utils',
+		'ng.deviceDetector',
+		'ngFileUpload',
+		'bootstrapLightbox',
+		'angularLazyImg',
 		'duScroll',
 		'pascalprecht.translate',	// angular-translate
  		'tmh.dynamicLocale'// angular-dynamic-locale

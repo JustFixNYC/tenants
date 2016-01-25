@@ -61,8 +61,17 @@ body {
   padding-bottom: 10px;
 }
 
+.btn-block {
+  max-width: 300px;
+  margin: 0 auto;
+
+  &.initial {
+    float: none !important;
+  }
+}
+
 .btn .glyphicon {
-  padding-top: 3px;
+  padding-top: 2px;
   padding-right: 5px;
 }
 
@@ -73,14 +82,35 @@ body {
 
 .modal-body {
 
-  ul {
+  .modal-issue-list {
     padding-left: 30px;
     margin-bottom: 0;
+  }
+
+  .btn-group {
+    width: 100%;
+
+    & .btn {
+      text-align: left;
+    }
+  }
+
+  .ui-select-bootstrap .dropdown-menu li a {
+    color: #fff;
+  }
+  .ui-select-toggle {
+    min-height: 40px;
+  }
+
+  img {
+    margin: 0 auto 10px auto;
+    display: block;
+    max-height: 250px;
   }
 }
 
 .img-thumbnail {
-  border-radius: 0;  
+  border-radius: 0;
   padding: 0;
 }
 

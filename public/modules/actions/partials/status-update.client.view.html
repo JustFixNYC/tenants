@@ -1,0 +1,27 @@
+<div class="panel panel-default status-panel">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      Status Update
+    </h3>
+  </div>
+  <div class="panel-body">
+    <div class="panel-content">Anything new to report?</div>
+    <div class="row">
+      <div class="col-xs-6">
+        <button ngf-select="openPhotoPreview($file)" ngf-capture="'camera'" accept="image/*" ng-model="newActivity.photo1" name="photos" id="photos" class="btn btn-info btn-block pull-left">
+          <span class="glyphicon glyphicon-camera pull-left"></span>
+          Add Photo
+        </button>
+      </div>
+      <div class="col-xs-6">
+        <button class="btn btn-primary btn-block pull-right" data-ng-click="openCheckIn()">
+          <span class="glyphicon glyphicon-comment pull-left"></span>
+          Check In
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<alert data-ng-if="completed" data-ng-show="!closeAlert" type="success" close="closeAlert()"><strong>Well done!</strong> We've added <em>{{ action.title }}</em> to <a ui-sref="listActivity">Your Case</a>.</alert>
+<alert data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert>
+<!-- <alert data-ng-if="error.length" data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert> -->

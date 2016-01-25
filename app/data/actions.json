@@ -95,7 +95,7 @@
     "followUp": {
       "title": "How did your call to NYCHA go?",
       "fields": [{
-        "prompt": "Enter your tracking number:", 
+        "prompt": "Enter your tracking number:",
         "title": "Tracking number:",
         "type": "text",
         "placeholder": "The number you were given to track your Work Order."
@@ -171,18 +171,6 @@
     },
     "followUp": {
       "title": "Did you go to court yet?"
-    }
-  },
-  {
-    "title": "Other",
-    "content": "If you have any other updates to your housing issues case, please note them so they can be added to your <b>Your Case</b>.",
-    "key": "otherContent",
-    "addIf": ["initial"],
-    "cta": {
-      "type": "initialContent",
-      "buttonTitle": "Add Text/Photos",
-      "template": "other-activity.client.view.html",
-      "controller": "UpdateActivityController"
     }
   }
 ]

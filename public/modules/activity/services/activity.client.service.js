@@ -4,40 +4,8 @@
 angular.module('activity').factory('Activity', ['$resource',
   function($resource) {
 
-    // taken from http://stackoverflow.com/questions/21115771/angularjs-upload-files-using-resource-solution
+    // taken from https://gist.github.com/ghinda/8442a57f22099bdb2e34
     //var transformRequest = function(data, headersGetter) { if (data === undefined) return data;var fd = new FormData();angular.forEach(data, function(value, key) { if (value instanceof FileList) { if (value.length == 1) { fd.append(key, value[0]);} else {angular.forEach(value, function(file, index) {fd.append(key + '_' + index, file);});}} else {if (value !== null && typeof value === 'object'){fd.append(key, JSON.stringify(value)); } else {fd.append(key, value);}}});return fd;}
-
-    var transformRequest = function(data, headersGetter) {
-      if (data === undefined)
-        return data;
-
-        console.log(data);
-
-      var fd = new FormData();
-      angular.forEach(data, function(value, key) {
-
-        console.log(key, value);
-
-        if (value instanceof FileList) {
-          if (value.length === 1) {
-            fd.append(key, value[0]);
-          } else {
-            angular.forEach(value, function(file, index) {
-              fd.append(key + '_' + index, file);
-            });
-          }
-        } else if (value instanceof Object) {
-          console.log(JSON.stringify(value));
-          fd.append(key, JSON.stringify(value));
-        } else {
-          fd.append(key, value);
-        }
-
-        //console.log('fd', fd);
-      });
-      //console.log('fd', fd.toString());
-      return fd;
-    };
 
     var objectToFormData = function(obj, form, namespace) {
 
@@ -55,8 +23,8 @@ angular.module('activity').factory('Activity', ['$resource',
 
           // if the property is an object, but not a File,
           // use recursivity.
-          if(typeof obj[property] === 'object' && !(obj[property] instanceof File)) {
-            
+          if(typeof obj[property] === 'object' && !(obj[property] instanceof File) && !(obj[property] instanceof Date)) {
+
             objectToFormData(obj[property], fd, formKey);
 
           } else {

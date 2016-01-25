@@ -13,8 +13,8 @@ angular.module('issues').factory('Issues', ['$http', '$q', 'Authentication',
         }, function(err) {
           deferred.reject();
         });
-        
-      return deferred.promise;          
+
+      return deferred.promise;
     };
 
     return {
@@ -23,6 +23,13 @@ angular.module('issues').factory('Issues', ['$http', '$q', 'Authentication',
       },
       getUserIssuesByKey: function(key) {
         return Authentication.user.issues[key];
+      },
+      getUserAreas: function() {
+        var areas = [];
+        angular.forEach(Authentication.user.issues, function (v, k) {
+          if(v.length) { areas.push(k); }
+        });
+        return areas;
       }
     };
   }
