@@ -390,17 +390,20 @@ angular.module('actions')
       restrict: 'E',
       templateUrl: 'modules/actions/partials/status-update.client.view.html',
       controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
-        $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
-        $scope.closeErrorAlert = true;
+        //$scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
       }],
       link: function (scope, element, attrs) {
 
         // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
+        // scope.action is a $resource!
 
-        //console.log(scope.action);
+        scope.status = {
+          closeAlert: false,
+          closeErrorAlert: true,
+          completed: false
+        };
+        //if(!scope.completed) scope.completed = false;
 
-        //scope.action is a $resource!
-        if(!scope.completed) scope.completed = false;
         scope.newActivity = {
           date: '',
           title: 'Status Update',
@@ -436,7 +439,7 @@ angular.module('actions')
         };
 
         scope.closeAlert = function() {
-          scope.closeAlert = true;
+          scope.status.closeAlert = true;
         };
 
         scope.createActivity = function() {
@@ -453,15 +456,12 @@ angular.module('actions')
 
           console.log('create activity post creation', scope.newActivity);
 
-
-
           activity.$save(function(response) {
 
             console.log('create activity post save', response);
 
             $rootScope.loading = false;
-            scope.completed = true;
-            scope.closeAlert = false;
+            scope.status.completed = true;
 
             // load new actions
             // var idx = scope.$index;
@@ -474,8 +474,9 @@ angular.module('actions')
             //   });
 
           }, function(errorResponse) {
+            $rootScope.loading = false;
             scope.error = errorResponse.data.message;
-            scope.closeErrorAlert = false;
+            scope.status.closeErrorAlert = false;
           });
 
         }; // end of create activity
@@ -495,15 +496,22 @@ angular.module('actions')
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
       controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
         $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
-        $scope.closeErrorAlert = true;
       }],
       link: function (scope, element, attrs) {
 
         // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
         // scope.action is a $resource!
 
+        //console.log(scope.action);
+
         // used to hide the completed alert
-        if(!scope.action.completed) scope.action.completed = false;
+        scope.status = {
+          closeAlert: false,
+          closeErrorAlert: true,
+          completed: false
+        };
+        //if(!scope.action.completed) scope.action.completed = false;
+
         scope.newActivity = {
           date: '',
           title: scope.action.title,
@@ -575,7 +583,7 @@ angular.module('actions')
         };
 
         scope.closeAlert = function() {
-          scope.action.closeAlert = true;
+          scope.status.closeAlert = true;
           scope.actions.splice(scope.$index,1);
         };
 
@@ -596,8 +604,7 @@ angular.module('actions')
             $rootScope.loading = false;
 
             // show the completed alert
-            scope.action.completed = true;
-            scope.action.closeAlert = false;
+            scope.status.completed = true;
 
             // load new actions
             var idx = scope.$index;
@@ -610,8 +617,9 @@ angular.module('actions')
               });
 
           }, function(errorResponse) {
+            $rootScope.loading = false;
             scope.error = errorResponse.data.message;
-            scope.closeErrorAlert = false;
+            scope.status.closeErrorAlert = false;
           });
 
         }; // end of create activity

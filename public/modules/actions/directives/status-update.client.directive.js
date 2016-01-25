@@ -7,17 +7,20 @@ angular.module('actions')
       restrict: 'E',
       templateUrl: 'modules/actions/partials/status-update.client.view.html',
       controller: function($scope, $element, $attrs) {
-        $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
-        $scope.closeErrorAlert = true;
+        //$scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
       },
       link: function (scope, element, attrs) {
 
         // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
+        // scope.action is a $resource!
 
-        //console.log(scope.action);
+        scope.status = {
+          closeAlert: false,
+          closeErrorAlert: true,
+          completed: false
+        };
+        //if(!scope.completed) scope.completed = false;
 
-        //scope.action is a $resource!
-        if(!scope.completed) scope.completed = false;
         scope.newActivity = {
           date: '',
           title: 'Status Update',
@@ -53,7 +56,7 @@ angular.module('actions')
         };
 
         scope.closeAlert = function() {
-          scope.closeAlert = true;
+          scope.status.closeAlert = true;
         };
 
         scope.createActivity = function() {
@@ -70,15 +73,12 @@ angular.module('actions')
 
           console.log('create activity post creation', scope.newActivity);
 
-
-
           activity.$save(function(response) {
 
             console.log('create activity post save', response);
 
             $rootScope.loading = false;
-            scope.completed = true;
-            scope.closeAlert = false;
+            scope.status.completed = true;
 
             // load new actions
             // var idx = scope.$index;
@@ -91,8 +91,9 @@ angular.module('actions')
             //   });
 
           }, function(errorResponse) {
+            $rootScope.loading = false;
             scope.error = errorResponse.data.message;
-            scope.closeErrorAlert = false;
+            scope.status.closeErrorAlert = false;
           });
 
         }; // end of create activity
