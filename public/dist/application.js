@@ -5,15 +5,17 @@ var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'justfix';
 	var applicationModuleVendorDependencies = [
-		'ngResource', 
+		'ngResource',
+		'ngAnimate',
 		'ngCookies',
-		'ui.router', 
-		'ui.bootstrap', 
-		'ui.utils', 
-		'ng.deviceDetector', 
-		'ngFileUpload', 
-		'bootstrapLightbox', 
-		'angularLazyImg', 
+		'ui.router',
+		'ui.bootstrap',
+		'ui.select',
+		'ui.utils',
+		'ng.deviceDetector',
+		'ngFileUpload',
+		'bootstrapLightbox',
+		'angularLazyImg',
 		'duScroll',
 		'pascalprecht.translate',	// angular-translate
  		'tmh.dynamicLocale'// angular-dynamic-locale
@@ -36,6 +38,7 @@ var ApplicationConfiguration = (function() {
 		registerModule: registerModule
 	};
 })();
+
 'use strict';
 
 //Start by defining the main module and adding the module dependencies
@@ -134,15 +137,21 @@ angular.module('actions').config(['$stateProvider', '$urlRouterProvider',
 // Issues controller
 angular.module('actions').controller('ActionsController', ['$scope', '$location', 'Authentication', 'Actions', 'Activity',
   function($scope, $location, Authentication, Actions, Activity) {
-    $scope.authentication = Authentication;
+    //$scope.authentication = Authentication;
+    $scope.user = Authentication.user;
+
+    $scope.showStatusUpdates = function() {
+      if($scope.user.actionFlags) return $scope.user.actionFlags.indexOf('allInitial') !== -1;
+      else return false;
+    };
 
     $scope.list = function() {
-      //console.log(Actions.query());
       $scope.actions = Actions.query();
     };
 
   }
 ]);
+
 'use strict';
 
 angular.module('actions').controller('ComplaintLetterController', ["$scope", "$modalInstance", "newActivity", function ($scope, $modalInstance, newActivity) {
@@ -282,13 +291,14 @@ angular.module('actions').controller('RentalHistoryController', ['$scope','$moda
 'use strict';
 
 // Issues controller
-angular.module('actions').controller('UpdateActivityController', ['$scope', '$modalInstance', 'newActivity', 'Issues',
-  function ($scope, $modalInstance, newActivity, Issues, close) {
+angular.module('actions').controller('UpdateActivityController', ['$scope', '$filter', '$modalInstance', 'newActivity', 'Issues',
+  function ($scope, $filter, $modalInstance, newActivity, Issues, close) {
 
   $scope.newActivity = newActivity;
   $scope.issues = Issues.getUserIssuesByKey($scope.newActivity.key);
-  
-  console.log('update activity cntrl',$scope.newActivity);
+  $scope.areas = Issues.getUserAreas().map(function (a) { return $filter('areaTitle')(a) });
+
+  //console.log('update activity cntrl',$scope.newActivity);
 
   $scope.dp = {
     opened: false,
@@ -315,6 +325,7 @@ angular.module('actions').controller('UpdateActivityController', ['$scope', '$mo
     $modalInstance.dismiss('cancel');
   };
 }]);
+
 'use strict';
 
 angular.module('actions')
@@ -373,11 +384,11 @@ angular.module('actions')
 'use strict';
 
 angular.module('actions')
-  .directive('toDoItem', ['$modal', '$sce', '$timeout', 'Activity', 'Actions',
-    function ($modal, $sce, $timeout, Activity, Actions) {
+  .directive('statusUpdate', ['$rootScope', '$modal', '$sce', '$timeout', 'Activity', 'Actions', 'Issues',
+    function ($rootScope, $modal, $sce, $timeout, Activity, Actions) {
     return {
       restrict: 'E',
-      templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
+      templateUrl: 'modules/actions/partials/status-update.client.view.html',
       controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
         $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
         $scope.closeErrorAlert = true;
@@ -389,6 +400,109 @@ angular.module('actions')
         //console.log(scope.action);
 
         //scope.action is a $resource!
+        if(!scope.completed) scope.completed = false;
+        scope.newActivity = {
+          date: '',
+          title: 'Status Update',
+          key: 'statusUpdate'
+        };
+
+        var openModal = function(templateUrl, controller) {
+
+          var modalInstance = $modal.open({
+            //animation: false,
+            templateUrl: templateUrl,
+            controller: controller,
+            resolve: {
+              newActivity: function () { return scope.newActivity; }
+            }
+          });
+
+          modalInstance.result.then(function (newActivity) {
+            scope.newActivity = newActivity;
+            scope.createActivity();
+          }, function () {
+            // modal cancelled
+          });
+        };
+
+
+        scope.openCheckIn = function() {
+          openModal('modules/actions/partials/modals/check-in.client.view.html', 'UpdateActivityController');
+        };
+        scope.openPhotoPreview = function(file) {
+          if(file.lastModifiedDate) scope.newActivity.date = file.lastModifiedDate;
+          openModal('modules/actions/partials/modals/photo-preview.client.view.html', 'UpdateActivityController');
+        };
+
+        scope.closeAlert = function() {
+          scope.closeAlert = true;
+        };
+
+        scope.createActivity = function() {
+
+          $rootScope.loading = true;
+
+          console.log('create activity pre creation', scope.newActivity);
+
+          // [TODO] have an actual section for the 'area' field in the activity log
+          if(scope.newActivity.description && scope.newActivity.area) scope.newActivity.description = scope.newActivity.area + ' - ' + scope.newActivity.description;
+          else if(scope.newActivity.area) scope.newActivity.description = scope.newActivity.area;
+
+          var activity = new Activity(scope.newActivity);
+
+          console.log('create activity post creation', scope.newActivity);
+
+
+
+          activity.$save(function(response) {
+
+            console.log('create activity post save', response);
+
+            $rootScope.loading = false;
+            scope.completed = true;
+            scope.closeAlert = false;
+
+            // load new actions
+            // var idx = scope.$index;
+            // var newActions = Actions.query(
+            //   {key: scope.newActivity.key},
+            //   function() {
+            //     newActions.forEach(function (action) {
+            //       scope.actions.splice(++idx, 0, action);
+            //     });
+            //   });
+
+          }, function(errorResponse) {
+            scope.error = errorResponse.data.message;
+            scope.closeErrorAlert = false;
+          });
+
+        }; // end of create activity
+
+
+      }
+    };
+  }]);
+
+'use strict';
+
+angular.module('actions')
+  .directive('toDoItem', ['$rootScope', '$modal', '$sce', '$timeout', 'Activity', 'Actions',
+    function ($rootScope, $modal, $sce, $timeout, Activity, Actions) {
+    return {
+      restrict: 'E',
+      templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
+      controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
+        $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
+        $scope.closeErrorAlert = true;
+      }],
+      link: function (scope, element, attrs) {
+
+        // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
+        // scope.action is a $resource!
+
+        // used to hide the completed alert
         if(!scope.action.completed) scope.action.completed = false;
         scope.newActivity = {
           date: '',
@@ -396,6 +510,7 @@ angular.module('actions')
           key: scope.action.key
         };
 
+        // if action has custom fields, initialize those in the newActivity object
         if(scope.action.followUp && scope.action.followUp.fields) {
           scope.newActivity.fields = [];
           angular.forEach(scope.action.followUp.fields, function(field, idx) {
@@ -466,6 +581,8 @@ angular.module('actions')
 
         scope.createActivity = function() {
 
+          $rootScope.loading = true;
+
           console.log('create activity pre creation', scope.newActivity);
 
           var activity = new Activity(scope.newActivity);
@@ -476,6 +593,9 @@ angular.module('actions')
 
             console.log('create activity post save', response);
 
+            $rootScope.loading = false;
+
+            // show the completed alert
             scope.action.completed = true;
             scope.action.closeAlert = false;
 
@@ -677,40 +797,8 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
 angular.module('activity').factory('Activity', ['$resource',
   function($resource) {
 
-    // taken from http://stackoverflow.com/questions/21115771/angularjs-upload-files-using-resource-solution
+    // taken from https://gist.github.com/ghinda/8442a57f22099bdb2e34
     //var transformRequest = function(data, headersGetter) { if (data === undefined) return data;var fd = new FormData();angular.forEach(data, function(value, key) { if (value instanceof FileList) { if (value.length == 1) { fd.append(key, value[0]);} else {angular.forEach(value, function(file, index) {fd.append(key + '_' + index, file);});}} else {if (value !== null && typeof value === 'object'){fd.append(key, JSON.stringify(value)); } else {fd.append(key, value);}}});return fd;}
-
-    var transformRequest = function(data, headersGetter) {
-      if (data === undefined)
-        return data;
-
-        console.log(data);
-
-      var fd = new FormData();
-      angular.forEach(data, function(value, key) {
-
-        console.log(key, value);
-
-        if (value instanceof FileList) {
-          if (value.length === 1) {
-            fd.append(key, value[0]);
-          } else {
-            angular.forEach(value, function(file, index) {
-              fd.append(key + '_' + index, file);
-            });
-          }
-        } else if (value instanceof Object) {
-          console.log(JSON.stringify(value));
-          fd.append(key, JSON.stringify(value));
-        } else {
-          fd.append(key, value);
-        }
-
-        //console.log('fd', fd);
-      });
-      //console.log('fd', fd.toString());
-      return fd;
-    };
 
     var objectToFormData = function(obj, form, namespace) {
 
@@ -728,8 +816,8 @@ angular.module('activity').factory('Activity', ['$resource',
 
           // if the property is an object, but not a File,
           // use recursivity.
-          if(typeof obj[property] === 'object' && !(obj[property] instanceof File)) {
-            
+          if(typeof obj[property] === 'object' && !(obj[property] instanceof File) && !(obj[property] instanceof Date)) {
+
             objectToFormData(obj[property], fd, formKey);
 
           } else {
@@ -999,6 +1087,18 @@ angular.module('core').directive('languageSelect', ["LocaleService", function (L
     }]
   };
 }]);
+'use strict';
+
+angular.module('core').directive('loading', ["$document", function($document) {
+    return {
+        restrict: 'E',
+        templateUrl: 'modules/core/partials/loading.client.view.html',
+        link: function (scope, elm, attrs) {
+
+        }
+    };
+}]);
+
 'use strict';
 
 angular.module('core').directive('phoneInput', ["$filter", "$browser", function($filter, $browser) {
@@ -1667,8 +1767,8 @@ angular.module('issues').factory('Issues', ['$http', '$q', 'Authentication',
         }, function(err) {
           deferred.reject();
         });
-        
-      return deferred.promise;          
+
+      return deferred.promise;
     };
 
     return {
@@ -1677,10 +1777,18 @@ angular.module('issues').factory('Issues', ['$http', '$q', 'Authentication',
       },
       getUserIssuesByKey: function(key) {
         return Authentication.user.issues[key];
+      },
+      getUserAreas: function() {
+        var areas = [];
+        angular.forEach(Authentication.user.issues, function (v, k) {
+          if(v.length) { areas.push(k); }
+        });
+        return areas;
       }
     };
   }
 ]);
+
 'use strict';
 
 // Config HTTP Error Handling
