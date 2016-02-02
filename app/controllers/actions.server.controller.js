@@ -49,13 +49,13 @@ var getAreaActions = function(user) {
       if(user.actionFlags.indexOf(area) === -1) {
 
         areaActions.push({
-          title: 'Text/Photos',
+          title: areaTitle(area) + ' Issues',
           content: 'Add some initial information about your <b>' + areaTitle(area) + '</b> issues. This will help to provide evidence for the issues you selected.',
           key: area,
           addIf: ['initial'],
           cta: {
             type: 'initialContent',
-            buttonTitle: 'Add Details',
+            buttonTitle: '<span class="glyphicon glyphicon-camera pull-left"></span> Add Details',
             template: 'update-activity.client.view.html',
             controller: 'UpdateActivityController'
           },
@@ -93,7 +93,7 @@ var generateActions = function(user) {
     if(user.followUpFlags.indexOf(action.key) !== -1) action.isFollowUp = true;
     else action.isFollowUp = false;
 
-    if(add && !reject) 
+    if(add && !reject)
       actions.push(action);
 
   });

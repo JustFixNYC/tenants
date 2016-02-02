@@ -51,6 +51,8 @@ angular.module('actions')
           openModal('modules/actions/partials/modals/check-in.client.view.html', 'UpdateActivityController');
         };
         scope.openPhotoPreview = function(file) {
+          console.log(file);
+          console.log(file.lastModifiedDate);
           if(file.lastModifiedDate) scope.newActivity.date = file.lastModifiedDate;
           openModal('modules/actions/partials/modals/photo-preview.client.view.html', 'UpdateActivityController');
         };

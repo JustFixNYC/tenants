@@ -434,6 +434,8 @@ angular.module('actions')
           openModal('modules/actions/partials/modals/check-in.client.view.html', 'UpdateActivityController');
         };
         scope.openPhotoPreview = function(file) {
+          console.log(file);
+          console.log(file.lastModifiedDate);
           if(file.lastModifiedDate) scope.newActivity.date = file.lastModifiedDate;
           openModal('modules/actions/partials/modals/photo-preview.client.view.html', 'UpdateActivityController');
         };
@@ -496,6 +498,7 @@ angular.module('actions')
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
       controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
         $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
+        $scope.filterButtonTitleHTML = function() { return $sce.trustAsHtml($scope.action.cta.buttonTitle); };
       }],
       link: function (scope, element, attrs) {
 

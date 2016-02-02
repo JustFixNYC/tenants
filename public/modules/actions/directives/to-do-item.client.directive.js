@@ -8,6 +8,7 @@ angular.module('actions')
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
       controller: function($scope, $element, $attrs) {
         $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
+        $scope.filterButtonTitleHTML = function() { return $sce.trustAsHtml($scope.action.cta.buttonTitle); };
       },
       link: function (scope, element, attrs) {
 

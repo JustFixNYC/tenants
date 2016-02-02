@@ -19,7 +19,7 @@
                 data-ng-if="isModal()"
                 data-ng-class="action.cta.type === 'initialContent' ? 'initial' : 'regular'"
                 data-ng-click="openModal()"
-                data-ng-bind="action.cta.buttonTitle">
+                data-ng-bind-html="filterButtonTitleHTML()">
         </button>
         <a  class="btn btn-success btn-block pull-right"
             data-ng-if="action.cta.type === 'call'"
