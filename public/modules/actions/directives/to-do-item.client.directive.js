@@ -9,21 +9,26 @@ angular.module('actions')
       controller: function($scope, $element, $attrs) {
         $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
         $scope.filterButtonTitleHTML = function() { return $sce.trustAsHtml($scope.action.cta.buttonTitle); };
+        $scope.closeErrorAlert = true;
       },
       link: function (scope, element, attrs) {
 
         // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
         // scope.action is a $resource!
 
+        //console.log(scope);
+
         //console.log(scope.action);
 
         // used to hide the completed alert
-        scope.status = {
-          closeAlert: false,
-          closeErrorAlert: true,
-          completed: false
-        };
-        //if(!scope.action.completed) scope.action.completed = false;
+        // scope.status = {
+        //   closeAlert: false,
+        //   closeErrorAlert: true,
+        //   completed: false
+        // };
+
+        //scope.completed = false;
+        if(!scope.action.completed) scope.action.completed = false;
 
         scope.newActivity = {
           date: '',
@@ -96,7 +101,7 @@ angular.module('actions')
         };
 
         scope.closeAlert = function() {
-          scope.status.closeAlert = true;
+          scope.action.closeAlert = true;
           scope.actions.splice(scope.$index,1);
         };
 
@@ -115,9 +120,8 @@ angular.module('actions')
             console.log('create activity post save', response);
 
             $rootScope.loading = false;
-
-            // show the completed alert
-            scope.status.completed = true;
+            scope.action.completed = true;
+            scope.action.closeAlert = false;
 
             // load new actions
             var idx = scope.$index;
@@ -129,10 +133,12 @@ angular.module('actions')
                 });
               });
 
+          //
+
           }, function(errorResponse) {
             $rootScope.loading = false;
             scope.error = errorResponse.data.message;
-            scope.status.closeErrorAlert = false;
+            scope.closeErrorAlert = false;
           });
 
         }; // end of create activity

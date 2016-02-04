@@ -499,21 +499,26 @@ angular.module('actions')
       controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
         $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
         $scope.filterButtonTitleHTML = function() { return $sce.trustAsHtml($scope.action.cta.buttonTitle); };
+        $scope.closeErrorAlert = true;
       }],
       link: function (scope, element, attrs) {
 
         // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
         // scope.action is a $resource!
 
+        //console.log(scope);
+
         //console.log(scope.action);
 
         // used to hide the completed alert
-        scope.status = {
-          closeAlert: false,
-          closeErrorAlert: true,
-          completed: false
-        };
-        //if(!scope.action.completed) scope.action.completed = false;
+        // scope.status = {
+        //   closeAlert: false,
+        //   closeErrorAlert: true,
+        //   completed: false
+        // };
+
+        //scope.completed = false;
+        if(!scope.action.completed) scope.action.completed = false;
 
         scope.newActivity = {
           date: '',
@@ -586,7 +591,7 @@ angular.module('actions')
         };
 
         scope.closeAlert = function() {
-          scope.status.closeAlert = true;
+          scope.action.closeAlert = true;
           scope.actions.splice(scope.$index,1);
         };
 
@@ -605,9 +610,8 @@ angular.module('actions')
             console.log('create activity post save', response);
 
             $rootScope.loading = false;
-
-            // show the completed alert
-            scope.status.completed = true;
+            scope.action.completed = true;
+            scope.action.closeAlert = false;
 
             // load new actions
             var idx = scope.$index;
@@ -619,10 +623,12 @@ angular.module('actions')
                 });
               });
 
+          //
+
           }, function(errorResponse) {
             $rootScope.loading = false;
             scope.error = errorResponse.data.message;
-            scope.status.closeErrorAlert = false;
+            scope.closeErrorAlert = false;
           });
 
         }; // end of create activity
@@ -792,7 +798,6 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
 
     $scope.list = function() {
       $scope.activities = Activity.query();
-      console.log($scope.activities);
     };
 
     $scope.openLightboxModal = function (photos, index) {
@@ -1650,12 +1655,12 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
     }
 
     $scope.newIssue = {};
-    $scope.newIssue.issues = {};          
+    $scope.newIssue.issues = {};
 
     if($location.search().address) {
 
       var query = $location.search();
-      console.log('string');
+      //console.log('string');
 
       $scope.newIssue.name = query.name;
       $scope.newIssue.phone = query.phone;
@@ -1663,7 +1668,7 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
       $scope.newIssue.borough = query.borough;
       $scope.newIssue.unit = query.unit;
       $scope.newIssue.nycha = query.nycha;
-      $scope.newIssue.password = query.password;    
+      $scope.newIssue.password = query.password;
     }
 
     // $scope.newIssue.name = 'Marîa Hernandez';
@@ -1695,11 +1700,11 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
         borough:      $scope.newIssue.borough,
         address:      $scope.newIssue.address,
         unit:         $scope.newIssue.unit,
-        nycha:        $scope.newIssue.nycha, 
+        nycha:        $scope.newIssue.nycha,
         issues:       $scope.newIssue.issues,
-        password:     $scope.newIssue.password        
+        password:     $scope.newIssue.password
       };
-      
+
       $http.post('/auth/signup', newUser).success(function(response) {
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;
@@ -1718,7 +1723,7 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
       user.$update(function(response) {
         Authentication.user = response;
         $scope.authentication.user = response;
-        $location.path('/issues');        
+        $location.path('/issues');
       }, function(response) {
         $scope.error = response.data.message;
       });
@@ -1735,6 +1740,7 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
 
   }
 ]);
+
 'use strict';
 
 angular.module('issues').filter('areaTitle', function() {

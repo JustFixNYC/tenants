@@ -63,7 +63,8 @@ body {
 .modal-body img {
   margin: 0 auto 10px auto;
   display: block;
-  max-height: 250px; }
+  max-height: 250px;
+  max-width: 100%; }
 
 .img-thumbnail {
   border-radius: 0;

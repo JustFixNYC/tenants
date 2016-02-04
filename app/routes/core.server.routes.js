@@ -30,4 +30,10 @@ module.exports = function(app) {
     res.redirect('/#!/issues/create/checklist?' + serialize(demoUser));
   });
 
+  app.route('/test').get(function (req, res) {
+
+    //console.log(serialize(demoUser));
+    res.redirect('/#!/issues/create');
+  });
+
 };

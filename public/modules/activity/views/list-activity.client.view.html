@@ -24,7 +24,8 @@
             </div>
             <div class="panel-body">
 
-                <p><b>{{ activity.key | areaTitle }} {{ activity.title === 'Text/Photos' ? 'Details' : activity.title }}</b></p>
+                <!-- <p><b>{{ activity.key | areaTitle }} {{ activity.title === 'Text/Photos' ? 'Details' : activity.title }}</b></p> -->
+                <p><b>{{ activity.title }}</b></p>
 
                 <div data-ng-if="activity.fields.length">
                   <p data-ng-repeat="field in activity.fields"><b>{{field.title}}</b> {{field.value}}</p>

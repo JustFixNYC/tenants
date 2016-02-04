@@ -12,12 +12,12 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
     }
 
     $scope.newIssue = {};
-    $scope.newIssue.issues = {};          
+    $scope.newIssue.issues = {};
 
     if($location.search().address) {
 
       var query = $location.search();
-      console.log('string');
+      //console.log('string');
 
       $scope.newIssue.name = query.name;
       $scope.newIssue.phone = query.phone;
@@ -25,7 +25,7 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
       $scope.newIssue.borough = query.borough;
       $scope.newIssue.unit = query.unit;
       $scope.newIssue.nycha = query.nycha;
-      $scope.newIssue.password = query.password;    
+      $scope.newIssue.password = query.password;
     }
 
     // $scope.newIssue.name = 'Marîa Hernandez';
@@ -57,11 +57,11 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
         borough:      $scope.newIssue.borough,
         address:      $scope.newIssue.address,
         unit:         $scope.newIssue.unit,
-        nycha:        $scope.newIssue.nycha, 
+        nycha:        $scope.newIssue.nycha,
         issues:       $scope.newIssue.issues,
-        password:     $scope.newIssue.password        
+        password:     $scope.newIssue.password
       };
-      
+
       $http.post('/auth/signup', newUser).success(function(response) {
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;
@@ -80,7 +80,7 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
       user.$update(function(response) {
         Authentication.user = response;
         $scope.authentication.user = response;
-        $location.path('/issues');        
+        $location.path('/issues');
       }, function(response) {
         $scope.error = response.data.message;
       });
