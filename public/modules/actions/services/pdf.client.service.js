@@ -42,7 +42,7 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
             issuesContent += '\n   Additional Information:';            
           }
 
-          issuesContent += '\n';
+          issuesContent += '\n\n';
         }
       }
 
@@ -56,13 +56,11 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 	  		},
 	  		landlordInfo : {
 	  			'name': 'Sir/Madam',
-	  			'Address': '600 Main St \n Brooklyn, NY  11235'
+	  			'address': '600 Main St \n Brooklyn, NY  11235'
 	  		},
 	  		issuesList: issuesContent
 
   		};
-
-  		console.log(assembledObject);
 
 	  	$http({
 	  		method: 'POST',
