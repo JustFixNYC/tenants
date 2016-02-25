@@ -1,7 +1,9 @@
 'use strict';
 
-angular.module('pdf').factory('Pdf', ['$http', '$q', 'Authentication',
-  function Pdf($http, $q, Messages) {
+angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$filter',
+  function Pdf($http, $q, Authentication, $filter) {
+
+  	// SPLIT THIS OUT OMG
   	var postRequest = function (dataObj) {
   		var deferred = $q.defer();
     	var user = Authentication.user;
@@ -42,23 +44,26 @@ angular.module('pdf').factory('Pdf', ['$http', '$q', 'Authentication',
 
   		var assembledObject = {
   			tenantInfo: {
-	  			'phone': Authentication.phone,
-	  			'name': Authentication.fullName
-	  			'address': Authentication.address + 
-	  								'\n' + Authentication.borough +
+	  			'phone': user.phone,
+	  			'name': user.fullName,
+	  			'address': user.address + 
+	  								'\n' + user.borough +
 	  								'\n New York  ' + '11205' // This needs to be replaced, talk to dan ASAP
 	  		},
 	  		landlordInfo : {
 	  			'name': 'Sir/Madam',
 	  			'Address': '600 Main St \n Brooklyn, NY  11235'
-	  		}
+	  		},
+	  		issuesList: issuesContent
 
-  		}
+  		};
 
-	  	$http({
+  		console.log(assembledObject);
+
+	  	/*$http({
 	  		method: 'POST',
-	  		url:'WillFillOutShortly.com',
-	  		data: dataObj
+	  		url:'http://pdf-microservice.herokuapp.com/complaint-letter',
+	  		data: assembledObject
 	  	}).then(
 	  		function successfulPdfPost(response){
 	  			deferred.resolve(response.data);
@@ -66,8 +71,12 @@ angular.module('pdf').factory('Pdf', ['$http', '$q', 'Authentication',
 	  		function failedPdfPost(error) {
 	  			deferred.reject(error);
 	  		}
-	  	);
+	  	);*/
 
 	  	return deferred.promise;
+  	};
+
+  	return {
+  		postComplaint: postRequest
   	};
   }]);
