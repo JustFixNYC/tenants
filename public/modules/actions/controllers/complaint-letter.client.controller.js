@@ -6,7 +6,14 @@ angular.module('actions').controller('ComplaintLetterController', ['$scope', '$m
 	  $scope.newActivity = newActivity;
 
 	  $scope.done = function () {
-	  	Pdf.postComplaint();
+	  	Pdf.postComplaint().then(
+	  		function success(data) {
+	  			console.log(data);
+	  		}, 
+	  		function failure(error){
+	  			throw new Error(error);
+	  		}
+	  	);
 	    $modalInstance.close($scope.newActivity);
 	  };
 

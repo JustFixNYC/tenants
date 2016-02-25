@@ -29,10 +29,14 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
           issuesContent += '\n   First Appeared: ';
           if(activity) {
-            issuesContent += $filter('date')(activity.date, 'longDate');             
-            issuesContent += '\n   Additional Information:';            
-            issuesContent += '\n   ' + activity.description;
-            issuesContent += '\n';  
+            issuesContent += $filter('date')(activity.date, 'longDate'); 
+
+            if(activity.description) {            
+            	issuesContent += '\n   Additional Information: ' + activity.description;
+            }
+
+            issuesContent += '\n';
+            // Why is this here?
             activity = undefined;                    
           } else {
             issuesContent += '\n   Additional Information:';            
