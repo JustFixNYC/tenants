@@ -60,9 +60,9 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
   		console.log(assembledObject);
 
-	  	/*$http({
+	  	$http({
 	  		method: 'POST',
-	  		url:'http://pdf-microservice.herokuapp.com/complaint-letter',
+	  		url:'http://localhost:8080/complaint-letter',
 	  		data: assembledObject
 	  	}).then(
 	  		function successfulPdfPost(response){
@@ -71,7 +71,7 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 	  		function failedPdfPost(error) {
 	  			deferred.reject(error);
 	  		}
-	  	);*/
+	  	);
 
 	  	return deferred.promise;
   	};
