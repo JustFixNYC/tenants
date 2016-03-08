@@ -11,7 +11,8 @@ angular.module('actions').controller('ComplaintLetterController', ['$scope', '$m
 	  			console.log(data);
 	  		}, 
 	  		function failure(error){
-	  			throw new Error(error);
+	  			console.log(error);
+	  			// throw new Error(error);
 	  		}
 	  	);
 	    $modalInstance.close($scope.newActivity);
