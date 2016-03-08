@@ -16,13 +16,19 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
   		};
   		var issuesCount = 0;
 
+  		if(user.geo) {
+  			user.zip = user.geo.zip;
+  		} else {
+  			user.zip = '';
+  		}
+
   		// Kick off assembly of obj sent to PDF service
 			assembledObject.tenantInfo = {
   			'phone': user.phone,
   			'name': user.fullName,
   			'address': user.address + 
   								' <br> ' + user.borough +
-  								' <br> New York  ' + '11205' // This needs to be replaced, talk to dan ASAP
+  								' <br> New York  ' + user.zip // This needs to be replaced, talk to dan ASAP
 	  	};
 	  	assembledObject.landlordInfo = {
   			'name': 'Sir/Madam',
@@ -81,7 +87,18 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 	  	return deferred.promise;
   	};
 
+  	var getRequest = function () {
+  		var user = Authentication.user;
+
+  		if(user.complaintUrl !== '') {
+  			return user.complaintUrl;
+  		} else {
+  			postRequest();
+  		}
+  	};
+
   	return {
-  		postComplaint: postRequest
+  		postComplaint: postRequest,
+  		getComplaint: getRequest
   	};
   }]);
