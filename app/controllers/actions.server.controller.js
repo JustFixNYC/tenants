@@ -46,6 +46,7 @@ var getAreaActions = function(user) {
     if(issues[area].length) {
 
       // make sure that area isn't already in action flags
+      // this means that the user hasn't "added details"
       if(user.actionFlags.indexOf(area) === -1) {
 
         areaActions.push({
@@ -110,7 +111,7 @@ var list = function(req, res) {
     });
     res.json(newActions);
   } else if(user) {
-    var actions = generateActions(user);
+    var actions = generateActions(user);                  // get a curated list
     res.json(actions);
   } else {
     res.status(401).send({
