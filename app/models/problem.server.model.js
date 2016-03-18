@@ -7,9 +7,29 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 /**
- * Activity Schema
+ * Issues Schema
  */
-var ActivitySchema = new Schema({
+
+var IssueSchema = new Schema({
+  name: {
+  	type: String,
+  	default: ''
+  },
+  emergency: {
+  	type: Boolean,
+  	default: false
+  },
+  known: {
+  	type: Boolean,
+  	default: false
+  }
+});
+
+
+/**
+ * Problem Schema
+ */
+var ProblemSchema = new Schema({
 
     startDate: {
       type: Date,
@@ -36,14 +56,11 @@ var ActivitySchema = new Schema({
       thumb : { type : String}, 
       created : { type : Date, default : Date.now }
     }],
-    fields: [{
-      title: { type: String },
-      value: { type: String }
-    }],
-    relatedProblems: [{
+    relatedActivities: [{
 			type: Schema.Types.ObjectId,
-			ref: 'Problem'
-		}]
+			ref: 'Activity'
+		}],
+    issues: [IssueSchema]
 });
 
-module.exports = ActivitySchema;
+module.exports = ProblemSchema;
