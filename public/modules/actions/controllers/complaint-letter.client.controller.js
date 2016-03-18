@@ -1,14 +1,17 @@
 'use strict';
 
-angular.module('actions').controller('ComplaintLetterController', ['$scope', '$modalInstance', 'newActivity', 'Pdf', 
-	function ($scope, $modalInstance, newActivity, Pdf) {
+angular.module('actions').controller('ComplaintLetterController', ['$scope', '$modalInstance', 'newActivity', 'Pdf', 'Authentication', '$window',
+	function ($scope, $modalInstance, newActivity, Pdf, Authentication, $window) {
 
 	  $scope.newActivity = newActivity;
+	  var user = Authentication.user;
 
 	  $scope.done = function () {
 	  	Pdf.postComplaint().then(
 	  		function success(data) {
-	  			console.log(data);
+	  			console.log();
+	  			// TODO: render returned URL into a modal
+	  			// $window.open(data);
 	  		}, 
 	  		function failure(error){
 	  			console.log(error);
@@ -16,6 +19,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$scope', '$m
 	  		}
 	  	);
 	    $modalInstance.close($scope.newActivity);
+	    $modalInstance.
 	  };
 
 	  $scope.cancel = function () {
