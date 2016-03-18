@@ -101,6 +101,11 @@ var UserSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  // Saving the user's Letter of Complaint PDF
+  complaintUrl: {
+  	type: String,
+  	default: ''
+  },
   /* For reset password */
   resetPasswordToken: {
     type: String
