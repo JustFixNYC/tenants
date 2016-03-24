@@ -19,7 +19,6 @@ angular.module('actions').controller('ComplaintLetterController', ['$scope', '$m
 	  		}
 	  	);
 	    $modalInstance.close($scope.newActivity);
-	    $modalInstance.
 	  };
 
 	  $scope.cancel = function () {

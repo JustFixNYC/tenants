@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     crypto = require('crypto'),
-    ActivitySchema = require('./activity.server.model.js');
+    ActivitySchema = require('./activity.server.model.js'),
+    ProblemSchema = require('./problem.server.model.js');
 
 /**
  * A Validation function for local strategy properties
