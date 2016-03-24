@@ -9,7 +9,7 @@ module.exports = function(grunt) {
 		serverSASS: ['app/styles/{,*/}*.{scss,sass}'],
 		//serverSASS: ['app/styles/{,*/}*.{scss,sass}', '!app/styles/bootstrap-config.scss'],
 		clientViews: ['public/modules/**/views/**/*.html'],
-		clientJS: ['public/*.js', 'public/modules/*/*.js'],
+		clientJS: ['public/*.js', 'public/modules/**/*.js'],
 		clientCSS: ['public/styles/*.css', '!public/styles/bootstrap.css', '!public/styles/bootflat.css'],
 		mochaTests: ['app/tests/**/*.js']
 	};

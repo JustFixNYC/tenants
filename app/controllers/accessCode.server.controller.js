@@ -3,8 +3,8 @@
 var mongoose = require('mongoose'),
     AccessCode = mongoose.model('AccessCode');
 
-var create = function (req, res) {
-	var code = req.code;
+var save = function (req, res) {
+	var code = req.body;
 
 	if(code) {
 		var newAccessCode = new AccessCode(code);
@@ -26,6 +26,11 @@ var get = function (req, res) {
 
 	// Using findOne since in our save check in the model, we should ONLY be able to save a unique ID
 	AccessCode.findOne({id: code}, function(err, accessCode) {
-		res.body()
-	})
+		res.send(accessCode);
+	});
+};
+
+module.exports = {
+	save: save,
+	get: get
 };
