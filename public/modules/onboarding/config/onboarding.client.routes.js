@@ -16,6 +16,27 @@
         templateUrl: 'modules/onboarding/views/onboarding.client.view.html',
         controller: 'OnboardingController',
         controllerAs: 'vm'
+      })
+      .state('onboarding-create', {
+        url: '/onboarding-admin',
+        templateUrl: 'modules/onboarding/views/onboarding-create.client.view.html',
+        controller: 'OnboardingCreateController',
+        controllerAs: 'vm',
+        data: {
+        	needAdmin: true
+        }
       });
   }
 })();
+
+angular.module('onboarding').run(['$rootScope', '$state', 'Authentication', '$window', function($rootScope, $state, Authentication, $window) {
+
+	$rootScope.$on('$stateChangeStart', function(e, destination) {
+		if(destination.data && destination.data.needAdmin == true && Authentication.user.roles[0].toLowerCase() !== 'admin') {
+			// e.preventDefault();
+			// $window.location.href = '#!/home';
+			console.log('this should not be visible');
+		}
+	})
+
+}])

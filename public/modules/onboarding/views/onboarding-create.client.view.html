@@ -1,0 +1,46 @@
+<section>
+  This is the Onboarding create view {{text}}
+  <br/><br/><br/>
+  <form name="pushAccessCode">
+  	<label>NAME:</label><br/>
+		<input type="text" name="Name" ng-model="codeInfo.name"><br/><br/>
+  	<label>CODE:</label><br/>
+		<input type="text" name="Code" ng-model="codeInfo.code"><br/><br/>
+  	<label>PHONE:</label><br/>
+		<input type="text" name="Phone" ng-model="codeInfo.phone"><br/><br/>
+  	<label>EMAIL:</label><br/>
+		<input type="text" name="Email" ng-model="codeInfo.email"><br/><br/>
+  	<label>ORGANIZATION:</label><br/>
+		<input type="text" name="Organization" ng-model="codeInfo.organization"><br/><br/>
+  	<label>SUBMIT:</label><br/>
+		<input type="submit" value="Save" ng-click="submit(codeInfo)">
+  </form>
+  <div class="response">
+		The fox says: {{response}}
+  </div>
+  <br/><br/>
+  <div class="codes">
+		codes: 
+		<div class="code" ng-repeat="code in codes">
+			CODE:{{code.code}}, FOR: {{code.email}}
+		</div>
+  </div>
+	<br/>
+	<br/>
+	<br/>
+  <form name="removeAccessCode">
+		<input type="text" name="Remove" ng-model="removeCode">
+		<input type="submit" value="REMOVE" ng-click="remove(removeCode)">
+  </form>
+</section>
+
+<br/><br/>
+
+<div class="users">
+	<div class="user" ng-repeat="user in users">
+		{{user.fullName}} <input type="submit" ng-click="switchRole(user)" value="Switch Role">
+	</div>
+
+	<br/>
+	<div class="message">{{message}}</div>
+</div>

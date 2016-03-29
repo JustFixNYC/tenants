@@ -1,12 +1,16 @@
 'use strict';
 
-angular.module('onboarding').factory('AccessCode', ['$resource', function($resource) {
+angular.module('onboarding').factory('AccessCodeService', ['$resource', function($resource) {
 
-	return 'fuck';
-
-	$resource('access-code', {}, {
+	return $resource('access-code', {}, {
 		save: {
 			method: 'POST'
+		},
+		get: {
+			method: 'GET'
+		},
+		delete: {
+			method: 'DELETE'
 		}
 	});
 
