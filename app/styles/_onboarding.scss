@@ -1,0 +1,27 @@
+.onboarding-code-entry {
+	text-align: center;
+
+	h3 {
+		font-weight: 100;
+	}
+
+	p {
+		margin: 2em 0;
+	}
+
+	label {
+		text-align: left;
+	}
+
+	.access-code-form {
+
+		.input-code {
+			padding: .5em 1em;
+		}
+
+		.btn {
+			margin: 2em 0;
+			padding: .75em 2.25em;
+		}
+	}
+}

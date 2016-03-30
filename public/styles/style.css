@@ -843,4 +843,18 @@ ul.navbar-mobile {
   height: 150px;
   overflow: hidden; }
 
+.onboarding-code-entry {
+  text-align: center; }
+  .onboarding-code-entry h3 {
+    font-weight: 100; }
+  .onboarding-code-entry p {
+    margin: 2em 0; }
+  .onboarding-code-entry label {
+    text-align: left; }
+  .onboarding-code-entry .access-code-form .input-code {
+    padding: .5em 1em; }
+  .onboarding-code-entry .access-code-form .btn {
+    margin: 2em 0;
+    padding: .75em 2.25em; }
+
 /*# sourceMappingURL=style.css.map */

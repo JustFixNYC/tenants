@@ -25,6 +25,12 @@
         data: {
         	needAdmin: true
         }
+      })
+      .state('selection', {
+        url: '/onboarding-selection',
+        templateUrl: 'modules/onboarding/views/onboarding-selection.client.view.html',
+        controller: 'OnboardingSelectionController',
+        controllerAs: 'vm'
       });
   }
 })();

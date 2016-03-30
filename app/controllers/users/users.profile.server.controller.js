@@ -48,6 +48,16 @@ exports.update = function(req, res) {
 	}
 };
 
+exports.list = function(req, res) {
+	User.find({}, function(err, users) {
+		if(err) {
+			res.status(400).send(err);
+		} else {
+			res.json(users);
+		}
+	});
+}
+
 /**
  * Send User
  */

@@ -104,6 +104,10 @@ var UserSchema = new Schema({
   	type: String,
   	default: ''
   },
+  code : {
+  	type: String,
+  	default: ''
+  },
   /* For reset password */
   resetPasswordToken: {
     type: String

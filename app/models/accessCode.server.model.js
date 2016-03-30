@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
@@ -27,21 +29,23 @@ var AccessCodeSchema = new Schema({
   }
 });
 
+var AccessCode = mongoose.model('AccessCode', AccessCodeSchema);
+
 // Check if code ID is being used already -- if so, invalidate
-AccessCodeSchema.pre('save', function(next, done) {
+AccessCodeSchema.pre('save', function(next) {
 	var self = this;
-	mongoose.Models['AccessCode'].findOne({id: self.id}, function(err, user) {
+	AccessCode.findOne({code: self.code}, function(err, user) {
 		if(err) {
-			done(err);
+			next(err);
 		} else if(user) {
-			self.invalidate('id', 'ID must be unique');
-			done(new Error('ID must be unique'));
+			console.log('am i being called?');
+			self.invalidate('code', 'code must be unique');
+			next(new Error('code must be unique'));
 		} else {
-			done();
+			next();
 		}
 	});
-
-	next();
+	
 });
 
-mongoose.model('AccessCode', AccessCodeSchema);
+module.exports = AccessCode;
