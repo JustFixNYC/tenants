@@ -14,4 +14,6 @@ angular.module('onboarding').factory('onboardingService', ['$resource','$q', '$h
 		return deferred.promise;
 	};
 
+	return this;
+
 }]);

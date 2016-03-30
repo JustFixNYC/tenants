@@ -1,4 +1,4 @@
-(function() {
+/*(function() {
   'use strict';
 
   // Onboarding module config
@@ -12,4 +12,4 @@
     // Config logic
     // ...
   }
-})();
+})();*/
