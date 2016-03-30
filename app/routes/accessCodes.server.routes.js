@@ -8,5 +8,5 @@ module.exports = function(app) {
 		.post(controller.save)
 		.delete(controller.remove);
 
-	app.route('/access-code')
+	app.route('/access-code');
 };

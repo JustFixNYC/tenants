@@ -20,7 +20,7 @@ var save = function (req, res) {
 		});
 	} else {
 		res.send('Incomplete or missing access code information');
-	};
+	}
 };
 
 var list = function (req, res) {

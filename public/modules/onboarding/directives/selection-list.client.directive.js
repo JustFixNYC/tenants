@@ -18,8 +18,8 @@ angular.module('onboarding').directive('selectionList', function selectionList(/
 	  			thisWrapped.addClass('active');
 	  			scope.process = this.getAttribute('process');
 	  			console.log(scope);
-    		})
-    	}
+    		});
+    	};
 
     	for (var i = 0; i < aTags.length; i++) {
     		var elm = angular.element(aTags[i]);

@@ -52,9 +52,9 @@ var ProblemSchema = new Schema({
       default: ''
     },
     photos: [{
-      url : { type : String}, 
-      thumb : { type : String}, 
-      created : { type : Date, default : Date.now }
+      url : {type : String}, 
+      thumb : {type : String}, 
+      created : {type : Date, default : Date.now }
     }],
     relatedActivities: [{
 			type: Schema.Types.ObjectId,

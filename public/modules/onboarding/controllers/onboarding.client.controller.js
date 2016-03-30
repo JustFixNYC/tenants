@@ -13,7 +13,7 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', 'Acce
 	  	var searchThru = [];
 	  	for(var i = 0; i < accessCodes.length; i++) {
 	  		searchThru.push(accessCodes[i].code);
-	  	};
+	  	}
 
 	  	// Check if code exists
 	  	if(searchThru.indexOf(code) <= -1) {
@@ -29,7 +29,7 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', 'Acce
 	  	}
 
   	});
-  }
+  };
 
 
 }]);

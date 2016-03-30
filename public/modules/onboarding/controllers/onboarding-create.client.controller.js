@@ -5,7 +5,7 @@ angular.module('onboarding')
   .controller('OnboardingCreateController', ['$scope', 'AccessCodeService', 'UserListingService', 'Authentication', 'Users', function($scope, AccessCode, UserListing, Authentication, Users) {
 
 		// Check about actions taken
-		$scope.response = "nothing yet";
+		$scope.response = 'nothing yet';
 
 		// Default settings for creating a new org
 		$scope.codeInfo = {
@@ -31,7 +31,7 @@ angular.module('onboarding')
 	  		$scope.response = err.data;
 			});
 
-	  }
+	  };
 
 	  // Delete code
 	  $scope.remove = function(removeCode) {
@@ -44,7 +44,7 @@ angular.module('onboarding')
 	  		console.log(err);
 	  		$scope.response = err;
 	  	});
-	  }
+	  };
 
   	var codes = AccessCode.query(function() {
 
@@ -60,18 +60,21 @@ angular.module('onboarding')
 
   	$scope.switchRole = function(user) {
 
-  		user.roles[0] == 'admin' ? user.roles[0] = 'user': user.roles[0] = 'admin';
-  		user.roles[0] = 'admin';
+  		if(user.roles[0] === 'admin') {
+  			user.roles[0] = 'user';
+  		} else {
+  		  user.roles[0] = 'admin';
+  		}
+  		var usr = new Users(user);
 
-  		var user = new Users(user);
-
-  		user.$update(function(response) {
+  		// TODO: Need to assess if it's worth it to save locally until user enters actual input
+  		usr.$update(function(response) {
         $scope.message = 'User Updated';
         Authentication.user = response;
       }, function(response) {
         $scope.message = response.data.message;
       });
 
-  	}
+  	};
 
 	}]);

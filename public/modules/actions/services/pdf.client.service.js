@@ -33,7 +33,7 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 	  	assembledObject.landlordInfo = {
   			'name': 'Sir/Madam',
   			'address': '600 Main St <br> Brooklyn, NY  11235'
-	  	}
+	  	};
 
       for(var issue in user.issues) {
         var key = issue,

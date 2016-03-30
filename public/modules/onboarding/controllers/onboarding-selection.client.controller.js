@@ -9,12 +9,12 @@ angular.module('onboarding').controller('OnboardingSelectionController', ['$scop
 	$scope.codeError = false;
 
 	$scope.continue = function() {
-		if($scope.process == '' || $scope.process == undefined) {
+		if($scope.process === '' || $scope.process === undefined) {
 			$scope.codeError = true;
 		} else {
 			// this will activate once we set these to vals that will affect the issues/problem areas
 			// User.$save(user);
 			$location.path('onboarding-problems');
 		}
-	}
+	};
 }]);
