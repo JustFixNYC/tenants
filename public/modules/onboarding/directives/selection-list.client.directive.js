@@ -6,15 +6,25 @@ angular.module('onboarding').directive('selectionList', function selectionList(/
     restrict: 'E',
     link: function postLink(scope, element, attrs) {
     	var aTags = element.find('a');
-    	console.log(aTags.length); 
+    	var wrappedTags = [];
+    	console.log(element);
+
+    	var activateThis = function() {
+    		this.on('click', function(e) {
+    			var thisWrapped = angular.element(this);
+	    		for (var i = 0; i < wrappedTags.length; i++) {
+	    			wrappedTags[i].removeClass('active');
+	    		}
+	  			thisWrapped.addClass('active');
+	  			scope.process = this.getAttribute('process');
+	  			console.log(scope);
+    		})
+    	}
 
     	for (var i = 0; i < aTags.length; i++) {
-
-    		aTags[i].addEventListener('click', function(e){
-    			console.log(e);
-    			// IDK if this works across the board...
-    			e.preventDefault();
-    		});
+    		var elm = angular.element(aTags[i]);
+    		activateThis.call(elm);
+    		wrappedTags.push(elm);
     	}
     }
   };

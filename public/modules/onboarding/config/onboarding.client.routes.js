@@ -31,6 +31,12 @@
         templateUrl: 'modules/onboarding/views/onboarding-selection.client.view.html',
         controller: 'OnboardingSelectionController',
         controllerAs: 'vm'
+      })
+      .state('onboarding-problems', {
+        url: '/onboarding-problems',
+        templateUrl: 'modules/onboarding/views/onboarding-problems.client.view.html',
+        controller: 'OnboardingProblemsController',
+        controllerAs: 'vm'
       });
   }
 })();
