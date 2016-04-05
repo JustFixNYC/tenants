@@ -1,7 +1,7 @@
 'use strict';
 
 //Setting up route
-angular.module('onboarding').config(['$stateProvider', function(){
+angular.module('onboarding').config(['$stateProvider', function($stateProvider){
 
 	// Onboarding state routing
   $stateProvider

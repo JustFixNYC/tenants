@@ -1,3 +1,15 @@
+// Extendable clearfix class
+.clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+// Vars that should be globo but yolo!
+$grey: #E0E0E0;
+
 .onboarding-code-entry {
 	text-align: center;
 
@@ -22,6 +34,49 @@
 		.btn {
 			margin: 2em 0;
 			padding: .75em 2.25em;
+		}
+	}
+}
+
+.problems-listing {
+	
+	.problem-wrap {
+		margin-bottom: 1em;
+		border-radius: 10px;
+		background: $grey;
+		padding: 50px 0px;
+		text-align: center;
+		color: #262626;
+		max-width: 150px;
+		min-height: 150px;
+
+		.problem-icon {
+			font-size: 2em;
+		}
+
+		&.active {
+			background: $justfix-blue;
+			color: #eee;
+		}
+	}
+}
+
+.issues-modal {
+	padding: 0 0 10px 0;
+
+	.selection-issue {
+		display: block;
+		border-top: 1px solid $grey;
+		padding: 5px 15px;
+		cursor: pointer;
+
+		&.active {
+			background: darken($justfix-blue, 5);
+			color: $white;
+		}
+
+		&:last-child {
+			border-bottom: 1px solid $grey;
 		}
 	}
 }

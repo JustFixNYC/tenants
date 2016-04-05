@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
  */
 
 var IssueSchema = new Schema({
-  name: {
+  key: {
   	type: String,
   	default: ''
   },
