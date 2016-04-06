@@ -29,7 +29,7 @@ exports.forgot = function(req, res, next) {
 		function(token, done) {
 			if (req.body.username) {
 				User.findOne({
-					username: req.body.username
+					phone: req.body.username
 				}, '-salt -password', function(err, user) {
 					if (!user) {
 						return res.status(400).send({
@@ -42,6 +42,7 @@ exports.forgot = function(req, res, next) {
 					} else {
 						user.resetPasswordToken = token;
 						user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+						console.log(token);
 
 						user.save(function(err) {
 							done(err, token, user);
@@ -66,6 +67,7 @@ exports.forgot = function(req, res, next) {
 		// If valid email, send reset email using service
 		function(emailHTML, user, done) {
 			var smtpTransport = nodemailer.createTransport(config.mailer.options);
+			console.log(smtpTransport);
 			var mailOptions = {
 				to: user.email,
 				from: config.mailer.from,

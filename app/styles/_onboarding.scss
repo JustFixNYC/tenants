@@ -80,3 +80,13 @@ $grey: #E0E0E0;
 		}
 	}
 }
+
+.onboarding-user-create {
+	.borough,
+	.nycha {
+		&.selected {
+			background: $justfix-blue;
+			color: #fff;
+		}
+	}
+}

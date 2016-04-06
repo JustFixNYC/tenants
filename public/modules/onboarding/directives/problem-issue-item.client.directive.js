@@ -30,22 +30,22 @@ angular.module('onboarding').directive('problemIssueItem', ['$modal', 'Authentic
 			// Selection of issue
 			scope.selectIssue = function(problem, issue){
 
-				if(element.hasClass('selected')) {
+				if(element.hasClass('active')) {
 					scope.removeIssue(problem, issue);
-					element.removeClass('selected');
-					return console.log(user.problems);
+					element.removeClass('active');
+					return;
 				}
 
 				if(user.problems.length === 0) {
 
-					element.addClass('selected');
+					element.addClass('active');
 					return user.problems.push(newProblem(problem, issue));
 				}
 
 				user.problems.map(function(val, idx, arr) {
 					if(val.key === problem.key) {
 
-						element.addClass('selected');
+						element.addClass('active');
 						return val.issues.push(issue);
 					}
 				});

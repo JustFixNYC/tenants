@@ -1,15 +1,16 @@
 'use strict';
 
-angular.module('onboarding').controller('OnboardingProblemsController', ['$scope', 'problemsService', '$modal', 'Authentication', 'Users', function($scope, problems, $modal, Authentication, User) {
+angular.module('onboarding').controller('OnboardingProblemsController', ['$scope', 'problemsService', '$modal', 'Authentication', '$location',
+	function($scope, problems, $modal, Authentication, $location) {
 
 	var user = Authentication.user;
 	$scope.problemArray = [];
+	var currentDate = new Date();
 
 	// Take array of Objs (should be user object, generally) and apply active state to another Object (scope)
 	var activeMapper = function(arrayOfObjs, arrayToApplyActiveTo) {
 
 		var keyString = '';
-		console.log(arrayOfObjs);
 
 		for (var i = 0; i < arrayOfObjs.length; i++) {
 			
@@ -24,11 +25,17 @@ angular.module('onboarding').controller('OnboardingProblemsController', ['$scope
 
 				if(keyString.indexOf(curr.key) >= 0){
 					curr.active = true;
-					console.log(curr);
 				};
 			});
 		}
-	}
+	};
+
+	$scope.next = function() {
+		$location.path('/onboarding-details');
+	};
+	$scope.back = function() {
+		$location.path('/onboarding-selection');
+	};
 
 	// Modal Directive
 	$scope.open = function(problem) {
@@ -44,9 +51,8 @@ angular.module('onboarding').controller('OnboardingProblemsController', ['$scope
 			}
 		}
 
+		// Well, never let it be said I tried
 		activeMapper(user.problems[stupidUserProblemTargetIdx()].issues, $scope.currentProblem.issues);
-
-
 
 		var modalInstance = $modal.open({
       animation: 'true',
@@ -56,21 +62,10 @@ angular.module('onboarding').controller('OnboardingProblemsController', ['$scope
     });
 	};
 
-	var search = function(nameKey, myArray){
-    for (var i=0; i < myArray.length; i++) {
-      if (myArray[i].name === nameKey) {
-      	myArray.active = true;
-        return myArray[i];
-      }
-    }
-	}
-
 
 	var allIssues = problems.localFile().then(function(response) {
 
 		$scope.problems = response;
-		console.log(user);
-		var currentDate = new Date();
 
 		// WHELP, this is a version of testing, right?
 		/*if(user.problems.length === 0) {

@@ -33,6 +33,11 @@ var UserSchema = new Schema({
     default: '',
     validate: [validateLocalStrategyProperty, 'Please fill in your full name']
   },
+  email: {
+  	type: String,
+  	default: '',
+  	unique: true
+  },
   borough: {
     type: String,
     default: ''

@@ -31,6 +31,12 @@ angular.module('onboarding').config(['$stateProvider', function($stateProvider){
       templateUrl: 'modules/onboarding/views/onboarding-problems.client.view.html',
       controller: 'OnboardingProblemsController',
       controllerAs: 'vm'
+    })
+    .state('onboarding-details', {
+      url: '/onboarding-details',
+      templateUrl: 'modules/onboarding/views/onboarding-details.client.view.html',
+      controller: 'OnboardingDetailsController',
+      controllerAs: 'vm'
     });
 }]);
 angular.module('onboarding').run(['$rootScope', '$state', 'Authentication', '$window', function($rootScope, $state, Authentication, $window) {
