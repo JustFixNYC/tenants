@@ -15,8 +15,7 @@ module.exports = {
 		  css: [
 		    'lib/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.css',
 				'public/lib/ui-select/dist/select.min.css',
-		    'public/styles/bootstrap.css',
-		    'public/styles/bootflat.css'
+		    'public/styles/vendor.css'
 		  ],
 		  js: [
 		    'public/lib/angular/angular.js',
