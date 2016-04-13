@@ -47,11 +47,30 @@ body {
   h1 {
     margin-top: 0;
     margin-bottom: 0;
-    font-size: 35px;
+    font-size: 24px;
+    font-weight: 400;
   }
 
   p {
     margin: 10px 0 0 0;
+  }
+
+}
+
+.section-header {
+  @include make-row();
+  padding: 1em 0;
+  margin-bottom: 15px;
+  background-color: $justfix-blue-dark;
+
+  h2 {
+    @include container-fixed();
+    margin: 0;
+    font-weight: 600;
+    font-size: 16px;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+    text-transform: uppercase;
   }
 
 }

@@ -1,78 +1,16 @@
-<div id="header-wrapper" justfix-header data-ng-class="(authentication.user ? 'wrapper-user' : 'wrapper-anon') + ' ' + (stateName === 'home' || stateName === undefined ? 'home' : 'not-home')">
+<div id="header-wrapper"
+		 justfix-header
+		 data-ng-class="(stateName === 'home' || stateName === undefined ? 'home' : 'not-home')">
 
-	<div id="header" data-ng-class="authentication.user ? 'navbar-fixed-top' : 'navbar-anon'">
+	<div id="header" class="navbar-fixed-top">
 		<div class="container">
-			<div class="navbar-header">
-				<button data-ng-show="authentication.user" class="navbar-toggle" type="button" data-ng-click="toggleCollapsibleMenu()">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="glyphicon glyphicon-user"></span>
-				</button>
-				<a data-ng-hide="authentication.user" class="btn btn-default btn-sm pull-right sign-in-button" ui-sref="signin">Sign In</a>
-				<a href="/#!/" class="navbar-brand">
+				<a class="header-btn header-back pull-left glyphicon glyphicon-menu-left"></a>
+				<a href="/#!/" class="header-brand">
 					<div data-ng-include="'/modules/core/img/brand/logo.svg'" aria-label="justfix.nyc"/ class="logo"></div>
 					<!-- <img src="/modules/core/img/brand/logo.svg" class="logo" /> -->
 				</a>
-			</div>
-			<nav class="collapse navbar-collapse" collapse="!isCollapsed" role="navigation">
-				<ul class="navbar-mobile">
-					<li>
-						<a href="/#!/settings/profile">Edit Profile</a>
-					</li>
-					<li data-ng-show="authentication.user.provider === 'local'">
-						<a href="/#!/settings/password">Change Password</a>
-					</li>
-					<li class="divider"></li>
-					<li>
-						<a href="/auth/signout">Signout</a>
-					</li>
-				</ul>
-			</nav>
-			<div class="navbar-desktop">		
-				<ul class="nav navbar-nav navbar-right" data-ng-hide="authentication.user">
-					<li ui-route="/signin" ng-class="{active: $uiRoute}">
-						<a href="/#!/signin">Sign In</a>
-					</li>
-				</ul>
-				<ul class="nav navbar-nav navbar-right" data-ng-show="authentication.user">
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							<span data-ng-bind="authentication.user.fullName"></span> <b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu">
-							<li>
-								<a href="/#!/settings/profile">Edit Profile</a>
-							</li>
-							<li data-ng-show="authentication.user.provider === 'local'">
-								<a href="/#!/settings/password">Change Password</a>
-							</li>
-							<li class="divider"></li>
-							<li>
-								<a href="/auth/signout">Signout</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-<!-- 				<ul class="nav navbar-nav navbar-right">
-					<li class="dropdown">
-						<div language-select></div>
-					</li>
-				</ul>	 -->	
-			</div>
-		</div>
+				<a class="header-btn header-home pull-right glyphicon glyphicon-th"></a>
+		</div> <!-- end of .container -->
 	</div>	<!-- end of #header -->
-
-	<nav id="top-nav" class="navbar-fixed-top" data-ng-show="authentication.user">
-		<ul class="nav navbar-nav text-center container">
-			<li class="col-xs-4 col-sm-4" ui-sref-active="active"><a ui-sref="listIssues">
-				<span class="glyphicon glyphicon-home"></span><div>Issues</div>
-			</a></li>		
-			<li class="col-xs-4 col-sm-4" ui-sref-active="active"><a ui-sref="listActions">
-				<span class="glyphicon glyphicon-th-list" style="top: 0;"></span><div>To Do</div>
-			</a></li>
-			<li class="col-xs-4 col-sm-4" ui-sref-active="active"><a ui-sref="listActivity">
-				<span class="glyphicon glyphicon-book"></span><div>Your Case</div>
-			</a></li>
-		</ul>
-	</nav>
 
 </div> <!-- end of #wrapper -->
