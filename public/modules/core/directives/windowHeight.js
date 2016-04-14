@@ -6,17 +6,14 @@ angular.module('core').directive('windowHeight', ['$window', 'deviceDetector', f
 
         function getHeight() {
           if (self.innerWidth) {
-            console.log('self', self.innerHeight);
             return self.innerHeight;
           }
 
           if (document.documentElement && document.documentElement.clientWidth) {
-            console.log('ele', document.documentElement.clientHeight);
             return document.documentElement.clientHeight;
           }
 
           if (document.body) {
-            console.log('body', document.body.clientHeight);
             return document.body.clientHeight;
           }
         }
