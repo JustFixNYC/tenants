@@ -19,13 +19,17 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 
 		// Home state routing
 		$stateProvider.
-		state('home', {
+		state('landing', {
 			url: '/',
-			templateUrl: 'modules/core/views/home.client.view.html'
+			templateUrl: 'modules/core/views/landing.client.view.html'
 		})
 		.state('manifesto', {
 			url: '/manifesto',
 			templateUrl: 'modules/core/views/manifesto.client.view.html'
+		})
+		.state('home', {
+			url: '/home',
+			templateUrl: 'modules/core/views/home.client.view.html'
 		});
 	}
 ]);

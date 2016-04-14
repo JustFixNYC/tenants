@@ -6,14 +6,17 @@ angular.module('core').directive('windowHeight', ['$window', 'deviceDetector', f
 
         function getHeight() {
           if (self.innerWidth) {
+            console.log('self', self.innerHeight);
             return self.innerHeight;
           }
 
           if (document.documentElement && document.documentElement.clientWidth) {
+            console.log('ele', document.documentElement.clientHeight);
             return document.documentElement.clientHeight;
           }
 
           if (document.body) {
+            console.log('body', document.body.clientHeight);
             return document.body.clientHeight;
           }
         }
@@ -22,7 +25,7 @@ angular.module('core').directive('windowHeight', ['$window', 'deviceDetector', f
         if(!deviceDetector.isMobile()) {
           $window.addEventListener('resize', function () {
             element.css('height', getHeight() + 'px');
-          });         
+          });
         }
 
         if(deviceDetector.isMobile() && deviceDetector.browser === 'safari') {

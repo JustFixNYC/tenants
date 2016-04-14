@@ -1,15 +1,17 @@
 <div id="header-wrapper"
 		 justfix-header
-		 data-ng-class="(stateName === 'home' || stateName === undefined ? 'home' : 'not-home')">
+		 data-ng-class="type">
 
-	<div id="header" class="navbar-fixed-top">
+	<div id="header">
 		<div class="container">
-				<a class="header-btn header-back pull-left glyphicon glyphicon-menu-left"></a>
+				<!-- <a class="header-btn header-back pull-left glyphicon glyphicon-menu-left"></a> -->
 				<a href="/#!/" class="header-brand">
 					<div data-ng-include="'/modules/core/img/brand/logo.svg'" aria-label="justfix.nyc"/ class="logo"></div>
 					<!-- <img src="/modules/core/img/brand/logo.svg" class="logo" /> -->
 				</a>
-				<a class="header-btn header-home pull-right glyphicon glyphicon-th"></a>
+				<a class="header-btn header-home pull-right glyphicon glyphicon-th"
+					 ui-sref="home"
+					 ng-if="authentication.user"></a>
 		</div> <!-- end of .container -->
 	</div>	<!-- end of #header -->
 
