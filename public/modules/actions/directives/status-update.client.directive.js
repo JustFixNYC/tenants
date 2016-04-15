@@ -13,7 +13,7 @@ angular.module('actions')
 
         // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
         // scope.action is a $resource!
-        
+
         scope.problems = Issues.getUserAreas().map(function (a) { return $filter('areaTitle')(a) });
 
         scope.status = {
@@ -95,6 +95,14 @@ angular.module('actions')
 
             $rootScope.loading = false;
             scope.status.completed = true;
+            scope.status.expanded = false;
+            scope.newActivity = {
+              date: '',
+              title: 'Status Update',
+              key: 'statusUpdate',
+              problems: [],
+              photos: []
+            };
 
           }, function(errorResponse) {
             $rootScope.loading = false;
