@@ -316,12 +316,9 @@ header {
     transform: translateX(-50%);
     color: #454545;
     height: 100%; }
-    #header .header-brand > .logo, #header .header-brand > .logo > svg {
+    #header .header-brand > .logo {
       height: 100%;
       width: auto; }
-    #header .header-brand > .logo > svg {
-      position: relative;
-      top: 2px; }
   #header .header-btn {
     display: inline-block;
     position: relative;
@@ -341,16 +338,19 @@ header {
     #header .header-btn.header-home {
       top: -1px; }
 
-#header-wrapper.landing {
+#header-wrapper.left {
   height: 70px; }
-  #header-wrapper.landing #header {
+  #header-wrapper.left #header {
     height: 70px;
     background-color: transparent;
     position: static; }
-    #header-wrapper.landing #header > .container {
+    #header-wrapper.left #header > .container {
       text-align: left; }
-    #header-wrapper.landing #header .header-brand {
-      position: static; }
+    #header-wrapper.left #header .header-brand {
+      position: static;
+      -webkit-transform: none;
+      -moz-transform: none;
+      transform: none; }
 
 #header-wrapper.light-bg .header-brand > .logo > svg * {
   fill: #434A54; }

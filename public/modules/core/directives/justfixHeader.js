@@ -14,16 +14,17 @@ angular.module('core').directive('justfixHeader', function($document, $window, $
 
       // Collapsing the menu after navigation
       scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-        scope.isCollapsed = false;
+        scope.left = false;
+        scope.lightBG = false;
         switch(toState.name) {
           case 'landing':
-            scope.type = 'landing';
+            scope.left = true;
             break;
           case 'manifesto':
-            scope.type = 'landing light-bg';
+            scope.left = true;
+            scope.lightBG = true;
             break;
           default:
-            scope.type = '';
             break;
         };
       });

@@ -44,14 +44,30 @@ header {
     color: #454545;
     height: 100%;
 
-    & > .logo, & > .logo > svg {
+
+    // & > .logo {
+    //   position: relative;
+    // 	padding-bottom: 10%;
+    // 	height: 0;
+    //
+    //   & svg {
+    //     width: 100%;
+    //     height: 100%;
+    //     position: absolute;
+    //     top: 0;
+    //     left: 0;
+    //   }
+    // }
+
+    // & > .logo, & > .logo > svg {
+    & > .logo {
       height: 100%;
       width: auto;
     }
 
     & > .logo > svg {
-      position: relative;
-      top: 2px;
+      // position: relative;
+      // top: 2px;
     }
   }
 
@@ -87,7 +103,7 @@ header {
   }
 }
 
-#header-wrapper.landing {
+#header-wrapper.left {
 
   height: $desktop-header-height;
 
@@ -103,6 +119,7 @@ header {
 
     .header-brand {
       position: static;
+      @include transform(none);
     }
   }
 }
