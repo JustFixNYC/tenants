@@ -17,9 +17,6 @@ angular.module('issues').controller('IssuesChecklistController', ['$scope', 'Iss
       for(var area in data[0]) {
         var issues = data[0][area].issues;
 
-        console.log(data);
-        console.log(issues);
-
         // add to checklist object
         $scope.checklist[area] = {
           numChecked : $scope.newIssue.issues[area] ? $scope.newIssue.issues[area].length : 0,

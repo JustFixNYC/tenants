@@ -1,0 +1,146 @@
+[
+  {
+    "generalApt": {
+      "issues": [
+        { "title": "Painting overdue (3 years)", "emergency" : false },
+        { "title": "Peeling/flaking paint", "emergency" : false },
+        { "title": "No Heat", "emergency" : true },
+        { "title": "No Hot Water", "emergency" : true },
+        { "title": "Inadequate water pressure", "emergency" : false },
+        { "title": "Rusty water", "emergency" : false },
+        { "title": "Exposed wiring", "emergency" : true },
+        { "title": "Weak electrical current (lights dim)", "emergency" : false },
+        { "title": "Window guards missing", "emergency" : false },
+        { "title": "Missing/broken smoke/Co2 detector", "emergency" : true },
+        { "title": "Fumes/smoke entering apartment", "emergency" : true },
+        { "title": "Rats/Mice",  "emergency" : true },
+        { "title": "Bug Infestation",  "emergency" : true },
+        { "title": "Illegal apartments in basement", "emergency": true },
+        { "title": "No rent receipts given", "emergency": true },
+        { "title": "Rent receipts incomplete (no date/ NYC address for landlord, etc.)", "emergency": true },
+        { "title": "Inadequate / no super service", "emergency": true }
+      ]
+    },
+    "entryHallway": {
+      "issues": [
+        { "title": "Door defective / not self-closing", "emergency": false },
+        { "title": "Door frame broken or sagging", "emergency": false },
+        { "title": "Door lock loose or defective", "emergency": false },
+        { "title": "Peephole missing or broken", "emergency": false },
+        { "title": "Bell not working", "emergency": false },
+        { "title": "No chain on door", "emergency": false },
+        { "title": "Defective intercom", "emergency": false },
+        { "title": "Floors rotted broken or buckling", "emergency": true },
+        { "title": "Walls/ceilings cracked/buckling/holes", "emergency": false },
+        { "title": "Collapsed ceiling", "emergency": false },
+        { "title": "Defective / leaking radiator", "emergency": false },
+        { "title": "Defective electrical switches / fixtures", "emergency": true },
+        { "title": "Missing face plates on switches or fixtures", "emergency": false },
+        { "title": "Defective/broken/inoperative windows", "emergency": false },
+        { "title": "Mold", "emergency": true }
+      ]
+    },
+    "kitchen": {
+      "issues": [
+        { "title": "Defective stove", "emergency": false },
+        { "title": "Defective refrigerator", "emergency": false },
+        { "title": "Gas leaks", "emergency": true },
+        { "title": "Plumbing leaks", "emergency": false },
+        { "title": "Cracks / holes / rust around sink", "emergency": false },
+        { "title": "Leaking faucets", "emergency": false },
+        { "title": "Drain obstructed", "emergency": false },
+        { "title": "Defective cabinets", "emergency": false },
+        { "title": "Floors rotted / broken / buckling", "emergency": true },
+        { "title": "Walls/ceilings cracked/buckling/holes", "emergency": false },
+        { "title": "Collapsed ceiling", "emergency": false },
+        { "title": "Defective / leaking radiator", "emergency": true },
+        { "title": "Defective electrical switches / fixtures", "emergency": true },
+        { "title": "Missing face plates on switches or fixtures", "emergency": false },
+        { "title": "Defective/broken/inoperative windows", "emergency": false },
+        { "title": "Mold", "emergency": true }
+      ]
+    },
+    "bathroom": {
+      "issues": [
+        { "title": "Defective sink", "emergency": true },
+        { "title": "Defective bathtub", "emergency": true },
+        { "title": "Defective shower", "emergency": true },
+        { "title": "Defective toilet", "emergency": true },
+        { "title": "Missing or cracked bathroom tile", "emergency": false },
+        { "title": "Leaking faucets", "emergency": false },
+        { "title": "Drain obstructed", "emergency": false },
+        { "title": "Plumbing leaks", "emergency": false },
+        { "title": "Floors rotted / broken / buckling", "emergency": false },
+        { "title": "Walls / ceilings cracked / buckling / holes", "emergency": false },
+        { "title": "Collapsed ceiling", "emergency": false },
+        { "title": "Defective / leaking radiator", "emergency": true },
+        { "title": "Defective electrical switches / fixtures", "emergency": true },
+        { "title": "Missing face plates on switches or fixtures", "emergency": false },
+        { "title": "Defective/broken/inoperative windows", "emergency": false },
+        { "title": "Mold", "emergency": true }
+      ]
+    },
+    "diningRoom": {
+      "issues": [
+        { "title": "Floors rotted / broken / buckling", "emergency": false },
+        { "title": "Walls/ceilings cracked/buckling/holes", "emergency": false },
+        { "title": "Collapsed ceiling", "emergency": true },
+        { "title": "Defective / leaking radiator", "emergency": true },
+        { "title": "Defective electrical switches / fixtures", "emergency": true },
+        { "title": "Missing face plates on switches or fixtures", "emergency": false },
+        { "title": "Defective/broken/inoperative windows", "emergency": false },
+        { "title": "Mold", "emergency": true }
+      ]
+    },
+    "livingRoom": {
+      "issues": [
+        { "title": "Floors rotted / broken / buckling", "emergency": false },
+        { "title": "Walls/ceilings cracked/buckling/holes", "emergency": false },
+        { "title": "Collapsed ceiling", "emergency": true },
+        { "title": "Defective / leaking radiator", "emergency": false },
+        { "title": "Defective electrical switches / fixtures", "emergency": true },
+        { "title": "Missing face plates on switches or fixtures", "emergency": false },
+        { "title": "Defective/broken/inoperative windows", "emergency": false },
+        { "title": "Mold", "emergency": true }
+      ]
+    },
+    "bedrooms": {
+      "issues": [
+        { "title" : "Floors rotted / broken / buckling", "emergency": false },
+        { "title" : "Walls/ ceilings cracked / buckling / holes", "emergency": false },
+        { "title" : "Collapsed ceiling", "emergency": false },
+        { "title" : "Defective / leaking radiator", "emergency": true },
+        { "title" : "Defective electrical switches / fixtures", "emergency": false },
+        { "title" : "Missing face plates on switches or fixtures", "emergency": false },
+        { "title" : "Defective/broken/inoperative windows", "emergency": false },
+        { "title" : "Defective doors", "emergency": false },
+        { "title" : "Mold", "emergency": true }
+      ]
+    },
+    "publicAreas": {
+      "issues": [
+        { "title": "Broken or no locks on front door(s)", "emergency": false },
+        { "title": "Front door(s) defective", "emergency": false },
+        { "title": "Broken stoop steps", "emergency": false },
+        { "title": "Broken or no intercom", "emergency": false },
+        { "title": "Inadequate light: entrance / courtyard/alley / hallways", "emergency": false },
+        { "title": "Broken mailboxes", "emergency": false },
+        { "title": "Defective/broken/inoperative windows", "emergency": false },
+        { "title": "Walls/ceilings cracked/buckling/holes", "emergency": false },
+        { "title": "Paint in hallways dirty or peeling", "emergency": false },
+        { "title": "Hallways not cleaned", "emergency": false },
+        { "title": "Elevator not working", "emergency": false },
+        { "title": "Stairs broken or loose", "emergency": false },
+        { "title": "Laundry room machines broken", "emergency": false },
+        { "title": "Inadequate garbage cans", "emergency": false },
+        { "title": "Garbage cans not covered", "emergency": false },
+        { "title": "Garbage not collected / not put out for collection", "emergency": false },
+        { "title": "Fire escapes rusty / broken / defective / missing", "emergency": false },
+        { "title": "Basement not secure", "emergency": true },
+        { "title": "Roof not secure", "emergency": true },
+        { "title": "Exposed wiring in basement", "emergency": true },
+        { "title": "Many vacant apartments", "emergency": false },
+        { "title": "Great tenant turnover", "emergency": true }      ]
+    }
+  }
+]

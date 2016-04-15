@@ -67,6 +67,10 @@ var UserSchema = new Schema({
     default: []
   }],
   problems: [ProblemSchema],
+  issues: {
+    type: Schema.Types.Mixed,
+    default: {}
+  },
   activity: [ActivitySchema],
   phone: {
     type: String,

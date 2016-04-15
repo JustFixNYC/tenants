@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('actions')
-  .directive('statusUpdate', ['$rootScope', '$modal', '$sce', '$timeout', 'Activity', 'Actions', 'Issues',
-    function ($rootScope, $modal, $sce, $timeout, Activity, Actions) {
+  .directive('statusUpdate', ['$rootScope', '$filter', '$sce', '$timeout', 'Activity', 'Actions', 'Issues',
+    function ($rootScope, $filter, $sce, $timeout, Activity, Actions, Issues) {
     return {
       restrict: 'E',
       templateUrl: 'modules/actions/partials/status-update.client.view.html',
@@ -13,8 +13,12 @@ angular.module('actions')
 
         // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
         // scope.action is a $resource!
+        
+        scope.problems = Issues.getUserAreas().map(function (a) { return $filter('areaTitle')(a) });
 
         scope.status = {
+          expanded: false,
+          tagging: false,
           closeAlert: false,
           closeErrorAlert: true,
           completed: false
@@ -24,37 +28,47 @@ angular.module('actions')
         scope.newActivity = {
           date: '',
           title: 'Status Update',
-          key: 'statusUpdate'
+          key: 'statusUpdate',
+          problems: [],
+          photos: []
         };
 
-        var openModal = function(templateUrl, controller) {
+        scope.expand = function(event) {
+          event.preventDefault();
+          scope.status.expanded = true;
+          // setTimeout(function() { element[0].querySelector('textarea').focus(); }, 0);
+          // setTimeout(function() { element[0].querySelector('textarea').focus(); }, 0);
 
-          var modalInstance = $modal.open({
-            //animation: false,
-            templateUrl: templateUrl,
-            controller: controller,
-            resolve: {
-              newActivity: function () { return scope.newActivity; }
-            }
-          });
+        }
 
-          modalInstance.result.then(function (newActivity) {
-            scope.newActivity = newActivity;
-            scope.createActivity();
-          }, function () {
-            // modal cancelled
-          });
+        scope.toggleTagging = function() {
+          scope.status.tagging = !scope.status.tagging;
+        }
+
+        scope.selectProblem = function(problem) {
+
+          if(!this.isSelectedProblem(problem)) {
+            scope.newActivity.problems.push(problem);
+          } else {
+            var i = scope.newActivity.problems.indexOf(problem);
+            scope.newActivity.problems.splice(i, 1);
+            // $scope.checklist[area].numChecked--;
+          }
+        };
+        scope.isSelectedProblem = function(problem) {
+          // if(!$scope.newIssue.issues[area]) return false;
+          return scope.newActivity.problems.indexOf(problem) !== -1;
         };
 
+        scope.addPhoto = function(file) {
 
-        scope.openCheckIn = function() {
-          openModal('modules/actions/partials/modals/check-in.client.view.html', 'UpdateActivityController');
-        };
-        scope.openPhotoPreview = function(file) {
-          console.log(file);
-          console.log(file.lastModifiedDate);
-          if(file.lastModifiedDate) scope.newActivity.date = file.lastModifiedDate;
-          openModal('modules/actions/partials/modals/photo-preview.client.view.html', 'UpdateActivityController');
+          if(file) {
+            scope.newActivity.photos.push(file);
+            console.log(file);
+            console.log(file.lastModifiedDate);
+            if(file.lastModifiedDate) scope.newActivity.date = file.lastModifiedDate;
+          }
+
         };
 
         scope.closeAlert = function() {
@@ -68,8 +82,8 @@ angular.module('actions')
           console.log('create activity pre creation', scope.newActivity);
 
           // [TODO] have an actual section for the 'area' field in the activity log
-          if(scope.newActivity.description && scope.newActivity.area) scope.newActivity.description = scope.newActivity.area + ' - ' + scope.newActivity.description;
-          else if(scope.newActivity.area) scope.newActivity.description = scope.newActivity.area;
+          // if(scope.newActivity.description && scope.newActivity.area) scope.newActivity.description = scope.newActivity.area + ' - ' + scope.newActivity.description;
+          // else if(scope.newActivity.area) scope.newActivity.description = scope.newActivity.area;
 
           var activity = new Activity(scope.newActivity);
 
@@ -81,16 +95,6 @@ angular.module('actions')
 
             $rootScope.loading = false;
             scope.status.completed = true;
-
-            // load new actions
-            // var idx = scope.$index;
-            // var newActions = Actions.query(
-            //   {key: scope.newActivity.key},
-            //   function() {
-            //     newActions.forEach(function (action) {
-            //       scope.actions.splice(++idx, 0, action);
-            //     });
-            //   });
 
           }, function(errorResponse) {
             $rootScope.loading = false;

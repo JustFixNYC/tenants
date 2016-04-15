@@ -29,7 +29,8 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 		})
 		.state('home', {
 			url: '/home',
-			templateUrl: 'modules/core/views/home.client.view.html'
+			templateUrl: 'modules/core/views/home.client.view.html',
+			data: { protected: true }
 		});
 	}
 ]);

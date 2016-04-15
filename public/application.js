@@ -16,7 +16,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
   // internationalization constants
   .constant('LOCALES', {
     'locales': {
-        'en_US': 'English',      
+        'en_US': 'English',
         'es': 'Español'
     },
     'preferredLocale': 'en_US'
@@ -37,7 +37,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
   // location of the locale settings
   .config(function (tmhDynamicLocaleProvider) {
     tmhDynamicLocaleProvider.localeLocationPattern('lib/angular-i18n/angular-locale_{{locale}}.js');
-  });  
+  });
 
 
 //Then define the init function for starting up the application

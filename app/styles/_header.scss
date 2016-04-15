@@ -1,11 +1,8 @@
-
-$mobile-header-height: 50px;
-$desktop-header-height: 70px;
-
-header.navbar {
-  min-height: 0;
-  margin-bottom: 0;
+header {
+  // min-height: 0;
+  // margin-bottom: 0;
   z-index: 1000;
+  border: 1px solid transparent;
 }
 
 #header-wrapper {
@@ -13,7 +10,7 @@ header.navbar {
   @media (min-width: $screen-md-min) {
     height: $desktop-header-height;
   }
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 #header {
@@ -24,67 +21,104 @@ header.navbar {
 
   background-color: $justfix-blue;
 
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+
+
   & > .container {
     position: relative;
     height: 40%;
     top: 50%;
     @include transform(translateY(-50%));
-    text-align: center;
+    // text-align: center;
+  }
+
+  .header-brand {
+    // display: inline-block;
+    position: absolute;
+    left: 50%;
+    @include transform(translateX(-50%));
+    color: #454545;
+    height: 100%;
+
+    & > .logo, & > .logo > svg {
+      height: 100%;
+      width: auto;
+    }
+
+    & > .logo > svg {
+      position: relative;
+      top: 2px;
+    }
+  }
+
+  .header-btn {
+    display: inline-block;
+    position: relative;
+    height: 100%;
+    color: #fff;
+    font-size: 20px;
+    line-height: 20px;
+
 
     @media (min-width: $screen-md-min) {
-      // text-align: left;
+      font-size: 28px;
+      line-height: 28px;
+      top: 0;
+    }
+
+    &.pull-left {
+      margin-right: 15px;
+    }
+
+    &.pull-right {
+      margin-left: 15px;
+    }
+
+    &.header-back {
+    }
+
+    &.header-home {
+      top: -1px;
     }
   }
 }
 
-.header-brand {
-  display: inline-block;
-  color: #454545;
-  height: 100%;
+#header-wrapper.landing {
 
-  & > .logo, & > .logo > svg {
-    height: 100%;
-    width: auto;
+  height: $desktop-header-height;
+
+  #header {
+
+    height: $desktop-header-height;
+    background-color: transparent;
+    position: static;
+
+    & > .container {
+      text-align: left;
+    }
+
+    .header-brand {
+      position: static;
+    }
+  }
+}
+
+#header-wrapper.light-bg {
+
+  .header-brand > .logo > svg * {
+    fill: $darkgray-dark;
   }
 
-  & > .logo > svg {
-    position: relative;
-    top: 2px;
+  .header-btn {
+    color: $darkgray-dark;
   }
 }
 
-.header-btn {
-  display: inline-block;
-  position: relative;
-  height: 100%;
-  color: #fff;
-  font-size: 20px;
-  line-height: 20px;
 
-
-  @media (min-width: $screen-md-min) {
-    font-size: 28px;
-    line-height: 28px;
-    top: 0;
-  }
-
-
-  &.pull-left {
-    margin-right: 15px;
-  }
-
-  &.pull-right {
-    margin-left: 15px;
-  }
-
-  &.header-back {
-    // background: green;
-  }
-
-  &.header-home {
-    top: -1px;
-  }
-}
 
 .sign-in-button {
   margin-top: 10px;

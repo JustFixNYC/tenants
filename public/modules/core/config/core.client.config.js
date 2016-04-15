@@ -8,6 +8,10 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
         event.preventDefault();
         $state.go('home');
       }
+      if(!Authentication.user && toState.data && toState.data.protected) {
+        event.preventDefault();
+        $state.go('signin');
+      }
     });
 
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {

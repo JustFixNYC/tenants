@@ -3,7 +3,7 @@ html, body {
 }
 
 body {
-  background-color: rgb(241, 242, 246);
+  background-color: #F6F6F6;
 
 
   // &.modal-open {
@@ -42,13 +42,14 @@ body {
 
 .page-header {
   margin-top: 0;
-  border-bottom-color: $mediumgray-light;
+  border-bottom: none;
 
   h1 {
     margin-top: 0;
     margin-bottom: 0;
     font-size: 24px;
     font-weight: 400;
+    text-align: center;
   }
 
   p {

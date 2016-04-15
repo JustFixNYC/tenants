@@ -8,10 +8,6 @@
 .actions-container {
 
 
-  .panel-content {
-    margin-bottom: 15px;
-  }
-
   .btn-block {
     max-width: 300px;
     margin: 0 auto;
@@ -21,6 +17,10 @@
     }
   }
 
+}
+
+.panel-content {
+  margin-bottom: 15px;
 }
 
 .status-panel {

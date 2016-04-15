@@ -1,0 +1,140 @@
+.status-update {
+
+  position: relative;
+  background-color: #fff;
+  margin-bottom: 15px;
+  border: 2px solid $justfix-blue;
+  border-radius: 4px;
+
+  @include transition(height 100ms ease-out);
+  height: 43px;
+  overflow: hidden;
+  &.expanded {
+    overflow: visible;
+    height: auto;
+  }
+
+  .close {
+    background-color: #0096D7;
+    color: #fff;
+    opacity: 1;
+    text-shadow: none;
+    font-size: 24px;
+    border-radius: 100%;
+    font-weight: 400;
+    line-height: 0.9;
+    padding: 0 8px 6px 8px;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    z-index: 5;
+
+    span {
+      vertical-align: middle;
+    }
+  }
+
+  .glyphicon-edit {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    color: $justfix-blue;
+    font-size: 17px;
+    z-index: 0;
+  }
+
+  .status-update-open {
+
+    overflow: auto;
+    padding: 10px 12px;
+    position: relative;
+    z-index: 1;
+
+
+
+    .form-control {
+      border: none;
+      padding: 0;
+      background-color: transparent;
+    }
+
+    .image-preview {
+
+      img {
+        max-height: 40px;
+        width: auto;
+        margin-top: 6px;
+        margin-right: 10px;
+      }
+    }
+
+    .status-update-controls {
+
+      overflow: auto;
+      padding-top: 6px;
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+      border-bottom: 2px solid $lightgray-dark;
+
+      .glyphicon-camera {
+        font-size: 20px;
+      }
+
+      .tag-issue-toggle {
+
+        font-weight: 600;
+
+        .glyphicon {
+          margin-left: 4px;
+          font-size: 10px;
+          top: 4px;
+        }
+
+      }
+
+      .tag-issue-list {
+
+        margin-top: 28px;
+
+        .list-group {
+          box-shadow: none;
+          margin-bottom: 0;
+        }
+
+        .list-group-item {
+          border-radius: 0;
+          border: none;
+          padding-top: 6px;
+          padding-bottom: 6px;
+
+          &:focus {
+            background-color: #fff;
+          }
+          &:hover {
+            background-color: $justfix-blue;
+            color: #fff;
+          }
+
+          &.list-group-item-primary {
+            color: #fff;
+          }
+        }
+      }
+
+      &.tagging {
+        padding-bottom: 0;
+
+        .tag-issue-toggle {
+          color: $justfix-blue;
+
+          span {
+            // top: 2px;
+          }
+        }
+      }
+
+    }
+  }
+
+
+}
