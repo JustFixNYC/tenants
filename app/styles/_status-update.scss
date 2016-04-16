@@ -59,12 +59,14 @@
     position: relative;
     z-index: 1;
 
-
-
     .form-control {
       border: none;
       padding: 0;
       background-color: transparent;
+    }
+
+    .text-danger {
+      font-weight: 600;
     }
 
     .image-preview {
@@ -80,23 +82,32 @@
     .status-update-controls {
 
       overflow: auto;
-      padding-top: 6px;
-      padding-bottom: 6px;
+      // padding-top: 6px;
+      // padding-bottom: 6px;
       margin-bottom: 10px;
       border-bottom: 2px solid $lightgray-dark;
 
-      .glyphicon-camera {
-        font-size: 20px;
+      .select-photos {
+        padding-top: 6px;
+        padding-bottom: 6px;
+        padding-right: 6px;
+
+        .glyphicon-camera {
+          font-size: 20px;
+        }
       }
+
+
 
       .tag-issue-toggle {
 
         font-weight: 600;
+        line-height: 36px;
 
         .glyphicon {
           margin-left: 4px;
           font-size: 10px;
-          top: 4px;
+          top: 12px;
         }
 
       }
@@ -142,7 +153,7 @@
       }
 
       &.tagging {
-        // padding-bottom: 0;
+        padding-bottom: 6px;
 
         .tag-issue-toggle {
           color: $justfix-blue;

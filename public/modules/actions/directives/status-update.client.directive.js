@@ -21,6 +21,7 @@ angular.module('actions')
           tagging: false,
           closeAlert: false,
           closeErrorAlert: true,
+          formSubmitted: false,
           completed: false
         };
         //if(!scope.completed) scope.completed = false;
@@ -75,40 +76,44 @@ angular.module('actions')
           scope.status.closeAlert = true;
         };
 
-        scope.createActivity = function() {
+        scope.createActivity = function(isValid) {
 
-          $rootScope.loading = true;
+          scope.status.formSubmitted = true;
 
-          console.log('create activity pre creation', scope.newActivity);
+          if(isValid) {
+            $rootScope.loading = true;
 
-          // [TODO] have an actual section for the 'area' field in the activity log
-          // if(scope.newActivity.description && scope.newActivity.area) scope.newActivity.description = scope.newActivity.area + ' - ' + scope.newActivity.description;
-          // else if(scope.newActivity.area) scope.newActivity.description = scope.newActivity.area;
+            console.log('create activity pre creation', scope.newActivity);
 
-          var activity = new Activity(scope.newActivity);
+            // [TODO] have an actual section for the 'area' field in the activity log
+            // if(scope.newActivity.description && scope.newActivity.area) scope.newActivity.description = scope.newActivity.area + ' - ' + scope.newActivity.description;
+            // else if(scope.newActivity.area) scope.newActivity.description = scope.newActivity.area;
 
-          console.log('create activity post creation', scope.newActivity);
+            var activity = new Activity(scope.newActivity);
 
-          activity.$save(function(response) {
+            console.log('create activity post creation', scope.newActivity);
 
-            console.log('create activity post save', response);
+            activity.$save(function(response) {
 
-            $rootScope.loading = false;
-            scope.status.completed = true;
-            scope.status.expanded = false;
-            scope.newActivity = {
-              date: '',
-              title: 'Status Update',
-              key: 'statusUpdate',
-              problems: [],
-              photos: []
-            };
+              console.log('create activity post save', response);
 
-          }, function(errorResponse) {
-            $rootScope.loading = false;
-            scope.error = errorResponse.data.message;
-            scope.status.closeErrorAlert = false;
-          });
+              $rootScope.loading = false;
+              scope.status.completed = true;
+              scope.status.expanded = false;
+              scope.newActivity = {
+                date: '',
+                title: 'Status Update',
+                key: 'statusUpdate',
+                problems: [],
+                photos: []
+              };
+
+            }, function(errorResponse) {
+              $rootScope.loading = false;
+              scope.error = errorResponse.data.message;
+              scope.status.closeErrorAlert = false;
+            });
+          }
 
         }; // end of create activity
 

@@ -2,7 +2,7 @@
   <button type="button" class="close" aria-label="Close" ng-show="status.expanded" data-ng-click="status.expanded = false" ng-cloak><span aria-hidden="true">&times;</span></button>
   <span class="pull-right glyphicon glyphicon-edit" ng-if="!status.expanded"></span>
   <div class="status-update-open">
-    <form class="update-activity-form" novalidate>
+    <form name="statusUpdate" class="update-activity-form" novalidate>
       <textarea name="description"
                 data-ng-model="newActivity.description"
                 ng-focus="status.expanded = true"
@@ -10,8 +10,10 @@
                 class="form-control"
                 cols="30" rows="4"
                 maxlength="500"
-                placeholder="Anything new to report?">
+                placeholder="Anything new to report?"
+                required>
       </textarea>
+      <span class="text-danger" ng-show="status.formSubmitted && statusUpdate.description.$invalid">Please add a brief description.</span>
       <div class="image-preview">
         <img ng-repeat="photo in newActivity.photos" ngf-thumbnail="photo" />
       </div>
@@ -20,7 +22,7 @@
               ngf-select-disabled="newActivity.photos.length >= 3"
               ngf-capture="'camera'" accept="image/*"
               name="photos"
-              class="pull-left">
+              class="pull-left select-photos">
           <span class="glyphicon glyphicon-camera"></span>
         </div>
         <div class="tag-issue-toggle pull-right" ng-click="toggleTagging()">
@@ -44,14 +46,13 @@
           </div>
         </div>
       </div>
-      <button class="btn btn-info pull-right" data-ng-click="createActivity()">
+      <button class="btn btn-info pull-right" data-ng-click="createActivity(statusUpdate.$valid)">
           <span class="glyphicon glyphicon-ok pull-left" style="padding-top:1px"></span>
           Add To My Case
       </button>
     </form>
   </div>
 </div>
-
 
 <alert data-ng-if="status.completed" data-ng-show="!status.closeAlert" type="success" close="closeAlert()"><strong>Well done!</strong> We've added <em>{{ newActivity.title }}</em> to <a ui-sref="listActivity">Your Case</a>.</alert>
 <alert data-ng-show="!status.closeErrorAlert" type="danger" close="status.closeErrorAlert = true">We're sorry, something went wrong...</alert>

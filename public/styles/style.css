@@ -890,6 +890,8 @@ header {
       border: none;
       padding: 0;
       background-color: transparent; }
+    .status-update .status-update-open .text-danger {
+      font-weight: 600; }
     .status-update .status-update-open .image-preview img {
       max-height: 40px;
       width: auto;
@@ -897,18 +899,21 @@ header {
       margin-right: 10px; }
     .status-update .status-update-open .status-update-controls {
       overflow: auto;
-      padding-top: 6px;
-      padding-bottom: 6px;
       margin-bottom: 10px;
       border-bottom: 2px solid #E6E9ED; }
-      .status-update .status-update-open .status-update-controls .glyphicon-camera {
-        font-size: 20px; }
+      .status-update .status-update-open .status-update-controls .select-photos {
+        padding-top: 6px;
+        padding-bottom: 6px;
+        padding-right: 6px; }
+        .status-update .status-update-open .status-update-controls .select-photos .glyphicon-camera {
+          font-size: 20px; }
       .status-update .status-update-open .status-update-controls .tag-issue-toggle {
-        font-weight: 600; }
+        font-weight: 600;
+        line-height: 36px; }
         .status-update .status-update-open .status-update-controls .tag-issue-toggle .glyphicon {
           margin-left: 4px;
           font-size: 10px;
-          top: 4px; }
+          top: 12px; }
       .status-update .status-update-open .status-update-controls .tag-issue-list {
         margin-top: 28px; }
         .status-update .status-update-open .status-update-controls .tag-issue-list .list-group {
@@ -931,7 +936,9 @@ header {
             .status-update .status-update-open .status-update-controls .tag-issue-list .list-group-item.list-group-item-primary:focus {
               background-color: #0096D7;
               color: #fff; }
-      .status-update .status-update-open .status-update-controls.tagging .tag-issue-toggle {
-        color: #0096D7; }
+      .status-update .status-update-open .status-update-controls.tagging {
+        padding-bottom: 6px; }
+        .status-update .status-update-open .status-update-controls.tagging .tag-issue-toggle {
+          color: #0096D7; }
 
 /*# sourceMappingURL=style.css.map */
