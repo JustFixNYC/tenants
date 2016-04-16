@@ -1,7 +1,7 @@
 #landing {
 
   // landing pages use bigger header and margin
-  margin-top: -$desktop-header-height - 15px;
+  margin-top: -$desktop-header-height - $header-bottom-margin;
   // @media (min-width: $screen-md-min) {
   //   margin-top: -$desktop-header-height;
   // }

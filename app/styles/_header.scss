@@ -10,7 +10,7 @@ header {
   @media (min-width: $screen-md-min) {
     height: $desktop-header-height;
   }
-  margin-bottom: 15px;
+  margin-bottom: $header-bottom-margin;
 }
 
 #header {

@@ -8,7 +8,7 @@ angular.module('users').config(['$httpProvider',
 			function($rootScope, $q, $location, Authentication) {
 				return {
 					responseError: function(rejection) {
-						
+
 						switch (rejection.status) {
 							case 401:
 
@@ -19,7 +19,8 @@ angular.module('users').config(['$httpProvider',
 								$location.path('signin');
 								break;
 							case 403:
-								// Add unauthorized behaviour 
+								// Add unauthorized behaviour
+
 								break;
 						}
 

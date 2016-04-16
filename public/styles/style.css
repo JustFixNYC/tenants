@@ -285,7 +285,7 @@ header {
 
 #header-wrapper {
   height: 50px;
-  margin-bottom: 15px; }
+  margin-bottom: 20px; }
   @media (min-width: 992px) {
     #header-wrapper {
       height: 70px; } }
@@ -369,7 +369,7 @@ header {
       margin-top: 20px; } }
 
 #landing {
-  margin-top: -85px; }
+  margin-top: -90px; }
   #landing section {
     padding: 15px 0; }
     #landing section.above-fold {
@@ -842,7 +842,7 @@ header {
 .status-update {
   position: relative;
   background-color: #fff;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   border: 2px solid #0096D7;
   border-radius: 4px;
   height: 43px;

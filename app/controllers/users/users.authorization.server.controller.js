@@ -35,22 +35,6 @@ exports.requiresLogin = function(req, res, next) {
 	next();
 };
 
-/**
- * Check is user is admin
- */
- exports.requiresAdmin = function(req, res, next) {
-
-
-	 // check is roles has admin
- 	// 	if (!req.isAuthenticated()) {
- // 		return res.status(401).send({
- // 			message: 'User is not logged in'
- // 		});
- // 	}
-
- 	next();
- };
-
 
 /**
  * User authorizations routing middleware
