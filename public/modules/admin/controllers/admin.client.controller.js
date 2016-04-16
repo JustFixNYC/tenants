@@ -8,13 +8,13 @@ angular.module('admin')
         $scope.referrals = Referrals.query();
       };
 
-      $scope.newReferral = {
-        name: 'Dan Kass',
-        phone: '8459781262',
-        email: 'romeboards@gmail.com',
-        organization: 'Community Group'
-      };
-      $scope.deleteReferralEmail = "romeboards@gmail.com";
+      $scope.newReferral = {};
+      // $scope.newReferral = {
+      //   name: 'Dan Kass',
+      //   phone: '8459781262',
+      //   email: 'romeboards@gmail.com',
+      //   organization: 'Community Group'
+      // };
 
       $scope.showCodes = function(codes) {
 
@@ -25,31 +25,38 @@ angular.module('admin')
             $scope.close = function(result) { $modalInstance.close(); };
           },
           resolve: {
-            codes: function () { return codes; } 
+            codes: function () { return codes; }
           }
         });
       };
 
       $scope.create = function() {
         var newReferral = new Referrals($scope.newReferral);
-        newReferral.$save(function(referral) {
+        newReferral.$save(function(success) {
+          $scope.createError = false;
+          $scope.message = "Success!";
           $scope.list();
+        }, function(error) {
+          $scope.createError = true;
+          $scope.message = error.data.message;
         });
       };
 
-      $scope.delete = function() {
+      $scope.delete = function(referral) {
 
-        var toBeDeletedPromises = [];
+        referral.$delete({ id: referral._id }).then(function () { $scope.list(); });
 
-        var toBeDeleted = Referrals.query({ email: $scope.deleteReferralEmail }, function() {
-          if(!toBeDeleted.length) console.log('No referrals found for that email.');
-          for(var i = 0; i < toBeDeleted.length; i++) {
-            toBeDeletedPromises.push(toBeDeleted[i].$delete({ id: toBeDeleted[i]._id }).$promise);
-          }
-          $q.all(toBeDeletedPromises).then(function () {
-            $scope.list();
-          });
-        });
+        // var toBeDeletedPromises = [];
+        //
+        // var toBeDeleted = Referrals.query({ email: $scope.deleteReferralEmail }, function() {
+        //   if(!toBeDeleted.length) console.log('No referrals found for that email.');
+        //   for(var i = 0; i < toBeDeleted.length; i++) {
+        //     toBeDeletedPromises.push(toBeDeleted[i].$delete({ id: toBeDeleted[i]._id }).$promise);
+        //   }
+        //   $q.all(toBeDeletedPromises).then(function () {
+        //     $scope.list();
+        //   });
+        // });
       };
 
 }]);

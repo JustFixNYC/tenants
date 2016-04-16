@@ -6,6 +6,10 @@ angular.module('admin').factory('Referrals', ['$resource',
 		return $resource('referrals', {}, {
 			update: {
 				method: 'PUT'
+			},
+			validate: {
+				method: 'GET',
+				url: '/referrals/validate'
 			}
       // ,
       // getIssues: {

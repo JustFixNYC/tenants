@@ -113,9 +113,9 @@ var UserSchema = new Schema({
   	type: String,
   	default: ''
   },
-  code : {
-  	type: String,
-  	default: ''
+  referral: {
+    type: Schema.Types.Mixed,
+    default: {}    
   },
   /* For reset password */
   resetPasswordToken: {

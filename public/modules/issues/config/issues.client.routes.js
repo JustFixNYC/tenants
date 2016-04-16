@@ -5,7 +5,7 @@ angular.module('issues').config(['$stateProvider', '$urlRouterProvider',
 	function($stateProvider, $urlRouterProvider) {
 
 		// Jump to first child state
-		$urlRouterProvider.when('/issues/create', '/issues/create/checklist');
+		$urlRouterProvider.when('/issues/create', '/issues/create/access-code');
 
 		// Issues state routing
 		$stateProvider.
@@ -18,11 +18,15 @@ angular.module('issues').config(['$stateProvider', '$urlRouterProvider',
 			templateUrl: 'modules/issues/views/create-issue.client.view.html',
 			abstract: true
 		}).
+		state('createIssue.accessCode', {
+			url: '/access-code',
+			templateUrl: 'modules/issues/partials/access-code.client.view.html',
+			data: { disableBack: true }
+		}).
 		state('createIssue.checklist', {
 			url: '/checklist',
 			title: 'Issues Checklist',
-			templateUrl: 'modules/issues/partials/create-issue-checklist.client.view.html',
-			data: { disableBack: true }
+			templateUrl: 'modules/issues/partials/create-issue-checklist.client.view.html'
 		}).
 		state('createIssue.general', {
 			url: '/general',

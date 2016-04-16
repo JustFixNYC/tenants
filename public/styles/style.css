@@ -941,4 +941,15 @@ header {
         .status-update .status-update-open .status-update-controls.tagging .tag-issue-toggle {
           color: #0096D7; }
 
+#admin .tab-content {
+  background-color: #fff;
+  padding-top: 20px; }
+
+.admin-access-codes {
+  -webkit-column-count: 3;
+  /* Chrome, Safari, Opera */
+  -moz-column-count: 3;
+  /* Firefox */
+  column-count: 3; }
+
 /*# sourceMappingURL=style.css.map */

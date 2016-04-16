@@ -23,6 +23,10 @@ var ReferralSchema = new Schema({
     type: String,
     default: 'dan@justfix.nyc'
   },
+  totalUsers: {
+    type: Number,
+    default: 0
+  },
   codes: [{
     type: String,
     default: 'XXXX-XXXX'
