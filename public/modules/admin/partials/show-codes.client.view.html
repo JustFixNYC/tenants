@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <h3 class="modal-title">Access Codes</h3>
+</div>
+<div class="modal-body" stop-event="touchend">
+  <p ng-repeat="c in codes" ng-bind="c"></p>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-info" data-dismiss="modal" data-ng-click="close()">
+      Done
+  </button>
+</div>
