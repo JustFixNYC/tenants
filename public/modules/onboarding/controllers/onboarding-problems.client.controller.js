@@ -12,6 +12,10 @@ angular.module('onboarding').controller('OnboardingProblemsController', ['$scope
 
 		var keyString = '';
 
+		if(!arrayOfObjs) {
+			return;
+		}
+
 		for (var i = 0; i < arrayOfObjs.length; i++) {
 			
 			keyString = keyString + ', ' + arrayOfObjs[i].key;
@@ -52,8 +56,9 @@ angular.module('onboarding').controller('OnboardingProblemsController', ['$scope
 		}
 
 		// Well, never let it be said I tried
-		activeMapper(user.problems[stupidUserProblemTargetIdx()].issues, $scope.currentProblem.issues);
-
+		if(user.problems){
+			activeMapper(user.problems[stupidUserProblemTargetIdx()].issues, $scope.currentProblem.issues);
+		}
 		var modalInstance = $modal.open({
       animation: 'true',
       templateUrl: 'modules/onboarding/partials/problem-modal.client.view.html',

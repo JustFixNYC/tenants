@@ -13,10 +13,11 @@ angular
   		if(!$scope.userInfo || $scope.userInfo === '') {
   			$scope.userInfo = {};
   		}
+  		console.log($scope.userInfo);
 
   		if(user.fullName) {
-  			$scope.userInfo.firstName = $scope.user['fullName'].split(' ')[0];
-  			$scope.userInfo.lastName = $scope.user['fullName'].split(' ')[1];
+  			$scope.userInfo.firstName = user['fullName'].split(' ')[0];
+  			$scope.userInfo.lastName = user['fullName'].split(' ')[1];
   		}
 
   		if(!user.borough) {

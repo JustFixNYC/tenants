@@ -29,6 +29,13 @@ angular.module('onboarding').directive('problemIssueItem', ['$modal', 'Authentic
 
 			// Selection of issue
 			scope.selectIssue = function(problem, issue){
+				console.log(user);
+
+				// TODO: discuss bring user creation to global?
+				if(user === '') {
+					user = {};
+					user.problems = [];
+				}
 
 				if(element.hasClass('active')) {
 					scope.removeIssue(problem, issue);

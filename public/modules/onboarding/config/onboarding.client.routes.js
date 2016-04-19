@@ -38,6 +38,13 @@ angular.module('onboarding').config(['$stateProvider', function($stateProvider){
       controller: 'OnboardingDetailsController',
       controllerAs: 'vm'
     });
+    $stateProvider
+      .state('onboarding-tutorial', {
+        url: '/onboarding-tutorial',
+        templateUrl: 'modules/onboarding/client/views/onboarding-tutorial.client.view.html',
+        controller: 'OnboardingTutorialController',
+        controllerAs: 'vm'
+      });
 }]);
 angular.module('onboarding').run(['$rootScope', '$state', 'Authentication', '$window', function($rootScope, $state, Authentication, $window) {
 
