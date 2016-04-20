@@ -7,14 +7,6 @@
 // Core variables
 @import "bootstrap/variables";
 
-// don't use /public because the express app handles that already for the XHR req
-// not sure how this works on production...
-$icon-font-path: "/lib/bootstrap-sass-official/assets/fonts/bootstrap/";
-
-$border-radius-base:        2px;
-$border-radius-large:       3px;
-$border-radius-small:       1px;
-
 // Core mixins
 @import "bootstrap/mixins";
 

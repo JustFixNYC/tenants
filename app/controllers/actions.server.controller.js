@@ -79,6 +79,8 @@ var generateActions = function(user) {
 
   var actions = getAreaActions(user);
 
+  console.log(actions);
+
   //iterate through full list of actions, push
   fullActions.forEach(function (action) {
 

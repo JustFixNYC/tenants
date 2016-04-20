@@ -13,6 +13,7 @@ angular.module('actions').controller('ActionsController', ['$scope', '$location'
 
     $scope.list = function() {
       $scope.actions = Actions.query();
+      console.log($scope.actions);
     };
 
   }
