@@ -1,41 +1,18 @@
 'use strict';
 
-angular.module('onboarding').directive('problemIssueItem', ['$modal', 'Authentication', function($modal, Authentication){
+angular.module('onboarding').directive('problemIssueItem', ['Authentication', function(Authentication){
   return {
     template: '',
     restrict: 'A',
     scope: false,
     link: function postLink(scope, element, attrs) {
 
-    	user = Authentication.user;
+    	var user = Authentication.user;
+    	
     	element.text(attrs.text);
-		
-			// problemAssembler
-			var newProblem = function(problem, issue) {
-				
-				var newProb = {};
-
-				newProb.startDate = new Date();
-		    newProb.createdDate = new Date();
-		   	newProb.key = problem.key;
-		    newProb.title = problem.title;
-		    newProb.description = '';
-		    newProb.photos = [];
-		    newProb.relatedActivities = [];
-		    newProb.issues = [issue];
-
-		    return newProb;
-			}
 
 			// Selection of issue
 			scope.selectIssue = function(problem, issue){
-				console.log(user);
-
-				// TODO: discuss bring user creation to global?
-				if(user === '') {
-					user = {};
-					user.problems = [];
-				}
 
 				if(element.hasClass('active')) {
 					scope.removeIssue(problem, issue);
@@ -43,13 +20,15 @@ angular.module('onboarding').directive('problemIssueItem', ['$modal', 'Authentic
 					return;
 				}
 
-				if(user.problems.length === 0) {
+				if(scope.tempProblems.length === 0) {
 
 					element.addClass('active');
-					return user.problems.push(newProblem(problem, issue));
+					scope.tempProblems.push(newProblem(problem, issue));
+					return;
+
 				}
 
-				user.problems.map(function(val, idx, arr) {
+				scope.tempProblems.map(function(val, idx, arr) {
 					if(val.key === problem.key) {
 
 						element.addClass('active');
@@ -58,7 +37,48 @@ angular.module('onboarding').directive('problemIssueItem', ['$modal', 'Authentic
 				});
 			};
 
+			// This controls this problem's Other issue
+			scope.toggleOther = function() {
+				scope.addMore = !scope.addMore;
+				
+				var helperCreateOtherIssue = function() {
+					return scope.tempProblems[0].issues.push({
+						key: 'other',
+						value: element.find('textarea').val(),
+						emergency: false
+					});
+				}
+
+				// No issues? Make sure we have an actual other issue value and push it in
+				if(scope.tempProblems[0].issues.length === 0 && element.find('textarea').val()) {
+					helperCreateOtherIssue();
+				}
+
+				scope.tempProblems[0].issues.map(function(val, idx, arr) {
+
+					if(val.key === 'other') {
+
+						val.value = element.find('textarea').val();
+
+					} else if (idx === scope.tempProblems[0].issues.length - 1) {
+						helperCreateOtherIssue();
+					}
+				});
+			}
+
 			scope.removeIssue = function(problem, issue) {
+
+				// Ctrl C! Ctrl V! Think of better approach for this.
+				scope.tempProblems.map(function(val, idx, arr){
+					if(val.key === problem.key) {
+						val.issues.map(function(val2, idx2, arr2) {
+							if(val2.key === issue.key) {
+								return arr2.splice(idx2, 1);
+							}
+						});
+					}
+				});
+
 				user.problems.map(function(val, idx, arr){
 					if(val.key === problem.key) {
 						val.issues.map(function(val2, idx2, arr2) {

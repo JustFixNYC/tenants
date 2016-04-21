@@ -1,12 +1,24 @@
 
 <div class="issues-modal">
+	<div class="close-modal" ng-click="close()">
+		X
+	</div>
   <div class="modal-header">
-      <h3 class="modal-title">{{currentProblem.title}}</h3>
+      <h4 class="modal-title">{{currentProblem.title}}</h4>
   </div>
   <div class="selecter multiple">
-		<div class="selection-module" multiple="true">
+		<div class="selection-module">
 			<a class="selection-issue" problem-issue-item ng-repeat="issue in currentProblem.issues track by $index" text="{{issue.key}}" ng-click="selectIssue(currentProblem, issue)" ng-class="{'active':issue.active} ">
 			</a>
-		</select>
+			<div problem-issue-item class="selection-issue other">
+				Other <span class="selector-plus pull-right" ng-click="toggleOther()">+</span>
+				<div class="form-group" ng-show="addMore == true">
+					<textarea class="form-control"></textarea>
+				</div>
+			</div>
+		</div>
+		<span class="btn btn-primary pull-right save" ng-click="save()">Save</span>
+		<span class="btn btn-default pull-right cancel" ng-click="close()">Cancel</span>
+		<div class="clearfix"></div>
   </div>
 </div>

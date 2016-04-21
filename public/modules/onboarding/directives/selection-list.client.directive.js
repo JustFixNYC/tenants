@@ -7,7 +7,6 @@ angular.module('onboarding').directive('selectionList', function selectionList(/
     link: function postLink(scope, element, attrs) {
     	var aTags = element.find('a');
     	var wrappedTags = [];
-    	console.log(element);
 
     	var activateThis = function() {
     		this.on('click', function(e) {
