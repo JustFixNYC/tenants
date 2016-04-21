@@ -22,7 +22,7 @@ angular.module('core').directive('windowHeight', ['$window', 'deviceDetector', f
         if(!deviceDetector.isMobile()) {
           $window.addEventListener('resize', function () {
             element.css('height', getHeight() + 'px');
-          });         
+          });
         }
 
         if(deviceDetector.isMobile() && deviceDetector.browser === 'safari') {

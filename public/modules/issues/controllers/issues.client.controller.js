@@ -1,8 +1,8 @@
 'use strict';
 
 // Issues controller
-angular.module('issues').controller('IssuesController', ['$scope', '$location', '$http', 'Authentication', 'Users',
-  function($scope, $location, $http, Authentication, Users) {
+angular.module('issues').controller('IssuesController', ['$scope', '$location', '$http', 'Authentication', 'Users', 'Referrals',
+  function($scope, $location, $http, Authentication, Users, Referrals) {
     $scope.authentication = Authentication;
 
     if($scope.authentication.user) {
@@ -45,6 +45,35 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
       // $scope.currentStep = 50;
       // console.log($scope.currentStep);
     });
+
+
+
+
+
+
+    // Validate Access Code
+    $scope.newUser = {};
+    $scope.newUser.accessCode = 'test';
+
+
+    $scope.validateCode = function() {
+
+      var referral = new Referrals();
+      referral.$validate({ code: $scope.newUser.accessCode },
+        function(success) {
+          if(success.referral) {
+            alert('valid');
+            console.log(success.referral);
+          } else {
+            alert('invalid');
+          }
+        }, function(error) {
+          // error
+        });
+
+    };
+
+
 
     // Create new Issue
     $scope.create = function() {

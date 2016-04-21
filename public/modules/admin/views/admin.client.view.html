@@ -1,0 +1,84 @@
+<section data-ng-controller="AdminController" data-ng-init="list()" id="admin">
+<!-- <section data-ng-controller="AdminController"> -->
+
+  <div class="page-header">
+    <h1>JustFix.nyc Admin Dashboard</h1>
+  </div>
+
+  <tabset justified="true">
+    <tab heading="List Referrals">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Organization</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Total Users</th>
+            <th>Remaining Codes</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="r in referrals">
+            <td ng-bind="r.name"></td>
+            <td ng-bind="r.organization"></td>
+            <td ng-bind="r.phone"></td>
+            <td ng-bind="r.email"></td>
+            <td ng-bind="r.totalUsers"></td>
+            <td ng-click="showCodes(r.codes)"><a>show codes ({{ r.codes.length }})</a></td>
+            <td ng-click="delete(r)" class="text-danger">delete</td>
+          </tr>
+        </tbody>
+      </table>
+    </tab>
+    <tab heading="Create New Referral">
+      <form>
+        <div class="form-group">
+          <label class="control-label">Name:</label><br/>
+          <input class="form-control" type="text" name="Name" ng-model="newReferral.name">
+        </div>
+
+        <div class="form-group">
+          <label class="control-label">Phone:</label><br/>
+          <input class="form-control" type="text" name="Phone" ng-model="newReferral.phone" phone-input>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label">Email:</label><br/>
+          <input class="form-control" type="text" name="Email" ng-model="newReferral.email">
+        </div>
+
+        <div class="form-group">
+          <label class="control-label">Organization:</label><br/>
+          <input class="form-control" type="text" name="Organization" ng-model="newReferral.organization">
+        </div>
+
+        <div class="form-group">
+          <label class="control-label">Number of Codes:</label><br/>
+          <input class="form-control" type="text" name="Number of Codes" ng-model="newReferral.numCodes">
+        </div>
+
+        <div class="form-group clearfix">
+          <div class="pull-left" ng-class="createError ? 'text-danger' : 'text-success'">{{ message }}</div>
+          <input class="btn btn-primary pull-right" type="submit" value="Create Referral!" ng-click="create()">
+        </div>
+      </form>
+
+    </tab>
+  </tabset>
+
+  <!-- <h3>List Referrals:</h3>
+
+
+  <h3>New Referral:</h3> -->
+
+
+  <!-- <h3>Delete Referral:</h3>
+  <form>
+    <label>Email:</label><br/>
+    <input type="text" name="Email" ng-model="deleteReferralEmail"><br/><br/>
+    <input type="submit" value="Delete Referral" ng-click="delete()">
+  </form> -->
+
+</section>

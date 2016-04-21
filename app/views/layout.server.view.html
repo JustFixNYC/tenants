@@ -54,6 +54,8 @@
 	<!-- Fav Icon -->
 	<link href="/modules/core/img/brand/favicon.ico" rel="shortcut icon" type="image/x-icon">
 
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic' rel='stylesheet' type='text/css'>
+
 	<!--Application CSS Files-->
 	{% for cssFile in cssFiles %}<link rel="stylesheet" href="{{cssFile}}">{% endfor %}
 
@@ -65,7 +67,7 @@
 
 <body class="ng-cloak">
 
-	<header class="navbar">
+	<header>
 		<div data-ng-include="'/modules/core/views/header.client.view.html'"></div>
 	</header>
 	<section class="content">

@@ -16,7 +16,6 @@
     "ng-file-upload-shim": "~6.1.2",
     "angular-bootstrap-lightbox": "~0.8.0",
     "angular-touch": "1.4.7",
-    "angular-modal-service": "~0.6.7",
     "fastclick": "~1.0.6",
     "angular-lazy-img": "~1.1.0",
     "angular-scroll": "~0.7.2",

@@ -3,7 +3,7 @@
 angular.module('issues').factory('Issues', ['$http', '$q', 'Authentication',
   function Issues($http, $q, Authentication) {
 
-    var checklist = 'data/checklist.json';
+    var checklist = 'data/checklist_old.json';
     var request = function(url) {
       var deferred = $q.defer();
 

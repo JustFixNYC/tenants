@@ -1,27 +1,59 @@
-<div class="panel panel-default status-panel">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      Status Update
-    </h3>
-  </div>
-  <div class="panel-body">
-    <div class="panel-content">Anything new to report?</div>
-    <div class="row">
-      <div class="col-xs-6">
-        <button ngf-select="openPhotoPreview($file)" ngf-capture="'camera'" accept="image/*" ng-model="newActivity.photo1" name="photos" id="photos" class="btn btn-info btn-block pull-left">
-          <span class="glyphicon glyphicon-camera pull-left"></span>
-          Add Photo
-        </button>
+<div class="status-update" ng-class="{ 'expanded' : status.expanded }">
+  <button type="button" class="close" aria-label="Close" ng-show="status.expanded" data-ng-click="status.expanded = false" ng-cloak><span aria-hidden="true">&times;</span></button>
+  <span class="pull-right glyphicon glyphicon-edit" ng-if="!status.expanded"></span>
+  <div class="status-update-open">
+    <form name="statusUpdate" class="update-activity-form" novalidate>
+      <textarea name="description"
+                data-ng-model="newActivity.description"
+                ng-focus="status.expanded = true"
+                id="description"
+                class="form-control"
+                cols="30" rows="4"
+                maxlength="500"
+                placeholder="Anything new to report?"
+                required>
+      </textarea>
+      <span class="text-danger" ng-show="status.formSubmitted && statusUpdate.description.$invalid">Please add a brief description.</span>
+      <div class="image-preview">
+        <img ng-repeat="photo in newActivity.photos" ngf-thumbnail="photo" />
       </div>
-      <div class="col-xs-6">
-        <button class="btn btn-primary btn-block pull-right" data-ng-click="openCheckIn()">
-          <span class="glyphicon glyphicon-edit pull-left"></span>
-          Check In
-        </button>
+      <div class="status-update-controls" ng-class="{ 'tagging' : status.tagging }">
+        <div  ngf-select="addPhoto($file)"
+              ngf-select-disabled="newActivity.photos.length >= 3"
+              ngf-capture="'camera'" accept="image/*"
+              name="photos"
+              class="pull-left select-photos">
+          <span class="glyphicon glyphicon-camera"></span>
+        </div>
+        <div class="tag-issue-toggle pull-right" ng-click="toggleTagging()">
+          Tag Issue
+          <span ng-if="newActivity.problems.length">({{newActivity.problems.length}})</span>
+          <span class="glyphicon pull-right"
+                style="padding-top:1px"
+                ng-class="status.tagging ? 'glyphicon-triangle-top' : 'glyphicon-triangle-bottom'">
+          </span>
+        </div>
+        <div class="tag-issue-list" ng-if="status.tagging">
+          <div class="list-group">
+              <button type="button"
+                      class="list-group-item"
+                      data-ng-repeat="problem in problems"
+                      data-ng-click="selectProblem(problem)"
+                      data-ng-class="{ 'list-group-item-primary': isSelectedProblem(problem) }">
+                      {{ ::problem }}
+                      <span data-ng-show="isSelectedProblem(problem)" class="selected-icon glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
+              </button>
+          </div>
+        </div>
       </div>
-    </div>
+      <button class="btn btn-info pull-right" data-ng-click="createActivity(statusUpdate.$valid)">
+          <span class="glyphicon glyphicon-ok pull-left" style="padding-top:1px"></span>
+          Add To My Case
+      </button>
+    </form>
   </div>
 </div>
-<alert data-ng-if="status.completed" data-ng-show="!status.closeAlert" type="success" close="closeAlert()"><strong>Well done!</strong> We've added <em>{{ newActivity.title }}</em> to <a ui-sref="listActivity">Your Case</a>.</alert>
+
+<alert data-ng-if="status.completed" data-ng-show="!status.closeAlert" type="success" close="closeAlert()"><strong>Well done!</strong> We've added <em>{{ newActivity.title }}</em> to your <a ui-sref="listActivity">Case History</a>.</alert>
 <alert data-ng-show="!status.closeErrorAlert" type="danger" close="status.closeErrorAlert = true">We're sorry, something went wrong...</alert>
 <!-- <alert data-ng-if="error.length" data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert> -->

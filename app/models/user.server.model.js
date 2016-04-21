@@ -67,6 +67,10 @@ var UserSchema = new Schema({
     default: []
   }],
   problems: [ProblemSchema],
+  issues: {
+    type: Schema.Types.Mixed,
+    default: {}
+  },
   activity: [ActivitySchema],
   phone: {
     type: String,
@@ -109,9 +113,9 @@ var UserSchema = new Schema({
   	type: String,
   	default: ''
   },
-  code : {
-  	type: String,
-  	default: ''
+  referral: {
+    type: Schema.Types.Mixed,
+    default: {}    
   },
   /* For reset password */
   resetPasswordToken: {

@@ -16,8 +16,8 @@ module.exports = function() {
 		function(phone, password, done) {
 			User.findOne({
 				phone: phone
-			}, 
-			'-activity -actionFlags -followUpFlags', 
+			},
+			'-activity -actionFlags -followUpFlags',
 			function(err, user) {
 				if (err) {
 					return done(err);

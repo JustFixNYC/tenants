@@ -1,4 +1,5 @@
 $justfix-blue: #0096D7;
+$justfix-blue-dark: #0E6594;
 
 $aqua-dark: $justfix-blue;
 $aqua-light: lighten($justfix-blue, 10%);
@@ -7,6 +8,10 @@ $aqua-light: lighten($justfix-blue, 10%);
 // not sure how this works on production...
 $icon-font-path: "/lib/bootstrap-sass-official/assets/fonts/bootstrap/";
 
-$border-radius-base:        2px;
-$border-radius-large:       3px;
-$border-radius-small:       1px;
+// $border-radius-base:        2px;
+// $border-radius-large:       3px;
+// $border-radius-small:       1px;
+
+$mobile-header-height: 50px;
+$desktop-header-height: 70px;
+$header-bottom-margin: 20px;

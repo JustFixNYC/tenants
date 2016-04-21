@@ -1,0 +1,171 @@
+.status-update {
+
+  position: relative;
+  background-color: #fff;
+  margin-bottom: $header-bottom-margin;
+  border: 2px solid $justfix-blue;
+  border-radius: 4px;
+
+  // @include transition(height 100ms ease-out);
+  height: 43px;
+  overflow: hidden;
+  &.expanded {
+    overflow: visible;
+    height: auto;
+  }
+
+  @media (min-width: $screen-sm-min) {
+    margin-bottom: 30px;
+  }
+
+  .close {
+    background-color: #0096D7;
+    color: #fff;
+    opacity: 1;
+    text-shadow: none;
+    font-size: 24px;
+    border-radius: 100%;
+    font-weight: 400;
+    line-height: 0.7;
+    padding: 3px 8px 6px 8px;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    z-index: 5;
+    @include transform(translateZ(0));
+
+    &:focus {
+      outline: none;
+    }
+
+    span {
+      vertical-align: middle;
+    }
+  }
+
+  .glyphicon-edit {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    color: $justfix-blue;
+    font-size: 17px;
+    z-index: 0;
+  }
+
+  .status-update-open {
+
+    overflow: auto;
+    padding: 10px 12px;
+    position: relative;
+    z-index: 1;
+
+    .form-control {
+      border: none;
+      padding: 0;
+      background-color: transparent;
+    }
+
+    .text-danger {
+      font-weight: 600;
+    }
+
+    .image-preview {
+
+      img {
+        max-height: 40px;
+        width: auto;
+        margin-top: 6px;
+        margin-right: 10px;
+      }
+    }
+
+    .status-update-controls {
+
+      overflow: auto;
+      // padding-top: 6px;
+      // padding-bottom: 6px;
+      margin-bottom: 10px;
+      border-bottom: 2px solid $lightgray-dark;
+
+      .select-photos {
+        padding-top: 6px;
+        padding-bottom: 6px;
+        padding-right: 6px;
+
+        .glyphicon-camera {
+          font-size: 20px;
+        }
+      }
+
+
+
+      .tag-issue-toggle {
+
+        font-weight: 600;
+        line-height: 36px;
+
+        .glyphicon {
+          margin-left: 4px;
+          font-size: 10px;
+          top: 12px;
+        }
+
+      }
+
+      .tag-issue-list {
+
+        margin-top: 28px;
+
+        .list-group {
+          box-shadow: none;
+          margin-bottom: 0;
+
+          // disabling for now...
+          // max-height: 105px;
+          // overflow: scroll;
+        }
+
+        .list-group-item {
+          border-radius: 0;
+          border: none;
+          padding-top: 8px;
+          padding-bottom: 8px;
+          //
+          &:focus {
+            background-color: #fff;
+            color: #555;
+          }
+          &:hover {
+            background-color: #fff;
+            color: #555;
+          }
+
+          &.list-group-item-primary {
+            background-color: $justfix-blue;
+            color: #fff;
+
+            &:focus {
+              background-color: $justfix-blue;
+              color: #fff;
+            }
+          }
+        }
+      }
+
+      &.tagging {
+        padding-bottom: 6px;
+
+        .tag-issue-toggle {
+          color: $justfix-blue;
+
+          span {
+            // top: 2px;
+          }
+        }
+      }
+
+    }
+  }
+
+
+}

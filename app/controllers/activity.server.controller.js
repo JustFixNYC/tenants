@@ -13,7 +13,7 @@ var list = function(req, res) {
   if(req.user) {
     res.json(req.user.activity);
   } else {
-    res.status(400).send({
+    res.status(401).send({
       message: 'User is not signed in'
     });
   }
@@ -29,6 +29,9 @@ var s3upload = function(file) {
   // }
 
   if(!file) uploaded.reject('no file?');
+
+  console.log(file);
+  console.log(file.originalFilename);
 
   var type = file.originalFilename.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[0];
 
@@ -95,7 +98,9 @@ var create = function(req, res) {
     // init photos array
     activity.photos = [];
 
-    var files = req.files;
+    var files = req.files['photos'];
+
+    // console.log('files', files);
 
     // init photos queue
     var uploadQueue = [];
