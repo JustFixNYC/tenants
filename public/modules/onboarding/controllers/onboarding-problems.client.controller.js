@@ -37,6 +37,19 @@ angular.module('onboarding').controller('OnboardingProblemsController', ['$scope
 	};
 
 
+
+	// Given problem, get current problem from User Obj (if exists)
+	// TODO: see if we can replace some of our PitA getUserProblem loops with this
+	var currentProblemUserObj = function(problem) {
+
+		for (var j = 0; j < user.problems.length; j++) {
+			if(user.problems[j].key = problem.key) {
+				return user.problems[j];
+			}
+		}
+	}
+
+
 		
 	// problemAssembler
 	var newProblem = function(problem, issue) {
@@ -77,18 +90,9 @@ angular.module('onboarding').controller('OnboardingProblemsController', ['$scope
 
 		$scope.currentProblem = problem;
 
-		// Well this backfired horrendously
-		var stupidUserProblemTargetIdx = function() {
-			for (var j = 0; j < user.problems.length; j++) {
-				if(user.problems[j].key = problem.key) {
-					return j;
-				}
-			}
-		}
-
 		// Well, never let it be said I tried
 		if(user.problems.length){
-			activeMapper(user.problems[stupidUserProblemTargetIdx()].issues, $scope.currentProblem.issues);
+			activeMapper(currentProblemUserObj(problem).issues, $scope.currentProblem.issues);
 		}
 		$scope.modalInstance = $modal.open({
       animation: 'true',
@@ -96,6 +100,22 @@ angular.module('onboarding').controller('OnboardingProblemsController', ['$scope
       scope: $scope,
       size: 'md'
     });
+
+		if(currentProblemUserObj(problem)) {
+			var issuesForLoop = currentProblemUserObj(problem).issues;
+
+			for (var i = 0; i < issuesForLoop.length; i++) {
+				if(issuesForLoop[i].key == "other") {
+					$scope.other = {
+						key: 'other',
+						value: issuesForLoop[i].value,
+						emergency: false
+					};
+
+					issuesForLoop.splice(i, 1);
+				}
+			}
+		}
 
     // Create a temporary user, if modal is opened (Cleared after modal is closed)
     $scope.modalInstance.opened.then(function(){
@@ -107,30 +127,46 @@ angular.module('onboarding').controller('OnboardingProblemsController', ['$scope
 
 	$scope.save = function (){
 
-		if($scope.tempProblems.length === 0) {
-			return;
-		}
+		// Handle 'other' Issue
+		if($scope.other.value !== ''){
 
+			$scope.tempProblems[0].issues.push({
+				key: 'other',
+				value: $scope.other.value,
+				emergency: false
+			});
+		}
+		// if the user has problems already
 		if(user.problems.length) {
 			user.problems.map(function(val, idx, arr){
-				console.log(idx);
+
+				// current user problem matches current temp problem? 
 				if(val.key === $scope.tempProblems[0].key) {
 					for (var i = 0; i < $scope.tempProblems[0].issues.length; i++){
+
+						// Push issue into user problems array
+						// TODO: check if issue exists in issues array (SHOULD NOT BE AN ISSUE: gets removed on click)
 						val.issues.push($scope.tempProblems[0].issues[i]);
 					};
 				} else if (idx === user.problems.length - 1) {
+
+					// If no matching problem, just push the new problem into the user problems array
 					user.problems.push($scope.tempProblems[0]);
 				}
 			});
 		} else {
+			// No probems for the user? Just push the probem into the array
 			user.problems.push($scope.tempProblems[0]);
 		}
+
+		// Clear temp issue, update view
   	$scope.tempProblems = [];
 		activeMapper(user.problems, $scope.problems);
   	$scope.modalInstance.dismiss('close');
 	}
 
   $scope.close = function() {
+  	// Empty current object, do nothing else
   	$scope.tempProblems = [];
   	$scope.modalInstance.dismiss('close');
   }

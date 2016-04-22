@@ -39,31 +39,18 @@ angular.module('onboarding').directive('problemIssueItem', ['Authentication', fu
 
 			// This controls this problem's Other issue
 			scope.toggleOther = function() {
+				// Show/hide
 				scope.addMore = !scope.addMore;
-				
-				var helperCreateOtherIssue = function() {
-					return scope.tempProblems[0].issues.push({
+
+				// Boy oh boy this should be reconsidered
+				if(!scope.other) {
+					scope.other = {
 						key: 'other',
-						value: element.find('textarea').val(),
+						value: '',
 						emergency: false
-					});
+					};
 				}
 
-				// No issues? Make sure we have an actual other issue value and push it in
-				if(scope.tempProblems[0].issues.length === 0 && element.find('textarea').val()) {
-					helperCreateOtherIssue();
-				}
-
-				scope.tempProblems[0].issues.map(function(val, idx, arr) {
-
-					if(val.key === 'other') {
-
-						val.value = element.find('textarea').val();
-
-					} else if (idx === scope.tempProblems[0].issues.length - 1) {
-						helperCreateOtherIssue();
-					}
-				});
 			}
 
 			scope.removeIssue = function(problem, issue) {

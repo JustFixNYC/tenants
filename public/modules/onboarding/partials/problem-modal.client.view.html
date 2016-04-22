@@ -13,11 +13,11 @@
 			<div problem-issue-item class="selection-issue other">
 				Other <span class="selector-plus pull-right" ng-click="toggleOther()">+</span>
 				<div class="form-group" ng-show="addMore == true">
-					<textarea class="form-control"></textarea>
+					<textarea ng-model="other.value" class="form-control"></textarea>
 				</div>
 			</div>
 		</div>
-		<span class="btn btn-primary pull-right save" ng-click="save()">Save</span>
+		<span class="btn btn-primary pull-right save" ng-click="save()">Save</span>{{other.value}}
 		<span class="btn btn-default pull-right cancel" ng-click="close()">Cancel</span>
 		<div class="clearfix"></div>
   </div>
