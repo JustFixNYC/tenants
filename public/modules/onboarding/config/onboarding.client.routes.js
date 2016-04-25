@@ -27,7 +27,7 @@ angular.module('onboarding').config(['$stateProvider', function($stateProvider){
     })*/
     .state('onboarding-problems', {
       url: '/onboarding-problems',
-      templateUrl: 'modules/onboarding/views/onboarding-problems.client.view.html',
+      templateUrl: 'modules/problems/views/onboarding-problems.client.view.html',
       controller: 'OnboardingProblemsController',
       controllerAs: 'vm'
     })

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('onboarding').controller('OnboardingProblemsController', ['$scope', 'problemsService', '$modal', 'Authentication', '$location',
+angular.module('problems').controller('OnboardingProblemsController', ['$scope', 'problemsService', '$modal', 'Authentication', '$location',
 	function($scope, problems, $modal, Authentication, $location) {
 
 	var user = Authentication.user;
@@ -18,9 +18,12 @@ angular.module('onboarding').controller('OnboardingProblemsController', ['$scope
 		}
 
 		for (var i = 0; i < arrayOfObjs.length; i++) {
-			console.log(arrayOfObjs[i]);
-			
-			keyString = keyString + ', ' + arrayOfObjs[i].key;
+
+			if(keyString === '') {
+				keyString = arrayOfObjs[i].key
+			} else {			
+				keyString = keyString + ', ' + arrayOfObjs[i].key;
+			}
 
 		}
 
@@ -96,7 +99,7 @@ angular.module('onboarding').controller('OnboardingProblemsController', ['$scope
 		}
 		$scope.modalInstance = $modal.open({
       animation: 'true',
-      templateUrl: 'modules/onboarding/partials/problem-modal.client.view.html',
+      templateUrl: 'modules/problems/partials/problem-modal.client.view.html',
       scope: $scope,
       size: 'md'
     });
@@ -110,10 +113,16 @@ angular.module('onboarding').controller('OnboardingProblemsController', ['$scope
 					$scope.other = {
 						key: 'other',
 						value: issuesForLoop[i].value,
-						emergency: false
+						emergency: false	
 					};
 
 					issuesForLoop.splice(i, 1);
+				} else {
+					$scope.other = {
+						key: 'other',
+						value: '',
+						emergency: false	
+					};
 				}
 			}
 		}
@@ -129,7 +138,8 @@ angular.module('onboarding').controller('OnboardingProblemsController', ['$scope
 	$scope.save = function (){
 
 		// Handle 'other' Issue
-		if($scope.other){
+		console.log($scope);
+		if($scope.other.value !== ''){
 
 			$scope.tempProblems[0].issues.push({
 				key: 'other',

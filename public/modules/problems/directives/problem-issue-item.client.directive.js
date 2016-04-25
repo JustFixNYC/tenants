@@ -8,33 +8,24 @@ angular.module('onboarding').directive('problemIssueItem', ['Authentication', fu
     link: function postLink(scope, element, attrs) {
 
     	var user = Authentication.user;
-    	
-    	element.text(attrs.text);
 
 			// Selection of issue
 			scope.selectIssue = function(problem, issue){
 
-				if(element.hasClass('active')) {
+				if(issue.active === true) {
 					scope.removeIssue(problem, issue);
 					element.removeClass('active');
 					return;
 				}
 
 				if(scope.tempProblems.length === 0) {
-
-					element.addClass('active');
 					scope.tempProblems.push(newProblem(problem, issue));
 					return;
-
 				}
 
-				scope.tempProblems.map(function(val, idx, arr) {
-					if(val.key === problem.key) {
-
-						element.addClass('active');
-						return val.issues.push(issue);
-					}
-				});
+				issue.active = true;
+				scope.tempProblems[0].issues.push(issue);
+				console.log(scope.tempProblems);
 			};
 
 			// This controls this problem's Other issue
@@ -49,6 +40,10 @@ angular.module('onboarding').directive('problemIssueItem', ['Authentication', fu
 						value: '',
 						emergency: false
 					};
+
+    			console.log(scope);
+				} else {
+					console.log(scope.other);
 				}
 
 			}
@@ -57,10 +52,12 @@ angular.module('onboarding').directive('problemIssueItem', ['Authentication', fu
 
 				// Check if we've created problems module
 				if(user.problems) {
+					console.log('problem exists');
 					user.problems.map(function(val, idx, arr){
 						if(val.key === problem.key) {
 							val.issues.map(function(val2, idx2, arr2) {
 								if(val2.key === issue.key) {
+									issue.active = false;
 									return arr2.splice(idx2, 1);
 								}
 							});
@@ -70,10 +67,12 @@ angular.module('onboarding').directive('problemIssueItem', ['Authentication', fu
 
 				// Ctrl C! Ctrl V! Think of better approach for this.
 				scope.tempProblems.map(function(val, idx, arr){
+					console.log('problem doesnot exist');
 					if(val.key === problem.key) {
 						val.issues.map(function(val2, idx2, arr2) {
 							if(val2.key === issue.key) {
-								return arr2.splice(idx2, 1);
+								issue.active = false;
+								arr2.splice(idx2, 1);
 							}
 						});
 					}

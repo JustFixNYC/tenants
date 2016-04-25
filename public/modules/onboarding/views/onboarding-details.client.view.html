@@ -51,12 +51,12 @@
 		
 		<div class="form-group">
 			<label>Create password for your account</label><br/>
-			<input type="text" placeholder="password" name="pw" ng-model="userInfo.password"><br/>
+			<input type="password" placeholder="password" id="pw1" name="pw" ng-model="userInfo.password"><br/>
 		</div>
 		
 		<div class="form-group">
 			<label>Re-enter Password</label><br/>
-			<input type="text" placeholder="verify" name="pwpt2"><br/>
+			<input type="password" placeholder="verify" name="pw2" pw-check="pw1"><br/>
 		</div>
 
 		<div type="button" class="btn btn-default back pull-left" ng-click="back()">
@@ -66,5 +66,7 @@
 			Create Account
 		</div>
 
+		<div class="error alert alert-danger" ng-show="errorInRequest">
+			Sorry! there was an isue with this request. Please make sure all fields are filled out and try again.
   </form>
 </section>
