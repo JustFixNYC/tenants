@@ -38,7 +38,6 @@ AccessCodeSchema.pre('save', function(next) {
 		if(err) {
 			next(err);
 		} else if(user) {
-			console.log('am i being called?');
 			self.invalidate('code', 'code must be unique');
 			next(new Error('code must be unique'));
 		} else {

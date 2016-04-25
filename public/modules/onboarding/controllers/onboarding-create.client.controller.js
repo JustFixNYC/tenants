@@ -23,7 +23,6 @@ angular.module('onboarding')
 	  	var code = new AccessCode(newInfo);
 
 			code.$save(function successfulCodeSave (response){
-				console.log(response);
 				$scope.response = 'Success!';
 	  		$scope.codes = AccessCode.query();
 			},

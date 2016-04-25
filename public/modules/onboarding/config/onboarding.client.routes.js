@@ -8,8 +8,7 @@ angular.module('onboarding').config(['$stateProvider', function($stateProvider){
     .state('onboarding', {
       url: '/onboarding',
       templateUrl: 'modules/onboarding/views/onboarding.client.view.html',
-      controller: 'OnboardingController',
-      controllerAs: 'vm'
+      controller: 'OnboardingController'
     })
     .state('onboarding-create', {
       url: '/onboarding-admin',
@@ -19,13 +18,13 @@ angular.module('onboarding').config(['$stateProvider', function($stateProvider){
       data: {
       	needAdmin: true
       }
-    })
+    })/*
     .state('selection', {
       url: '/onboarding-selection',
       templateUrl: 'modules/onboarding/views/onboarding-selection.client.view.html',
       controller: 'OnboardingSelectionController',
       controllerAs: 'vm'
-    })
+    })*/
     .state('onboarding-problems', {
       url: '/onboarding-problems',
       templateUrl: 'modules/onboarding/views/onboarding-problems.client.view.html',
@@ -37,11 +36,11 @@ angular.module('onboarding').config(['$stateProvider', function($stateProvider){
       templateUrl: 'modules/onboarding/views/onboarding-details.client.view.html',
       controller: 'OnboardingDetailsController',
       controllerAs: 'vm'
-    });
+    })
     $stateProvider
       .state('onboarding-tutorial', {
         url: '/onboarding-tutorial',
-        templateUrl: 'modules/onboarding/client/views/onboarding-tutorial.client.view.html',
+        templateUrl: 'modules/onboarding/views/onboarding-tutorial.client.view.html',
         controller: 'OnboardingTutorialController',
         controllerAs: 'vm'
       });

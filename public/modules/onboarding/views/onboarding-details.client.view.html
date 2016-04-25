@@ -1,7 +1,8 @@
 <section class="onboarding-user-create">
 
   <h1>Create Account</h1>
-  <form name="createUser">
+  <p>Your account will store your history and case details for you. This information will never be shared without asking for your permission first.</p>
+  <form name="create-user" class="container">
   	<div class="form-group">
 			<label>First Name</label><br/>
 			<input type="text" placeholder="First Name" name="First Name" ng-model="userInfo.firstName"><br/>
@@ -22,12 +23,12 @@
 			<input type="button" value="Staten Island" class="btn btn-default borough" ng-class="{'selected': userInfo.borough === 'Staten Island'}" ng-click="userInfo.borough = 'Staten Island'">
 		</div>
 		
-		<div class="from-group">
+		<div class="form-group">
 			<label>Street Address</label><br/>
 			<input type="text" placeholder="Street Address" name="streetz" ng-model="userInfo.address "><br/>
 		</div>
 
-		<div class="from-group">
+		<div class="form-group apt">
 			<label>Apartment #</label><br>
 			<input type="text" placeholder="Apt" name="apt" ng-model="userInfo.unit"><br/>
 		</div>
@@ -58,10 +59,10 @@
 			<input type="text" placeholder="verify" name="pwpt2"><br/>
 		</div>
 
-		<div type="button" class="btn btn-default back" ng-click="back()">
+		<div type="button" class="btn btn-default back pull-left" ng-click="back()">
 			Back
 		</div>
-		<div type="button" class="btn btn-primary create-btn" ng-click="createAndNext()">
+		<div type="button" class="btn btn-primary create-btn pull-right" ng-click="createAndNext()">
 			Create Account
 		</div>
 

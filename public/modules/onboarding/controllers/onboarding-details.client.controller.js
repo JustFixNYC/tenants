@@ -2,8 +2,8 @@
 
 angular
   .module('onboarding')
-  .controller('OnboardingDetailsController', [ '$scope', 'Authentication', 'Users', '$http',
-		function($scope, Authentication, User, $http){
+  .controller('OnboardingDetailsController', [ '$scope', 'Authentication', '$http',
+		function($scope, Authentication, $http){
 
 
   		$scope.title = 'Create Account';
@@ -13,7 +13,6 @@ angular
   		if(!$scope.userInfo || $scope.userInfo === '') {
   			$scope.userInfo = {};
   		}
-  		console.log($scope.userInfo);
 
   		if(user.fullName) {
   			$scope.userInfo.firstName = user['fullName'].split(' ')[0];
@@ -33,8 +32,6 @@ angular
   			$scope.userInfo.fullName = $scope.userInfo.firstName + ' ' + $scope.userInfo.lastName;
 
   			Authentication.user = $scope.userInfo;
-
-  			console.log(Authentication.user);
 
   			$http({
   				method: 'POST',

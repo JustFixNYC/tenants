@@ -1,5 +1,5 @@
-<section class="onboarding problems-listing">
-  <div class="problems col-lg-3 col-md-6 col-sm-6 col-xs-6" ng-repeat="problem in problems">
+<section class="onboarding problems-listing container">
+  <div class="problems col-lg-3 col-md-4 col-sm-4 col-xs-6" ng-repeat="problem in problems">
   	<a href="" data-toggle="modal" data-target="{{problem.key}" ng-click="open(problem)">
 	  	<div class="problem-wrap" ng-class="{'active': problem.active}">
 		  	<div class="problem-icon">
@@ -13,5 +13,5 @@
   </div>
   <div class="clearfix"></div>
   <a class="btn btn-default" ng-click="back()">Back</a>
-  <a class="btn btn-primary" ng-click="next()">Continue</a>
+  <a class="btn btn-primary pull-right" ng-click="next()">Continue</a>
 </section>

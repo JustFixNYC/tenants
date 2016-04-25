@@ -104,6 +104,7 @@ angular.module('onboarding').controller('OnboardingProblemsController', ['$scope
 		if(currentProblemUserObj(problem)) {
 			var issuesForLoop = currentProblemUserObj(problem).issues;
 
+			// Find our other option, put it into the scope, and remove it (We're saving it later if it exists!)
 			for (var i = 0; i < issuesForLoop.length; i++) {
 				if(issuesForLoop[i].key == "other") {
 					$scope.other = {
@@ -128,7 +129,7 @@ angular.module('onboarding').controller('OnboardingProblemsController', ['$scope
 	$scope.save = function (){
 
 		// Handle 'other' Issue
-		if($scope.other.value !== ''){
+		if($scope.other){
 
 			$scope.tempProblems[0].issues.push({
 				key: 'other',

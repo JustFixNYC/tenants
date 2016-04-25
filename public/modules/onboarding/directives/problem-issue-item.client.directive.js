@@ -55,18 +55,21 @@ angular.module('onboarding').directive('problemIssueItem', ['Authentication', fu
 
 			scope.removeIssue = function(problem, issue) {
 
+				// Check if we've created problems module
+				if(user.problems) {
+					user.problems.map(function(val, idx, arr){
+						if(val.key === problem.key) {
+							val.issues.map(function(val2, idx2, arr2) {
+								if(val2.key === issue.key) {
+									return arr2.splice(idx2, 1);
+								}
+							});
+						}
+					});
+				}
+
 				// Ctrl C! Ctrl V! Think of better approach for this.
 				scope.tempProblems.map(function(val, idx, arr){
-					if(val.key === problem.key) {
-						val.issues.map(function(val2, idx2, arr2) {
-							if(val2.key === issue.key) {
-								return arr2.splice(idx2, 1);
-							}
-						});
-					}
-				});
-
-				user.problems.map(function(val, idx, arr){
 					if(val.key === problem.key) {
 						val.issues.map(function(val2, idx2, arr2) {
 							if(val2.key === issue.key) {

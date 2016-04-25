@@ -36,12 +36,19 @@ $grey: #E0E0E0;
 			padding: .75em 2.25em;
 		}
 	}
+
+	.referral {
+		p {
+			margin: 0px;
+			font-weight: 700;
+		}
+	}
 }
 
 .problems-listing {
 	
 	.problem-wrap {
-		margin-bottom: 1em;
+		margin: 0em auto 1em auto;
 		border-radius: 10px;
 		background: $grey;
 		padding: 50px 0px;
@@ -57,6 +64,40 @@ $grey: #E0E0E0;
 		&.active {
 			background: $justfix-blue;
 			color: #eee;
+		}
+	}
+
+	.btn-primary {
+		margin-top: 20px;
+		margin-right: 20px;
+
+		@media (min-width: $screen-sm) {
+			margin-right: 40px;
+		}
+
+		@media (min-width: $screen-sm) {
+			margin-right: 60px;
+		}
+
+		@media (min-width: $screen-lg) {
+			margin-right: 80px;
+		}
+	}
+
+	.btn-default {
+		margin-top: 20px;
+		margin-left: 20px;
+
+		@media (min-width: $screen-sm) {
+			margin-left: 40px;
+		}
+
+		@media (min-width: $screen-sm) {
+			margin-left: 60px;
+		}
+
+		@media (min-width: $screen-lg) {
+			margin-left: 80px;
 		}
 	}
 }
@@ -105,6 +146,14 @@ $grey: #E0E0E0;
 		}
 	}
 
+	.selector-plus { 
+		position: relative;
+		top: -8px;
+		width: 150px;
+		height: 1.5em;
+		font-size: 1.5em;
+	}
+
 	.save {
 		margin-right: 20px;
 		padding: 10px 44px;
@@ -117,14 +166,29 @@ $grey: #E0E0E0;
 }
 
 .onboarding-user-create {
+	text-align: center;
+
+	p {
+		margin: auto;
+		max-width: 500px;
+	}
+
 	form {
+		margin: auto;
+		max-width: 500px;
+
+		.form-group {
+			text-align: left;
+
+			&.apt {
+				width: 50%;
+			}
+		}
 		input {
 			padding: 0.5em 1em;
 			width: 100%;
 		}
 	}
-
-	//
 
 	.borough,
 	.nycha {
@@ -135,5 +199,62 @@ $grey: #E0E0E0;
 			background: $justfix-blue;
 			color: #fff;
 		}
+	}
+}
+
+.onboarding-tutorial {
+	// This is full of lies.
+	@include make-row();
+	
+	// WTF
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#6db3f2+0,0096d7+0,0e6594+100 */
+	background: #6db3f2; /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPHJhZGlhbEdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjUwJSIgY3k9IjUwJSIgcj0iNzUlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM2ZGIzZjIiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwOTZkNyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwZTY1OTQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvcmFkaWFsR3JhZGllbnQ+CiAgPHJlY3QgeD0iLTUwIiB5PSItNTAiIHdpZHRoPSIxMDEiIGhlaWdodD0iMTAxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+	background: -moz-radial-gradient(center, ellipse cover, #6db3f2 0%, #0096d7 0%, #0e6594 100%); /* FF3.6-15 */
+	background: -webkit-radial-gradient(center, ellipse cover, #6db3f2 0%,#0096d7 0%,#0e6594 100%); /* Chrome10-25,Safari5.1-6 */
+	background: radial-gradient(ellipse at center, #6db3f2 0%,#0096d7 0%,#0e6594 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', endColorstr='#0e6594',GradientType=1 ); /* IE6-8 fallback on horizontal gradient */
+
+	color: $white;
+	text-align: center;
+
+	.body-wrap {
+		margin: 0 20px;
+	}
+
+	.alert {
+		position: relative;
+		top: -22px;
+		color: white;
+		text-align: left;
+
+		.success-check {
+			margin-right: 10px;
+			padding: 5px;
+			border-radius: 50%;
+			background: white;
+			color: $brand-success;
+		}
+	}
+
+	.header {
+		margin-bottom: 2em;
+	}
+
+	.icon {
+		font-size: 2em;
+		color: $justfix-blue-dark;
+	}
+
+	.walkthrough {
+		h4 {
+			margin-top: 0px;
+		}
+	}
+
+	.btn {
+		margin: 3em 0;
+		min-width: 100px;
 	}
 }

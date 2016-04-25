@@ -1,21 +1,9 @@
-(function() {
-  'use strict';
 
-  angular
-    .module('onboarding')
-    .controller('OnboardingTutorialController', OnboardingTutorialController);
+'use strict';
 
-  OnboardingTutorialController.$inject = ['$scope'];
+angular.module('onboarding').controller('OnboardingTutorialController', 
+	[function(){
 
-  function OnboardingTutorialController($scope) {
-    var vm = this;
-
-    // Onboarding tutorial controller logic
-    // ...
-
-    init();
-
-    function init() {
-    }
-  }
-})();
+		return;
+      	
+	}]);

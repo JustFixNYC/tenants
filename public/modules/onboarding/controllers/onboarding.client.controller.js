@@ -1,35 +1,37 @@
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$scope', 'AccessCodeService', 'Authentication', 'Users', '$location', function($scope, AccessCode, Authentication, User, $location) {
+angular.module('onboarding').controller('OnboardingController', ['$scope', 'Authentication', 'Users', '$location', 'Referrals',
+	function($scope, Authentication, User, $location, Referrals) {
 
-	$scope.codeError = false;
-  
-  $scope.createUser = function(code) {
+		$scope.codeError = false;
+		$scope.referralSuccess = false;
+		$scope.codeError = false;
 
-  	code = code + '';
+		$scope.newUser = {};
+	  $scope.newUser.accessCode = '';
 
-  	var accessCodes = AccessCode.query(function() {
+	  $scope.validateCode = function() {
 
-	  	var searchThru = [];
-	  	for(var i = 0; i < accessCodes.length; i++) {
-	  		searchThru.push(accessCodes[i].code);
-	  	}
+	    var referral = new Referrals();
+	    referral.$validate({ code: $scope.newUser.accessCode },
+	      function(success) {
 
-	  	// Check if code exists
-	  	if(searchThru.indexOf(code) <= -1) {
-	  		$scope.codeError = true;
-	  		return;
-	  	} else {
-	  		console.log('legit code bro');
+	        if(success.referral) {
+	          $scope.referralSuccess = true;
+	          $scope.referral = success.referral;
+	        } else {
+	         	$scope.codeError = true;
+	        }
+	      }, function(error) {
+	      	console.log(error);
+	        $scope.codeError = true;
+	      });
 
-	  		var user = new User({code: code});
-	  		Authentication.user = user;
+	  };
 
-	  		$location.path('onboarding-selection');
-	  	}
-
-  	});
-  };
+	  $scope.goNext = function() {
+	  	$location.path('/onboarding-problems');
+	  }
 
 
-}]);
+	}]);
