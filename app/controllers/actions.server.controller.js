@@ -54,6 +54,7 @@ var getAreaActions = function(user) {
           content: 'Add some initial information about your <b>' + areaTitle(area) + '</b> issues. This will help to provide evidence for the issues you selected.',
           key: area,
           addIf: ['initial'],
+          type: 'once',
           cta: {
             type: 'initialContent',
             buttonTitle: '<span class="glyphicon glyphicon-camera pull-left"></span> Add Details',
@@ -79,8 +80,6 @@ var generateActions = function(user) {
 
   var actions = getAreaActions(user);
 
-  console.log(actions);
-
   //iterate through full list of actions, push
   fullActions.forEach(function (action) {
 
@@ -90,7 +89,7 @@ var generateActions = function(user) {
 
     // prevents actions from being listed after completed
     // [TODO] check against time since completion
-    var reject = user.actionFlags.indexOf(action.key) !== -1;
+    var reject = user.actionFlags.indexOf(action.key) !== -1 && action.type == 'once';
 
     // checks if action is a followup or not
     if(user.followUpFlags.indexOf(action.key) !== -1) action.isFollowUp = true;
@@ -107,11 +106,17 @@ var generateActions = function(user) {
 var list = function(req, res) {
   var user = req.user;
   var key = req.query.key;
+
+  // get actions to be added (and make sure they haven't been done yet)
   if(user && key) {
+
+    var actionKeys = _.pluck(generateActions(user), 'key');
     var newActions = fullActions.filter(function (action) {
-      return _.contains(action.addIf, key);
+      var valid = _.contains(action.addIf, key) && !_.contains(actionKeys, action.key);
+      return valid;
     });
     res.json(newActions);
+
   } else if(user) {
     var actions = generateActions(user);                  // get a curated list
     res.json(actions);

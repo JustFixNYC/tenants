@@ -1,24 +1,10 @@
 [
   {
-    "title": "Contact Super",
-    "content": "Your first step should always be to contact the person directly responsible for making repairs in your home.",
-    "key": "contactSuper",
-    "addIf": ["initial"],
-    "cta": {
-      "type": "modal",
-      "buttonTitle": "Contact",
-      "template": "contact-super.client.view.html",
-      "controller": "ContactSuperController"
-    },
-    "followUp": {
-      "title": "What did your super say?"
-    }
-  },
-  {
     "title": "Get Rental History",
     "content": "<b>It seems like you might live in a rent stabilized apartment.</b> Request your rental history to make sure.",
     "key": "getRentalHistory",
     "addIf": ["isRentStabilized"],
+    "type": "once",
     "cta": {
       "type": "modal",
       "buttonTitle": "Contact DHCR",
@@ -39,6 +25,7 @@
     "content": "It looks like you live in an area that experiences a <b>large amount of turnover and harassment</b> and are eligible to call the New York City Tenant Protection Hotline. Hours: Monday – Friday, 10AM – 4PM.",
     "key": "contactHarassment",
     "addIf": ["isHarassmentElligible"],
+    "type": "recurring",
     "cta": {
       "type": "call",
       "buttonTitle": "Call",
@@ -49,25 +36,11 @@
     }
   },
   {
-    "title": "Email Landlord",
-    "content": "If your super is unresponsive, its time to email your landlord. <b>We've drafted an email that you can send, including a list of the issues that need repair.</b>",
-    "key": "emailLandlord",
-    "addIf": ["contactSuper"],
-    "cta": {
-      "type": "modal",
-      "buttonTitle": "Contact",
-      "template": "message-landlord.client.view.html",
-      "controller": "MessageLandlordController"
-    },
-    "followUp": {
-      "title": "What did your landlord say?"
-    }
-  },
-  {
     "title": "Call 311",
     "content": "It seems like some of your issues might be serious. Calling 311 puts the landlord on notice and courts will take violations more seriously. Be careful of illegal retributions! <b>Please write down the tracking number they give you.</b>",
     "key": "contact311",
-    "addIf": ["hasEmergencyIssues", "emailLandlord"],
+    "addIf": ["hasEmergencyIssues"],
+    "type": "recurring",
     "cta": {
       "type": "call",
       "buttonTitle": "Call",
@@ -87,6 +60,7 @@
     "content": "If your building manager is unresponsive, call the NYCHA Help Center (open 24/7) and describe your situation, including what you've already done. <b>Please write down the tracking number they give you.</b>",
     "key": "contactNYCHA",
     "addIf": ["isNYCHA"],
+    "type": "recurring",
     "cta": {
       "type": "call",
       "buttonTitle": "Call",
@@ -103,10 +77,11 @@
     }
   },
   {
-    "title": "Call Legal Services",
+    "title": "Call Housing Court Answers",
     "content": "Housing Court Answers is a great resource to go for information about legal issues. Telephone assistance is from 9 am to 5 pm, Tuesday through Thursday",
     "key": "contactLegalServices",
-    "addIf": ["emailLandlord", "contactHarassment"],
+    "addIf": ["sendLetter", "contact311"],
+    "type": "legal",
     "cta": {
       "type": "call",
       "buttonTitle": "Call",
@@ -117,10 +92,11 @@
     }
   },
   {
-    "title": "Call Hotline",
+    "title": "Call the MetCouncil Hotline",
     "content": "The MetCouncil provides a free tenants’ rights telephone hotline that can give brief answers to your rights as a tenant.",
     "key": "callHotline",
     "addIf": ["initial"],
+    "type": "recurring",
     "cta": {
       "type": "call",
       "buttonTitle": "Call",
@@ -131,18 +107,17 @@
     }
   },
   {
-    "title": "Send Letter of Complaint",
-    "content": "Before you can go to Housing Court, you need to send an official letter of complaint to your landlord describing your case. <b>We've drafted a letter that you can send, including a list of the issues that need repair.</b>",
+    "title": "Mail an Official Letter of Complaint",
+    "content": "Before you can go to Housing Court, you need to send an official letter of complaint to your landlord describing your case. <b>We've drafted a letter that you can send, including a list of the issues that need repair.</b><span ng-if='!userCompletedDetails()'><br /><br />Make sure to <b>Add Issue Details</b> (located above) first to provide the most detailed information!</span>",
     "key": "sendLetter",
-    "addIf": ["contact311", "emailLandlord"],
+    "addIf": ["initial"],
+    "type": "once",
+    "isFollowUp": false,
     "cta": {
       "type": "modal",
       "buttonTitle": "Create Letter",
       "template": "complaint-letter.client.view.html",
       "controller": "ComplaintLetterController"
-    },
-    "followUp": {
-      "title": "Have you heard back about the letter yet?"
     }
   },
   {
@@ -150,6 +125,7 @@
     "content": "In order to seek a rent reduction for your <b>rent-stabilized apartment</b>, you must submit a formal complaint to DHCR. Use your <b>Your Case</b> to fill this form out!",
     "key": "decreasedServices",
     "addIf": ["getRentalHistory"],
+    "type": "once",
     "cta": {
       "type": "link",
       "buttonTitle": "View form",
@@ -164,6 +140,7 @@
     "content": "HP Actions are summary proceedings that offer quick and cheap resolution to repair issues, and legal recourse if your landlord doesn't comply. <b>You must go to your borough’s Housing Court to file the HP Action.</b>",
     "key": "HPAction",
     "addIf": ["sendLetter"],
+    "type": "legal",
     "cta": {
       "type": "link",
       "buttonTitle": "Get info",

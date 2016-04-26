@@ -5,7 +5,7 @@
     </h3>
   </div>
   <div class="panel-body" data-ng-if="!action.isFollowUp">
-    <div class="panel-content" data-ng-bind-html="filterContentHTML()"></div>
+    <div class="panel-content" data-ng-bind-html="filterContentHTML()" compile-template></div>
     <div class="row">
       <div class="col-xs-6">
         <a  class="btn btn-default btn-block pull-left"
@@ -39,6 +39,7 @@
   </div>
   <div class="panel-body" data-ng-if="action.isFollowUp">
     <div class="panel-content">
+      <p ng-bind-html="newActivity.successResponse"></p>
       <form class="resolve-action-form" novalidate>
           <div class="form-group">
               <label class="control-label" for="title">Date of {{ action.cta.buttonTitle }}</label>

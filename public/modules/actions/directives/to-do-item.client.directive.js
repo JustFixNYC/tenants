@@ -1,13 +1,15 @@
 'use strict';
 
 angular.module('actions')
-  .directive('toDoItem', ['$rootScope', '$modal', '$sce', '$timeout', 'Activity', 'Actions',
-    function ($rootScope, $modal, $sce, $timeout, Activity, Actions) {
+  .directive('toDoItem', ['$rootScope', '$modal', '$sce', '$compile', '$timeout', 'Activity', 'Actions',
+    function ($rootScope, $modal, $sce, $compile, $timeout, Activity, Actions) {
     return {
       restrict: 'E',
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
       controller: function($scope, $element, $attrs) {
-        $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
+        $scope.filterContentHTML = function() {
+          return $sce.trustAsHtml($scope.action.content);
+        };
         $scope.filterButtonTitleHTML = function() { return $sce.trustAsHtml($scope.action.cta.buttonTitle); };
         $scope.closeErrorAlert = true;
       },
@@ -43,6 +45,24 @@ angular.module('actions')
             scope.newActivity.fields.push({ title: field.title });
           });
         }
+
+        var getSection = function(type) {
+          switch(type) {
+            case 'once':
+              return scope.onceActions;
+              break;
+            case 'recurring':
+              return scope.recurringActions;
+              break;
+            case 'legal':
+              return scope.legalActions;
+              break;
+            default:
+              console.error('this shouldn\'t happen!');
+              return;
+              break;
+          }
+        };
 
         scope.isModal = function() {
           switch(scope.action.cta.type) {
@@ -81,7 +101,9 @@ angular.module('actions')
 
           modalInstance.result.then(function (newActivity) {
             scope.newActivity = newActivity;
+            // this should check for isFollowUp (or should is be hasFollowUp)
             if(scope.action.cta.type !== 'initialContent') scope.triggerFollowUp();
+            // if(scope.action.isFollowUp && scope.action.isFollowUp) scope.triggerFollowUp();
             else scope.createActivity();
           }, function () {
             // modal cancelled
@@ -102,7 +124,8 @@ angular.module('actions')
 
         scope.closeAlert = function() {
           scope.action.closeAlert = true;
-          scope.actions.splice(scope.$index,1);
+          var section = getSection(scope.action.type);
+          section.splice(scope.$index,1);
         };
 
         scope.createActivity = function() {
@@ -129,11 +152,11 @@ angular.module('actions')
               {key: scope.newActivity.key},
               function() {
                 newActions.forEach(function (action) {
-                  scope.actions.splice(++idx, 0, action);
+                  var section = getSection(action.type);
+                  section.push(action);
+                  // scope.actions.splice(++idx, 0, action);
                 });
               });
-
-          //
 
           }, function(errorResponse) {
             $rootScope.loading = false;

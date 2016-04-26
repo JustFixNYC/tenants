@@ -1,12 +1,13 @@
 @mixin panel-title {
-  font-size: 22px;
+  font-size: 18px;
   color: #434A54;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1.3;
 }
 
 .actions-container {
 
+  @include transition-duration(.25s);
 
   .btn-block {
     max-width: 300px;
@@ -32,6 +33,10 @@
 
 
 .action-panel {
+  //
+  // max-width: 768px;
+  // margin-left: auto;
+  // margin-right: auto;
 
   .panel-title {
     @include panel-title;

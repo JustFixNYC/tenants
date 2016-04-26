@@ -67,12 +67,25 @@ body {
   h2 {
     @include container-fixed();
     margin: 0;
-    font-weight: 600;
+    font-weight: 400;
     font-size: 16px;
     color: #FFFFFF;
     letter-spacing: 1px;
-    text-transform: uppercase;
   }
+
+  &.bg-danger {
+    background-color: $justfix-red;
+  }
+
+  // @media (min-width: $screen-sm-min) {
+  //   background-color: transparent;
+  //   border-bottom: 2px solid $mediumgray-light;
+  //
+  //   h2 {
+  //     color: $darkgray-dark;
+  //   }
+  //
+  // }
 
 }
 

@@ -8,7 +8,6 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
   		var deferred = $q.defer();
     	var user = Authentication.user;
-    	console.log(user);
 
   		// This block assembles our issues list PhantomJS
   		var assembledObject = {
@@ -26,7 +25,7 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 			assembledObject.tenantInfo = {
   			'phone': user.phone,
   			'name': user.fullName,
-  			'address': user.address + 
+  			'address': user.address +
   								' <br> ' + user.borough +
   								' <br> New York  ' + user.zip // This needs to be replaced, talk to dan ASAP
 	  	};
@@ -55,7 +54,7 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
           });
 
           if(activity) {
-            tempObject.startDate = $filter('date')(activity.date, 'longDate'); 
+            tempObject.startDate = $filter('date')(activity.date, 'longDate');
 
             if(activity.description) {
             	tempObject.description = activity.description;
@@ -69,6 +68,8 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
           issuesCount++;
         }
       }
+
+      console.log(assembledObject);
 
 	  	$http({
 	  		method: 'POST',

@@ -37,27 +37,26 @@ body {
   padding: 1em 0;
   margin-bottom: 15px;
   background-color: #0E6594; }
-  .section-header:before, .section-header:after {
-    content: " ";
+  .section-header::after {
+    clear: both;
+    content: "";
     display: table; }
-  .section-header:after {
-    clear: both; }
   .section-header h2 {
     margin-right: auto;
     margin-left: auto;
     padding-left: 15px;
     padding-right: 15px;
     margin: 0;
-    font-weight: 600;
+    font-weight: 400;
     font-size: 16px;
     color: #FFFFFF;
-    letter-spacing: 1px;
-    text-transform: uppercase; }
-    .section-header h2:before, .section-header h2:after {
-      content: " ";
+    letter-spacing: 1px; }
+    .section-header h2::after {
+      clear: both;
+      content: "";
       display: table; }
-    .section-header h2:after {
-      clear: both; }
+  .section-header.bg-danger {
+    background-color: #E85D5D; }
 
 .btn:not(.btn-sm), .form-control {
   padding-top: 10px;
@@ -307,12 +306,16 @@ header {
     top: 50%;
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
     transform: translateY(-50%); }
   #header .header-brand {
     position: absolute;
     left: 50%;
     -webkit-transform: translateX(-50%);
     -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
     transform: translateX(-50%);
     color: #454545;
     height: 100%; }
@@ -350,6 +353,8 @@ header {
       position: static;
       -webkit-transform: none;
       -moz-transform: none;
+      -ms-transform: none;
+      -o-transform: none;
       transform: none; }
 
 #header-wrapper.light-bg .header-brand > .logo > svg * {
@@ -603,11 +608,10 @@ header {
   margin-left: -15px;
   margin-right: -15px;
   border-bottom: 2px solid #E6E9ED; }
-  #dashboard .grid:before, #dashboard .grid:after {
-    content: " ";
+  #dashboard .grid::after {
+    clear: both;
+    content: "";
     display: table; }
-  #dashboard .grid:after {
-    clear: both; }
   #dashboard .grid a {
     display: block;
     padding: 1.5em;
@@ -728,25 +732,29 @@ header {
     .create-issue-checklist .panel-body .area-done-button .btn {
       margin: 10px auto; }
 
-.actions-container .btn-block {
-  max-width: 300px;
-  margin: 0 auto; }
-  .actions-container .btn-block.initial {
-    float: none !important; }
+.actions-container {
+  -webkit-transition-duration: 0.25s;
+  -moz-transition-duration: 0.25s;
+  transition-duration: 0.25s; }
+  .actions-container .btn-block {
+    max-width: 300px;
+    margin: 0 auto; }
+    .actions-container .btn-block.initial {
+      float: none !important; }
 
 .panel-content {
   margin-bottom: 15px; }
 
 .status-panel .panel-content {
-  font-size: 22px;
+  font-size: 18px;
   color: #434A54;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1.3; }
 
 .action-panel .panel-title {
-  font-size: 22px;
+  font-size: 18px;
   color: #434A54;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1.3;
   padding-bottom: 10px;
   border-bottom: 1px solid #eee; }
@@ -869,6 +877,8 @@ header {
     z-index: 5;
     -webkit-transform: translateZ(0);
     -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
     transform: translateZ(0); }
     .status-update .close:focus {
       outline: none; }

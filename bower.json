@@ -25,7 +25,8 @@
     "angular-translate-handler-log": "~2.7.1",
     "angular-dynamic-locale": "~0.1.27",
     "angular-i18n": "1.4.7",
-    "ui-select": "angular-ui-select#~0.13.2"
+    "ui-select": "angular-ui-select#~0.13.2",
+    "bourbon": "~4.2.7"
   },
   "resolutions": {
     "angular-bootstrap": "^0.13.3",
