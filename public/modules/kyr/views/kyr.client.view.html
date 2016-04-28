@@ -17,7 +17,7 @@
 		</div>
   </div>
   <div class="kyr-container">
-		<a class="kyr-item" ng-repeat="kyr in kyrResponse">
+		<a class="kyr-item" ng-repeat="kyr in kyrResponse track by $index" ng-href="/#!/kyr/{{$index + 1}}">
 			{{kyr.title}} <span class="glyphicon glyphicon-menu-right pull-right"></span>
 		</a>
   </div>

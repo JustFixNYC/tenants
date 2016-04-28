@@ -984,6 +984,21 @@ header {
   .kyr-container .kyr-item .pull-right {
     margin-top: 2px; }
 
+.kyr-detail .learn-more-block {
+  margin: 1.5em 0 1.5em 0; }
+  .kyr-detail .learn-more-block a {
+    display: block;
+    text-align: left;
+    text-decoration: underline;
+    color: #5cb85c; }
+.kyr-detail .btn-wrap {
+  margin: 30px auto 50px auto;
+  width: 100%;
+  text-align: center;
+  max-width: 500px; }
+  .kyr-detail .btn-wrap .btn {
+    width: 100%; }
+
 .status-update {
   position: relative;
   background-color: #fff;
