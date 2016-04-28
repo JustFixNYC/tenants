@@ -92,6 +92,12 @@ angular.module('problems').controller('OnboardingProblemsController', ['$scope',
 	$scope.open = function(problem) {
 
 		$scope.currentProblem = problem;
+			
+		$scope.other = {
+			key: 'other',
+			value: '',
+			emergency: false	
+		};
 
 		// Well, never let it be said I tried
 		if(user.problems.length){
@@ -110,20 +116,10 @@ angular.module('problems').controller('OnboardingProblemsController', ['$scope',
 			// Find our other option, put it into the scope, and remove it (We're saving it later if it exists!)
 			for (var i = 0; i < issuesForLoop.length; i++) {
 				if(issuesForLoop[i].key == "other") {
-					$scope.other = {
-						key: 'other',
-						value: issuesForLoop[i].value,
-						emergency: false	
-					};
+					$scope.other.value = issuesForLoop[i].value;
 
 					issuesForLoop.splice(i, 1);
-				} else {
-					$scope.other = {
-						key: 'other',
-						value: '',
-						emergency: false	
-					};
-				}
+				} 
 			}
 		}
 
@@ -138,7 +134,6 @@ angular.module('problems').controller('OnboardingProblemsController', ['$scope',
 	$scope.save = function (){
 
 		// Handle 'other' Issue
-		console.log($scope);
 		if($scope.other.value !== ''){
 
 			$scope.tempProblems[0].issues.push({
