@@ -33,19 +33,6 @@ angular.module('onboarding').directive('problemIssueItem', ['Authentication', fu
 				// Show/hide
 				scope.addMore = !scope.addMore;
 
-				// Boy oh boy this should be reconsidered
-				if(!scope.other) {
-					scope.other = {
-						key: 'other',
-						value: '',
-						emergency: false
-					};
-
-    			console.log(scope);
-				} else {
-					console.log(scope.other);
-				}
-
 			}
 
 			scope.removeIssue = function(problem, issue) {
