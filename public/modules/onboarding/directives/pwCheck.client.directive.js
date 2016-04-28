@@ -1,6 +1,7 @@
 angular.module('onboarding')
   .directive('pwCheck', [function () {
     return {
+    	require: 'ngModel',
       link: function (scope, elem, attrs, ctrl) {
         var firstPassword = attrs.pwCheck;
         elem.on('keyup', function () {
