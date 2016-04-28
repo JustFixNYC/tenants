@@ -13,6 +13,5 @@ angular.module('kyr').controller('KyrDetailController', ['$scope', '$stateParams
   				return $scope.canExpand = true;
   			}
   		}
-  		console.log($scope.kyr);
   	});
   }]);

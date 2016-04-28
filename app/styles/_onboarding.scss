@@ -27,10 +27,6 @@ $grey: #E0E0E0;
 
 	.access-code-form {
 
-		.input-code {
-			padding: .5em 1em;
-		}
-
 		.btn {
 			margin: 2em 0;
 			padding: .75em 2.25em;
@@ -167,15 +163,21 @@ $grey: #E0E0E0;
 }
 
 .onboarding-user-create {
+	h3 {
+		margin-top: 0.5em;
+		font-size: 2em;
+		font-weight: 400;
+	}
+
 	text-align: center;
 
 	p {
-		margin: auto;
+		margin: 10px auto;
 		max-width: 500px;
 	}
 
 	form {
-		margin: auto;
+		margin: 10px auto;
 		max-width: 500px;
 
 		.form-group {
@@ -184,10 +186,6 @@ $grey: #E0E0E0;
 			&.apt {
 				width: 50%;
 			}
-		}
-		input {
-			padding: 0.5em 1em;
-			width: 100%;
 		}
 	}
 

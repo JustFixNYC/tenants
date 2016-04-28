@@ -808,8 +808,6 @@ header {
     margin: 2em 0; }
   .onboarding-code-entry label {
     text-align: left; }
-  .onboarding-code-entry .access-code-form .input-code {
-    padding: .5em 1em; }
   .onboarding-code-entry .access-code-form .btn {
     margin: 2em 0;
     padding: .75em 2.25em; }
@@ -903,19 +901,20 @@ header {
 
 .onboarding-user-create {
   text-align: center; }
+  .onboarding-user-create h3 {
+    margin-top: 0.5em;
+    font-size: 2em;
+    font-weight: 400; }
   .onboarding-user-create p {
-    margin: auto;
+    margin: 10px auto;
     max-width: 500px; }
   .onboarding-user-create form {
-    margin: auto;
+    margin: 10px auto;
     max-width: 500px; }
     .onboarding-user-create form .form-group {
       text-align: left; }
       .onboarding-user-create form .form-group.apt {
         width: 50%; }
-    .onboarding-user-create form input {
-      padding: 0.5em 1em;
-      width: 100%; }
   .onboarding-user-create .borough,
   .onboarding-user-create .nycha {
     margin: 0.25em;
@@ -971,6 +970,10 @@ header {
     margin: 3em 0;
     min-width: 100px; }
 
+.kyr h3 {
+  margin-top: 0.5em;
+  font-size: 2em;
+  font-weight: 400; }
 .kyr .legal-disclaimer-body .btn-wrap {
   margin-top: 0.5em;
   text-align: center; }
@@ -991,6 +994,10 @@ header {
   .kyr-container .kyr-item .pull-right {
     margin-top: 2px; }
 
+.kyr-detail h3 {
+  margin-top: 0.5em;
+  font-size: 2em;
+  font-weight: 400; }
 .kyr-detail .learn-more-block {
   margin: 1.5em 0 1.5em 0; }
   .kyr-detail .learn-more-block a {
