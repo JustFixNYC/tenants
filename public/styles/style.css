@@ -964,6 +964,26 @@ header {
     margin: 3em 0;
     min-width: 100px; }
 
+.kyr .legal-disclaimer-body .btn-wrap {
+  margin-top: 0.5em;
+  text-align: center; }
+.kyr .legal-disclaimer-trigger {
+  margin-bottom: 1em;
+  cursor: pointer; }
+
+.kyr-container .kyr-item {
+  display: block;
+  background: #fff;
+  padding: 10px 15px;
+  border: 1px solid #eeeeee;
+  border-top: none;
+  color: #555555;
+  cursor: pointer; }
+  .kyr-container .kyr-item:first-child {
+    border-top: 1px solid #eeeeee; }
+  .kyr-container .kyr-item .pull-right {
+    margin-top: 2px; }
+
 .status-update {
   position: relative;
   background-color: #fff;

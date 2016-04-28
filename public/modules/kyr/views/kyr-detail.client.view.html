@@ -1,0 +1,11 @@
+<section class="kyr-detail container">
+  <h1>{{kyr.title}}</h1>
+  <p><i>{{kyr.excerpt}}</i></p>
+  <div class="section" ng-repeat="section in kyr.sections" ng-class="{hidden: section.readMore && expand == false}">
+		<h3 ng-if="sections.title != ''">{{section.title}}</h3>
+		<p ng-bind-html="section.content | newlines"></p>
+  </div>
+  <div class="btn-wrap" ng-show="canExpand">
+		<button class="btn btn-default" ng-click="expand = !expand">Read More</button>
+  </div>
+</section>

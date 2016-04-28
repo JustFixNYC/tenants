@@ -1,0 +1,57 @@
+[
+	{
+		"title": "Am I Rent Stabilized?",
+		"excerpt": "Rent stabilization is a set of laws that determine the amount of rent a tenant may be charged, the services that must provided, and registration requirements that the landlord must fulfill.",
+		"sections": [
+			{
+				"title": "",
+				"content": "The main benefits of rent-stabilization for tenants are:\\nThe right to renew your lease and be protected against arbitrary evictions (you can only be evicted on a limited number of grounds.)\\nProtection from steep and unexpected rent increases.\\nThe right to good services & repairs, with recourse if they aren't provided\\nThe right to pass on your apartment to certain family members who live with you for a period of time prior to you moving out or dying"
+			},
+			{
+				"title": "Am I rent stabilized?",
+				"content": "As a general rule, apartments in buildings with six or more residential rental units that were built prior to January 1, 1974 are subject to the Rent Stabilization Law and the Emergency Tenant Protection Act. However, many units that appear to be covered are sometimes not.\\nIf you are unsure about your lease type, you can request your rental history from the New York State Division of Housing & Community Renewal (DHCR). Email through JustFix.nyc or visit DHCR’s website (links to View form).",
+				"block": "View example form of indicators"
+			},
+			{
+				"title": "Protections",
+				"content": "With some limited exceptions, if you are a rent stabilized tenant, you are entitled to renew your lease for one or two years (the choice is yours) on the same terms and conditions as your original lease - except for lawful increases in the rent.  \\nThe maximum amount that the rent for your apartment can increase when you renew your lease is set each year by the New York City Rent Guidelines Board, with somewhat higher increases for a two year renewals than for one-year renewals. \\nYour landlord is required to offer a lease renewal between 90 and 150 days before your lease expires, and you have 60 days to respond. If your landlord does not offer you a renewal lease, this does not put you at risk of eviction. Whether or not your landlord offers you a renewal lease, your rights as a rent-stabilized tenant remain the same. The old lease and rent amount remain in effect until a renewal lease is offered and takes effect.",
+				"readMore": "true"
+			},
+			{
+				"title": "What if I’m not rent-stabilized?",
+				"content": "If you live in a “market rate apartment”, there’s unfortunately not much you can do to prevent your landlord from raising your rent. You can try to negotiate with them.\\nYou should not be afraid to stand up to an abusive or negligent landlord. Contact 311 to file any housing related complaints anonymously. \\nBe sure to check out the Find Help page on this site to search for resources available to you.",
+				"readMore": "true"
+			}
+		],
+		"learnMore": [
+			{
+				"title": "MetCouncil on Housing",
+				"link": "http://metcouncilonhousing.org/help_and_answers/rent_stabilized_lease_renewals"
+			},
+			{
+				"title": "Am I rent Stabilized?",
+				"link": "https://amirentstabilized.com/index.html"
+			},
+			{
+				"title": "DHCR",
+				"link": "http://www.nyshcr.org/Forms/Rent/"
+			}
+		]
+	},
+	{
+		"title": "Representing Yourself",
+		"excerpt": "You have a right to represent yourself in all court cases. People who represent themselves in court are called “Pro Se” or “Self-Represented” litigants.",
+		"sections": [
+			{
+				"title": "",
+				"content": "Representing yourself in a legal proceeding is not an easy decision. Before you decide to represent yourself, ask yourself whether it wouldn’t be better use of your time and money to consult with or hire an attorney who knows the law and can give you advice about what to do, how to do it, and what your chances are of getting what you want.\\nCourt staff can provide valuable information to you. But, there are limitations on what information can be given. The court can’t give you legal advice, so you may be interested in Finding Legal Assistance. "
+			}
+		],
+		"learnMore": [
+			{
+				"title": "NYC Small Claims Court",
+				"link": "https://www.nycourts.gov/courts/nyc/smallclaims/represent2.shtml"
+			}
+		]
+	}
+]

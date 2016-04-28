@@ -1,0 +1,24 @@
+<section class="container kyr">
+  <h1>Know your Rights</h1>
+  <p>It's important to know your rights as a tenant. Here are a few common topics, and resources to learn more</p>
+  <div class="legal-disclaimer-trigger pull-right">
+		<a class="text" ng-click="showDisclaimer = !showDisclaimer">
+			<span ng-show="!showDisclaimer" class="glyphicon glyphicon-plus"></span>
+			<span ng-show="showDisclaimer" class="glyphicon glyphicon-minus"></span> 
+			 Legal Disclaimer
+		</a>
+  </div>
+  <div class="clearfix"></div>
+  <div ng-show="showDisclaimer == true" class="alert alert-warning legal-disclaimer-body">
+		<p><b>The information on this website does not constitute legal advice.</b> Must not be used as a subsitute for the advice of a lawyer qualified to give  advice on legal issues pertaining to housing.</p>
+		<p> Pertains only to <b>tenants living in New York City. </b> Many of your <b>rights depend on the type of housing</b> you live in or your type of tenancy. You may be subject to different laws and have different sets of rights than even neighbors in your own building. Learn which rights and responsibilities apply to you.</p>
+		<div class="btn-wrap">
+			<button class="btn btn-warning" ng-click="showDisclaimer = false">Got it!</button>
+		</div>
+  </div>
+  <div class="kyr-container">
+		<a class="kyr-item" ng-repeat="kyr in kyrResponse">
+			{{kyr.title}} <span class="glyphicon glyphicon-menu-right pull-right"></span>
+		</a>
+  </div>
+</section>
