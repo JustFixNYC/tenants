@@ -8,7 +8,6 @@ angular.module('kyr').controller('KyrController', ['kyrService', '$scope',
 
 		kyrService.fetch().then(function(data){
 			$scope.kyrResponse = data;
-			console.log($scope.kyrResponse);
 		}, function(err) {
 			console.log(err);
 		});
