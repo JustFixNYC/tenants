@@ -2,3 +2,7 @@
 @import "bootstrap/variables";
 @import "bootstrap/mixins";
 @import "bootflat/global";
+
+// bower:scss
+@import "../../public/lib/bourbon/app/assets/stylesheets/_bourbon.scss";
+// endbower

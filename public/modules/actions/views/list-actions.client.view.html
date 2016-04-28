@@ -3,14 +3,35 @@
         <h1>Take Action</h1>
         <p>Here are some actions you can take to build out your case. You may have tried a few of these already - make sure select “I’ve tried this” and tell us what happened.</p>
     </div>
-    <div class="section-header">
-      <h2>Build Your Case</h2>
+    <div class="section-header" ng-click="onceActionsCollapsed = !onceActionsCollapsed">
+      <h2>Build Your Case
+        <span class="pull-right glyphicon" ng-class="onceActionsCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span>
+      </h2>
     </div>
-    <div class="actions-container">
-      <status-update data-ng-if="showStatusUpdates()"></status-update>
-      <to-do-item data-ng-repeat="action in actions"></to-do-item>
+    <div class="actions-container" collapse="onceActionsCollapsed">
+      <to-do-item data-ng-repeat="action in onceActions"></to-do-item>
     </div>
-    <div class="alert alert-warning text-center" data-ng-show="actions.length === 0">
+    <div class="section-header" ng-click="recurringActionsCollapsed = !recurringActionsCollapsed">
+      <h2>Outreach
+        <span class="pull-right glyphicon" ng-class="recurringActionsCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span>
+      </h2>
+    </div>
+    <div class="actions-container" collapse="recurringActionsCollapsed">
+      <to-do-item data-ng-repeat="action in recurringActions"></to-do-item>
+    </div>
+    <div class="section-header bg-danger" ng-click="legalActionsCollapsed = !egalActionsCollapsed">
+      <h2>Legal Actions
+        <span class="pull-right glyphicon" ng-class="legalActionsCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span>
+      </h2>
+    </div>
+    <div class="actions-container" collapse="legalActionsCollapsed">
+      <to-do-item data-ng-repeat="action in legalActions"></to-do-item>
+    </div>
+
+
+
+
+    <div class="alert alert-warning text-center" data-ng-show="onceActions.length === 0">
       There's nothing to do at the moment, apologies. Check out what is on <a ui-sref="listActivity">Your Case</a>?
     </div>
 </section>

@@ -25,6 +25,15 @@ exports.update = function(req, res) {
 		user = _.extend(user, req.body);
 		user.updated = Date.now();
 
+		// check issues for emergency ones
+	  for(var area in user.issues) {
+	    user.issues[area].forEach(function (i) {
+	      if(i.emergency && user.actionFlags.indexOf('hasEmergencyIssues') === -1) {
+	        user.actionFlags.push('hasEmergencyIssues');
+	      }
+	    });
+	  }
+
 		user.save(function(err) {
 			if (err) {
 				return res.status(400).send({
