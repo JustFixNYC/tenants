@@ -1,4 +1,3 @@
-
 <h3>Welcome to<br/>JustFix.nyc!</h3>
 <p>Please enter the access code provided by your advocate so you can gain access to the website</p>
 <div class="error-text alert alert-danger" ng-show="majorError">Whoa, looks like we're having some trouble on our end. Please refresh this page and try again.</div>
@@ -12,3 +11,10 @@
   </div>
 </form>
 <div class="error-text alert alert-danger" ng-show="codeError">Uh oh! There was an error with this code. Please double check the code entered is correct and try again.</div>
+
+<h3>Your Building Advocate</h3>
+<p>Based on the access code you provided, we've connected you to the advocate working with your building. Their contact information will be stored in your account, so you can cannect with them at any time.</p>
+<p class="name">{{referral.name}}</p>
+<p class="org">{{referral.organization}}</p>
+<p class="phone">{{referral.phone}}</p>
+<p class="email">{{referral.email}}</p>
