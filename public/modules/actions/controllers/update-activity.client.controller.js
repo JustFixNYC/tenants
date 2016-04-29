@@ -5,6 +5,9 @@ angular.module('actions').controller('UpdateActivityController', ['$scope', '$fi
   function ($scope, $filter, $modalInstance, newActivity, Issues, close) {
 
   $scope.newActivity = newActivity;
+
+  console.log($scope.newActivity);
+
   $scope.issues = Issues.getUserIssuesByKey($scope.newActivity.key);
   $scope.areas = Issues.getUserAreas().map(function (a) { return $filter('areaTitle')(a) });
 

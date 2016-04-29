@@ -108,14 +108,16 @@ var UserSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  // Saving the user's Letter of Complaint PDF
-  complaintUrl: {
-  	type: String,
-  	default: ''
+  sharing: {
+    enabled: {
+      type: Boolean,
+      default: false
+    },
+    url : {type : String}
   },
   referral: {
     type: Schema.Types.Mixed,
-    default: {}    
+    default: {}
   },
   /* For reset password */
   resetPasswordToken: {

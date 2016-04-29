@@ -1,0 +1,18 @@
+<div data-ng-if="activity.fields.length">
+  <p data-ng-repeat="field in activity.fields"><b>{{field.title}}</b> {{field.value}}</p>
+</div>
+
+{{ activity.description }}
+
+<div class="row thumb-list">
+
+
+    <div data-ng-repeat="photo in activity.photos" class="col-xs-4">
+
+<!-- $parent.$index -->
+        <a ng-click="openLightboxModal(activity.photos, $index)">
+            <img ng-src="{{ activity.photos[$index].thumb }}" alt="{{ activity.key | areaTitle }}" class="img-thumbnail" />
+        </a>
+    </div>
+
+</div>

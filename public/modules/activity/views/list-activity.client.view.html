@@ -1,56 +1,75 @@
-<section data-ng-controller="ActivityController" data-ng-init="list()">
+<section class="activities-container" data-ng-controller="ActivityController" data-ng-init="list()">
     <div class="page-header">
+        <img src="/modules/core/img/sections/history.svg" alt="Case History" />
         <h1>Your Case</h1>
-        <p><em>Share your case with case workers, attorneys, and judges as a way to tell your story. Your case can be found anytime you need it by going to <b style="text-decoration:underline;">JustFix.nyc/{{ authentication.user.phone }}</b> (thats your phone number!)</em></p>
-        <br />
-        <div class="row">
+        <p>Below is a record of all the actions you’ve taken in resolving your housing issues. You can share your case easily via email, or print your case if you need to.</p>
+    </div>
+    <div class="section-header share-section-header" ng-click="shareCollapsed = !shareCollapsed">
+      <h2>Share My Case
+        <span class="pull-right glyphicon" ng-class="shareCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span>
+      </h2>
+    </div>
+    <div class="share-section" collapse="shareCollapsed">
+      <div class="container">
+        <div class="row share-controls">
           <div class="col-xs-6">
-            <a  class="btn btn-primary disabled btn-block pull-left">
+            <a  class="btn btn-success disabled btn-block pull-left">
                 Export PDF
             </a>
           </div>
           <div class="col-xs-6">
-            <button class="btn btn-primary disabled btn-block pull-right">
+            <button class="btn btn-success disabled btn-block pull-right">
                 <!-- <span class="glyphicon glyphicon-ok pull-left" style="padding-top:1px"></span> -->
                 Share Case
             </button>
           </div>
         </div>
-    </div>
-    <div data-ng-if="activities.length" class="activities-container">
-        <div data-ng-repeat="activity in activities | orderBy:'date':true" class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">{{ activity.date | date:'longDate' }}</h3>
-            </div>
-            <div class="panel-body">
 
-                <!-- <p><b>{{ activity.key | areaTitle }} {{ activity.title === 'Text/Photos' ? 'Details' : activity.title }}</b></p> -->
-                <p><b>{{ activity.title }}</b></p>
+        <h2>
+          <span>Enable Public URL:</span>
+          <label class="toggle pull-right" toggle-sharing ng-click="check()">
+            <input type="checkbox">
+            <span class="handle"></span>
+          </label>
+        </h2>
 
-                <div data-ng-if="activity.fields.length">
-                  <p data-ng-repeat="field in activity.fields"><b>{{field.title}}</b> {{field.value}}</p>
-                </div>
-
-                {{ activity.description }}
-
-                <div class="row thumb-list">
-
-
-                    <div data-ng-repeat="photo in activity.photos" class="col-xs-4">
-
-                <!-- $parent.$index -->
-                        <a ng-click="openLightboxModal(activity.photos, $index)">
-                            <img ng-src="{{ activity.photos[$index].thumb }}" alt="{{ activity.key | areaTitle }}" class="img-thumbnail" />
-                        </a>
-                    </div>
-
-                </div>
-
-
-            </div>
+        <div class="alert alert-warning">
+          Your must create a public URL to share this page. The public view only shows your case history - it does not give access to the rest of your account.
         </div>
+
+      </div>  <!-- .container -->
+
+    </div>  <!-- .share-section -->
+
+
+
+    <div class="section-header" ng-click="activityCollapsed = !activityCollapsed">
+      <h2>Case History
+        <span class="pull-right glyphicon" ng-class="activityCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span>
+      </h2>
     </div>
-    <div class="alert alert-warning text-center" data-ng-if="!activities.length">
-    	Nothing has been added to your case yet! <a ui-sref="listActions">Click here</a> to see some things to do.
+    <div collapse="activityCollapsed">
+      <div data-ng-if="activities.length">
+          <div data-ng-repeat="activity in activities | orderBy:'startDate':true" class="panel activity-panel">
+              <div class="panel-heading">
+                  <span>{{ activity.startDate | date:'longDate' }}</span>
+                  <h3>{{ activity.title }}</h3>
+              </div>
+              <div class="panel-body">
+
+                <div ng-include="activityTemplate(activity.key)"></div>
+
+                  <!-- <p><b>{{ activity.key | areaTitle }} {{ activity.title === 'Text/Photos' ? 'Details' : activity.title }}</b></p> -->
+
+
+
+
+              </div>
+          </div>
+      </div>
+      <div class="alert alert-warning text-center" data-ng-if="!activities.length">
+      	Nothing has been added to your case yet! <a ui-sref="listActions">Click here</a> to see some things to do.
+      </div>
     </div>
+
 </section>

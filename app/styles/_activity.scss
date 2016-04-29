@@ -1,5 +1,55 @@
 .activities-container {
 
+  .share-section-header {
+    margin-bottom: 0;
+  }
+
+  .share-section {
+    @include make-row;
+    padding-top: 30px;
+    background-color: #fff;
+
+    .share-controls {
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      margin-top: 20px;
+
+      span {
+        line-height: 28px;
+      }
+    }
+
+    .alert {
+      margin-bottom: 30px;
+    }
+  }
+
+
+
+  .activity-panel {
+    @include make-row();
+
+    .panel-heading {
+
+      padding-top: 15px;
+      padding-bottom: 0;
+
+      span {
+        font-style: italic;
+        font-size: 12px;
+      }
+      h3 {
+        font-size: 14px;
+        margin-top: 10px;
+        margin-bottom: 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+      }
+    }
+  }
+
   .panel-body {
     padding-bottom: 0;
   }
@@ -34,7 +84,7 @@
 
 .lightbox-image-container {
   top: 40px;
-} 
+}
 
 .upload-thumb {
   clip: rect(0px,60px,200px,0px);

@@ -51,6 +51,7 @@ var getAreaActions = function(user) {
 
         areaActions.push({
           title: areaTitle(area) + ' Issues',
+          activityTitle: 'Added Photos of ' + areaTitle(area) + ' Issues',
           content: 'Add some initial information about your <b>' + areaTitle(area) + '</b> issues. This will help to provide evidence for the issues you selected.',
           key: area,
           addIf: ['initial'],

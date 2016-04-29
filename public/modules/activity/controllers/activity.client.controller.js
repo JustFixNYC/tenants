@@ -14,6 +14,11 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
 
     $scope.list = function() {
       $scope.activities = Activity.query();
+      console.log($scope.activities);
+    };
+
+    $scope.activityTemplate = function(key) {
+      return '/modules/activity/partials/default-activity.client.view.html';
     };
 
     $scope.openLightboxModal = function (photos, index) {

@@ -100,7 +100,7 @@ var create = function(req, res) {
 
     var files = req.files['photos'];
 
-    // console.log('files', files);
+    console.log('files', files);
 
     // init photos queue
     var uploadQueue = [];
