@@ -31,7 +31,7 @@ angular.module('actions').controller('UpdateActivityController', ['$scope', '$fi
   };
 
   $scope.done = function () {
-    $modalInstance.close($scope.newActivity);
+    $modalInstance.close({ newActivity: $scope.newActivity });
   };
 
   $scope.cancel = function () {

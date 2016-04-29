@@ -99,12 +99,14 @@ angular.module('actions')
             }
           });
 
-          modalInstance.result.then(function (newActivity) {
-            scope.newActivity = newActivity;
+          modalInstance.result.then(function (result) {
+            scope.newActivity = result.newActivity;
+
             // this should check for isFollowUp (or should is be hasFollowUp)
             if(scope.action.hasFollowUp) scope.triggerFollowUp();
             // if(scope.action.isFollowUp && scope.action.isFollowUp) scope.triggerFollowUp();
-            else scope.createActivity();
+            else if(!result.modalError) scope.createActivity();
+      
           }, function () {
             // modal cancelled
           });

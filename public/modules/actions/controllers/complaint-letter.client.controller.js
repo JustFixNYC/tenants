@@ -46,6 +46,6 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 	  };
 
 		$scope.done = function() {
-			$modalInstance.close($scope.newActivity);
+			$modalInstance.close({ newActivity: $scope.newActivity, modalError: $scope.status.error });
 		};
 	}]);

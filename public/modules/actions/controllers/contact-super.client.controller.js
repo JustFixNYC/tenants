@@ -41,8 +41,8 @@ angular.module('actions').controller('ContactSuperController', ['$scope', '$moda
     var href = '';
     if(type === 'sms') href = generateURL();
     else if(type === 'tel' && $scope.superphone) href = 'tel:' + $scope.superphone;
-    
-    $modalInstance.close($scope.newActivity);
+
+    $modalInstance.close({ newActivity: $scope.newActivity });
     if(href.length) window.location.href = href;
   };
 
