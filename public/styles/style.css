@@ -4,6 +4,19 @@ html, body {
 body {
   background-color: #F6F6F6; }
 
+a.text-link {
+  color: #8CC152;
+  font-size: 16px;
+  text-decoration: underline; }
+  a.text-link:active, a.text-link:focus, a.text-link:hover {
+    color: #A0D468; }
+
+.text-success {
+  color: #8CC152 !important; }
+
+.text-danger {
+  color: #DA4453 !important; }
+
 .content section.container {
   min-height: 300px; }
 
@@ -71,29 +84,6 @@ body {
 .btn .glyphicon {
   padding-top: 2px;
   padding-right: 5px; }
-
-.modal-title {
-  line-height: 1.1;
-  font-weight: 400; }
-
-.modal-body .modal-issue-list {
-  padding-left: 30px;
-  margin-bottom: 0; }
-.modal-body .btn-group {
-  width: 100%; }
-  .modal-body .btn-group .btn {
-    text-align: left; }
-.modal-body .ui-select-bootstrap .dropdown-menu li a {
-  color: #fff; }
-  .modal-body .ui-select-bootstrap .dropdown-menu li a:hover, .modal-body .ui-select-bootstrap .dropdown-menu li a:focus {
-    color: #262626; }
-.modal-body .ui-select-toggle {
-  min-height: 40px; }
-.modal-body img {
-  margin: 0 auto 10px auto;
-  display: block;
-  max-height: 250px;
-  max-width: 100%; }
 
 .img-thumbnail {
   border-radius: 0;
@@ -164,6 +154,9 @@ loading.ng-enter-active, loading.ng-leave {
   border-radius: 100%;
   -webkit-animation: sk-circleFadeDelay 1.2s infinite ease-in-out both;
   animation: sk-circleFadeDelay 1.2s infinite ease-in-out both; }
+
+.sk-fading-circle.circle-dark .sk-circle:before {
+  background-color: #434A54; }
 
 .sk-fading-circle .sk-circle2 {
   -webkit-transform: rotate(30deg);
@@ -278,6 +271,38 @@ loading.ng-enter-active, loading.ng-leave {
     opacity: 0; }
   40% {
     opacity: 1; } }
+.modal-title {
+  font-size: 18px;
+  color: #434A54;
+  font-weight: 600;
+  line-height: 1.3;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee; }
+  .modal-title .glyphicon {
+    top: 3px;
+    font-size: 20px; }
+
+.modal-body {
+  overflow: hidden; }
+  .modal-body .modal-issue-list {
+    padding-left: 30px;
+    margin-bottom: 0; }
+  .modal-body .btn-group {
+    width: 100%; }
+    .modal-body .btn-group .btn {
+      text-align: left; }
+  .modal-body .ui-select-bootstrap .dropdown-menu li a {
+    color: #fff; }
+    .modal-body .ui-select-bootstrap .dropdown-menu li a:hover, .modal-body .ui-select-bootstrap .dropdown-menu li a:focus {
+      color: #262626; }
+  .modal-body .ui-select-toggle {
+    min-height: 40px; }
+  .modal-body img {
+    margin: 0 auto 10px auto;
+    display: block;
+    max-height: 250px;
+    max-width: 100%; }
+
 header {
   z-index: 1000;
   border: 1px solid transparent; }
@@ -768,6 +793,62 @@ header {
 
 .update-activity-form .btn-mult {
   margin: 2px; }
+
+.letter-steps {
+  width: 100%;
+  position: relative;
+  overflow: scroll;
+  -webkit-transition: height 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  -moz-transition: height 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: height 400ms cubic-bezier(0.165, 0.84, 0.44, 1); }
+
+.letter-step {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-height: 150px; }
+  .letter-step.ng-enter, .letter-step.ng-leave {
+    -webkit-transition: all 300ms cubic-bezier(0.645, 0.045, 0.355, 1);
+    -moz-transition: all 300ms cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: all 300ms cubic-bezier(0.645, 0.045, 0.355, 1); }
+  .letter-step.ng-enter {
+    -webkit-transform: translateX(100%);
+    -moz-transform: translateX(100%);
+    -ms-transform: translateX(100%);
+    -o-transform: translateX(100%);
+    transform: translateX(100%); }
+  .letter-step.ng-enter.ng-enter-active {
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0); }
+  .letter-step.ng-leave {
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0); }
+  .letter-step.ng-leave.ng-leave-active {
+    -webkit-transform: translateX(-100%);
+    -moz-transform: translateX(-100%);
+    -ms-transform: translateX(-100%);
+    -o-transform: translateX(-100%);
+    transform: translateX(-100%); }
+
+.letter-step-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); }
+  .letter-step-loading p {
+    margin-bottom: 0; }
+
+.letter-step-created a.text-link {
+  margin-left: 10px; }
 
 .activities-container .panel-body {
   padding-bottom: 0; }

@@ -61,7 +61,8 @@ var getAreaActions = function(user) {
             template: 'update-activity.client.view.html',
             controller: 'UpdateActivityController'
           },
-          isFollowUp: false
+          isFollowUp: false,
+          hasFollowUp: false
         });
 
       }
@@ -90,6 +91,9 @@ var generateActions = function(user) {
     // prevents actions from being listed after completed
     // [TODO] check against time since completion
     var reject = user.actionFlags.indexOf(action.key) !== -1 && action.type == 'once';
+
+    if(action.followUp) action.hasFollowUp = true;
+    else action.hasFollowUp = false;
 
     // checks if action is a followup or not
     if(user.followUpFlags.indexOf(action.key) !== -1) action.isFollowUp = true;

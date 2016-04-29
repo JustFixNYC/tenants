@@ -20,7 +20,7 @@ angular.module('actions')
 
         //console.log(scope);
 
-        //console.log(scope.action);
+        // console.log(scope.action);
 
         // used to hide the completed alert
         // scope.status = {
@@ -102,7 +102,7 @@ angular.module('actions')
           modalInstance.result.then(function (newActivity) {
             scope.newActivity = newActivity;
             // this should check for isFollowUp (or should is be hasFollowUp)
-            if(scope.action.cta.type !== 'initialContent') scope.triggerFollowUp();
+            if(scope.action.hasFollowUp) scope.triggerFollowUp();
             // if(scope.action.isFollowUp && scope.action.isFollowUp) scope.triggerFollowUp();
             else scope.createActivity();
           }, function () {

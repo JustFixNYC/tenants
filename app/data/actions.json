@@ -112,7 +112,6 @@
     "key": "sendLetter",
     "addIf": ["initial"],
     "type": "once",
-    "isFollowUp": false,
     "cta": {
       "type": "modal",
       "buttonTitle": "Create Letter",

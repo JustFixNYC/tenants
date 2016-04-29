@@ -3,35 +3,34 @@
 angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$filter',
   function Pdf($http, $q, Authentication, $filter) {
 
-  	// SPLIT THIS OUT OMG
-  	var postRequest = function (dataObj) {
+  	var assemble = function(landlordName, landlordAddr) {
 
-  		var deferred = $q.defer();
-    	var user = Authentication.user;
+
 
   		// This block assembles our issues list PhantomJS
   		var assembledObject = {
-  			issuesAssembled: []
+  			issues: []
   		};
   		var issuesCount = 0;
 
+      var zip;
   		if(user.geo) {
-  			user.zip = user.geo.zip;
+  			zip = user.geo.zip;
   		} else {
-  			user.zip = '';
+  			zip = '';
   		}
 
   		// Kick off assembly of obj sent to PDF service
 			assembledObject.tenantInfo = {
   			'phone': user.phone,
   			'name': user.fullName,
-  			'address': user.address +
+  			'address': user.address + ' ' + user.unit +
   								' <br> ' + user.borough +
-  								' <br> New York  ' + user.zip // This needs to be replaced, talk to dan ASAP
+  								' <br> New York, ' + zip
 	  	};
 	  	assembledObject.landlordInfo = {
-  			'name': 'Sir/Madam',
-  			'address': '600 Main St <br> Brooklyn, NY  11235'
+  			'name': landlordName.length ? landlordName : 'To whom it may concern',
+  			'address': landlordAddr.length ? landlordAddr : ''
 	  	};
 
       for(var issue in user.issues) {
@@ -60,18 +59,30 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
             	tempObject.description = activity.description;
             }
 
+            // @meegan - why is this here?
             activity = undefined;
           }
 
-          assembledObject.issuesAssembled.push(tempObject);
+          assembledObject.issues.push(tempObject);
 
           issuesCount++;
         }
       }
 
-      console.log(assembledObject);
+      // console.log(assembledObject);
 
-	  	$http({
+      return assembledObject;
+
+  	};
+
+    var createComplaint = function(landlord) {
+
+      var deferred = $q.defer();
+    	var user = Authentication.user;
+
+      var assembledObject = assemble(landlord.name, landlord.address);
+
+      $http({
 	  		method: 'POST',
 	  		// Placeholder URL, needs to be attached to a real URL w/ JustFix (Also, using goddamnedtestbucket, let's get that out of there...)
 	  		url:'http://pdf-microservice.herokuapp.com/complaint-letter',
@@ -87,20 +98,22 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 	  	);
 
 	  	return deferred.promise;
-  	};
 
-  	var getRequest = function () {
-  		var user = Authentication.user;
+    };
 
-  		if(user.complaintUrl !== '') {
-  			return user.complaintUrl;
-  		} else {
-  			postRequest();
-  		}
-  	};
+
+  	// var getRequest = function () {
+  	// 	var user = Authentication.user;
+    //
+  	// 	if(user.complaintUrl !== '') {
+  	// 		return user.complaintUrl;
+  	// 	} else {
+  	// 		postRequest();
+  	// 	}
+  	// };
 
   	return {
-  		postComplaint: postRequest,
-  		getComplaint: getRequest
+  		createComplaint : createComplaint
+  		// getComplaint: getRequest
   	};
   }]);

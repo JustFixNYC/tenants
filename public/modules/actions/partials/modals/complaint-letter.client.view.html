@@ -1,23 +1,67 @@
 <div class="modal-header">
-  <h3 class="modal-title">Complaint Letter</h3>
+  <h3 class="modal-title" ng-if="!status.created && !status.error">Send an Official Letter of Complaint</h3>
+  <h3 class="modal-title" ng-if="status.created"><span class="glyphicon glyphicon-ok-sign"></span> Success!</h3>
+  <h3 class="modal-title text-danger" ng-if="status.error"><span class="glyphicon glyphicon-remove-sign"></span> Error</h3>
 </div>
-<div class="modal-body"  stop-event="touchend">
-  <form class="update-activity-form" novalidate>
-    <div class="form-group">
-        <label class="control-label" for="title">Title</label>
-        <div class="controls">
-            <input type="text" data-ng-model="newActivity.title" id="title" class="form-control" placeholder="Please give this a title.">
+<div class="modal-body" stop-event="touchend">
+  <!-- <div class="letter-steps" ng-class="progress"> -->
+  <div class="letter-steps" inherit-height>
+    <div class="letter-step ng-enter-active" ng-if="!status.loading && !status.created && !status.error">
+      <p>This Letter of Complaint uses the repair issues from the checklist and the details you’ve added. <b>Make sure to send this letter as certified mail so you can prove that your landlord has received it!</b></p>
+      <p><em>This information is <u>optional</u> - look on leases and other notices.</em></p>
+      <form class="update-activity-form" novalidate>
+        <div class="form-group">
+            <label class="control-label" for="name">Landlord</label>
+            <div class="controls">
+                <input name="landlordName" type="text" data-ng-model="landlord.name" class="form-control" placeholder="Name or Management Company">
+            </div>
         </div>
-    </div> 
-    <div class="form-group">
-        <label class="control-label" for="description">Description</label>
-        <div class="controls">
-            <textarea name="description" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="5" maxlength="500" placeholder="What's going on?"></textarea>
+        <div class="form-group">
+            <label class="control-label" for="description">Address</label>
+            <div class="controls">
+                <textarea name="landlordAddr" data-ng-model="landlord.address" id="description" class="form-control" cols="30" rows="3" maxlength="500" placeholder="Address"></textarea>
+            </div>
         </div>
-    </div>     
-  </form>
+      </form>
+    </div>
+    <div class="letter-step" ng-if="status.loading">
+    <!-- <div class="letter-step"> -->
+      <div class="letter-step-loading">
+        <div class="sk-fading-circle circle-dark">
+          <div class="sk-circle1 sk-circle"></div>
+          <div class="sk-circle2 sk-circle"></div>
+          <div class="sk-circle3 sk-circle"></div>
+          <div class="sk-circle4 sk-circle"></div>
+          <div class="sk-circle5 sk-circle"></div>
+          <div class="sk-circle6 sk-circle"></div>
+          <div class="sk-circle7 sk-circle"></div>
+          <div class="sk-circle8 sk-circle"></div>
+          <div class="sk-circle9 sk-circle"></div>
+          <div class="sk-circle10 sk-circle"></div>
+          <div class="sk-circle11 sk-circle"></div>
+          <div class="sk-circle12 sk-circle"></div>
+        </div>
+        <br />
+        <p class="lead text-center">Generating your letter...</p>
+      </div>
+    </div>
+    <div class="letter-step letter-step-created" ng-if="status.created">
+      <p>Your Letter of Complaint has been created and can be viewed here:</p>
+      <span class="glyphicon glyphicon-file text-success lead"></span><a class="text-link" ng-href="{{letterUrl}}" target="_blank">Letter of Complaint PDF</a>
+      <p>This PDF will always available on your <a ui-sref="listActivity" ng-click="done()">Case History</a> page, so you can come back to it later on. <b>Don’t forget to send it via certified mail!</b></p>
+    </div>
+    <div class="letter-step" ng-if="status.error">
+      <p class="text-danger">Oops! We're sorry, the letter creation service is down at the moment - please try again later.</p>
+      <p ng-if="errorCode" class="text-danger">Error message: {{ errorCode }}</p>
+    </div>
+  </div>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-  <button class="btn btn-primary" ng-click="done()">Submit</button>
+  <div ng-if="!status.loading && !status.created && !status.error">
+    <button class="btn btn-default pull-left" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" ng-click="createLetter()">Submit</button>
+  </div>
+  <div ng-if="!status.loading && (status.created || status.error)">
+    <button class="btn btn-primary btn-block" ng-click="done()">Got it!</button>
+  </div>
 </div>
