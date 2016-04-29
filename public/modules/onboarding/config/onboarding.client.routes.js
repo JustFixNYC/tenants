@@ -33,7 +33,7 @@ angular.module('onboarding').config(['$stateProvider', function($stateProvider){
     })
     .state('onboarding-details', {
       url: '/onboarding-details',
-      templateUrl: 'modules/onboarding/views/onboarding-details.client.view.html',
+      templateUrl: 'modules/users/views/onboarding-details.client.view.html',
       controller: 'OnboardingDetailsController',
       controllerAs: 'vm'
     })
