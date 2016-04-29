@@ -4,6 +4,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 	function ($rootScope, $scope, $sce, $modalInstance, newActivity, Pdf, Authentication, $window) {
 
 	  $scope.newActivity = newActivity;
+		$scope.newActivity.fields = [];
 		$scope.landlord = {
 			name: '',
 			address: ''
@@ -26,6 +27,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 					$scope.status.loading = false;
 					$scope.status.created = true;
 					$scope.letterUrl = data;
+					$scope.newActivity.fields.push({ title: 'letterURL', value: data });
 	  			console.log(data);
 	  		},
 	  		function failure(error) {

@@ -901,8 +901,17 @@ header {
       margin-bottom: 0;
       padding-bottom: 10px;
       border-bottom: 1px solid #eee; }
-.activities-container .panel-body {
-  padding-bottom: 0; }
+.activities-container .activity-panel-letter .glyphicon {
+  font-size: 16px; }
+.activities-container .activity-panel-letter a.text-link {
+  margin-left: 10px;
+  margin-bottom: 5px; }
+.activities-container .activity-panel-letter a.instructions-toggle {
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 10px; }
+.activities-container .activity-panel-letter ol {
+  padding-left: 15px; }
 .activities-container .thumb-list {
   margin-top: 15px; }
   .activities-container .thumb-list > div {

@@ -48,11 +48,31 @@
         border-bottom: 1px solid #eee;
       }
     }
+
+    // .panel-body {
+    //   padding-bottom: 0;
+    // }
   }
 
-  .panel-body {
-    padding-bottom: 0;
+
+  .activity-panel-letter {
+    .glyphicon {
+      font-size: 16px;
+    }
+    a.text-link {
+      margin-left: 10px;
+      margin-bottom: 5px;
+    }
+    a.instructions-toggle {
+      display: block;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    ol {
+      padding-left: 15px;
+    }
   }
+
 
   .thumb-list {
 

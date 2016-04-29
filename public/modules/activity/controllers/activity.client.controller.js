@@ -18,7 +18,16 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
     };
 
     $scope.activityTemplate = function(key) {
-      return '/modules/activity/partials/default-activity.client.view.html';
+      var template = '/modules/activity/partials/';
+      switch(key) {
+        case 'sendLetter':
+          template += 'complaint-letter.client.view.html';
+          break;
+        default:
+          template += 'default-activity.client.view.html';
+          break;
+      };
+      return template;
     };
 
     $scope.openLightboxModal = function (photos, index) {
