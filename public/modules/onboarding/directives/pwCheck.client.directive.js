@@ -8,7 +8,6 @@ angular.module('onboarding')
           scope.$apply(function () {
             var v = elem.val()===document.getElementById(firstPassword).value;
             ctrl.$setValidity('pwmatch', v);
-            console.log(v);
           });
         });
       }

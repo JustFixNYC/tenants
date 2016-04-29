@@ -75,9 +75,8 @@ angular.module('problems').controller('OnboardingProblemsController', ['$scope',
     return newProb;
 	}
 
-	// TODO: discuss bring user creation to global?
-	if(user === '') {
-		user = {};
+	// Fallback if user problems aren't substantiated
+	if (!user.problems){
 		user.problems = [];
 	}
 

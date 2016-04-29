@@ -7,6 +7,7 @@ angular.module('onboarding').controller('OnboardingSelectionController', ['$scop
 
 	$scope.process = '';
 	$scope.codeError = false;
+	var user = Authentication.user || {};
 
 	$scope.continue = function() {
 		if($scope.process === '' || $scope.process === undefined) {

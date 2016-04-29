@@ -6,6 +6,7 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', 'Auth
 		$scope.codeError = false;
 		$scope.referralSuccess = false;
 		$scope.codeError = false;
+		$scope.codeWrong = false;
 
 		$scope.newUser = {};
 	  $scope.newUser.accessCode = '';
@@ -20,7 +21,8 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', 'Auth
 	          $scope.referralSuccess = true;
 	          $scope.referral = success.referral;
 	        } else {
-	         	$scope.codeError = true;
+	         	$scope.codeWrong = true;
+	         	$scope.referralSuccess = true;
 	        }
 	      }, function(error) {
 	      	console.log(error);
