@@ -9,6 +9,8 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', 'Auth
 		$scope.codeWrong = false;
 
 		$scope.newUser = {};
+
+
 	  $scope.newUser.accessCode = '';
 
 	  $scope.validateCode = function() {

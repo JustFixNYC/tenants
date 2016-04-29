@@ -18,7 +18,7 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
       .state('onboarding.accessCode', {
         url: '/code',
         templateUrl: 'modules/onboarding/partials/onboarding-code.client.view.html'
-      })
+      })      
       .state('onboarding.problems', {
         url: '/checklist',
         templateUrl: 'modules/onboarding/partials/onboarding-problems.client.view.html'

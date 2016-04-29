@@ -1,7 +1,20 @@
-
-This is the Selection view
-<selection-list></selection-list>
-
-<a type="button" class="btn btn-primary" href="" ng-click="continue()">Continue</a>
-
-<div class="alert alert-danger" ng-show="codeError">Whoops! Please select one of the buttons above to continue.</div>
+<div class="page-header">
+  <small>Step 1 of 2</small>
+  <h1>Issues Checklist</h1>
+  <p>Please select all the issues that relate to your housing sitation - we’ll ask you for more details later on. Please note: you can come back to this list at any time.</p>
+</div>
+<problems-checklist></problems-checklist>
+<div class="form-group">
+    <div class="row">
+        <div class="col-xs-4">
+            <a ui-sref="onboarding.accessCode" class="btn btn-block btn-default"> <!-- @meegan - make sure this goes back to confirmation, not "enter code" -->
+              Back
+            </a>
+        </div>
+        <div class="col-xs-8">
+            <a ui-sref="onboarding.details" class="btn btn-primary btn-block pull-right">
+              Continue
+            </a>
+        </div>
+    </div>
+</div>

@@ -23,9 +23,18 @@
 	<p class="org">{{referral.organization}}</p>
 	<p class="phone">{{referral.phone}}</p>
 	<p class="email">{{referral.email}}</p>
-	<a href="#!/checklist">
-		<button class="btn btn-primary">
-			Next
-		</button>
-	</a>
+	<div class="form-group">
+	    <div class="row">
+	        <div class="col-xs-4">
+	            <a class="btn btn-block btn-default"> <!-- @meegan - toggle referralsuccess, not sref -->
+	            	Back
+	            </a>
+	        </div>
+	        <div class="col-xs-8">
+	            <a ui-sref="onboarding.problems" class="btn btn-primary btn-block pull-right">
+	            	Continue
+	            </a>
+	        </div>
+	    </div>
+	</div>
 </div>
