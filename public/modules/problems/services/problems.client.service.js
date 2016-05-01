@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('onboarding').factory('problemsService', ['$resource','$q', '$http', function($resource, q, $http){
+angular.module('onboarding').factory('Problems', ['$resource','$q', '$http', function($resource, q, $http){
 
 	var requestLocalFile = function() {
 		var deferred = q.defer();

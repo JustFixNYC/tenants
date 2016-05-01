@@ -1,5 +1,5 @@
 <div class="issues-modal">
-	<div class="close-modal" ng-click="close()">
+	<div class="close-modal" ng-click="cancel()">
 		X
 	</div>
   <div class="modal-header">
@@ -7,7 +7,7 @@
   </div>
   <div class="selecter multiple">
 		<div class="selection-module">
-			<a class="selection-issue" problem{-issue-item ng-repeat="issue in currentProblem.issues track by $index" ng-click="selectIssue(currentProblem, issue)" ng-class="{'active':issue.active} ">
+			<a class="selection-issue" problem-issue-item ng-repeat="issue in issues track by $index" ng-click="selectIssue(issue)" ng-class="{'active':issue.active} ">
 				{{issue.key}}
 			</a>
 			<a problem-issue-item class="selection-issue other">
@@ -18,7 +18,7 @@
 			</a>
 		</div>
 		<span class="btn btn-primary pull-right save" ng-click="save()">Save</span>
-		<span class="btn btn-default pull-right cancel" ng-click="close()">Cancel</span>
+		<span class="btn btn-default pull-right cancel" ng-click="cancel()">Cancel</span>
 		<div class="clearfix"></div>
   </div>
 </div>
