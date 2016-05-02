@@ -107,7 +107,7 @@ $grey: #E0E0E0;
 		top: -5px;
 		border-radius: 50%;
 		background-color: $grey;
-		padding: 6px 0;
+		padding: 8px 0;
 		height: 30px;
 		width: 30px;
 		text-align: center;
@@ -132,6 +132,12 @@ $grey: #E0E0E0;
 		padding: 15px 15px;
 		cursor: pointer;
 
+		@include transition(0.2s all);
+
+		.glyphicon-ok {
+			opacity: 0;
+		}
+
 		&:first-child {
 			border-top: none;
 		}
@@ -139,6 +145,10 @@ $grey: #E0E0E0;
 		&.active {
 			background: darken($justfix-blue, 5);
 			color: $white;
+
+			.glyphicon-ok {
+				opacity: 1;
+			}
 		}
 	}
 

@@ -7,11 +7,11 @@
   <div class="selecter multiple">
 		<div class="selection-module">
 			<a class="selection-issue" problem-issue-item ng-repeat="issue in issues track by $index" issue="{{issue.key}}" ng-click="selectIssue(issue)">
-				{{issue.key}}
+				{{issue.key}} <span class="glyphicon glyphicon-ok pull-right"></span>
 			</a>
-			<a problem-issue-item class="selection-issue other">
-				Other <span class="selector-plus pull-right btn btn-primary" ng-click="toggleOther()">+</span>
-				<div class="form-group" ng-show="addMore == true">
+			<a problem-issue-item id="other-block" class="selection-issue other">
+				Other <span class="selector-plus pull-right btn btn-primary" ng-click="toggleOther()" jump-to="other-block">+</span>
+				<div class="form-group" ng-class="{'slide-up': addMore}" ng-show="addMore == true">
 					<textarea ng-model="other.value" value="other.value" class="form-control"></textarea>
 				</div>
 			</a>

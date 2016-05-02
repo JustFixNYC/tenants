@@ -862,7 +862,7 @@ header {
     top: -5px;
     border-radius: 50%;
     background-color: #E0E0E0;
-    padding: 6px 0;
+    padding: 8px 0;
     height: 30px;
     width: 30px;
     text-align: center;
@@ -879,12 +879,19 @@ header {
     display: block;
     border-top: 1px solid #E0E0E0;
     padding: 15px 15px;
-    cursor: pointer; }
+    cursor: pointer;
+    -webkit-transition: 0.2s all;
+    -moz-transition: 0.2s all;
+    transition: 0.2s all; }
+    .issues-modal .selection-issue .glyphicon-ok {
+      opacity: 0; }
     .issues-modal .selection-issue:first-child {
       border-top: none; }
     .issues-modal .selection-issue.active {
       background: #0084be;
       color: #FFF; }
+      .issues-modal .selection-issue.active .glyphicon-ok {
+        opacity: 1; }
   .issues-modal .selector-plus {
     position: relative;
     top: -8px;

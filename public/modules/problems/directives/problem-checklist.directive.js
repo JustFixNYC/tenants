@@ -43,9 +43,9 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
           Problems.getLocalFile().then(function (data) {
             scope.problems = data;
 
-            // Active mapper helper
+            // Set state if problems exist (NOT ACTIVE ON BOARDING)
             scope.problems.map(function(curr, idx, arr){
-            	if(problemActiveString.indexOf(curr.key)){
+            	if(problemsActiveString.indexOf(curr.key) > -1){
             		curr.active = true;
             	}
             });
@@ -92,12 +92,16 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 				   		if(selectedIssues){
 				   			ourUserCurrentProblem.issues = selectedIssues;
 				   			ourUserProblems.push(ourUserCurrentProblem);
-				   			scope.currentProblem.active = true;
-				   		} else {
-				   			// IDK if this will work lol
-				   			if(ourUserCurrentProblem.issues.length == 0) {
+
+				   			// UX active state handle
+				   			if(selectedIssues.length == 0) {
 				   				scope.currentProblem.active = false;
+				   			} else {
+				   				scope.currentProblem.active = true;
 				   			}
+				   		} else {
+				   			// WE DO NOTHING MR. FRODO
+				   			return;
 				   		}
 				   	});
 					};

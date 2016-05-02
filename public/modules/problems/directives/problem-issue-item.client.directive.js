@@ -26,9 +26,20 @@ angular.module('onboarding').directive('problemIssueItem', [function(){
 			};
 
 			// This controls this problem's Other issue
+    	scope.other = {
+				key: 'other',
+				value: '',
+  			emergency: false
+    	}
+
 			scope.toggleOther = function() {
 				// Show/hide
 				scope.addMore = !scope.addMore;
+        
+        // targeted copy of jumpTo.js in core directives (need to target element, not $document)
+        var someElement = angular.element(document.getElementById('other-block'));
+        var parentModal = angular.element(document.getElementsByClassName('selection-module')[0]);
+        parentModal.scrollToElement(someElement, 0, 800);
 
 			}
 

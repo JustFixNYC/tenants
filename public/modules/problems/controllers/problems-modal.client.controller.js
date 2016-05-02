@@ -6,15 +6,15 @@ angular.module('problems').controller('ModalProblemController', ['$scope', 'Prob
 		$scope.checkString = '';
 		$scope.tempIssues = [];
 
-		// TODO: clean this up, remove selected issues
-		$scope.selectedIssues = userProblem.issues;
-
-		for (var i = 0; i < $scope.selectedIssues.length; i++) {
-			$scope.tempIssues.push($scope.selectedIssues[i]);
-			$scope.checkString += $scope.selectedIssues[i].key;
+		for (var i = 0; i < userProblem.issues.length; i++) {
+			$scope.tempIssues.push(userProblem.issues[i]);
+			$scope.checkString += userProblem.issues[i].key;
 		}
 
 		$scope.save = function(){
+			if($scope.other.value !== '') {
+				$scope.tempIssues.push($scope.other);
+			}
 			$modalInstance.close($scope.tempIssues);
 		}
 		$scope.cancel = function(){
