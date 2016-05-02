@@ -25,16 +25,16 @@ angular.module('onboarding').directive('problemIssueItem', [function(){
 				scope.$parent.tempIssues.push(issue);
 			};
 
-			// This controls this problem's Other issue
-    	scope.other = {
-				key: 'other',
-				value: '',
-  			emergency: false
-    	}
-
 			scope.toggleOther = function() {
 				// Show/hide
 				scope.addMore = !scope.addMore;
+
+				// This controls this problem's Other issue
+	    	scope.other = scope.other || {
+					key: 'other',
+					value: '',
+	  			emergency: false
+	    	};
         
         // targeted copy of jumpTo.js in core directives (need to target element, not $document)
         var someElement = angular.element(document.getElementById('other-block'));

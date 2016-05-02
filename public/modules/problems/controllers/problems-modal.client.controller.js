@@ -6,13 +6,21 @@ angular.module('problems').controller('ModalProblemController', ['$scope', 'Prob
 		$scope.checkString = '';
 		$scope.tempIssues = [];
 
+		// Active mapper/other issue tracker
 		for (var i = 0; i < userProblem.issues.length; i++) {
 			$scope.tempIssues.push(userProblem.issues[i]);
 			$scope.checkString += userProblem.issues[i].key;
+			
+			// If issues exists for this problem, create it in the scope we'll ref in the directive
+			if(userProblem.issues[i].key == 'other') {
+				$scope.other = userProblem.issues[i];
+				console.log($scope.other);
+				userProblem.issues.splice(i, 1);
+			}
 		}
 
 		$scope.save = function(){
-			if($scope.other.value !== '') {
+			if($scope.other) {
 				$scope.tempIssues.push($scope.other);
 			}
 			$modalInstance.close($scope.tempIssues);
