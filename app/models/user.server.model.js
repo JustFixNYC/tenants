@@ -63,8 +63,14 @@ var UserSchema = new Schema({
     default: []
   }],
   followUpFlags: [{
-    type: String,
-    default: []
+    key: {
+      type: String,
+      default: []
+    },
+    startDate: {
+      type: Date,
+      default: Date.now
+    }
   }],
   problems: [ProblemSchema],
   issues: {

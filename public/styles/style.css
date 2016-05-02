@@ -774,11 +774,8 @@ header {
   -webkit-transition-duration: 0.25s;
   -moz-transition-duration: 0.25s;
   transition-duration: 0.25s; }
-  .actions-container .btn-block {
-    max-width: 300px;
-    margin: 0 auto; }
-    .actions-container .btn-block.initial {
-      float: none !important; }
+  .actions-container .btn-block.initial {
+    float: none !important; }
 
 .panel-content {
   margin-bottom: 15px; }

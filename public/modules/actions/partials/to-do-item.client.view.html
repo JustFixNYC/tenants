@@ -10,7 +10,7 @@
       <div class="col-xs-6">
         <a  class="btn btn-default btn-block pull-left"
             data-ng-if="action.cta.type !== 'initialContent'"
-            data-ng-click="triggerFollowUp()">
+            data-ng-click="triggerFollowUp(false)">
             I've tried this
         </a>
       </div>
@@ -23,13 +23,13 @@
         </button>
         <a  class="btn btn-success btn-block pull-right"
             data-ng-if="action.cta.type === 'call'"
-            data-ng-click="triggerFollowUp('tel:' + action.cta.phone, 'tel')">
+            data-ng-click="triggerFollowUp(true, 'tel:' + action.cta.phone, 'tel')">
             <span class="glyphicon glyphicon-earphone pull-left"></span>
             {{ action.cta.buttonTitle }}
         </a>
         <a  class="btn btn-success btn-block pull-right"
             data-ng-if="action.cta.type === 'link'"
-            data-ng-click="triggerFollowUp(action.cta.url, 'link')"
+            data-ng-click="triggerFollowUp(true, action.cta.url, 'link')"
             target="_blank">
             <span class="glyphicon glyphicon-link pull-left"></span>
             {{ action.cta.buttonTitle }}

@@ -63,16 +63,16 @@ var create = function(req, res) {
   if(user) {
 
     // remove from follow up flags
-    var idx = user.followUpFlags.indexOf(activity.key);
-    //  if(idx < 0) return res.status(500).send({ message: 'Follow up key not found, this is bad' });
+    var idx = _.findIndex(user.followUpFlags, { key: activity.key});
+    if(idx < 0) return res.status(500).send({ message: 'Follow up key not found, this is bad' });
     if(idx !== -1) user.followUpFlags.splice(idx, 1);
 
     // add to action flags
-    if(activity.key !== 'statusUpdate') user.actionFlags.push(activity.key);
+    if(!_.contains(user.actionFlags, activity.key)) user.actionFlags.push(activity.key);
 
     // check date
     //console.log('date', activity.date);
-    if(!activity.date) activity.date = Date.now();
+    if(!activity.startDate) activity.startDate = Date.now();
     //console.log('new date', activity.date);
 
     // check to see if allInitial should be set
@@ -86,7 +86,9 @@ var create = function(req, res) {
           if(user.actionFlags.indexOf(area) === -1) allInitial = false;
         }
       }
-      if(allInitial && user.actionFlags.indexOf('allInitial') === -1) user.actionFlags.push('allInitial');
+      // if(allInitial && user.actionFlags.indexOf('allInitial') === -1) user.actionFlags.push('allInitial');
+      if(allInitial && !_.contains(user.actionFlags, 'allInitial')) user.actionFlags.push('allInitial');
+      else if(!allInitial && _.contains(user.actionFlags, 'allInitial')) _.remove(user.actionFlags, 'allInitial');
       // [TODO] account for the case where a user has allInitial set, then updates the issues checklist
       //        with a new area.
       // else {
@@ -128,9 +130,19 @@ var create = function(req, res) {
             message: errorHandler.getErrorMessage(err)
           });
         } else {
-          res.jsonp(user);
+          req.login(user, function(err) {
+            if (err) {
+              res.status(400).send(err);
+            } else {
+              console.log('NEW USER', user.followUpFlags, user.activity);
+              res.json(user);
+              res.end(); // important to update session
+            }
+          });
+
         }
       });
+
 
     });  // end of Q.allSettled
 

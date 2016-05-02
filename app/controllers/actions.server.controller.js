@@ -82,6 +82,8 @@ var generateActions = function(user) {
 
   var actions = getAreaActions(user);
 
+
+
   //iterate through full list of actions, push
   fullActions.forEach(function (action) {
 
@@ -91,17 +93,25 @@ var generateActions = function(user) {
 
     // prevents actions from being listed after completed
     // [TODO] check against time since completion
-    var reject = user.actionFlags.indexOf(action.key) !== -1 && action.type == 'once';
+    // var reject = user.actionFlags.indexOf(action.key) !== -1 && action.type == 'once';
+    var reject = _.contains(user.actionFlags, action.key) && action.type == 'once';
 
-    if(action.followUp) action.hasFollowUp = true;
-    else action.hasFollowUp = false;
+    if(add && !reject) {
+      if(action.followUp) action.hasFollowUp = true;
+      else action.hasFollowUp = false;
 
-    // checks if action is a followup or not
-    if(user.followUpFlags.indexOf(action.key) !== -1) action.isFollowUp = true;
-    else action.isFollowUp = false;
+      // checks if action is a followup or not
+      var followUpKeys = _.pluck(user.followUpFlags, 'key');
 
-    if(add && !reject)
+      if(_.contains(followUpKeys, action.key)) {
+        // console.log('found', _.find(user.followUpFlags, { key: action.key}).startDate);
+        action.isFollowUp = true;
+        action.startDate = _.find(user.followUpFlags, { key: action.key}).startDate;
+      }
+      else action.isFollowUp = false;
+
       actions.push(action);
+    }
 
   });
 
@@ -136,15 +146,16 @@ var list = function(req, res) {
 var followUp = function(req, res) {
 
   var id = req.user._id,
-      key = req.body.key;
+      key = req.body.key,
+      startDate = req.body.startDate;       // this might be undefined - mongoose assigns the default value
   var query;
 
   if(req.query.type === 'add') {
-    query = User.update({ '_id': id }, {$addToSet: { 'followUpFlags': key }});
+    query = User.update({ '_id': id }, {$addToSet: { 'followUpFlags': { key: key, startDate: startDate } }});
     req.body.isFollowUp = true;
   }
   else {
-    query = User.update({ '_id': id }, {$pull: { 'followUpFlags': key }});
+    query = User.update({ '_id': id }, {$pull: { 'followUpFlags': { key : key } }});
     req.body.isFollowUp = false;
   }
 

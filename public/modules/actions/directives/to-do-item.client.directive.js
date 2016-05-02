@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('actions')
-  .directive('toDoItem', ['$rootScope', '$modal', '$sce', '$compile', '$timeout', 'Activity', 'Actions',
-    function ($rootScope, $modal, $sce, $compile, $timeout, Activity, Actions) {
+  .directive('toDoItem', ['$rootScope', '$modal', '$sce', '$compile', '$timeout', 'Authentication', 'Activity', 'Actions',
+    function ($rootScope, $modal, $sce, $compile, $timeout, Authentication, Activity, Actions) {
     return {
       restrict: 'E',
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
@@ -33,18 +33,27 @@ angular.module('actions')
         if(!scope.action.completed) scope.action.completed = false;
 
         scope.newActivity = {
-          startDate: new Date(),
+          startDate: '',
           title: scope.action.activityTitle,
           key: scope.action.key
         };
 
-        // if action has custom fields, initialize those in the newActivity object
-        if(scope.action.followUp && scope.action.followUp.fields) {
-          scope.newActivity.fields = [];
-          angular.forEach(scope.action.followUp.fields, function(field, idx) {
-            scope.newActivity.fields.push({ title: field.title });
-          });
+        if(scope.action.isFollowUp) {
+          // get potential follow up startDate
+          if(scope.action.startDate) {
+            scope.newActivity.startDate = new Date(scope.action.startDate);
+          }
+
+          // if action has custom fields, initialize those in the newActivity object
+          if(scope.action.followUp && scope.action.followUp.fields) {
+            scope.newActivity.fields = [];
+            angular.forEach(scope.action.followUp.fields, function(field, idx) {
+              scope.newActivity.fields.push({ title: field.title });
+            });
+          }
         }
+
+
 
         var getSection = function(type) {
           switch(type) {
@@ -90,6 +99,8 @@ angular.module('actions')
           //   // });
           // });
 
+          scope.newActivity.startDate = new Date();
+
           var modalInstance = $modal.open({
             //animation: false,
             templateUrl: 'modules/actions/partials/modals/' + scope.action.cta.template,
@@ -103,16 +114,20 @@ angular.module('actions')
             scope.newActivity = result.newActivity;
 
             // this should check for isFollowUp (or should is be hasFollowUp)
-            if(scope.action.hasFollowUp) scope.triggerFollowUp();
+            if(scope.action.hasFollowUp) scope.triggerFollowUp(true);
             // if(scope.action.isFollowUp && scope.action.isFollowUp) scope.triggerFollowUp();
             else if(!result.modalError) scope.createActivity();
-      
+
           }, function () {
             // modal cancelled
           });
         };
 
-        scope.triggerFollowUp = function(url, type) {
+        scope.triggerFollowUp = function(hasDoneAction, url, type) {
+
+          if(hasDoneAction) {
+            scope.newActivity.startDate = scope.action.startDate = new Date();
+          }
 
           scope.action.$followUp({ type: 'add' });
 
@@ -144,21 +159,23 @@ angular.module('actions')
 
             console.log('create activity post save', response);
 
+            Authentication.user = response;
             $rootScope.loading = false;
             scope.action.completed = true;
             scope.action.closeAlert = false;
 
             // load new actions
-            var idx = scope.$index;
-            var newActions = Actions.query(
-              {key: scope.newActivity.key},
-              function() {
-                newActions.forEach(function (action) {
-                  var section = getSection(action.type);
-                  section.push(action);
-                  // scope.actions.splice(++idx, 0, action);
-                });
-              });
+            // var idx = scope.$index;
+            // var newActions = Actions.query(
+            //   {key: scope.newActivity.key},
+            //   function() {
+            //     console.log('new actions', newActions);
+            //     newActions.forEach(function (action) {
+            //       var section = getSection(action.type);
+            //       section.push(action);
+            //       // scope.actions.splice(++idx, 0, action);
+            //     });
+            //   });
 
           }, function(errorResponse) {
             $rootScope.loading = false;

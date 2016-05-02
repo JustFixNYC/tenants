@@ -50,9 +50,9 @@
     </div>
     <div collapse="activityCollapsed">
       <div data-ng-if="activities.length">
-          <div data-ng-repeat="activity in activities | orderBy:'startDate':true" class="panel activity-panel">
+          <div data-ng-repeat="activity in activities | orderBy:'createdDate':true" class="panel activity-panel">
               <div class="panel-heading">
-                  <span>{{ activity.startDate | date:'longDate' }}</span>
+                  <span>{{ activity.createdDate | date:'longDate' }}</span>
                   <h3>{{ activity.title }}</h3>
               </div>
               <div class="panel-body">

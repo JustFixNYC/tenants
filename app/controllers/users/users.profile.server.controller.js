@@ -34,6 +34,17 @@ exports.update = function(req, res) {
 	    });
 	  }
 
+    var allInitial = true;
+    // for every area in issues
+    for(var area in user.issues) {
+      // if the area has issues...
+      if(user.issues[area].length) {
+        // if the area content hasn't been done yet
+        if(user.actionFlags.indexOf(area) === -1) allInitial = false;
+      }
+    }
+    if(!allInitial && _.contains(user.actionFlags, 'allInitial')) _.pull(user.actionFlags, 'allInitial');
+
 		user.save(function(err) {
 			if (err) {
 				return res.status(400).send({

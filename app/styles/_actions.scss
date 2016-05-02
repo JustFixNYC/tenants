@@ -3,8 +3,6 @@
   @include transition-duration(.25s);
 
   .btn-block {
-    max-width: 300px;
-    margin: 0 auto;
 
     &.initial {
       float: none !important;

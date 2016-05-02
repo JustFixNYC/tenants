@@ -14,7 +14,7 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
 
     $scope.list = function() {
       $scope.activities = Activity.query();
-      console.log($scope.activities);
+      // console.log($scope.activities);
     };
 
     $scope.activityTemplate = function(key) {
