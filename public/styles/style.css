@@ -815,7 +815,7 @@ header {
     margin: 0px;
     font-weight: 700; }
 
-.problems-listing .problem-wrap {
+.problems .problem-wrap {
   margin: 0em auto 1em auto;
   border-radius: 10px;
   background: #E0E0E0;
@@ -824,34 +824,34 @@ header {
   color: #262626;
   max-width: 150px;
   min-height: 150px; }
-  .problems-listing .problem-wrap .problem-icon {
+  .problems .problem-wrap .problem-icon {
     font-size: 2em; }
-  .problems-listing .problem-wrap.active {
+  .problems .problem-wrap.active {
     background: #0096D7;
     color: #eee; }
-.problems-listing .btn-primary {
+.problems .btn-primary {
   margin-top: 20px;
   margin-right: 20px; }
   @media (min-width: 768px) {
-    .problems-listing .btn-primary {
+    .problems .btn-primary {
       margin-right: 40px; } }
   @media (min-width: 768px) {
-    .problems-listing .btn-primary {
+    .problems .btn-primary {
       margin-right: 60px; } }
   @media (min-width: 1200px) {
-    .problems-listing .btn-primary {
+    .problems .btn-primary {
       margin-right: 80px; } }
-.problems-listing .btn-default {
+.problems .btn-default {
   margin-top: 20px;
   margin-left: 20px; }
   @media (min-width: 768px) {
-    .problems-listing .btn-default {
+    .problems .btn-default {
       margin-left: 40px; } }
   @media (min-width: 768px) {
-    .problems-listing .btn-default {
+    .problems .btn-default {
       margin-left: 60px; } }
   @media (min-width: 1200px) {
-    .problems-listing .btn-default {
+    .problems .btn-default {
       margin-left: 80px; } }
 
 .issues-modal {

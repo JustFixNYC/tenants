@@ -8,12 +8,7 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
       scope: false,
       link: function postLink(scope, element, attrs) {
 					var ourUserCurrentProblem;
-
-          // get problems from service
-          Problems.getLocalFile().then(function (data) {
-            scope.problems = data;
-          });
-
+					var problemsActiveString = '';
 
 					// problemAssembler
 					var newProblem = function(problem) {
@@ -35,10 +30,26 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 
           // inherit newUser.problems or user.problems
           if(attrs.onboarding === 'true') {
+          	// Can wrap this in a conditional, but I think I'm doing that too much...
           	var ourUserProblems = scope.$parent.newUser.problems = [];
           } else {
           	var ourUserProblems = Authentication.user.problems;
-          } 
+          	for(var i = 0; i < ourUserProblems.length; i++){
+          		problemsActiveString += ourUserProblems[i].key;
+          	}
+          }
+
+          // get problems from service
+          Problems.getLocalFile().then(function (data) {
+            scope.problems = data;
+
+            // Active mapper helper
+            scope.problems.map(function(curr, idx, arr){
+            	if(problemActiveString.indexOf(curr.key)){
+            		curr.active = true;
+            	}
+            });
+          });
 
           // modal opening/closing
           // passing scopes
@@ -46,7 +57,7 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 
 						scope.currentProblem = problem;
 
-						// check if user has already filled out the problem
+						// check if user has already filled out THIS problem
 						if(ourUserProblems !== []) {
 							ourUserProblems.map(function(curr, idx, arr){
 								if(curr.key == problem.key) {
@@ -56,7 +67,7 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 							});
 						}
 
-						// If we didn't set the current problem
+						// If the user didn't set the current problem
 						if(!ourUserCurrentProblem) {
 							ourUserCurrentProblem = newProblem(problem);
 						}
@@ -81,8 +92,12 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 				   		if(selectedIssues){
 				   			ourUserCurrentProblem.issues = selectedIssues;
 				   			ourUserProblems.push(ourUserCurrentProblem);
+				   			scope.currentProblem.active = true;
 				   		} else {
-				   			console.log('whoops');
+				   			// IDK if this will work lol
+				   			if(ourUserCurrentProblem.issues.length == 0) {
+				   				scope.currentProblem.active = false;
+				   			}
 				   		}
 				   	});
 					};
