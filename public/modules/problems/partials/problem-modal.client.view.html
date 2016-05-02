@@ -7,7 +7,7 @@
   </div>
   <div class="selecter multiple">
 		<div class="selection-module">
-			<a class="selection-issue" problem-issue-item ng-repeat="issue in issues track by $index" ng-click="selectIssue(issue)" ng-class="{'active':issue.active} ">
+			<a class="selection-issue" problem-issue-item ng-repeat="issue in issues track by $index" issue="{{issue.key}}" ng-click="selectIssue(issue)">
 				{{issue.key}}
 			</a>
 			<a problem-issue-item class="selection-issue other">

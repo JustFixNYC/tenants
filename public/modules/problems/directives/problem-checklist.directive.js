@@ -25,6 +25,7 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 				   	newProb.key = problem.key;
 				    newProb.title = problem.title;
 				    newProb.description = '';
+				    newProb.issues = [];
 				    newProb.photos = [];
 				    newProb.relatedActivities = [];
 
@@ -35,7 +36,6 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
           // inherit newUser.problems or user.problems
           if(attrs.onboarding === 'true') {
           	var ourUserProblems = scope.$parent.newUser.problems = [];
-          	console.log(ourUserProblems);
           } else {
           	var ourUserProblems = Authentication.user.problems;
           } 
@@ -51,6 +51,7 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 							ourUserProblems.map(function(curr, idx, arr){
 								if(curr.key == problem.key) {
 									ourUserCurrentProblem = curr;
+									arr.splice(idx, 1);
 								}
 							});
 						}
@@ -79,6 +80,7 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 				   	modalInstance.result.then(function(selectedIssues){
 				   		if(selectedIssues){
 				   			ourUserCurrentProblem.issues = selectedIssues;
+				   			ourUserProblems.push(ourUserCurrentProblem);
 				   		} else {
 				   			console.log('whoops');
 				   		}

@@ -7,16 +7,22 @@ angular.module('onboarding').directive('problemIssueItem', [function(){
     scope: false,
     link: function postLink(scope, element, attrs) {
 
+    	if(scope.$parent.checkString) {
+    		if(scope.$parent.checkString.indexOf(attrs.issue) > -1){
+    			element.addClass('active');
+    		}
+    	}
+
 			// Selection of issue
 			scope.selectIssue = function(issue){
 
-				if(issue.active === true) {
+				if(element.hasClass('active') === true) {
 					scope.removeIssue(issue);
 					return;
 				}
 
-				issue.active = true;
-				scope.$parent.selectedIssues.push(issue);
+				element.addClass('active');
+				scope.$parent.tempIssues.push(issue);
 			};
 
 			// This controls this problem's Other issue
@@ -27,10 +33,10 @@ angular.module('onboarding').directive('problemIssueItem', [function(){
 			}
 
 			scope.removeIssue = function(issue) {
-				issue.active = false;
-				scope.$parent.selectedIssues.map(function(curr, idx, arr){
+				element.removeClass('active');
+				scope.$parent.tempIssues.map(function(curr, idx, arr){
 					if(curr.key == issue.key) {
-						arr.slice(idx, 1);
+						arr.splice(idx, 1);
 					}
 				});
 			};
