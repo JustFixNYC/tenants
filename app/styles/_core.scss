@@ -43,6 +43,10 @@ body {
 .page-header {
   margin-top: 0;
   border-bottom: none;
+  small {
+  	display: block;
+  	text-align: center;
+  }
 
   h1 {
     margin-top: 0;

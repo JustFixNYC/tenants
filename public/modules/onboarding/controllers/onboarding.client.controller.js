@@ -10,8 +10,11 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', 'Auth
 
 		$scope.newUser = {};
 
+	  $scope.newUser.accessCode = $scope.newUser.accessCode || '';
 
-	  $scope.newUser.accessCode = '';
+	  if($scope.newUser.accessCode !== '') {
+	  	$scope.referralSuccess = true;
+	  }
 
 	  $scope.validateCode = function() {
 
@@ -34,7 +37,7 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', 'Auth
 	  };
 
 	  $scope.goNext = function() {
-	  	$location.path('/onboarding-problems');
+	  	$location.path('/onboarding/checklist');
 	  }
 
 

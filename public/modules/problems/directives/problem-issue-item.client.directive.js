@@ -7,8 +7,9 @@ angular.module('onboarding').directive('problemIssueItem', [function(){
     scope: false,
     link: function postLink(scope, element, attrs) {
 
-    	if(scope.$parent.checkString) {
-    		if(scope.$parent.checkString.indexOf(attrs.issue) > -1){
+    	// Our parent's checkString, and whether to make these active
+    	if(scope.checkString) {
+    		if(scope.checkString.indexOf(attrs.issue) > -1){
     			element.addClass('active');
     		}
     	}
@@ -29,14 +30,14 @@ angular.module('onboarding').directive('problemIssueItem', [function(){
 				// Show/hide
 				scope.addMore = !scope.addMore;
 
-				// This controls this problem's Other issue
+				// Our parent Modal Controller could contain the other issue -- if not, we can create it here (gets passed up into the modal save controller)
 	    	scope.other = scope.other || {
 					key: 'other',
 					value: '',
-	  			emergency: false
+	  			emergency: false 
 	    	};
         
-        // targeted copy of jumpTo.js in core directives (need to target element, not $document)
+        // A not great copy of jumpTo.js in core directives (need to target element, not $document), willing to reassess
         var someElement = angular.element(document.getElementById('other-block'));
         var parentModal = angular.element(document.getElementsByClassName('selection-module')[0]);
         parentModal.scrollToElement(someElement, 0, 800);
@@ -44,8 +45,9 @@ angular.module('onboarding').directive('problemIssueItem', [function(){
 			}
 
 			scope.removeIssue = function(issue) {
+				// UI update, then remove this issue from our temporary issues
 				element.removeClass('active');
-				scope.$parent.tempIssues.map(function(curr, idx, arr){
+				scope.tempIssues.map(function(curr, idx, arr){
 					if(curr.key == issue.key) {
 						arr.splice(idx, 1);
 					}

@@ -22,6 +22,9 @@ body {
 .page-header {
   margin-top: 0;
   border-bottom: none; }
+  .page-header small {
+    display: block;
+    text-align: center; }
   .page-header h1 {
     margin-top: 0;
     margin-bottom: 0;
@@ -899,12 +902,6 @@ header {
     height: 1.5em;
     font-size: 1.5em;
     line-height: 0.5em; }
-  .issues-modal .save {
-    margin-right: 20px;
-    padding: 10px 44px; }
-  .issues-modal .cancel {
-    margin-right: 20px;
-    margin-bottom: 20px; }
 
 .onboarding-user-create {
   text-align: center; }

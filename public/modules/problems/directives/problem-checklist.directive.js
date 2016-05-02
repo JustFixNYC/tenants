@@ -10,7 +10,7 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 					var ourUserCurrentProblem;
 					var problemsActiveString = '';
 
-					// problemAssembler
+					// problemAssembler, if we don't have the problem set we just clear it out here
 					var newProblem = function(problem) {
 						
 						var newProb = {};
@@ -25,14 +25,15 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 				    newProb.relatedActivities = [];
 
 				    return newProb;
-					} 
+					}
 
 
           // inherit newUser.problems or user.problems
           if(attrs.onboarding === 'true') {
-          	// Can wrap this in a conditional, but I think I'm doing that too much...
-          	var ourUserProblems = scope.$parent.newUser.problems = [];
+          	// Needs to not reset if landing on this page
+          	var ourUserProblems = scope.newUser.problems = [];
           } else {
+          	// This needs to be tested to see if it actually... works...
           	var ourUserProblems = Authentication.user.problems;
           	for(var i = 0; i < ourUserProblems.length; i++){
           		problemsActiveString += ourUserProblems[i].key;
@@ -57,17 +58,15 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 
 						scope.currentProblem = problem;
 
-						// check if user has already filled out THIS problem
-						if(ourUserProblems !== []) {
-							ourUserProblems.map(function(curr, idx, arr){
-								if(curr.key == problem.key) {
-									ourUserCurrentProblem = curr;
-									arr.splice(idx, 1);
-								}
-							});
-						}
+						// check if user has already filled out the CURRENT problem, set it, and remove it from ALL problems
+						ourUserProblems.map(function(curr, idx, arr){
+							if(curr.key == problem.key) {
+								ourUserCurrentProblem = curr;
+								arr.splice(idx, 1);
+							}
+						});
 
-						// If the user didn't set the current problem
+						// If the user didn't set the CURRENT problem, build new one
 						if(!ourUserCurrentProblem) {
 							ourUserCurrentProblem = newProblem(problem);
 						}
@@ -79,9 +78,11 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 				      controller: 'ModalProblemController',
 				      size: 'md',
 				      resolve: {
+				      	// All issues straight from the json fetch
 				      	issues: function() {
 				      		return scope.currentProblem.issues;
 				      	},
+				      	// Our user's CURRENT problem, if we found one above
 				      	userProblem: function() {
 				      		return ourUserCurrentProblem;
 				      	}
@@ -90,7 +91,9 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 
 				   	modalInstance.result.then(function(selectedIssues){
 				   		if(selectedIssues){
+				   			// If we got updates as set by the modal controller, our CURRENT problem should be updated accordingly
 				   			ourUserCurrentProblem.issues = selectedIssues;
+				   			// We pass the CURRENT problem into ALL problems -- no duplates, as we either created this issue brand new or deleted it from the original object
 				   			ourUserProblems.push(ourUserCurrentProblem);
 
 				   			// UX active state handle
@@ -100,7 +103,10 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 				   				scope.currentProblem.active = true;
 				   			}
 				   		} else {
-				   			// WE DO NOTHING MR. FRODO
+				   			// Remember when we removed the original problem? This should attach it back into our object
+				   			if(ourUserCurrentProblem.issues.length > 0) {
+				   				ourUserProblems.push(ourUserCurrentProblem);
+				   			}
 				   			return;
 				   		}
 				   	});
