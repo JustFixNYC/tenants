@@ -9,15 +9,15 @@
     <div class="row">
       <div class="col-xs-6">
         <a  class="btn btn-default btn-block pull-left"
-            data-ng-if="action.cta.type !== 'initialContent'"
+            data-ng-if="action.hasFollowUp"
             data-ng-click="triggerFollowUp(false)">
             I've tried this
         </a>
       </div>
-      <div ng-class="action.cta.type === 'initialContent' ? 'col-xs-12' : 'col-xs-6'">
+      <div ng-class="!action.hasFollowUp ? 'col-xs-12' : 'col-xs-6'">
         <button class="btn btn-primary btn-block pull-right"
                 data-ng-if="isModal()"
-                data-ng-class="action.cta.type === 'initialContent' ? 'initial' : 'regular'"
+                data-ng-class="!action.hasFollowUp ? 'initial' : 'regular'"
                 data-ng-click="openModal()"
                 data-ng-bind-html="filterButtonTitleHTML()">
         </button>

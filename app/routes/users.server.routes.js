@@ -15,6 +15,16 @@ module.exports = function(app) {
 	app.route('/users/list').get(users.hasAuthorization(['admin']), users.list);
 	//app.route('/users/accounts').delete(users.removeOAuthProvider);
 
+	// Public URLs
+	app.route('/users/public').get(users.togglePublicView, users.update);
+	app.route('/public/:key').get(users.hasPublicView, function(req, res) {
+
+		// force angular to query again. idk why.
+		delete req.tempUser;
+    res.redirect('/#!/public?key=' + encodeURIComponent(req.params.key));
+	});
+
+
 	// Setting up the users password api
 	app.route('/users/password').post(users.changePassword);
 	app.route('/auth/forgot').post(users.forgot);

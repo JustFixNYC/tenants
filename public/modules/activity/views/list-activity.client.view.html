@@ -26,15 +26,21 @@
         </div>
 
         <h2>
-          <span>Enable Public URL:</span>
-          <label class="toggle pull-right" toggle-sharing ng-click="check()">
+          <span ng-if="!authentication.user.sharing.enabled">Enable Public URL:</span>
+          <span ng-if="authentication.user.sharing.enabled">Public URL (on):</span>
+          <label class="toggle pull-right" toggle-sharing>
             <input type="checkbox">
             <span class="handle"></span>
           </label>
         </h2>
 
-        <div class="alert alert-warning">
+        <div class="alert alert-warning" ng-if="!authentication.user.sharing.enabled">
           Your must create a public URL to share this page. The public view only shows your case history - it does not give access to the rest of your account.
+        </div>
+
+        <div ng-if="authentication.user.sharing.enabled">
+          <p class="lead"><b>Link to share this page: </b><a ng-href="/public/{{authentication.user.sharing.key}}">justfix.nyc/public/{{authentication.user.sharing.key}}</a></p>
+          <br />
         </div>
 
       </div>  <!-- .container -->

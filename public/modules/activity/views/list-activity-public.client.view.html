@@ -1,0 +1,36 @@
+<section class="activities-container" data-ng-controller="ActivityPublicController" data-ng-init="list()">
+    <div class="page-header">
+        <img src="/modules/core/img/sections/history.svg" alt="Case History" />
+        <h1>{{ user.fullName }}</h1>
+        <p class="text-danger text-center">This is a public view!</p>
+    </div>
+    <div class="section-header" ng-click="activityCollapsed = !activityCollapsed">
+      <h2>Case History
+        <span class="pull-right glyphicon" ng-class="activityCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span>
+      </h2>
+    </div>
+    <div collapse="activityCollapsed">
+      <div data-ng-if="activities.length">
+          <div data-ng-repeat="activity in activities | orderBy:'createdDate':true" class="panel activity-panel">
+              <div class="panel-heading">
+                  <span>{{ activity.createdDate | date:'longDate' }}</span>
+                  <h3>{{ activity.title }}</h3>
+              </div>
+              <div class="panel-body">
+
+                <div ng-include="activityTemplate(activity.key)"></div>
+
+                  <!-- <p><b>{{ activity.key | areaTitle }} {{ activity.title === 'Text/Photos' ? 'Details' : activity.title }}</b></p> -->
+
+
+
+
+              </div>
+          </div>
+      </div>
+      <div class="alert alert-warning text-center" data-ng-if="!activities.length">
+        {{ user.fullName }} hasn't added anything to their Case History yet. Check back later!
+      </div>
+    </div>
+
+</section>

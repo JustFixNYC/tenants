@@ -7,15 +7,18 @@
 // });
 
 
-angular.module('activity').controller('ActivityController', ['$scope', '$location', '$http', 'Authentication', 'Users', 'Activity', 'Lightbox',
-  function($scope, $location, $http, Authentication, Users, Activity, Lightbox) {
+angular.module('activity').controller('ActivityPublicController', ['$scope', '$location', '$http', 'Activity', 'Lightbox',
+  function($scope, $location, $http, Activity, Lightbox) {
 
-    $scope.authentication = Authentication;
+
+    var query = $location.search();
+    if(!query.key) $location.go('/');
 
     $scope.list = function() {
-
-      $scope.activities = Activity.query();
-      // console.log($scope.activities);
+      Activity.public({ key: query.key }, function(user) {
+        $scope.user = user;
+        $scope.activities = $scope.user.activity;
+      });
     };
 
     $scope.activityTemplate = function(key) {

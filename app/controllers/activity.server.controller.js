@@ -10,6 +10,9 @@ var _ = require('lodash'),
 var aptSpaces = ['generalApt', 'entryHallway', 'kitchen', 'bathroom', 'diningRoom', 'livingRoom', 'bedrooms', 'publicAreas', 'otherContent'];
 
 var list = function(req, res) {
+
+
+
   if(req.user) {
     res.json(req.user.activity);
   } else {

@@ -119,7 +119,9 @@ var UserSchema = new Schema({
       type: Boolean,
       default: false
     },
-    url : {type : String}
+    key : {
+      type : String
+    }
   },
   referral: {
     type: Schema.Types.Mixed,
