@@ -193,7 +193,8 @@ $grey: #E0E0E0;
 
 	@include transition(0.2s all);
 
-	&.selected {
+	&.selected,
+	&.active {
 		background: $justfix-blue;
 		color: #fff;
 	}

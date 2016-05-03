@@ -14,11 +14,11 @@
 	<!-- probably should reapproach this -->
 	<div class="form-group">
 		<label>Borough</label><br/>
-		<input type="button" value="Brooklyn" class="btn btn-default borough" ng-class="{selected: newUser.borough == 'Brooklyn'}" ng-click="newUser.borough = 'Brooklyn'">
-		<input type="button" value="Queens" class="btn btn-default borough" ng-class="{selected: newUser.borough == 'Queens'}" ng-click="newUser.borough = 'Queens'">
-		<input type="button" value="Bronx" class="btn btn-default borough" ng-class="{selected: newUser.borough == 'Bronx'}" ng-click="newUser.borough = 'Bronx'">
-		<input type="button" value="Manhattan" class="btn btn-default borough" ng-class="{selected: newUser.borough == 'Manhattan'}" ng-click="newUser.borough = 'Manhattan'">
-		<input type="button" value="Staten Island" class="btn btn-default borough" ng-class="{selected: newUser.borough == 'Staten Island'}" ng-click="newUser.borough = 'Staten Island'">
+		<input type="button" value="Brooklyn" class="btn btn-default borough" ng-model="newUser.borough" btn-radio="'Brooklyn'">
+		<input type="button" value="Queens" class="btn btn-default borough" ng-model="newUser.borough" btn-radio="'Queens'">
+		<input type="button" value="Bronx" class="btn btn-default borough" ng-model="newUser.borough" btn-radio="'Bronx'">
+		<input type="button" value="Manhattan" class="btn btn-default borough" ng-model="newUser.borough" btn-radio="'Manhattan'">
+		<input type="button" value="Staten Island" class="btn btn-default borough" ng-model="newUser.borough" btn-radio="'Staten Island'">
 	</div>
 
 	<div class="form-group">

@@ -22,7 +22,7 @@ angular.module('problems').controller('ModalProblemController', ['$scope', 'Prob
 		}
 
 		$scope.save = function(){
-			// did we end up making our other issue -- if it's not created in the above loop or the actual directive, then this doesn't get fired
+			// did we end up making our other issue -- if it's not created in the above loop or the parent directive, then this doesn't get fired
 			if($scope.other) {
 				$scope.tempIssues.push($scope.other);
 			}
@@ -30,7 +30,6 @@ angular.module('problems').controller('ModalProblemController', ['$scope', 'Prob
 			$modalInstance.close($scope.tempIssues);
 		}
 		$scope.cancel = function(){
-			console.log(userProblem.issues);
 			$modalInstance.close();
 		}
 

@@ -53,14 +53,12 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', '$loc
 		$scope.createAndNext = function () {
 
 			$scope.newUser.fullName = $scope.newUser.firstName + ' ' + $scope.newUser.lastName;
-			console.log($scope.newUser);
 
 			$http({
 				method: 'POST',
 				url: '/auth/signup',
 				data: $scope.newUser
 			}).then(function(success){
-				console.log('success!');
 				console.log(success);
 				$location.path('/onboarding/tutorial');
 

@@ -1062,8 +1062,9 @@ header {
   -webkit-transition: 0.2s all;
   -moz-transition: 0.2s all;
   transition: 0.2s all; }
-  .borough.selected,
-  .nycha.selected {
+  .borough.selected, .borough.active,
+  .nycha.selected,
+  .nycha.active {
     background: #0096D7;
     color: #fff; }
 
