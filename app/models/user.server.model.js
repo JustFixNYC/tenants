@@ -63,8 +63,14 @@ var UserSchema = new Schema({
     default: []
   }],
   followUpFlags: [{
-    type: String,
-    default: []
+    key: {
+      type: String,
+      default: []
+    },
+    startDate: {
+      type: Date,
+      default: Date.now
+    }
   }],
   problems: [ProblemSchema],
   issues: {
@@ -108,14 +114,18 @@ var UserSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  // Saving the user's Letter of Complaint PDF
-  complaintUrl: {
-  	type: String,
-  	default: ''
+  sharing: {
+    enabled: {
+      type: Boolean,
+      default: false
+    },
+    key : {
+      type : String
+    }
   },
   referral: {
     type: Schema.Types.Mixed,
-    default: {}    
+    default: {}
   },
   /* For reset password */
   resetPasswordToken: {

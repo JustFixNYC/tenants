@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('actions')
-  .directive('toDoItem', ['$rootScope', '$modal', '$sce', '$compile', '$timeout', 'Activity', 'Actions',
-    function ($rootScope, $modal, $sce, $compile, $timeout, Activity, Actions) {
+  .directive('toDoItem', ['$rootScope', '$modal', '$sce', '$compile', '$timeout', 'Authentication', 'Activity', 'Actions',
+    function ($rootScope, $modal, $sce, $compile, $timeout, Authentication, Activity, Actions) {
     return {
       restrict: 'E',
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
@@ -20,7 +20,7 @@ angular.module('actions')
 
         //console.log(scope);
 
-        //console.log(scope.action);
+        // console.log(scope.action);
 
         // used to hide the completed alert
         // scope.status = {
@@ -29,22 +29,33 @@ angular.module('actions')
         //   completed: false
         // };
 
+        scope.followUpSubmitted = false;
+
         //scope.completed = false;
         if(!scope.action.completed) scope.action.completed = false;
 
         scope.newActivity = {
-          date: '',
-          title: scope.action.title,
+          startDate: '',
+          title: scope.action.activityTitle,
           key: scope.action.key
         };
 
-        // if action has custom fields, initialize those in the newActivity object
-        if(scope.action.followUp && scope.action.followUp.fields) {
-          scope.newActivity.fields = [];
-          angular.forEach(scope.action.followUp.fields, function(field, idx) {
-            scope.newActivity.fields.push({ title: field.title });
-          });
+        if(scope.action.isFollowUp) {
+          // get potential follow up startDate
+          if(scope.action.startDate) {
+            scope.newActivity.startDate = new Date(scope.action.startDate);
+          }
+
+          // if action has custom fields, initialize those in the newActivity object
+          if(scope.action.followUp && scope.action.followUp.fields) {
+            scope.newActivity.fields = [];
+            angular.forEach(scope.action.followUp.fields, function(field, idx) {
+              scope.newActivity.fields.push({ title: field.title });
+            });
+          }
         }
+
+
 
         var getSection = function(type) {
           switch(type) {
@@ -90,6 +101,8 @@ angular.module('actions')
           //   // });
           // });
 
+          scope.newActivity.startDate = new Date();
+
           var modalInstance = $modal.open({
             //animation: false,
             templateUrl: 'modules/actions/partials/modals/' + scope.action.cta.template,
@@ -99,18 +112,24 @@ angular.module('actions')
             }
           });
 
-          modalInstance.result.then(function (newActivity) {
-            scope.newActivity = newActivity;
+          modalInstance.result.then(function (result) {
+            scope.newActivity = result.newActivity;
+
             // this should check for isFollowUp (or should is be hasFollowUp)
-            if(scope.action.cta.type !== 'initialContent') scope.triggerFollowUp();
+            if(scope.action.hasFollowUp) scope.triggerFollowUp(true);
             // if(scope.action.isFollowUp && scope.action.isFollowUp) scope.triggerFollowUp();
-            else scope.createActivity();
+            else if(!result.modalError) scope.createActivity(true);
+
           }, function () {
             // modal cancelled
           });
         };
 
-        scope.triggerFollowUp = function(url, type) {
+        scope.triggerFollowUp = function(hasDoneAction, url, type) {
+
+          if(hasDoneAction) {
+            scope.newActivity.startDate = scope.action.startDate = new Date();
+          }
 
           scope.action.$followUp({ type: 'add' });
 
@@ -128,41 +147,51 @@ angular.module('actions')
           section.splice(scope.$index,1);
         };
 
-        scope.createActivity = function() {
+        scope.createActivity = function(isValid) {
 
-          $rootScope.loading = true;
+          if(scope.action.hasFollowUp) {
+            scope.followUpSubmitted = true;
+          }
 
-          console.log('create activity pre creation', scope.newActivity);
+          if(isValid) {
 
-          var activity = new Activity(scope.newActivity);
+            $rootScope.loading = true;
 
-          console.log('create activity post creation', scope.newActivity);
+            console.log('create activity pre creation', scope.newActivity);
 
-          activity.$save(function(response) {
+            var activity = new Activity(scope.newActivity);
 
-            console.log('create activity post save', response);
+            console.log('create activity post creation', scope.newActivity);
 
-            $rootScope.loading = false;
-            scope.action.completed = true;
-            scope.action.closeAlert = false;
+            activity.$save(function(response) {
 
-            // load new actions
-            var idx = scope.$index;
-            var newActions = Actions.query(
-              {key: scope.newActivity.key},
-              function() {
-                newActions.forEach(function (action) {
-                  var section = getSection(action.type);
-                  section.push(action);
-                  // scope.actions.splice(++idx, 0, action);
+              console.log('create activity post save', response);
+
+              Authentication.user = response;
+              $rootScope.loading = false;
+              scope.action.completed = true;
+              scope.action.closeAlert = false;
+
+              // load new actions
+              // var idx = scope.$index;
+              var newActions = Actions.query(
+                {key: scope.newActivity.key},
+                function() {
+                  console.log('new actions', newActions);
+                  newActions.forEach(function (action) {
+                    var section = getSection(action.type);
+                    section.push(action);
+                    // scope.actions.splice(++idx, 0, action);
+                  });
                 });
-              });
 
-          }, function(errorResponse) {
-            $rootScope.loading = false;
-            scope.error = errorResponse.data.message;
-            scope.closeErrorAlert = false;
-          });
+            }, function(errorResponse) {
+              $rootScope.loading = false;
+              scope.error = errorResponse.data.message;
+              scope.closeErrorAlert = false;
+            });
+
+          }
 
         }; // end of create activity
 

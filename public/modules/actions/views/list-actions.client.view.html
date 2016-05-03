@@ -1,5 +1,6 @@
 <section data-ng-controller="ActionsController" data-ng-init="list()">
     <div class="page-header">
+        <img src="/modules/core/img/sections/action.svg" alt="Take Action" />
         <h1>Take Action</h1>
         <p>Here are some actions you can take to build out your case. You may have tried a few of these already - make sure select “I’ve tried this” and tell us what happened.</p>
     </div>
@@ -19,7 +20,7 @@
     <div class="actions-container" collapse="recurringActionsCollapsed">
       <to-do-item data-ng-repeat="action in recurringActions"></to-do-item>
     </div>
-    <div class="section-header bg-danger" ng-click="legalActionsCollapsed = !egalActionsCollapsed">
+    <div class="section-header bg-danger" ng-click="legalActionsCollapsed = !legalActionsCollapsed">
       <h2>Legal Actions
         <span class="pull-right glyphicon" ng-class="legalActionsCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span>
       </h2>

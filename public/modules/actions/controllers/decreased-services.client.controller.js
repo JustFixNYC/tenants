@@ -5,7 +5,7 @@ angular.module('actions').controller('DecreasedServicesController', function ($s
   $scope.newActivity = newActivity;
 
   $scope.addUpdate = function () {
-    $modalInstance.close($scope.newActivity);
+    $modalInstance.close({ newActivity: $scope.newActivity });
   };
 
   $scope.cancel = function () {

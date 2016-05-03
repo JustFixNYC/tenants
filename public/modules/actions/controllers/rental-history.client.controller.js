@@ -11,7 +11,7 @@ angular.module('actions').controller('RentalHistoryController', ['$scope','$moda
     $scope.done = function () {
 
 
-      $modalInstance.close($scope.newActivity);
+      $modalInstance.close({ newActivity: $scope.newActivity });
       window.location.href = $scope.emailHref;
     };
 

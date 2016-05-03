@@ -51,6 +51,7 @@ var getAreaActions = function(user) {
 
         areaActions.push({
           title: areaTitle(area) + ' Issues',
+          activityTitle: 'Added Photos of ' + areaTitle(area) + ' Issues',
           content: 'Add some initial information about your <b>' + areaTitle(area) + '</b> issues. This will help to provide evidence for the issues you selected.',
           key: area,
           addIf: ['initial'],
@@ -58,10 +59,11 @@ var getAreaActions = function(user) {
           cta: {
             type: 'initialContent',
             buttonTitle: '<span class="glyphicon glyphicon-camera pull-left"></span> Add Details',
-            template: 'update-activity.client.view.html',
-            controller: 'UpdateActivityController'
+            template: 'add-details.client.view.html',
+            controller: 'AddDetailsController'
           },
-          isFollowUp: false
+          isFollowUp: false,
+          hasFollowUp: false
         });
 
       }
@@ -80,6 +82,8 @@ var generateActions = function(user) {
 
   var actions = getAreaActions(user);
 
+
+
   //iterate through full list of actions, push
   fullActions.forEach(function (action) {
 
@@ -89,14 +93,25 @@ var generateActions = function(user) {
 
     // prevents actions from being listed after completed
     // [TODO] check against time since completion
-    var reject = user.actionFlags.indexOf(action.key) !== -1 && action.type == 'once';
+    // var reject = user.actionFlags.indexOf(action.key) !== -1 && action.type == 'once';
+    var reject = _.contains(user.actionFlags, action.key) && action.type == 'once';
 
-    // checks if action is a followup or not
-    if(user.followUpFlags.indexOf(action.key) !== -1) action.isFollowUp = true;
-    else action.isFollowUp = false;
+    if(add && !reject) {
+      if(action.followUp) action.hasFollowUp = true;
+      else action.hasFollowUp = false;
 
-    if(add && !reject)
+      // checks if action is a followup or not
+      var followUpKeys = _.pluck(user.followUpFlags, 'key');
+
+      if(_.contains(followUpKeys, action.key)) {
+        // console.log('found', _.find(user.followUpFlags, { key: action.key}).startDate);
+        action.isFollowUp = true;
+        action.startDate = _.find(user.followUpFlags, { key: action.key}).startDate;
+      }
+      else action.isFollowUp = false;
+
       actions.push(action);
+    }
 
   });
 
@@ -131,15 +146,16 @@ var list = function(req, res) {
 var followUp = function(req, res) {
 
   var id = req.user._id,
-      key = req.body.key;
+      key = req.body.key,
+      startDate = req.body.startDate;       // this might be undefined - mongoose assigns the default value
   var query;
 
   if(req.query.type === 'add') {
-    query = User.update({ '_id': id }, {$addToSet: { 'followUpFlags': key }});
+    query = User.update({ '_id': id }, {$addToSet: { 'followUpFlags': { key: key, startDate: startDate } }});
     req.body.isFollowUp = true;
   }
   else {
-    query = User.update({ '_id': id }, {$pull: { 'followUpFlags': key }});
+    query = User.update({ '_id': id }, {$pull: { 'followUpFlags': { key : key } }});
     req.body.isFollowUp = false;
   }
 

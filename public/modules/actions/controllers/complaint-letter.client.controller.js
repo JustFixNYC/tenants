@@ -4,27 +4,50 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 	function ($rootScope, $scope, $sce, $modalInstance, newActivity, Pdf, Authentication, $window) {
 
 	  $scope.newActivity = newActivity;
-	  var user = Authentication.user;
+		$scope.newActivity.fields = [];
+		$scope.landlord = {
+			name: '',
+			address: ''
+		};
 
-	  $scope.done = function () {
-			$rootScope.loading = true;
-	  	Pdf.postComplaint().then(
+		$scope.status = {
+			loading: false,
+			created: false,
+			error: false
+		}
+
+
+	  // var user = Authentication.user;
+
+	  $scope.createLetter = function () {
+			$scope.status.loading = true;
+
+	  	Pdf.createComplaint($scope.landlord).then(
 	  		function success(data) {
-					$scope.newActivity.successResponse = $sce.trustAsHtml("View your link <a href='" + data + "'>Here</a>");
-					$rootScope.loading = false;
+					$scope.status.loading = false;
+					$scope.status.created = true;
+					$scope.letterUrl = data;
+					$scope.newActivity.fields.push({ title: 'letterURL', value: data });
 	  			console.log(data);
-	  			// TODO: render returned URL into a modal
-	  			// $window.open(data);
 	  		},
-	  		function failure(error){
-	  			console.log(error);
-	  			// throw new Error(error);
+	  		function failure(error) {
+					$scope.status.loading = false;
+					$scope.status.error = true;
+	  			$scope.errorCode = error;
 	  		}
 	  	);
-	    $modalInstance.close($scope.newActivity);
+
+
+
+
+	    // $modalInstance.close($scope.newActivity);
 	  };
 
-	  $scope.cancel = function () {
+	  $scope.cancel = function() {
 	    $modalInstance.dismiss('cancel');
 	  };
+
+		$scope.done = function() {
+			$modalInstance.close({ newActivity: $scope.newActivity, modalError: $scope.status.error });
+		};
 	}]);

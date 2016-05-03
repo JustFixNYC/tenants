@@ -14,6 +14,31 @@ body {
   // }
 }
 
+a.text-link {
+  color: $grass-dark;
+  font-size: 16px;
+  text-decoration: underline;
+
+  &:active, &:focus, &:hover {
+    color: $grass-light;
+  }
+}
+.text-success {
+  color: $grass-dark !important;
+}
+.text-danger {
+  color: $grapefruit-dark !important;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 16px;
+}
+h3 {
+  font-weight: 600;
+  font-size: 14px;
+}
+
 .content {
   // margin-bottom: 50px;
 	// margin-top: 100px;
@@ -42,10 +67,17 @@ body {
 
 .page-header {
   margin-top: 0;
+  margin-bottom: 15px;
   border-bottom: none;
   small {
   	display: block;
   	text-align: center;
+  }
+
+  img {
+    display: block;
+    width: 35px;
+    margin: 0 auto 10px auto;
   }
 
   h1 {
@@ -57,7 +89,7 @@ body {
   }
 
   p {
-    margin: 10px 0 0 0;
+    margin: 15px 0 0 0;
   }
 
 }
@@ -99,7 +131,7 @@ body {
 }
 
 .btn-block {
-  max-width: 300px;
+  max-width: 180px;
   margin: 0 auto;
 
   &.initial {
@@ -110,45 +142,6 @@ body {
 .btn .glyphicon {
   padding-top: 2px;
   padding-right: 5px;
-}
-
-.modal-title {
-  line-height: 1.1;
-  font-weight: 400;
-}
-
-.modal-body {
-
-  .modal-issue-list {
-    padding-left: 30px;
-    margin-bottom: 0;
-  }
-
-  .btn-group {
-    width: 100%;
-
-    & .btn {
-      text-align: left;
-    }
-  }
-
-  .ui-select-bootstrap .dropdown-menu li a {
-    color: #fff;
-
-    &:hover, &:focus {
-      color: #262626;
-    }
-  }
-  .ui-select-toggle {
-    min-height: 40px;
-  }
-
-  img {
-    margin: 0 auto 10px auto;
-    display: block;
-    max-height: 250px;
-    max-width: 100%;
-  }
 }
 
 .img-thumbnail {

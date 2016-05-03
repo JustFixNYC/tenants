@@ -54,3 +54,34 @@ exports.hasAuthorization = function(roles) {
 		});
 	};
 };
+
+
+/**
+ * User public view routing middleware
+ */
+exports.hasPublicView = function(req, res, next) {
+
+	// allow for either /:key or ?key=
+	var key = req.params.key || req.query.key;
+
+	User.findOne({
+		'sharing.key' : key
+	}).exec(function(err, user) {
+		if (err) {
+			return res.status(500).send({ message: 'Error in checking authorization' });
+		}
+		else if(!user || !user.sharing.enabled) {
+			// [TODO] make this an adequate response page
+			return res.status(401).send({ message: 'Unauthorized request.' });
+		}
+		else {
+			req.tempUser = {
+				fullName: user.fullName,
+				phone: user.phone,
+				activity: user.activity
+			};
+			next();
+		}
+	});
+
+};

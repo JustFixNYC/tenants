@@ -1,0 +1,20 @@
+<div class="activity-panel-letter" ng-init="instructionsCollapsed = true">
+  <p>Link for printing:</p>
+  <p><span class="glyphicon glyphicon-file text-success"></span><a class="text-link" ng-href="{{ activity.fields[0].value }}" target="_blank">Letter of Complaint PDF</a></p>
+  <a href="" class="instructions-toggle" ng-click="instructionsCollapsed = !instructionsCollapsed">
+    <span ng-if="instructionsCollapsed">+</span>
+    <span ng-if="!instructionsCollapsed">-</span>
+     Print Instructions
+  </a>
+  <div collapse="instructionsCollapsed">
+    <p>
+    Don’t have a printer at home?
+    <ol>
+      <li>Log into the JustFix.nyc website at the library or other public computer</li>
+      <li>Click on the link above to open PDF</li>
+      <li>File > Print from browser</li>
+      <li>Make sure to sign out!</li>
+    </ol>
+    </p>
+  </div>
+</div>

@@ -5,7 +5,7 @@ angular.module('actions').controller('HpactionController', function ($scope, $mo
   $scope.newActivity = newActivity;
 
   $scope.done = function () {
-    $modalInstance.close($scope.newActivity);
+    $modalInstance.close({ newActivity: $scope.newActivity });
   };
 
   $scope.cancel = function () {
