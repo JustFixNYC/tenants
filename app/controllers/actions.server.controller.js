@@ -59,8 +59,8 @@ var getAreaActions = function(user) {
           cta: {
             type: 'initialContent',
             buttonTitle: '<span class="glyphicon glyphicon-camera pull-left"></span> Add Details',
-            template: 'update-activity.client.view.html',
-            controller: 'UpdateActivityController'
+            template: 'add-details.client.view.html',
+            controller: 'AddDetailsController'
           },
           isFollowUp: false,
           hasFollowUp: false

@@ -64,7 +64,7 @@ var create = function(req, res) {
 
     // remove from follow up flags
     var idx = _.findIndex(user.followUpFlags, { key: activity.key});
-    if(idx < 0) return res.status(500).send({ message: 'Follow up key not found, this is bad' });
+    // if(idx < 0) return res.status(500).send({ message: 'Follow up key not found, this is bad' });
     if(idx !== -1) user.followUpFlags.splice(idx, 1);
 
     // add to action flags
@@ -134,7 +134,6 @@ var create = function(req, res) {
             if (err) {
               res.status(400).send(err);
             } else {
-              console.log('NEW USER', user.followUpFlags, user.activity);
               res.json(user);
               res.end(); // important to update session
             }
