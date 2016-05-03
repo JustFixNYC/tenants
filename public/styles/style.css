@@ -879,6 +879,12 @@ header {
       line-height: 28px; }
   .activities-container .share-section .alert {
     margin-bottom: 30px; }
+  .activities-container .share-section .share-link {
+    margin-bottom: 30px; }
+    .activities-container .share-section .share-link p {
+      margin-bottom: 5px; }
+    .activities-container .share-section .share-link a {
+      text-decoration: underline; }
 .activities-container .activity-panel {
   margin-left: -15px;
   margin-right: -15px; }

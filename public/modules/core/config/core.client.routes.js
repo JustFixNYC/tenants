@@ -15,13 +15,20 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 
 
 		// Redirect to home view when route not found
-		$urlRouterProvider.otherwise('/');
+		$urlRouterProvider.otherwise('/not-found');
 
 		// Home state routing
-		$stateProvider.
-		state('landing', {
+		$stateProvider
+		.state('landing', {
 			url: '/',
 			templateUrl: 'modules/core/views/landing.client.view.html',
+			data: {
+				disableBack: true
+			}
+		})
+		.state('not-found', {
+			url: '/not-found',
+			templateUrl: 'modules/core/views/404.client.view.html',
 			data: {
 				disableBack: true
 			}

@@ -72,7 +72,7 @@ exports.hasPublicView = function(req, res, next) {
 		}
 		else if(!user || !user.sharing.enabled) {
 			// [TODO] make this an adequate response page
-			return res.status(401).send({ message: 'Unauthorized request.' });
+			return res.status(403).send({ message: 'Unauthorized request.' });
 		}
 		else {
 			req.tempUser = {

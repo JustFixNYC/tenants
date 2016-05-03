@@ -13,14 +13,14 @@
       <div class="container">
         <div class="row share-controls">
           <div class="col-xs-6">
-            <a  class="btn btn-success disabled btn-block pull-left">
-                Export PDF
+            <a  class="btn btn-success btn-block pull-left" ng-class="{ 'disabled' : !authentication.user.sharing.enabled }">
+                Email
             </a>
           </div>
           <div class="col-xs-6">
-            <button class="btn btn-success disabled btn-block pull-right">
+            <button class="btn btn-success btn-block pull-right"  ng-class="{ 'disabled' : !authentication.user.sharing.enabled }">
                 <!-- <span class="glyphicon glyphicon-ok pull-left" style="padding-top:1px"></span> -->
-                Share Case
+                Text
             </button>
           </div>
         </div>
@@ -38,9 +38,9 @@
           Your must create a public URL to share this page. The public view only shows your case history - it does not give access to the rest of your account.
         </div>
 
-        <div ng-if="authentication.user.sharing.enabled">
-          <p class="lead"><b>Link to share this page: </b><a ng-href="/public/{{authentication.user.sharing.key}}">justfix.nyc/public/{{authentication.user.sharing.key}}</a></p>
-          <br />
+        <div class="share-link" ng-if="authentication.user.sharing.enabled">
+          <p><b>Link to share this page: </b></p>
+          <a class="lead" ng-href="/public/{{authentication.user.sharing.key}}">justfix.nyc/public/{{authentication.user.sharing.key}}</a>
         </div>
 
       </div>  <!-- .container -->
