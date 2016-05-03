@@ -3,59 +3,65 @@
 <form name="create-user" class="container">
 	<div class="form-group">
 		<label>First Name</label><br/>
-		<input class="form-control" type="text" placeholder="First Name" name="First Name" ng-model="userInfo.firstName"><br/>
+		<input class="form-control" type="text" placeholder="First Name" name="First Name" ng-model="newUser.firstName"><br/>
 	</div>
 
 	<div class="form-group">
 		<label>Last Name</label><br/>
-		<input class="form-control" type="text" placeholder="Last Name" name="Last Name" ng-model="userInfo.lastName"><br/>
+		<input class="form-control" type="text" placeholder="Last Name" name="Last Name" ng-model="newUser.lastName"><br/>
 	</div>
 
 	<!-- probably should reapproach this -->
 	<div class="form-group">
 		<label>Borough</label><br/>
-		<input type="button" value="Brooklyn" class="btn btn-default borough" ng-class="{'selected': userInfo.borough === 'Brooklyn'}" ng-click="userInfo.borough = 'Brooklyn'">
-		<input type="button" value="Queens" class="btn btn-default borough" ng-class="{'selected': userInfo.borough === 'Queens'}" ng-click="userInfo.borough = 'Queens'">
-		<input type="button" value="Bronx" class="btn btn-default borough" ng-class="{'selected': userInfo.borough === 'Bronx'}" ng-click="userInfo.borough = 'Bronx'">
-		<input type="button" value="Manhattan" class="btn btn-default borough" ng-class="{'selected': userInfo.borough === 'Manhattan'}" ng-click="userInfo.borough = 'Manhattan'">
-		<input type="button" value="Staten Island" class="btn btn-default borough" ng-class="{'selected': userInfo.borough === 'Staten Island'}" ng-click="userInfo.borough = 'Staten Island'">
+		<input type="button" value="Brooklyn" class="btn btn-default borough" ng-class="{selected: newUser.borough == 'Brooklyn'}" ng-click="newUser.borough = 'Brooklyn'">
+		<input type="button" value="Queens" class="btn btn-default borough" ng-class="{selected: newUser.borough == 'Queens'}" ng-click="newUser.borough = 'Queens'">
+		<input type="button" value="Bronx" class="btn btn-default borough" ng-class="{selected: newUser.borough == 'Bronx'}" ng-click="newUser.borough = 'Bronx'">
+		<input type="button" value="Manhattan" class="btn btn-default borough" ng-class="{selected: newUser.borough == 'Manhattan'}" ng-click="newUser.borough = 'Manhattan'">
+		<input type="button" value="Staten Island" class="btn btn-default borough" ng-class="{selected: newUser.borough == 'Staten Island'}" ng-click="newUser.borough = 'Staten Island'">
 	</div>
 
 	<div class="form-group">
 		<label>Street Address</label><br/>
-		<input class="form-control" type="text" placeholder="Street Address" name="streetz" ng-model="userInfo.address "><br/>
+		<input class="form-control" type="text" placeholder="Street Address" name="street" ng-model="newUser.address "><br/>
 	</div>
 
 	<div class="form-group apt">
 		<label>Apartment #</label><br>
-		<input class="form-control" type="text" placeholder="Apt" name="apt" ng-model="userInfo.unit"><br/>
+		<input class="form-control" type="text" placeholder="Apt" name="apt" ng-model="newUser.unit"><br/>
 	</div>
 
 	<div class="form-group">
 		<label>Do you live in NYCHA housing?</label><br/>
-		<button class="btn btn-default nycha" ng-class="{'selected': userInfo.nycha === 'yes'}" ng-click="userInfo.nycha = 'yes'">Yes</button>
-		<button class="btn btn-default nycha" ng-class="{'selected': userInfo.nycha === 'no'}" ng-click="userInfo.nycha = 'no'">No</button>
+		<button class="btn btn-default nycha" ng-class="{'selected': newUser.nycha === 'yes'}" ng-click="newUser.nycha = 'yes'">Yes</button>
+		<button class="btn btn-default nycha" ng-class="{'selected': newUser.nycha === 'no'}" ng-click="newUser.nycha = 'no'">No</button>
 	</div>
 
 	<div class="form-group">
 		<label>Phone Number <italic>This will be your username</italic></label><br/>
-		<input class="form-control" type="text" placeholder="Phone #" name="phone" ng-model="userInfo.phone"><br/>
+		<input class="form-control" type="text" placeholder="Phone #" name="phone" ng-model="newUser.phone"><br/>
 	</div>
 
 	<div class="form-group">
 		<label>Email Address</label><br/>
-		<input class="form-control" type="text" placeholder="yourname@domain.com" name="email" ng-model="userInfo.email"><br/>
+		<input class="form-control" type="text" placeholder="yourname@domain.com" name="email" ng-model="newUser.email"><br/>
 	</div>
 
 	<div class="form-group">
 		<label>Create password for your account</label><br/>
-		<input class="form-control" type="password" placeholder="password" id="pw1" name="pw" ng-model="userInfo.password"><br/>
+		<input class="form-control" type="password" placeholder="password" id="pw1" name="pw" ng-model="newUser.password"><br/>
 	</div>
 
 	<div class="form-group">
 		<label>Re-enter Password</label><br/>
 		<input class="form-control" ng-model="pw2" type="password" placeholder="verify" name="pw2" pw-check="pw1"><br/>
 	</div>
+	<div class="clearfix"></div>
+	<div class="error alert alert-danger" ng-show="errorInRequest">
+		<span class="generalError" ng-hide="pwError">{{error}}</span>
+		<span class="pwError" ng-show="pwError">Password needs to be longer than 6 characters.</span>
+	</div>
+	<div class="clearfix"></div>
 
 	<div type="button" class="btn btn-default back pull-left" ng-click="back()">
 		Back
@@ -63,7 +69,4 @@
 	<div type="button" class="btn btn-primary create-btn pull-right" ng-click="createAndNext()">
 		Create Account
 	</div>
-
-	<div class="error alert alert-danger" ng-show="errorInRequest">
-		Sorry! there was an isue with this request. Please make sure all fields are filled out and try again.
 </form>

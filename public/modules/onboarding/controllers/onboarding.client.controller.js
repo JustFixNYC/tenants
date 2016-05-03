@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$scope', 'Authentication', 'Users', '$location', 'Referrals',
-	function($scope, Authentication, User, $location, Referrals) {
+angular.module('onboarding').controller('OnboardingController', ['$scope', '$location', 'Referrals', '$http',
+	function($scope, $location, Referrals, $http) {
 
 		$scope.codeError = false;
 		$scope.referralSuccess = false;
@@ -36,9 +36,54 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', 'Auth
 
 	  };
 
+	  // Remove this -- replace w/ UI router
 	  $scope.goNext = function() {
 	  	$location.path('/onboarding/checklist');
 	  }
+
+
+	  // SIGNUP
+		if(user.fullName) {
+			$scope.newUser.firstName = user['fullName'].split(' ')[0];
+			$scope.newUser.lastName = user['fullName'].split(' ')[1];
+		}
+
+		if(!user.borough) {
+			$scope.newUser.borough = 'Bronx';
+		}
+
+		if(!user.nycha) {
+			$scope.newUser.nycha = 'yes';
+		}
+
+		$scope.createAndNext = function () {
+
+			$scope.newUser.fullName = $scope.newUser.firstName + ' ' + $scope.newUser.lastName;
+
+			$http({
+				method: 'POST',
+				url: '/auth/signup',
+				data: $scope.newUser
+			}).then(function(success){
+				console.log('success!');
+				console.log(success);
+				$location.path('/onboarding/tutorial');
+
+			}, function(err) {
+				console.log(err);
+				if(err.data.errors) {
+					$scope.errorInRequest = true;
+					$scope.pwError = true;
+				} else {
+					$scope.pwError = false;
+					$scope.errorInRequest = true;
+					$scope.error = err.data;
+				}
+			})
+
+			/*var savingUser = new Authentication.prepUser(Authentication.user);
+			savingUser.$signUp*/
+		}
 
 
 	}]);

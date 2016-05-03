@@ -798,11 +798,6 @@ header {
   height: 150px;
   overflow: hidden; }
 
-.clearfix:after {
-  content: "";
-  display: table;
-  clear: both; }
-
 .onboarding-code-entry {
   text-align: center; }
   .onboarding-code-entry h3 {
@@ -902,6 +897,8 @@ header {
     height: 1.5em;
     font-size: 1.5em;
     line-height: 0.5em; }
+  .issues-modal .button-wrap {
+    margin: 0 10px; }
 
 .onboarding-user-create {
   text-align: center; }
@@ -919,14 +916,18 @@ header {
       text-align: left; }
       .onboarding-user-create form .form-group.apt {
         width: 50%; }
-  .onboarding-user-create .borough,
-  .onboarding-user-create .nycha {
-    margin: 0.25em;
-    width: auto; }
-    .onboarding-user-create .borough.selected,
-    .onboarding-user-create .nycha.selected {
-      background: #0096D7;
-      color: #fff; }
+
+.borough,
+.nycha {
+  margin: 0.25em;
+  width: auto;
+  -webkit-transition: 0.2s all;
+  -moz-transition: 0.2s all;
+  transition: 0.2s all; }
+  .borough.selected,
+  .nycha.selected {
+    background: #0096D7;
+    color: #fff; }
 
 .onboarding-tutorial {
   margin-left: -15px;
@@ -955,8 +956,15 @@ header {
   .onboarding-tutorial .alert {
     position: relative;
     top: -22px;
+    border-radius: 0px;
     color: white;
-    text-align: left; }
+    text-align: left;
+    margin-left: -15px;
+    margin-right: -15px; }
+    .onboarding-tutorial .alert::after {
+      clear: both;
+      content: "";
+      display: table; }
     .onboarding-tutorial .alert .success-check {
       margin-right: 10px;
       padding: 5px;

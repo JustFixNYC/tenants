@@ -5,7 +5,7 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider){
 
     // Jump to first child state
-    $urlRouterProvider.when('/onboarding', '/onboarding/code');
+    $urlRouterProvider.when('/onboarding', '/onboarding/referral');
 
   	// Onboarding state routing
     $stateProvider
@@ -16,7 +16,7 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
         abstract: true
       })
       .state('onboarding.accessCode', {
-        url: '/code',
+        url: '/referral',
         templateUrl: 'modules/onboarding/partials/onboarding-code.client.view.html'
       })      
       .state('onboarding.problems', {
