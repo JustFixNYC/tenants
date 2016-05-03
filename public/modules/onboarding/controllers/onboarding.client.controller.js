@@ -36,12 +36,6 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', '$loc
 
 	  };
 
-	  // Remove this -- replace w/ UI router
-	  $scope.goNext = function() {
-	  	$location.path('/onboarding/checklist');
-	  }
-
-
 	  // SIGNUP
 		if(user.fullName) {
 			$scope.newUser.firstName = user['fullName'].split(' ')[0];
@@ -59,6 +53,7 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', '$loc
 		$scope.createAndNext = function () {
 
 			$scope.newUser.fullName = $scope.newUser.firstName + ' ' + $scope.newUser.lastName;
+			console.log($scope.newUser);
 
 			$http({
 				method: 'POST',

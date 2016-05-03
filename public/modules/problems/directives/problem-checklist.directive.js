@@ -55,7 +55,9 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
           // modal opening/closing
           // passing scopes
 					scope.open = function(problem) {
-
+				   	
+						// Reset current and global user
+				   	ourUserCurrentProblem = undefined;
 						scope.currentProblem = problem;
 
 						// check if user has already filled out the CURRENT problem, set it, and remove it from ALL problems
@@ -70,6 +72,7 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 						if(!ourUserCurrentProblem) {
 							ourUserCurrentProblem = newProblem(problem);
 						}
+						console.log(ourUserCurrentProblem);
 
 						// Open modal
 						var modalInstance = $modal.open({
