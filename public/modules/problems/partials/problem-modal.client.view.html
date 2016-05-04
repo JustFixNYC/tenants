@@ -2,24 +2,47 @@
 	<div class="close-modal glyphicon glyphicon-remove" ng-click="cancel()">
 	</div>
   <div class="modal-header">
-      <h4 class="modal-title">{{currentProblem.title}}</h4>
+      <h4 class="modal-title">
+				<span class="glyphicon" ng-class="userProblem.icon"></span>
+				{{userProblem.title}}
+				<span class="badge pull-right" data-ng-class="{ 'badge-primary' : userProblem.issues.length }">{{ userProblem.issues.length }}</span>
+			</h4>
   </div>
-  <div class="selecter multiple">
-		<div class="selection-module">
-			<a class="selection-issue" problem-issue-item ng-repeat="issue in issues track by $index" issue="{{issue.key}}" ng-click="selectIssue(issue)">
-				{{issue.key}} <span class="glyphicon glyphicon-ok pull-right"></span>
-			</a>
-			<a problem-issue-item id="other-block" class="selection-issue other">
-				Other <span class="selector-plus pull-right btn btn-primary" ng-click="toggleOther()" jump-to="other-block">+</span>
-				<div class="form-group" ng-class="{'slide-up': addMore}" ng-show="addMore == true">
-					<textarea ng-model="other.value" value="other.value" class="form-control"></textarea>
+	<div class="modal-body">
+		<div class="selecter multiple">
+			<div class="selecter-options">
+				<div 	problem-issue-item
+							class="selecter-item"
+							data-ng-repeat="issue in issues"
+							data-ng-click="select()"
+							data-ng-class="{ 'selected': isSelected() }">
+							{{ issue.key }}
+							<span data-ng-show="isSelected()" class="selected-icon pull-right glyphicon glyphicon-ok" aria-hidden="true"></span>
 				</div>
-			</a>
+				<div 	problem-issue-item
+							class="selecter-item item-other"
+							ng-click="toggleOther()">
+							<div ng-hide="addMore">
+								<a>+ Add Other</a>
+							</div>
+							<div ng-show="addMore">
+								<div class="input-group">
+									<input type="text"
+												class="form-control"
+												data-ng-model="newOther.key"
+								 				placeholder="What's the issue?">
+									<span class="input-group-btn">
+										<button class="btn btn-primary glyphicon glyphicon-plus" type="button" ng-click="addOther($event)"></button>
+									</span>
+								</div><!-- /input-group -->
+							</div>
+				</div>
+			</div>
 		</div>
-		<div class="button-wrap">
-			<span class="btn btn-primary pull-right col-xs-6 save" ng-click="save()">Save</span>
-			<span class="btn btn-default pull-left col-xs-5 cancel" ng-click="cancel()">Cancel</span>
-			<div class="clearfix"></div>
-		</div>
-  </div>
+	</div>
+	<div class="modal-footer">
+		<span class="btn btn-default pull-left col-xs-4 cancel" ng-click="cancel()">Cancel</span>
+		<span class="btn btn-primary pull-right col-xs-6 save" ng-click="save()">Save</span>
+	</div>
+
 </div>

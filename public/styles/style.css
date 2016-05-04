@@ -287,6 +287,12 @@ loading.ng-enter-active, loading.ng-leave {
     opacity: 0; }
   40% {
     opacity: 1; } }
+.modal-dialog {
+  margin: 20px; }
+  @media (min-width: 768px) {
+    .modal-dialog {
+      margin: 30px auto; } }
+
 .modal-title {
   font-size: 18px;
   color: #434A54;
@@ -990,53 +996,47 @@ header {
     .problems .btn-default {
       margin-left: 80px; } }
 
-.issues-modal {
-  padding: 0 0 10px 0; }
-  .issues-modal .close-modal {
-    position: absolute;
-    right: -5px;
-    top: -5px;
-    border-radius: 50%;
-    background-color: #E0E0E0;
-    padding: 8px 0;
-    height: 30px;
-    width: 30px;
-    text-align: center;
-    cursor: pointer; }
-  .issues-modal .modal-header {
-    padding: 10px; }
-  .issues-modal .selection-module {
-    margin: 0px 10px 10px 10px;
-    border: 1px solid #E0E0E0;
-    border-radius: 3px;
-    height: 70vh;
-    overflow: auto; }
-  .issues-modal .selection-issue {
-    display: block;
-    border-top: 1px solid #E0E0E0;
-    padding: 15px 15px;
-    cursor: pointer;
-    -webkit-transition: 0.2s all;
-    -moz-transition: 0.2s all;
-    transition: 0.2s all; }
-    .issues-modal .selection-issue .glyphicon-ok {
-      opacity: 0; }
-    .issues-modal .selection-issue:first-child {
-      border-top: none; }
-    .issues-modal .selection-issue.active {
-      background: #0084be;
-      color: #FFF; }
-      .issues-modal .selection-issue.active .glyphicon-ok {
-        opacity: 1; }
-  .issues-modal .selector-plus {
+.issues-modal .close-modal {
+  position: absolute;
+  right: -13px;
+  top: -11px;
+  border-radius: 50%;
+  background-color: #E0E0E0;
+  padding: 8px 0;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  cursor: pointer; }
+.issues-modal .modal-header .modal-title {
+  border-bottom: none;
+  padding-bottom: 0; }
+  .issues-modal .modal-header .modal-title .glyphicon {
+    font-size: 24px;
+    padding-right: 5px; }
+  .issues-modal .modal-header .modal-title .badge {
     position: relative;
-    top: -8px;
-    width: 150px;
-    height: 1.5em;
-    font-size: 1.5em;
-    line-height: 0.5em; }
-  .issues-modal .button-wrap {
-    margin: 0 10px; }
+    top: 8px; }
+.issues-modal .modal-body .selecter-options {
+  border: 1px solid #E6E9ED; }
+  .issues-modal .modal-body .selecter-options .selecter-item {
+    padding: 10px; }
+    .issues-modal .modal-body .selecter-options .selecter-item .input-group .btn.glyphicon {
+      top: 0; }
+    .issues-modal .modal-body .selecter-options .selecter-item.item-other:hover {
+      background-color: #fff; }
+.issues-modal .selection-module {
+  margin: 0px 10px 10px 10px;
+  border: 1px solid #E0E0E0;
+  border-radius: 3px;
+  height: 70vh;
+  overflow: auto; }
+.issues-modal .selector-plus {
+  position: relative;
+  top: -8px;
+  width: 150px;
+  height: 1.5em;
+  font-size: 1.5em;
+  line-height: 0.5em; }
 
 .onboarding-user-create {
   text-align: center; }

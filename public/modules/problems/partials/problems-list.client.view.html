@@ -1,8 +1,8 @@
 <div class="problems col-lg-3 col-md-4 col-sm-4 col-xs-6" ng-repeat="problem in problems">
   <a href="" data-toggle="modal" data-target="{{problem.key}" ng-click="open(problem)">
-    <div class="problem-wrap" ng-class="{'active': problem.active}">
+    <div class="problem-wrap" ng-class="{'active': ourUser.problems.containsByKey(problem.key) }">
       <div class="problem-icon">
-        <span class="glyphicon {{problem.icon}}"></span>
+        <span class="glyphicon" ng-class="problem.icon"></span>
       </div>
       <div class="problem-text">
         {{problem.title}}
