@@ -3,12 +3,13 @@
 angular.module('onboarding').controller('OnboardingController', ['$scope', '$location', 'Referrals', '$http',
 	function($scope, $location, Referrals, $http) {
 
-		$scope.codeError = false;
 		$scope.referralSuccess = false;
 		$scope.codeError = false;
 		$scope.codeWrong = false;
 
 		$scope.newUser = {};
+		// create newUser.problems only once (handles next/prev)
+		$scope.newUser.problems = [];
 
 	  $scope.newUser.accessCode = $scope.newUser.accessCode || '';
 
@@ -27,7 +28,7 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', '$loc
 	          $scope.referral = success.referral;
 	        } else {
 	         	$scope.codeWrong = true;
-	         	$scope.referralSuccess = true;
+						$scope.referralSuccess = true;
 	        }
 	      }, function(error) {
 	      	console.log(error);

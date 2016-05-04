@@ -1,4 +1,5 @@
 // Vars that should be globo but yolo!
+// lol
 $grey: #E0E0E0;
 
 .onboarding-code-entry {
@@ -33,7 +34,7 @@ $grey: #E0E0E0;
 }
 
 .problems {
-	
+
 	.problem-wrap {
 		margin: 0em auto 1em auto;
 		border-radius: 10px;
@@ -90,12 +91,12 @@ $grey: #E0E0E0;
 }
 
 .issues-modal {
-	padding: 0 0 10px 0;
+	// padding: 20px;
 
 	.close-modal {
 		position: absolute;
-		right: -5px;
-		top: -5px;
+		right: -13px;
+		top: -11px;
 		border-radius: 50%;
 		background-color: $grey;
 		padding: 8px 0;
@@ -106,7 +107,43 @@ $grey: #E0E0E0;
 	}
 
 	.modal-header {
-		padding: 10px;
+		.modal-title {
+			border-bottom: none;
+			padding-bottom: 0;
+
+			.glyphicon {
+				font-size: 24px;
+				padding-right: 5px;
+			}
+			.badge {
+				position: relative;
+				top: 8px;
+			}
+		}
+	}
+
+	.modal-body {
+
+		.selecter-options {
+
+			// talk to ashley about this
+			// max-height: none;
+			border: 1px solid $lightgray-dark;
+
+			.selecter-item {
+				padding: 10px;
+
+				.input-group .btn.glyphicon {
+					top: 0;
+				}
+
+				&.item-other:hover {
+					background-color: #fff;
+				}
+			}
+
+
+		}
 	}
 
 	.selection-module {
@@ -117,33 +154,7 @@ $grey: #E0E0E0;
 		overflow: auto;
 	}
 
-	.selection-issue {
-		display: block;
-		border-top: 1px solid $grey;
-		padding: 15px 15px;
-		cursor: pointer;
-
-		@include transition(0.2s all);
-
-		.glyphicon-ok {
-			opacity: 0;
-		}
-
-		&:first-child {
-			border-top: none;
-		}
-
-		&.active {
-			background: darken($justfix-blue, 5);
-			color: $white;
-
-			.glyphicon-ok {
-				opacity: 1;
-			}
-		}
-	}
-
-	.selector-plus { 
+	.selector-plus {
 		position: relative;
 		top: -8px;
 		width: 150px;
@@ -152,9 +163,6 @@ $grey: #E0E0E0;
 		line-height: 0.5em;
 	}
 
-	.button-wrap {
-		margin: 0 10px;
-	}
 
 }
 
@@ -203,7 +211,7 @@ $grey: #E0E0E0;
 .onboarding-tutorial {
 	// This is full of lies.
 	@include make-row();
-	
+
 	// WTF
 	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#6db3f2+0,0096d7+0,0e6594+100 */
 	background: #6db3f2; /* Old browsers */
