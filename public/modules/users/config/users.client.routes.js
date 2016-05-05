@@ -10,6 +10,11 @@ angular.module('users').config(['$stateProvider',
 			templateUrl: 'modules/users/views/settings/landing.client.view.html',
 			data: { protected: true }
 		}).
+		state('edit', {
+			url: '/settings/edit',
+			templateUrl: 'modules/users/views/settings/edit-profile.client.view.html',
+			data: { protected: true }
+		}).
 		state('password', {
 			url: '/settings/password',
 			templateUrl: 'modules/users/views/settings/change-password.client.view.html'
