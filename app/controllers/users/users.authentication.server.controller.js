@@ -58,6 +58,7 @@ exports.signup = function(req, res) {
   // Add missing user fields
   user.provider = 'local';
   user.actionFlags.push('initial');
+  user.fullName = user.firstName + ' ' + user.lastName;
 
   // check issues for emergency ones
   for(var area in user.issues) {

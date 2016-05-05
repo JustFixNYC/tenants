@@ -11,30 +11,31 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', '$loc
 		// create newUser.problems only once (handles next/prev)
 		$scope.newUser.problems = [];
 
-	  $scope.newUser.accessCode = $scope.newUser.accessCode || '';
-
-	  if($scope.newUser.accessCode !== '') {
-	  	$scope.referralSuccess = true;
-	  }
+	  $scope.accessCode = {
+			value: '',
+			valid: false
+		};
 
 	  $scope.validateCode = function() {
 
-	    var referral = new Referrals();
-	    referral.$validate({ code: $scope.newUser.accessCode },
-	      function(success) {
-
-	        if(success.referral) {
-	          $scope.referralSuccess = true;
-	          $scope.referral = success.referral;
-	        } else {
-	         	$scope.codeWrong = true;
-						$scope.referralSuccess = true;
-	        }
-	      }, function(error) {
-	      	console.log(error);
-	        $scope.codeError = true;
-	      });
-
+			// handles back button
+			if(!$scope.newUser.referral) {
+				var referral = new Referrals();
+		    referral.$validate({ code: $scope.accessCode.value },
+		      function(success) {
+		        if(success.referral) {
+		          $scope.accessCode.valid = true;
+		          $scope.newUser.referral = success.referral;
+							$scope.newUser.referral.code = $scope.accessCode.value;
+		        } else {
+		         	$scope.codeWrong = true;
+		        }
+		      }, function(error) {
+		        $scope.codeError = true;
+		      });
+			} else {
+				$scope.accessCode.valid = true;
+			}
 	  };
 
 	  // SIGNUP
