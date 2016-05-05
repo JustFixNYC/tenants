@@ -7,6 +7,11 @@ angular.module('users').config(['$stateProvider',
 		$stateProvider.
 		state('profile', {
 			url: '/settings/profile',
+			templateUrl: 'modules/users/views/settings/landing.client.view.html',
+			data: { protected: true }
+		}).
+		state('edit', {
+			url: '/settings/edit',
 			templateUrl: 'modules/users/views/settings/edit-profile.client.view.html',
 			data: { protected: true }
 		}).

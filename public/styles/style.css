@@ -691,6 +691,17 @@ header {
 @media (min-width: 992px) {
   .nav-users {
     position: fixed; } }
+.user-profile p {
+  margin: 0; }
+.user-profile a {
+  display: block;
+  background: #fff;
+  padding: 10px 15px;
+  border: 1px solid #eeeeee;
+  border-top: none;
+  color: #555555;
+  cursor: pointer; }
+
 .remove-account-container {
   display: inline-block;
   position: relative; }

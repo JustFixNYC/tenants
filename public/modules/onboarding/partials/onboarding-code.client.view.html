@@ -1,6 +1,8 @@
 
-<div ng-hide="referralSuccess">
-	<h3>Welcome to<br/>JustFix.nyc!</h3>
+<div ng-hide="referralSuccess == true">
+	<div class="page-header">
+		<h1>Welcome to<br/>JustFix.nyc!</h1>
+	</div>
 	<p>Please enter the access code provided by your advocate so you can gain access to the website</p>
 	<div class="error-text alert alert-danger" ng-show="majorError">Whoa, looks like we're having some trouble on our end. Please refresh this page and try again.</div>
 	<form>

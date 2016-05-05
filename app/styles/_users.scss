@@ -3,6 +3,21 @@
 		position: fixed;
 	}
 }
+.user-profile {
+	p {
+		margin: 0;
+	}
+
+	a {
+		display: block;
+		background: #fff;
+		padding: 10px 15px;
+		border: 1px solid $gray-lighter;
+		border-top: none;
+		color: $gray;
+		cursor: pointer;
+	}
+}
 .remove-account-container {
 	display: inline-block;
 	position: relative;
