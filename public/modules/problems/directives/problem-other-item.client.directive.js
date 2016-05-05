@@ -1,23 +1,10 @@
 'use strict';
 
-angular.module('onboarding').directive('problemIssueItem', ['$timeout', function($timeout){
+angular.module('onboarding').directive('problemOtherItem', ['$timeout', '$filter', function($timeout, $filter){
   return {
     template: '',
     restrict: 'A',
     link: function(scope, element, attrs) {
-
-      // we should just take advantage of angulars data binding here
-  		scope.isSelected = function() {
-        return scope.userProblem.issues.containsByKey(scope.issue.key);
-  		};
-
-  		scope.select = function() {
-        if(scope.isSelected()) {
-          scope.userProblem.issues.removeByKey(scope.issue.key);
-        } else {
-          scope.userProblem.issues.push(scope.issue);
-        }
-  		};
 
     	// Our parent's checkString, and whether to make these active
     	// if(scope.checkString) {
@@ -38,13 +25,25 @@ angular.module('onboarding').directive('problemIssueItem', ['$timeout', function
 			// 	scope.$parent.tempIssues.push(issue);
 			// };
 
-      scope.toggleOther = function() {
+      element.on('touchstart touchend', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+
+      scope.addMore = false;
+
+      scope.toggleOther = function(event) {
+
+        event.preventDefault();
+        event.stopPropagation();
         scope.addMore = true;
 
         scope.newOther = {
           key: '',
           emergency: false
         };
+
+        element.find('input')[0].focus();
 
         // $timeout waits until after scope.addMore has been applied
         $timeout(function () {
@@ -59,10 +58,14 @@ angular.module('onboarding').directive('problemIssueItem', ['$timeout', function
         event.stopPropagation();
 
         // angular doesn't like duplicates...
-        if(!scope.userProblem.issues.containsByKey(scope.newOther.key)) {
-          // make sure we push clones, not references
+        if(!scope.userProblem.issues.containsByKey(scope.newOther.key) && scope.newOther.key.length) {
+
+          scope.newOther.key = $filter('titlecase')(scope.newOther.key);
+
           scope.issues.push(scope.newOther);
           scope.userProblem.issues.push(scope.newOther);
+
+          // make sure we create a new reference
           scope.newOther = {
             key: '',
             emergency: false

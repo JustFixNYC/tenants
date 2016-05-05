@@ -27,6 +27,20 @@ angular.module('problems').controller('ModalProblemController', ['$scope', 'Prob
 		// 	}
 		// }
 
+		// we should just take advantage of angulars data binding here
+		$scope.isSelected = function(issue) {
+			return $scope.userProblem.issues.containsByKey(issue.key);
+		};
+
+		$scope.select = function(issue) {
+			if($scope.isSelected(issue)) {
+				$scope.userProblem.issues.removeByKey(issue.key);
+			} else {
+				$scope.userProblem.issues.push(issue);
+			}
+		};
+
+
 		$scope.save = function() {
 			// did we end up making our other issue -- if it's not created in the above loop or the parent directive, then this doesn't get fired
 			// if($scope.other) {
