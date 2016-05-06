@@ -1,12 +1,9 @@
-<section class="onboarding onboarding-code-entry">
-  <h3>Welcome to<br/>JustFix.nyc!</h3>
-  <p>Please enter the access code provided by your advocate so you can gain access to the website</p>
-  <div class="error-text alert alert-danger" ng-show="majorError">Whoa, looks like we're having some trouble on our end. Please refresh this page and try again.</div>
-  <form class="access-code-form">
-	  <label>Access Code</label><br/>
-	  <input type="text" placeholder="Starts with..." ng-model="inputCode" class="input-code">
-	  <br/>
-	  <input type="submit" class="btn btn-primary input-submit" value="Get Started!" ng-click="createUser(inputCode)">
-  </form>
-  <div class="error-text alert alert-danger" ng-show="codeError">Uh oh! There was an error with this code. Please double check the code entered is correct and try again.</div>
+<section>
+
+	<!-- <form class="form-horizontal create-issue-form" data-ng-submit="create()" novalidate> -->
+	<div data-ui-view></div>
+	<!-- </form> -->
+
+
+
 </section>

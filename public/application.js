@@ -12,6 +12,8 @@ angular.module(ApplicationConfiguration.applicationModuleName)
   // whitelisting URLs
   .config(['$compileProvider', function ($compileProvider) {
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|tel|sms|mailto):/);
+    // enable this for speed enhancement b4 production push
+    // $compileProvider.debugInfoEnabled(false);
   }])
   // internationalization constants
   .constant('LOCALES', {

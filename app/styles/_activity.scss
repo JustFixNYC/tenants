@@ -1,46 +1,5 @@
 .activities-container {
 
-  .share-section-header {
-    margin-bottom: 0;
-  }
-
-  .share-section {
-    @include make-row;
-    padding-top: 30px;
-    background-color: #fff;
-
-    .share-controls {
-      margin-bottom: 15px;
-    }
-
-    h2 {
-      margin-top: 20px;
-
-      span {
-        line-height: 28px;
-      }
-    }
-
-    .alert {
-      margin-bottom: 30px;
-    }
-
-    .share-link {
-
-      margin-bottom: 30px;
-
-      p {
-        margin-bottom: 5px;
-      }
-
-      a {
-        text-decoration: underline;
-      }
-    }
-  }
-
-
-
   .activity-panel {
     @include make-row();
 

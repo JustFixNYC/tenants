@@ -245,3 +245,28 @@ exports.changePassword = function(req, res) {
 		});
 	}
 };
+
+
+/**
+ * Verfiy password Password
+ */
+exports.verifyPassword = function(req, res) {
+	// Init Variables
+	var passwordDetails = req.body;
+
+	User.findById(req.user.id, function(err, user) {
+		if (!err && user) {
+			if (user.authenticate(passwordDetails.currentPassword)) {
+				res.send('message correct');
+			} else {
+				res.status(400).send({
+					message: 'Current password is incorrect'
+				});
+			}
+		} else {
+			res.status(400).send({
+				message: 'User is not found'
+			});
+		}
+	});
+}

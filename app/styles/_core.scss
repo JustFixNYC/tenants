@@ -69,11 +69,21 @@ h3 {
   margin-top: 0;
   margin-bottom: 15px;
   border-bottom: none;
+  small {
+  	display: block;
+  	text-align: center;
+  }
 
   img {
     display: block;
     width: 35px;
     margin: 0 auto 10px auto;
+  }
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: center;
   }
 
   h1 {
@@ -129,6 +139,10 @@ h3 {
 .btn-block {
   max-width: 180px;
   margin: 0 auto;
+
+  &.btn-link {
+    max-width: none;
+  }
 
   &.initial {
     float: none !important;

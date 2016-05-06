@@ -3,6 +3,57 @@
 		position: fixed;
 	}
 }
+.share-section-header {
+	margin-bottom: 0;
+}
+
+.share-section {
+	
+	.activities-container & {
+		@include make-row;
+		padding-top: 30px;
+		background-color: #fff;
+	}
+
+
+	.share-controls {
+		margin-bottom: 15px;
+	}
+
+	h2 {
+		margin-top: 20px;
+
+		span {
+			line-height: 28px;
+		}
+	}
+
+	.alert {
+		margin-bottom: 30px;
+	}
+}
+.user-profile {
+	p {
+		margin: 0;
+	}
+
+	.user-container {
+
+		a {
+			display: block;
+			background: #fff;
+			padding: 10px 15px;
+			border: 1px solid $gray-lighter;
+			border-top: none;
+			color: $gray;
+			cursor: pointer;
+		}
+	}
+
+	.btn {
+		float: none;
+	}
+}
 .remove-account-container {
 	display: inline-block;
 	position: relative;
@@ -14,7 +65,7 @@
 }
 
 .edit-profile-form {
-  
+
   .form-group {
     margin-left: 0;
     margin-right: 0;

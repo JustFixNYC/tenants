@@ -1,0 +1,32 @@
+<div class="page-header">
+	<h1>Profile</h1>
+</div>
+<div class="user-profile">
+	<p>{{user.fullName}}</p>
+	<p>{{user.phone}}</p>
+	<p>{{user.address}}</p>
+	<p>{{user.unit}}</p>
+	<p>{{user.borough}}, NY  {{user.geo.zip}}</p>
+	<br/>
+	<p><strong>Advocate Information:</strong></p>
+	<p>{{user.referral.name}}</p>
+	<p>{{user.referral.organization}}</p>
+	<p>{{user.referral.phone}}</p>
+	<p>{{user.referral.email}}</p>
+	<br/>
+	<div class="user-container">
+		<a ng-href="#!/settings/edit">
+			Edit my profile <span class="glyphicon glyphicon-menu-right pull-right"></span>
+		</a>
+		<a ui-sref="phone">
+			Change phone number <span class="glyphicon glyphicon-menu-right pull-right"></span>
+		</a>
+		<a href="#!/settings/password">
+			Change password <span class="glyphicon glyphicon-menu-right pull-right"></span>
+		</a>
+	</div>
+	<br/>
+	<div class="btn-wrap">
+		<a class="btn btn-primary center-block col-xs-4">Sign out</a>
+	</div>
+</div>

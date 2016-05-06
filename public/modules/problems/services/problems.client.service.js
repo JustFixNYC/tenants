@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('onboarding').factory('problemsService', ['$resource','$q', '$http', function($resource, q, $http){
-	
-	this.localFile = function() {
+angular.module('onboarding').factory('Problems', ['$resource','$q', '$http', function($resource, q, $http){
+
+	var requestLocalFile = function() {
 		var deferred = q.defer();
 
 		$http.get('data/checklist.json').then(function(response) {
@@ -14,7 +14,11 @@ angular.module('onboarding').factory('problemsService', ['$resource','$q', '$htt
 		return deferred.promise;
 	};
 
-	return this;
+	return {
+		getLocalFile: function() {
+			return requestLocalFile();
+		}
+	};
 
 
 

@@ -1,15 +1,12 @@
-/*(function() {
-  'use strict';
+'use strict';
 
-  // Onboarding module config
-  angular
-    .module('onboarding')
-    .run(menuConfig);
+angular.module('onboarding').run(['$rootScope', '$state', 'Authentication', '$window', function($rootScope, $state, Authentication, $window) {
 
-  menuConfig.$inject = ['Menus'];
+	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+		if(toState.onboarding && toState.name !== 'onboarding.accessCode') {
+			event.preventDefault();
+			$state.go('onboarding.accessCode');
+		}
+	});
 
-  function menuConfig(Menus) {
-    // Config logic
-    // ...
-  }
-})();*/
+}]);
