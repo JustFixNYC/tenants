@@ -1,34 +1,56 @@
 
-<div ng-hide="referralSuccess == true">
+<div ng-hide="accessCode.valid">
 	<div class="page-header">
+		<img src="/modules/core/img/brand/icon_only.svg" alt="JustFix.nyc" />
 		<h1>Welcome to<br/>JustFix.nyc!</h1>
 	</div>
-	<p>Please enter the access code provided by your advocate so you can gain access to the website</p>
+	<p>Please enter the access code provided by your advocate so you can gain access to the website.</p>
 	<div class="error-text alert alert-danger" ng-show="majorError">Whoa, looks like we're having some trouble on our end. Please refresh this page and try again.</div>
 	<form>
-	  <div class="form-group">
+	  <div class="form-group" ng-class="{ 'has-error': codeWrong }">
 	    <label class="control-label">Access Code</label>
-	    <input class="form-control" type="text" placeholder="Starts with..." ng-model="newUser.accessCode" class="input-code">
+	    <input class="form-control" type="text" placeholder="Starts with..." ng-model="accessCode.value">
 	  </div>
 	  <div class="form-group">
-	    <input class="btn btn-primary input-submit" value="Get Started!" ng-click="validateCode()">
+	    <input class="btn btn-primary btn-block" value="Get Started!" ng-click="validateCode()">
+	    <a class="btn btn-link btn-block" href="">I don't have an access code!</a>
 	  </div>
 	</form>
 	<div class="error-text alert alert-danger" ng-show="codeError">There was an error submitting this code. Please try again later!</div>
-	<div class="error-text alert alert-warning" ng-show="codeWrong">This code does not match any code in our database, please double check that the code entered matches the code given.</div>
+	<div class="error-text alert alert-warning" ng-show="codeWrong">Sorry! This access code does not match anything in our database - please double check that you entered the correct code.</div>
 </div>
 
-<div class="advocate" ng-show="referralSuccess">
-	<h3>Your Building Advocate</h3>
+<div ng-show="accessCode.valid">
+	<div class="page-header">
+		<h1>Your Building Advocate</h1>
+	</div>
 	<p>Based on the access code you provided, we've connected you to the advocate working with your building. Their contact information will be stored in your account, so you can cannect with them at any time.</p>
-	<p class="name">{{referral.name}}</p>
-	<p class="org">{{referral.organization}}</p>
-	<p class="phone">{{referral.phone}}</p>
-	<p class="email">{{referral.email}}</p>
+	<p class="text-center"><b>
+		{{ newUser.referral.name }}<br />
+		{{ newUser.referral.organization }}<br />
+		{{ newUser.referral.phone | tel }}<br />
+		{{ newUser.referral.email }}
+	</b></p>
+	<div class="share-section">
+		<h2>
+			<span ng-if="!newUser.sharing.enabled">Share My Case:</span>
+			<span ng-if="newUser.sharing.enabled">Sharing (on):</span>
+			<label class="toggle pull-right">
+				<input type="checkbox" ng-model="newUser.sharing.enabled">
+				<span class="handle"></span>
+			</label>
+		</h2>
+
+		<div class="alert alert-warning" ng-if="!newUser.sharing.enabled">
+			This allows your advocate to view the evidence you upload to the site. It doesn't allow them to view every details or your personal information, and you can disable it anytime by going to your Case History page.
+		</div>
+
+	</div>
+
 	<div class="form-group">
 	    <div class="row">
 	        <div class="col-xs-4">
-	            <a class="btn btn-block btn-default"> <!-- @meegan - toggle referralsuccess, not sref -->
+	            <a ng-click="accessCode.valid = false" class="btn btn-block btn-default">
 	            	Back
 	            </a>
 	        </div>

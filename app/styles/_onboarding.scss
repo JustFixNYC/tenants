@@ -3,27 +3,11 @@
 $grey: #E0E0E0;
 
 .onboarding-code-entry {
-	text-align: center;
-
-	h3 {
-		font-weight: 100;
-	}
-
-	p {
-		margin: 2em 0;
-	}
 
 	label {
 		text-align: left;
 	}
 
-	.access-code-form {
-
-		.btn {
-			margin: 2em 0;
-			padding: .75em 2.25em;
-		}
-	}
 
 	.referral {
 		p {
@@ -33,138 +17,6 @@ $grey: #E0E0E0;
 	}
 }
 
-.problems {
-
-	.problem-wrap {
-		margin: 0em auto 1em auto;
-		border-radius: 10px;
-		background: $grey;
-		padding: 50px 0px;
-		text-align: center;
-		color: #262626;
-		max-width: 150px;
-		min-height: 150px;
-
-		.problem-icon {
-			font-size: 2em;
-		}
-
-		&.active {
-			background: $justfix-blue;
-			color: #eee;
-		}
-	}
-
-	.btn-primary {
-		margin-top: 20px;
-		margin-right: 20px;
-
-		@media (min-width: $screen-sm) {
-			margin-right: 40px;
-		}
-
-		@media (min-width: $screen-sm) {
-			margin-right: 60px;
-		}
-
-		@media (min-width: $screen-lg) {
-			margin-right: 80px;
-		}
-	}
-
-	.btn-default {
-		margin-top: 20px;
-		margin-left: 20px;
-
-		@media (min-width: $screen-sm) {
-			margin-left: 40px;
-		}
-
-		@media (min-width: $screen-sm) {
-			margin-left: 60px;
-		}
-
-		@media (min-width: $screen-lg) {
-			margin-left: 80px;
-		}
-	}
-}
-
-.issues-modal {
-	// padding: 20px;
-
-	.close-modal {
-		position: absolute;
-		right: -13px;
-		top: -11px;
-		border-radius: 50%;
-		background-color: $grey;
-		padding: 8px 0;
-		height: 30px;
-		width: 30px;
-		text-align: center;
-		cursor: pointer;
-	}
-
-	.modal-header {
-		.modal-title {
-			border-bottom: none;
-			padding-bottom: 0;
-
-			.glyphicon {
-				font-size: 24px;
-				padding-right: 5px;
-			}
-			.badge {
-				position: relative;
-				top: 8px;
-			}
-		}
-	}
-
-	.modal-body {
-
-		.selecter-options {
-
-			// talk to ashley about this
-			// max-height: none;
-			border: 1px solid $lightgray-dark;
-
-			.selecter-item {
-				padding: 10px;
-
-				.input-group .btn.glyphicon {
-					top: 0;
-				}
-
-				&.item-other:hover {
-					background-color: #fff;
-				}
-			}
-
-
-		}
-	}
-
-	.selection-module {
-		margin: 0px 10px 10px 10px;
-		border: 1px solid $grey;
-		border-radius: 3px;
-		height: 70vh;
-		overflow: auto;
-	}
-
-	.selector-plus {
-		position: relative;
-		top: -8px;
-		width: 150px;
-		height: 1.5em;
-		font-size: 1.5em;
-		line-height: 0.5em;
-	}
-
-
-}
 
 .onboarding-user-create {
 	h3 {

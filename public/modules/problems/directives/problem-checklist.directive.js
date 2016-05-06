@@ -143,13 +143,14 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 
 				   	modalInstance.result.then(function(){
 
+              scope.currentProblem.numChecked = ourUserCurrentProblem.issues.length;
+
               // check if the modal was closed and no issues were selectedIssues
               // if so, remove from ourUser.problems
               if(ourUserCurrentProblem.issues.length == 0) {
                 scope.ourUser.problems.removeByKey(ourUserCurrentProblem.key);
               }
-
-
+            
               console.log(scope.ourUser.problems);
 
               // lectedIssues){

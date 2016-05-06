@@ -5,34 +5,39 @@
       <h4 class="modal-title">
 				<span class="glyphicon" ng-class="userProblem.icon"></span>
 				{{userProblem.title}}
-				<span class="badge pull-right" data-ng-class="{ 'badge-primary' : userProblem.issues.length }">{{ userProblem.issues.length }}</span>
+				<span class="badge pull-right" data-ng-class="{ 'badge-primary' : userProblem.issues.length }">
+					{{ userProblem.issues.length }} issue{{ userProblem.issues.length == 1 ? '' : 's' }}
+				</span>
 			</h4>
   </div>
-	<div class="modal-body">
+	<div class="modal-body" stop-event="touchend">
 		<div class="selecter multiple">
 			<div class="selecter-options">
-				<div 	problem-issue-item
-							class="selecter-item"
+				<div class="selecter-item"
 							data-ng-repeat="issue in issues"
-							data-ng-click="select()"
-							data-ng-class="{ 'selected': isSelected() }">
+							data-ng-click="select(issue)"
+							data-ng-class="{ 'selected': isSelected(issue) }">
 							{{ issue.key }}
-							<span data-ng-show="isSelected()" class="selected-icon pull-right glyphicon glyphicon-ok" aria-hidden="true"></span>
+							<span data-ng-show="isSelected(issue)" class="selected-icon pull-right glyphicon glyphicon-ok" aria-hidden="true"></span>
 				</div>
-				<div 	problem-issue-item
+				<div 	problem-other-item
 							class="selecter-item item-other"
-							ng-click="toggleOther()">
+							ng-click="toggleOther($event)">
 							<div ng-hide="addMore">
 								<a>+ Add Other</a>
 							</div>
 							<div ng-show="addMore">
 								<div class="input-group">
 									<input type="text"
-												class="form-control"
-												data-ng-model="newOther.key"
-								 				placeholder="What's the issue?">
+												 class="form-control"
+												 data-ng-model="newOther.key"
+												 placeholder="What's the issue?">
 									<span class="input-group-btn">
-										<button class="btn btn-primary glyphicon glyphicon-plus" type="button" ng-click="addOther($event)"></button>
+										<button class="btn btn-primary glyphicon glyphicon-plus"
+														ng-class="{ 'disabled' : !newOther.key.length }"
+														type="button"
+														ng-click="addOther($event)">
+										</button>
 									</span>
 								</div><!-- /input-group -->
 							</div>

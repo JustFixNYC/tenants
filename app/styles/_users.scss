@@ -3,6 +3,35 @@
 		position: fixed;
 	}
 }
+.share-section-header {
+	margin-bottom: 0;
+}
+
+.share-section {
+	
+	.activities-container & {
+		@include make-row;
+		padding-top: 30px;
+		background-color: #fff;
+	}
+
+
+	.share-controls {
+		margin-bottom: 15px;
+	}
+
+	h2 {
+		margin-top: 20px;
+
+		span {
+			line-height: 28px;
+		}
+	}
+
+	.alert {
+		margin-bottom: 30px;
+	}
+}
 .user-profile {
 	p {
 		margin: 0;
@@ -36,7 +65,7 @@
 }
 
 .edit-profile-form {
-  
+
   .form-group {
     margin-left: 0;
     margin-right: 0;
