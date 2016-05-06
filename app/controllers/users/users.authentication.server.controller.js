@@ -30,6 +30,7 @@ var saveUser = function(req, user) {
           saved.reject(errorHandler.getErrorMessage(err));
         } else {
           saved.resolve(user);
+          console.log(user);
         }
       });
     }

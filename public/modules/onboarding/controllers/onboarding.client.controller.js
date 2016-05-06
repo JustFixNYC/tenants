@@ -26,6 +26,7 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', '$loc
 	        if(success.referral) {
 	          $scope.referralSuccess = true;
 	          $scope.referral = success.referral;
+	          $scope.newUser.referral = success.referral;
 	        } else {
 	         	$scope.codeWrong = true;
 						$scope.referralSuccess = true;

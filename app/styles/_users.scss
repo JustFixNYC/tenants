@@ -8,14 +8,21 @@
 		margin: 0;
 	}
 
-	a {
-		display: block;
-		background: #fff;
-		padding: 10px 15px;
-		border: 1px solid $gray-lighter;
-		border-top: none;
-		color: $gray;
-		cursor: pointer;
+	.user-container {
+
+		a {
+			display: block;
+			background: #fff;
+			padding: 10px 15px;
+			border: 1px solid $gray-lighter;
+			border-top: none;
+			color: $gray;
+			cursor: pointer;
+		}
+	}
+
+	.btn {
+		float: none;
 	}
 }
 .remove-account-container {

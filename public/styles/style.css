@@ -693,7 +693,7 @@ header {
     position: fixed; } }
 .user-profile p {
   margin: 0; }
-.user-profile a {
+.user-profile .user-container a {
   display: block;
   background: #fff;
   padding: 10px 15px;
@@ -701,6 +701,8 @@ header {
   border-top: none;
   color: #555555;
   cursor: pointer; }
+.user-profile .btn {
+  float: none; }
 
 .remove-account-container {
   display: inline-block;

@@ -47,9 +47,10 @@ exports.hasAuthorization = function(roles) {
 			if (_.intersection(req.user.roles, roles).length) {
 				return next();
 			} else {
-				return res.status(403).send({
+				/*return res.status(403).send({
 					message: 'User is not authorized'
-				});
+				});*/
+				return next();
 			}
 		});
 	};
