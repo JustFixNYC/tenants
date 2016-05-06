@@ -38,10 +38,10 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', '$loc
 	  };
 
 	  // SIGNUP
-		if(user.fullName) {
-			$scope.newUser.firstName = user['fullName'].split(' ')[0];
-			$scope.newUser.lastName = user['fullName'].split(' ')[1];
-		}
+		// if(user.fullName) {
+		// 	$scope.newUser.firstName = user['fullName'].split(' ')[0];
+		// 	$scope.newUser.lastName = user['fullName'].split(' ')[1];
+		// }
 
 		if(!user.borough) {
 			$scope.newUser.borough = 'Bronx';

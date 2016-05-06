@@ -47,6 +47,7 @@ exports.hasAuthorization = function(roles) {
 			if (_.intersection(req.user.roles, roles).length) {
 				return next();
 			} else {
+				// [TODO] reset this.
 				/*return res.status(403).send({
 					message: 'User is not authorized'
 				});*/
