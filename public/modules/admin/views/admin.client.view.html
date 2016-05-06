@@ -14,6 +14,7 @@
             <th>Organization</th>
             <th>Phone</th>
             <th>Email</th>
+            <th>Code</th>
             <th>Total Users</th>
             <th>Remaining Codes</th>
             <th>Delete</th>
@@ -25,8 +26,10 @@
             <td ng-bind="r.organization"></td>
             <td ng-bind="r.phone"></td>
             <td ng-bind="r.email"></td>
+            <td ng-bind="r.code"></td>
             <td ng-bind="r.totalUsers"></td>
-            <td ng-click="showCodes(r.codes)"><a>show codes ({{ r.codes.length }})</a></td>
+            <td ng-bind="r.totalUsers - r.inUse"></td>
+            <!-- <td ng-click="showCodes(r.codes)"><a>show codes ({{ r.codes.length }})</a></td> -->
             <td ng-click="delete(r)" class="text-danger">delete</td>
           </tr>
         </tbody>
@@ -55,8 +58,13 @@
         </div>
 
         <div class="form-group">
+          <label class="control-label">Code:</label><br/>
+          <input class="form-control" type="text" name="Code" ng-model="newReferral.code" required>
+        </div>
+
+        <div class="form-group">
           <label class="control-label">Number of Codes:</label><br/>
-          <input class="form-control" type="text" name="Number of Codes" ng-model="newReferral.numCodes">
+          <input class="form-control" type="text" name="Number of Codes" ng-model="newReferral.totalUsers">
         </div>
 
         <div class="form-group clearfix">

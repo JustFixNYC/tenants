@@ -18,24 +18,40 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', '$loc
 
 	  $scope.validateCode = function() {
 			// handles back button
-			if(!$scope.newUser.referral) {
+			if(!$scope.accessCode.valueEntered || $scope.accessCode.valueEntered !== $scope.accessCode.value) {
 				var referral = new Referrals();
 		    referral.$validate({ code: $scope.accessCode.value },
 		      function(success) {
 		        if(success.referral) {
 		          $scope.accessCode.valid = true;
+		          $scope.accessCode.valueEntered = $scope.accessCode.value;
 		          $scope.newUser.referral = success.referral;
 							$scope.newUser.referral.code = $scope.accessCode.value;
+							$scope.codeError = false;
+							$scope.codeWrong = false;
 		        } else {
+		         	$scope.codeError = false;
 		         	$scope.codeWrong = true;
 		        }
 		      }, function(error) {
+						$scope.codeErrorMessage = error.data.message;
 		        $scope.codeError = true;
+		        $scope.codeWrong = false;
 		      });
-			} else {
+
+			// account for canceled entry
+			// could probably just use 'else' here but why take chances?
+			} else if ($scope.accessCode.valueEntered == $scope.accessCode.value) {
 				$scope.accessCode.valid = true;
+				$scope.codeError = false;
+				$scope.codeWrong = false;
 			}
 	  };
+
+		$scope.cancelAccessCode = function() {
+			// $scope.accessCode.value = '';
+			$scope.accessCode.valid = false;
+		};
 
 	  // SIGNUP
 		// if(user.fullName) {

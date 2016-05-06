@@ -5,56 +5,51 @@ var mongoose = require('mongoose'),
     Q = require('q'),
     Referral = mongoose.model('Referral');
 
-var PARTS = 2;
-var PART_LENGTH = 4;
-var CHARS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+// var PARTS = 2;
+// var PART_LENGTH = 4;
+// var CHARS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+//
+// var makeNewRandomCode = function(deferred) {
+//
+//   if(!deferred) var deferred = Q.defer();
+//
+//   // generate rando code
+//   var code = '';
+//   for(var i = 0; i < PARTS; i++) {
+//     for(var j = PART_LENGTH; j > 0; --j) code += CHARS[Math.floor(Math.random() * CHARS.length)];
+//     if(i+1 != PARTS) code += '-';
+//   }
+//
+//   // check if code already exists
+//   Referral.find({ codes: code }, function(err, referrals) {
+//     if(referrals.length) makeNewRandomCode(deferred);
+//     else deferred.resolve(code);
+//   });
+//
+//   return deferred.promise;
+// };
 
-var makeNewCode = function(deferred) {
-
-  if(!deferred) var deferred = Q.defer();
-
-  // generate rando code
-  var code = '';
-  for(var i = 0; i < PARTS; i++) {
-    for(var j = PART_LENGTH; j > 0; --j) code += CHARS[Math.floor(Math.random() * CHARS.length)];
-    if(i+1 != PARTS) code += '-';
-  }
-
-  // check if code already exists
-  Referral.find({ codes: code }, function(err, referrals) {
-    if(referrals.length) makeNewCode(deferred);
-    else deferred.resolve(code);
-  });
-
-  return deferred.promise;
-};
-
-
-exports.create = function(req, res) {
-
-  var newReferral = new Referral(req.body);
-  var numCodes = parseInt(req.body.numCodes);
-  var codePromises = [];
-
-  // create a promise for each new code
-  for(var i = 0; i < numCodes; i++) { codePromises.push(makeNewCode()); }
-
-  // create all codes then store the new referral
-  Q.all(codePromises).then(function (codes) {
-    newReferral.totalUsers = numCodes;
-    newReferral.codes = codes;
-    newReferral.save(function (err, referral) {
-      if(err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        res.jsonp(referral);
-      }
-    });
-
-  });
-};
+// var makeNewBaseCodes = function(code, numCodes) {
+//
+//   var deferred = Q.defer();
+//   var codes = [];
+//
+//   //check if repeat baseCode
+//   Referral.find({ baseCode: base }, function(err, referrals) {
+//     if(referrals.length) deferred.reject('Base code already exists.');
+//     else {
+//       for(var i = 0; i < numCodes; i++) {
+//         codes.push(base + (i+1));
+//       }
+//       deferred.resolve(codes);
+//     }
+//   });
+//
+//   return deferred.promise;
+//
+//
+//
+// };
 
 
 var search = function(query) {
@@ -62,10 +57,10 @@ var search = function(query) {
   var deferred = Q.defer();
 
   // just for convinience - allows you to do ?code= instead of ?codes=
-  if(query.code) {
-    query.codes = query.code;
-    delete query.code;
-  }
+  // if(query.code) {
+  //   query.codes = query.code;
+  //   delete query.code;
+  // }
 
 	Referral.find(query, function(err, referrals) {
 		if(err) {
@@ -78,6 +73,44 @@ var search = function(query) {
   return deferred.promise;
 };
 
+
+exports.create = function(req, res) {
+
+  var newReferral = new Referral(req.body);
+  var numCodes = parseInt(newReferral.totalUsers);
+  var code = newReferral.code;
+
+  var query = { code: code };
+
+  search(query)
+    .then(function(r) {
+
+      // check for duplicates
+      if (r.length > 0) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage("This code already exists. Try again!")
+        });
+      } else {
+        newReferral.save(function (err, referral) {
+          if(err) {
+            return res.status(400).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          } else {
+            console.log(referral);
+            return res.jsonp(referral);
+          }
+        });
+      }
+
+    }).fail(function(err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    });
+};
+
+
 exports.list = function(req, res) {
 
   search(req.query)
@@ -89,6 +122,7 @@ exports.list = function(req, res) {
       });
     });
 };
+
 
 exports.validate = function(req, res) {
 
@@ -103,6 +137,11 @@ exports.validate = function(req, res) {
         });
       } else if (r.length == 0) {
         res.json({ referral: null });
+      } else if (r[0].totalUsers == r[0].inUse) {
+        console.log(r);
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage("Maximum number of users reached for this referral, sorry!")
+        });
       } else {
 
         var newReferral = {
@@ -110,17 +149,18 @@ exports.validate = function(req, res) {
           phone: r[0].phone,
           organization: r[0].organization,
           name: r[0].name,
-          code: req.query.code
+          code: r[0].code
         };
 
         // remove used code
-        Referral.findOneAndUpdate({ _id: r[0]._id }, { $pull: { "codes" : req.query.code } },
+        Referral.findOneAndUpdate({ _id: r[0]._id }, { $inc: { inUse : 1 } },
           function(err, referral) {
             if(err) {
               return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
               });
             } else {
+              console.log(referral);
               res.json({ referral: newReferral });
             }
           });
