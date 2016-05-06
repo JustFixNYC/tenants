@@ -17,10 +17,7 @@ module.exports = function(app) {
 
 	// Public URLs
 	app.route('/users/public').get(users.togglePublicView, users.update);
-	app.route('/public/:key').get(users.hasPublicView, function(req, res) {
-
-		// force angular to query again. idk why.
-		delete req.tempUser;
+	app.route('/public/:key').get(function(req, res) {
     res.redirect('/#!/public?key=' + encodeURIComponent(req.params.key));
 	});
 
