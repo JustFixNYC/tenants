@@ -138,7 +138,6 @@ exports.validate = function(req, res) {
       } else if (r.length == 0) {
         res.json({ referral: null });
       } else if (r[0].totalUsers == r[0].inUse) {
-        console.log(r);
         return res.status(400).send({
           message: errorHandler.getErrorMessage("Maximum number of users reached for this referral, sorry!")
         });
@@ -152,7 +151,7 @@ exports.validate = function(req, res) {
           code: r[0].code
         };
 
-        // remove used code
+        // increment 'inUse' variable
         Referral.findOneAndUpdate({ _id: r[0]._id }, { $inc: { inUse : 1 } },
           function(err, referral) {
             if(err) {
@@ -160,7 +159,6 @@ exports.validate = function(req, res) {
                 message: errorHandler.getErrorMessage(err)
               });
             } else {
-              console.log(referral);
               res.json({ referral: newReferral });
             }
           });

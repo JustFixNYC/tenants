@@ -48,8 +48,20 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 				    newProb.relatedActivities = [];
 
 				    return newProb;
-					}
+					};
 
+
+          // this is a reference to whichever user we're working with, i.e.
+          // scope.newUser or Authentication.user
+          // scope.ourUser;
+
+          // user exists
+          if(!Authentication.user) {
+            // This needs to be tested to see if it actually... works...
+            scope.ourUser = scope.newUser;
+          } else {
+            scope.ourUser = Authentication.user;
+          }
 
           // get problems from service
           Problems.getLocalFile().then(function (data) {
@@ -62,6 +74,13 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
             // 		curr.active = true;
             // 	}
             // });
+
+            // initialize numChecked
+            scope.ourUser.problems.forEach(function (p) {
+              scope.problems.getByKey(p.key).numChecked = p.issues.length;
+            });
+
+
           });
 
 
@@ -77,17 +96,8 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
           // 	}
           // }
 
-          // this is a reference to whichever user we're working with, i.e.
-          // scope.newUser or Authentication.user
-          scope.ourUser;
 
-          // user exists
-          if(!Authentication.user) {
-            // This needs to be tested to see if it actually... works...
-            scope.ourUser = scope.newUser;
-          } else {
-            scope.ourUser = Authentication.user;
-          }
+
 
           // just referring to this as scope.ourUser.problems
           // var ourUserProblems = scope.ourUser.problems;
@@ -150,8 +160,6 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
               if(ourUserCurrentProblem.issues.length == 0) {
                 scope.ourUser.problems.removeByKey(ourUserCurrentProblem.key);
               }
-            
-              console.log(scope.ourUser.problems);
 
               // lectedIssues){
               // f we got updates as set by the modal controller, our CURRENT problem should be updated accordingly

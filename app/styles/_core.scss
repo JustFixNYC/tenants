@@ -5,7 +5,11 @@ html, body {
 body {
   background-color: #F6F6F6;
 
+  &.white-bg {
+    background-color: #fff;
+  }
 
+  @include transition(background-color 750ms ease);
   // &.modal-open {
   //   #modal-open-wrapper {
   //     position:relative; //that's it
@@ -59,10 +63,13 @@ h3 {
 	display: none !important;
 }
 .ng-invalid.ng-dirty {
-	border-color: #FA787E;
+	border-color: $grapefruit-dark;
 }
 .ng-valid.ng-dirty {
-	border-color: #78FA89;
+	border-color: $grass-dark;
+}
+label.control-label em {
+  font-weight: normal;
 }
 
 .page-header {
@@ -96,6 +103,31 @@ h3 {
 
   p {
     margin: 15px 0 0 0;
+  }
+
+}
+
+.alert-success {
+  background-color: $grass-dark;
+  color: #fff;
+}
+.alert-major {
+  position: relative;
+  /* not sure why we need the extra 2px... */
+  top: -$header-bottom-margin - 2px;
+  border-radius: 0px;
+  color: white;
+  text-align: center;
+  letter-spacing: 2px;
+
+  @include make-row;
+
+  .success-check {
+    margin-right: 5px;
+    padding: 5px;
+    border-radius: 50%;
+    background: white;
+    color: $grass-dark;
   }
 
 }

@@ -12,6 +12,12 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
         event.preventDefault();
         $state.go('signin');
       }
+
+      if(toState.globalStyles) {
+        $rootScope.globalStyles = toState.globalStyles;
+      } else {
+        $rootScope.globalStyles = '';
+      }
     });
 
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {

@@ -1,18 +1,26 @@
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$scope', '$location', 'Referrals', '$http',
-	function($scope, $location, Referrals, $http) {
+angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', 'Authentication', 'Referrals', '$http', '$modal',
+	function($rootScope, $scope, $location, Authentication, Referrals, $http, $modal) {
 
-		$scope.referralSuccess = false;
-		$scope.codeError = false;
-		$scope.codeWrong = false;
-
+		$scope.authentication = Authentication;
 		$scope.newUser = {};
 		// create newUser.problems only once (handles next/prev)
 		$scope.newUser.problems = [];
 
+		$scope.newUser = {
+			firstName: 'Dan',
+			lastName: 'Kass',
+			borough: 'Brooklyn',
+			address: '654 Park Place',
+			unit: '1RF',
+			phone: '5555555555',
+			password: 'password',
+			problems: []
+		};
+
 	  $scope.accessCode = {
-			value: '',
+			value: 'test5',
 			valid: false
 		};
 
@@ -23,7 +31,7 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', '$loc
 		    referral.$validate({ code: $scope.accessCode.value },
 		      function(success) {
 		        if(success.referral) {
-		          $scope.accessCode.valid = true;
+		          $scope.accessCode.valid = $rootScope.validated = true;
 		          $scope.accessCode.valueEntered = $scope.accessCode.value;
 		          $scope.newUser.referral = success.referral;
 							$scope.newUser.referral.code = $scope.accessCode.value;
@@ -54,46 +62,41 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', '$loc
 		};
 
 	  // SIGNUP
-		// if(user.fullName) {
-		// 	$scope.newUser.firstName = user['fullName'].split(' ')[0];
-		// 	$scope.newUser.lastName = user['fullName'].split(' ')[1];
-		// }
+		$scope.additionalInfo = function() {
+			// Open modal
+			var modalInstance = $modal.open({
+				animation: 'true',
+				templateUrl: 'modules/onboarding/partials/additional-info.client.view.html'
+			});
+		};
 
-		if(!user.borough) {
-			$scope.newUser.borough = 'Bronx';
-		}
+		$scope.userError = false;
 
-		if(!user.nycha) {
-			$scope.newUser.nycha = 'yes';
-		}
+		$scope.createAndNext = function (isValid) {
 
-		$scope.createAndNext = function () {
+			console.log('create account pre save', $scope.newUser);
 
-			$scope.newUser.fullName = $scope.newUser.firstName + ' ' + $scope.newUser.lastName;
+			if(isValid) {
 
-			$http({
-				method: 'POST',
-				url: '/auth/signup',
-				data: $scope.newUser
-			}).then(function(success){
-				console.log(success);
-				$location.path('/onboarding/tutorial');
+				$scope.userError = false;
 
-			}, function(err) {
-				console.log(err);
-				if(err.data.errors) {
-					$scope.errorInRequest = true;
-					$scope.pwError = true;
-				} else {
-					$scope.pwError = false;
-					$scope.errorInRequest = true;
-					$scope.error = err.data;
-				}
-			})
+				$http.post('/auth/signup', $scope.newUser).success(function(response) {
 
-			/*var savingUser = new Authentication.prepUser(Authentication.user);
-			savingUser.$signUp*/
-		}
+					// If successful we assign the response to the global user model
+					$scope.authentication.user = response;
+					console.log('create account post save', response);
+					$location.path('/onboarding/tutorial');
+
+				}).error(function(err) {
+					console.log(err);
+        	$scope.error = err;
+				});
+
+			} else {
+				$scope.userError = true;
+			}
+
+		};
 
 
 	}]);

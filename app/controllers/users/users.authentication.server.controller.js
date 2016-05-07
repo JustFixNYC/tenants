@@ -72,7 +72,7 @@ exports.signup = function(req, res) {
   }
 
   // check NYCHA housing
-  if(user.nycha === 'yes') user.actionFlags.push('isNYCHA');
+  // if(user.nycha === 'yes') user.actionFlags.push('isNYCHA');
 
   // check some address stuff
   addressHandler.requestGeoclient(user.borough, user.address)

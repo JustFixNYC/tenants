@@ -61,10 +61,6 @@ var UserSchema = new Schema({
     type: String,
     default: ''
   },
-  nycha: {
-    type: String,
-    default: ''
-  },
   geo: {
     type: Schema.Types.Mixed,
     default: {}
@@ -131,7 +127,8 @@ var UserSchema = new Schema({
       default: false
     },
     key : {
-      type : String
+      type : String,
+      default: ''
     }
   },
   referral: {
