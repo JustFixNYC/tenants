@@ -3,7 +3,6 @@
 angular.module('users').controller('SettingsController', ['$scope', '$http', '$location', '$filter', 'Users', 'Authentication',
   function($scope, $http, $location, $filter, Users, Authentication) {
     $scope.user = Authentication.user;
-    console.log($scope.user);
     
     // If user is not signed in then redirect back home
     if (!$scope.user) $location.path('/');
@@ -70,5 +69,16 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
         $scope.error = response.message;
       });
     };
+
+    $scope.verifyPassword = function() {
+
+    	// console.log($scope.passwordDetail);
+    	$http.post('/users/verify-password', $scope.passwordDetail).success(function(response){
+    		console.log(response);
+    	}).error(function(err) {
+    		$scope.passwordError = true;
+    		$scope.errorMessage = err.message; 
+    	});
+    }
   }
 ]);

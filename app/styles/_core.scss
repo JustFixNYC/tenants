@@ -137,6 +137,7 @@ h3 {
 }
 
 .btn-block {
+	float: none; // This might fux with some styles
   max-width: 180px;
   margin: 0 auto;
 

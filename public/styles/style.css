@@ -96,6 +96,7 @@ h3 {
   padding-bottom: 10px; }
 
 .btn-block {
+  float: none;
   max-width: 180px;
   margin: 0 auto; }
   .btn-block.btn-link {
