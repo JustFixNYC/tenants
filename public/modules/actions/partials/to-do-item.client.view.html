@@ -34,6 +34,11 @@
             <span class="glyphicon glyphicon-link pull-left"></span>
             {{ action.cta.buttonTitle }}
         </a>
+        <a  class="btn btn-primary btn-block"
+            data-ng-if="action.cta.type === 'link-internal'"
+            ui-sref="{{action.cta.url}}">
+            {{ action.cta.buttonTitle }}
+        </a>
       </div>
     </div>
   </div>

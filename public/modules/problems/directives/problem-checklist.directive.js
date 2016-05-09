@@ -1,25 +1,5 @@
 'use strict';
 
-// lets make our lives easier!
-// theres probably a better place to put these...
-Array.prototype.containsByKey = Array.prototype.containsByKey || function(key) {
-  var i, l = this.length;
-  for (i = 0; i < l; i++) if (this[i].key == key) return true;
-  return false;
-};
-
-Array.prototype.getByKey = Array.prototype.getByKey || function(key) {
-  var i, l = this.length;
-  for (i = 0; i < l; i++) if (this[i].key == key) return this[i];
-  return null;
-};
-
-Array.prototype.removeByKey = Array.prototype.removeByKey || function(key) {
-  var i, l = this.length;
-  for (i = l-1; i >= 0; i--) if (this[i].key == key) this.splice(i,1);
-  return;
-};
-
 angular.module('onboarding').directive('problemsChecklist', ['Authentication', 'Problems', '$modal',
   function(Authentication, Problems, $modal) {
     return {
@@ -76,8 +56,17 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
             // });
 
             // initialize numChecked
-            scope.ourUser.problems.forEach(function (p) {
-              scope.problems.getByKey(p.key).numChecked = p.issues.length;
+            scope.ourUser.problems.forEach(function (userProb) {
+
+              var prob = scope.problems.getByKey(userProb.key);
+
+              prob.numChecked = userProb.issues.length;
+
+              userProb.issues.forEach(function (i) {
+                if(!prob.issues.containsByKey(i.key)) {
+                  prob.issues.push(i);
+                }
+              });
             });
 
 

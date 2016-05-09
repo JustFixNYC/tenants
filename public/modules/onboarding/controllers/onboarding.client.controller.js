@@ -27,6 +27,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 	  $scope.validateCode = function() {
 			// handles back button
 			if(!$scope.accessCode.valueEntered || $scope.accessCode.valueEntered !== $scope.accessCode.value) {
+
 				var referral = new Referrals();
 		    referral.$validate({ code: $scope.accessCode.value },
 		      function(success) {
@@ -35,6 +36,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 		          $scope.accessCode.valueEntered = $scope.accessCode.value;
 		          $scope.newUser.referral = success.referral;
 							$scope.newUser.referral.code = $scope.accessCode.value;
+							$location.path('/onboarding/success');
 							$scope.codeError = false;
 							$scope.codeWrong = false;
 		        } else {
@@ -51,6 +53,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			// could probably just use 'else' here but why take chances?
 			} else if ($scope.accessCode.valueEntered == $scope.accessCode.value) {
 				$scope.accessCode.valid = true;
+				$location.path('/onboarding/success');
 				$scope.codeError = false;
 				$scope.codeWrong = false;
 			}
@@ -59,6 +62,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 		$scope.cancelAccessCode = function() {
 			// $scope.accessCode.value = '';
 			$scope.accessCode.valid = false;
+			$location.path('/onboarding/referral');
 		};
 
 	  // SIGNUP
@@ -79,16 +83,18 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			if(isValid) {
 
 				$scope.userError = false;
+				$rootScope.loading = true;
 
 				$http.post('/auth/signup', $scope.newUser).success(function(response) {
 
 					// If successful we assign the response to the global user model
+					$rootScope.loading = false;
 					$scope.authentication.user = response;
 					console.log('create account post save', response);
 					$location.path('/onboarding/tutorial');
 
 				}).error(function(err) {
-					console.log(err);
+					$rootScope.loading = false;
         	$scope.error = err;
 				});
 

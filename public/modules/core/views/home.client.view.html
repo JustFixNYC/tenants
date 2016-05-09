@@ -11,7 +11,7 @@
       <img src="/modules/core/img/sections/history.svg" alt="Case History" />
       Case History
     </a>
-    <a class="col-xs-6 col-sm-4" ui-sref="updateIssues">
+    <a class="col-xs-6 col-sm-4" ui-sref="updateProblems">
       <img src="/modules/core/img/sections/issues.svg" alt="Issues Checklist" />
       Issues Checklist
     </a>
@@ -29,7 +29,36 @@
     </a>
   </div>
 
-  <a class="btn btn-block btn-primary" href="/auth/signout">Sign Out</a>
+  <div class="section-header" ng-click="shareCollapsed = !shareCollapsed">
+    <h2>Advocate Information
+      <span class="pull-right glyphicon" ng-class="shareCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span>
+    </h2>
+  </div>
+  <div class="share-section" collapse="shareCollapsed">
+    <p class="lead"><b>
+      {{ authentication.user.referral.name }}<br />
+      {{ authentication.user.referral.organization }}<br />
+      {{ authentication.user.referral.phone | tel }}<br />
+      {{ authentication.user.referral.email }}
+    </b></p>
+    <div class="row share-controls">
+      <div class="col-xs-6">
+        <a  class="btn btn-success btn-block pull-left">
+            Email
+        </a>
+      </div>
+      <div class="col-xs-6">
+        <a class="btn btn-success btn-block pull-right" sms-message>
+            Text
+        </a>
+      </div>
+    </div>
+  </div>
+  <br />
+  <br />
+  <div class="row">
+    <a class="btn btn-block btn-primary" href="/auth/signout">Sign Out</a>
+  </div>
 
 
 </section>

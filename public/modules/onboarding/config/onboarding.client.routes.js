@@ -24,6 +24,12 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
         onboarding: true,
         globalStyles: 'white-bg'
       })
+      .state('onboarding.success', {
+        url: '/success',
+        templateUrl: 'modules/onboarding/partials/onboarding-success.client.view.html',
+        onboarding: true,
+        globalStyles: 'white-bg'
+      })
       .state('onboarding.problems', {
         url: '/checklist',
         templateUrl: 'modules/onboarding/partials/onboarding-problems.client.view.html',

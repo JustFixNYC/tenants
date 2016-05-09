@@ -12,6 +12,8 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
 
     $scope.authentication = Authentication;
 
+    $scope.shareCollapsed = true;
+
     $scope.list = function() {
 
       $scope.activities = Activity.query();

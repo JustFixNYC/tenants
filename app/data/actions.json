@@ -117,7 +117,7 @@
     "activityTitle": "Created an Official Letter of Complaint",
     "content": "Before you can go to Housing Court, you need to send an official letter of complaint to your landlord describing your case. <b>We've drafted a letter that you can send, including a list of the issues that need repair.</b><span ng-if='!userCompletedDetails()'><br /><br />Make sure to <b>Add Issue Details</b> (located above) first to provide the most detailed information!</span>",
     "key": "sendLetter",
-    "addIf": ["initial"],
+    "addIf": ["hasProblems"],
     "type": "once",
     "cta": {
       "type": "modal",

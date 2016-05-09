@@ -3,15 +3,16 @@
 		position: fixed;
 	}
 }
-.share-section-header {
+.share-section-header.closed {
 	margin-bottom: 0;
 }
 
 .share-section {
-	
+
 	.activities-container & {
 		@include make-row;
-		padding-top: 30px;
+		padding-top: 20px;
+    padding-bottom: 5px;
 		background-color: #fff;
 	}
 
@@ -31,7 +32,15 @@
 	.alert {
 		margin-bottom: 30px;
 	}
+
+	.share-link {
+		h2 {
+			margin-top: 0;
+		}
+	}
+
 }
+
 .user-profile {
 	p {
 		margin: 0;

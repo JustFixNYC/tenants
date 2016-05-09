@@ -1,0 +1,32 @@
+<section data-ng-controller="ProblemsController">
+
+  <div class="page-header">
+    <img src="/modules/core/img/sections/issues.svg" alt="Issue Checklist" />
+    <h1>Issue Checklist</h1>
+  </div>
+  <div class="problems-container">
+    <problems-checklist></problems-checklist>
+  </div>
+  <div class="form-group">
+
+    <fieldset>
+				<div data-ng-show="updateSuccess" class="alert alert-success">
+						<strong>
+							Successfully updated your checklist!
+						</strong>
+				</div>
+        <div data-ng-show="updateFail" class="alert alert-danger">
+            <strong>
+              Sorry! Something went wrong. Please try again later.
+            </strong>
+        </div>
+		</fieldset>
+
+    <div class="row">
+      <a ng-click="updateProblems()" class="btn btn-block btn-primary">
+        Save
+      </a>
+    </div>
+  </div>
+
+</section>

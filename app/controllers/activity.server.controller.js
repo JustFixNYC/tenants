@@ -75,28 +75,6 @@ var create = function(req, res) {
     if(!activity.startDate) activity.startDate = Date.now();
     //console.log('new date', activity.date);
 
-    // check to see if allInitial should be set
-    if(_.contains(aptSpaces, activity.key)) {
-      var allInitial = true;
-      // for every area in issues
-      for(var area in user.issues) {
-        // if the area has issues...
-        if(user.issues[area].length) {
-          // if the area content hasn't been done yet
-          if(user.actionFlags.indexOf(area) === -1) allInitial = false;
-        }
-      }
-      // if(allInitial && user.actionFlags.indexOf('allInitial') === -1) user.actionFlags.push('allInitial');
-      if(allInitial && !_.contains(user.actionFlags, 'allInitial')) user.actionFlags.push('allInitial');
-      else if(!allInitial && _.contains(user.actionFlags, 'allInitial')) _.remove(user.actionFlags, 'allInitial');
-      // [TODO] account for the case where a user has allInitial set, then updates the issues checklist
-      //        with a new area.
-      // else {
-      //   var idx = user.actionFlags.indexOf('allInitial');
-      //   if(idx !== -1) user.actionFlags.splice(idx, 1);
-      // }
-    }
-
     // init photos array
     activity.photos = [];
 

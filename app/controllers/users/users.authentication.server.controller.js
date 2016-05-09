@@ -30,7 +30,7 @@ var saveUser = function(req, user) {
           saved.reject(errorHandler.getErrorMessage(err));
         } else {
           saved.resolve(user);
-          console.log(user);
+          // console.log(user);
         }
       });
     }
@@ -61,18 +61,6 @@ exports.signup = function(req, res) {
   user.actionFlags.push('initial');
   user.fullName = user.firstName + ' ' + user.lastName;
 
-  // check issues for emergency ones
-  for(var area in user.issues) {
-    user.issues[area].forEach(function (i) {
-      if(i.emergency && user.actionFlags.indexOf('hasEmergencyIssues') === -1) {
-        user.actionFlags.push('hasEmergencyIssues');
-      }
-
-    });
-  }
-
-  // check NYCHA housing
-  // if(user.nycha === 'yes') user.actionFlags.push('isNYCHA');
 
   // check some address stuff
   addressHandler.requestGeoclient(user.borough, user.address)
