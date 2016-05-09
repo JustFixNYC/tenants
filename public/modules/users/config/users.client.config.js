@@ -20,7 +20,7 @@ angular.module('users').config(['$httpProvider',
 								break;
 							case 403:
 								// Add unauthorized behaviour
-								$location.path('home');
+								$location.path('not-found');
 								break;
 						}
 

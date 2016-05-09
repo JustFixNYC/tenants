@@ -11,4 +11,5 @@ app/mongodb
 uploads
 public/dist
 config/env/development.js
-public/styles
+public/styles/style.css
+public/styles/style.css.map
