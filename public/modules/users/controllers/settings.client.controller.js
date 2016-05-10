@@ -39,6 +39,15 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
       });
     };
 
+    $scope.signOut = function() {
+    	$http.get('/auth/signout')
+    		.then(function(success) {
+    			console.log(success);
+    		}, function(err) {
+    			console.log(err);
+    		});
+    }
+
     // Update a user profile
     $scope.updateUserProfile = function(isValid) {
       if (isValid) {

@@ -48,10 +48,10 @@ exports.hasAuthorization = function(roles) {
 				return next();
 			} else {
 				// [TODO] reset this.
-				/*return res.status(403).send({
+				return res.status(403).send({
 					message: 'User is not authorized'
-				});*/
-				return next();
+				});/*
+				return next();*/
 			}
 		});
 	};
