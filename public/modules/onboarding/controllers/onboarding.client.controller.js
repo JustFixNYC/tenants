@@ -59,12 +59,10 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', '$loc
 				method: 'POST',
 				url: '/auth/signup',
 				data: $scope.newUser
-			}).then(function(success){
-				console.log(success);
+			}).
+			then(function(success){
 				$location.path('/onboarding/tutorial');
-
 			}, function(err) {
-				console.log(err);
 				if(err.data.errors) {
 					$scope.errorInRequest = true;
 					$scope.pwError = true;
@@ -73,10 +71,7 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', '$loc
 					$scope.errorInRequest = true;
 					$scope.error = err.data;
 				}
-			})
-
-			/*var savingUser = new Authentication.prepUser(Authentication.user);
-			savingUser.$signUp*/
+			});
 		}
 
 

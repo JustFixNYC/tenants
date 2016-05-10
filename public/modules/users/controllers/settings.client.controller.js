@@ -3,6 +3,7 @@
 angular.module('users').controller('SettingsController', ['$scope', '$http', '$location', '$filter', 'Users', 'Authentication',
   function($scope, $http, $location, $filter, Users, Authentication) {
     $scope.user = Authentication.user;
+    $scope.passwordVerified = false;
     
     // If user is not signed in then redirect back home
     if (!$scope.user) $location.path('/');
@@ -44,13 +45,24 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
         $scope.success = $scope.error = null;
         var user = new Users($scope.user);
 
-        //console.log('user', user);
+        console.log('user', user);
+        // This is a horrendus patch and needs to be fixed in onboarding
+        user.firstName = user.fullName.split(' ')[0];
+        user.lastName = user.fullName.split(' ')[1];
 
         user.$update(function(response) {
+        	console.log(response);
           $scope.success = true;
           Authentication.user = response;
         }, function(response) {
-          $scope.error = response.data.message;
+        	console.log(response);
+          $scope.error = response.data.message.message;
+          // TODO: run the stack up to why this error is so nested
+          if(response.data.message.errors)  {
+          	if(response.data.message.errors.phone) {
+          		$scope.errorPhone = response.data.message.errors.phone.message;
+          	}
+          }
         });
       } else {
         $scope.submitted = true;
@@ -70,11 +82,10 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
       });
     };
 
-    $scope.verifyPassword = function() {
+    $scope.verifyPassword = function(password) {
 
-    	// console.log($scope.passwordDetail);
-    	$http.post('/users/verify-password', $scope.passwordDetail).success(function(response){
-    		console.log(response);
+    	$http.post('/users/verify-password', {"password": password}).success(function(response){
+    		$scope.passwordVerified = true;
     	}).error(function(err) {
     		$scope.passwordError = true;
     		$scope.errorMessage = err.message; 

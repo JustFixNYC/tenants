@@ -35,7 +35,7 @@ angular.module('users').config(['$stateProvider', '$urlRouterProvider',
 				settings: true
    		});
 
-		// This should be a separate router block-- it deals w/ abstract and nonleanear flows
+		// This should be a separate router block -- it deals w/ abstract and nonleanear flows
 		$stateProvider.
 			state('signin', {
 				url: '/signin',
