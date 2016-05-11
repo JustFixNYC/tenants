@@ -82,14 +82,18 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
 
       var newUser = {
         fullName:     $scope.newIssue.name,
-        phone:        $scope.newIssue.phone,
+        firstName:    'Dan',
+        lastName:     'Kass',
+        phone:        '0000000000',
         borough:      $scope.newIssue.borough,
         address:      $scope.newIssue.address,
         unit:         $scope.newIssue.unit,
         nycha:        $scope.newIssue.nycha,
         issues:       $scope.newIssue.issues,
-        password:     $scope.newIssue.password
+        password:     'password'
       };
+
+      console.log(newUser);
 
       $http.post('/auth/signup', newUser).success(function(response) {
         // If successful we assign the response to the global user model
