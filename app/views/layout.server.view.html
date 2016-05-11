@@ -59,6 +59,13 @@
 	<!--Application CSS Files-->
 	{% for cssFile in cssFiles %}<link rel="stylesheet" href="{{cssFile}}">{% endfor %}
 
+	<link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.14.3/mapbox-gl.css" rel='stylesheet' />
+
+	<!-- <script>
+		function initGoogle() { console.log('geocoder init'); window.Geocoder = new google.maps.Geocoder(); };
+	</script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAU7vbWOHS6wd2eJxgY3WBQw-GwHaAWqng&signed_in=true&callback=initGoogle"></script> -->
+
 	<!-- HTML5 Shim -->
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
