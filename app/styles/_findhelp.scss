@@ -1,0 +1,47 @@
+#findHelp {
+
+  #map {
+    width: 100%;
+    height: 35vh;
+    margin: 15px auto 30px auto;
+  }
+
+
+  .nav-tabs {
+    display: table-row;
+
+    li {
+      width: 33.33%;
+      display: table-cell;
+      float: none;
+      text-align: center;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+  }
+
+  .btn-center {
+    text-align: center;
+  }
+
+  .tab-content {
+    padding: 0;
+  }
+
+  .resources-container {
+    @include make-row();
+    background-color: #fff;
+
+    & > .container {
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+  }
+
+  .panel {
+      -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+      -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  }
+
+}
