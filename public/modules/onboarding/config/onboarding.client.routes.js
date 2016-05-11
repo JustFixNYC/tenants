@@ -21,7 +21,14 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
       .state('onboarding.accessCode', {
         url: '/referral',
         templateUrl: 'modules/onboarding/partials/onboarding-code.client.view.html',
-        onboarding: true
+        onboarding: true,
+        globalStyles: 'white-bg'
+      })
+      .state('onboarding.success', {
+        url: '/success',
+        templateUrl: 'modules/onboarding/partials/onboarding-success.client.view.html',
+        onboarding: true,
+        globalStyles: 'white-bg'
       })
       .state('onboarding.problems', {
         url: '/checklist',

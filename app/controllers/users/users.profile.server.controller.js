@@ -26,26 +26,6 @@ exports.update = function(req, res) {
 		user = _.extend(user, req.body);
 		user.updated = Date.now();
 
-		// check issues for emergency ones
-	  for(var area in user.issues) {
-	    user.issues[area].forEach(function (i) {
-	      if(i.emergency && user.actionFlags.indexOf('hasEmergencyIssues') === -1) {
-	        user.actionFlags.push('hasEmergencyIssues');
-	      }
-	    });
-	  }
-
-    var allInitial = true;
-    // for every area in issues
-    for(var area in user.issues) {
-      // if the area has issues...
-      if(user.issues[area].length) {
-        // if the area content hasn't been done yet
-        if(user.actionFlags.indexOf(area) === -1) allInitial = false;
-      }
-    }
-    if(!allInitial && _.contains(user.actionFlags, 'allInitial')) _.pull(user.actionFlags, 'allInitial');
-
 		user.save(function(err) {
 			if (err) {
 				return res.status(400).send({

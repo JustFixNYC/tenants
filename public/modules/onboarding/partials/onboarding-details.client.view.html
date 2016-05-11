@@ -1,74 +1,127 @@
 <div class="page-header">
-	<h1>Create Account</h1>
+	<h3>(Step 2 of 2)</h3>
+	<h1>Create Your Account</h1>
+	<p>Your account will store your history and case details for you. This information will never be shared without asking for your permission first.</p>
 </div>
-<p>Your account will store your history and case details for you. This information will never be shared without asking for your permission first.</p>
-<form name="create-user" class="container">
-	<div class="form-group">
-		<label>First Name</label><br/>
-		<input class="form-control" type="text" placeholder="First Name" name="First Name" ng-model="newUser.firstName"><br/>
+<form name="createUserForm" class="create-user-form" ng-submit="createAndNext(createUserForm.$valid)" novalidate>
+
+	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.firstName.$invalid }">
+		<label class="control-label" for="firstName">First Name</label>
+		<input class="form-control" type="text" placeholder="First Name" name="firstName" ng-model="newUser.firstName" required>
+		<div ng-show="createUserForm.$submitted || createUserForm.firstName.$touched">
+			<p ng-show="createUserForm.firstName.$error.required" class="text-danger">Please enter a first name.</p>
+		</div>
 	</div>
 
-	<div class="form-group">
-		<label>Last Name</label><br/>
-		<input class="form-control" type="text" placeholder="Last Name" name="Last Name" ng-model="newUser.lastName"><br/>
+	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.lastName.$invalid }">
+		<label class="control-label" for="lastName">Last Name</label>
+		<input class="form-control" type="text" placeholder="Last Name" name="lastName" ng-model="newUser.lastName" required>
+		<div ng-show="createUserForm.$submitted || createUserForm.lastName.$touched">
+			<p ng-show="createUserForm.lastName.$error.required" class="text-danger">Please enter a last name.</p>
+		</div>
 	</div>
 
 	<!-- probably should reapproach this -->
-	<div class="form-group">
-		<label>Borough</label><br/>
-		<input type="button" value="Brooklyn" class="btn btn-default borough" ng-model="newUser.borough" btn-radio="'Brooklyn'">
-		<input type="button" value="Queens" class="btn btn-default borough" ng-model="newUser.borough" btn-radio="'Queens'">
-		<input type="button" value="Bronx" class="btn btn-default borough" ng-model="newUser.borough" btn-radio="'Bronx'">
-		<input type="button" value="Manhattan" class="btn btn-default borough" ng-model="newUser.borough" btn-radio="'Manhattan'">
-		<input type="button" value="Staten Island" class="btn btn-default borough" ng-model="newUser.borough" btn-radio="'Staten Island'">
+	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.borough.$invalid }">
+		<label class="control-label" for="borough">Borough</label>
+		<div class="controls">
+			<label class="btn btn-default" ng-model="newUser.borough" btn-radio="'Brooklyn'" name="borough" required>Brooklyn</label>
+			<label class="btn btn-default" ng-model="newUser.borough" btn-radio="'Queens'" name="borough" required>Queens</label>
+			<label class="btn btn-default" ng-model="newUser.borough" btn-radio="'Bronx'" name="borough" required>Bronx</label>
+			<label class="btn btn-default" ng-model="newUser.borough" btn-radio="'Manhattan'" name="borough" required>Manhattan</label>
+			<label class="btn btn-default" ng-model="newUser.borough" btn-radio="'Staten Island'" name="borough" required>Staten Island</label>
+		</div>
+		<div ng-show="createUserForm.$submitted || createUserForm.borough.$touched">
+			<p ng-show="createUserForm.borough.$error.required" class="text-danger">Please enter your borough.</p>
+		</div>
 	</div>
 
-	<div class="form-group">
-		<label>Street Address</label><br/>
-		<input class="form-control" type="text" placeholder="Street Address" name="street" ng-model="newUser.address "><br/>
+	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.address.$invalid }">
+		<label class="control-label" for="address">Street Address <em><a ng-click="additionalInfo()">(why do you need this?)</a></em></label>
+		<input class="form-control" type="text" placeholder="Street Address" name="address" ng-model="newUser.address" required>
+		<div ng-show="createUserForm.$submitted || createUserForm.address.$touched">
+			<p ng-show="createUserForm.address.$error.required" class="text-danger">Please enter your street address.</p>
+		</div>
 	</div>
 
-	<div class="form-group apt">
-		<label>Apartment #</label><br>
-		<input class="form-control" type="text" placeholder="Apt" name="apt" ng-model="newUser.unit"><br/>
+	<div class="form-group apt-field" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.unit.$invalid }">
+		<label class="control-label" for="unit">Apartment #</label>
+		<input class="form-control" type="text" placeholder="Apt #" name="unit" ng-model="newUser.unit" required>
+		<div ng-show="createUserForm.$submitted || createUserForm.unit.$touched">
+			<p ng-show="createUserForm.unit.$error.required" class="text-danger">Please enter your apartment number.</p>
+		</div>
 	</div>
 
-	<div class="form-group">
-		<label>Do you live in NYCHA housing?</label><br/>
+	<!-- <div class="form-group">
+		<label>Do you live in NYCHA housing?</label>
 		<button class="btn btn-default nycha" ng-class="{'selected': newUser.nycha === 'yes'}" ng-click="newUser.nycha = 'yes'">Yes</button>
 		<button class="btn btn-default nycha" ng-class="{'selected': newUser.nycha === 'no'}" ng-click="newUser.nycha = 'no'">No</button>
+	</div> -->
+
+	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.phone.$invalid }">
+		<label class="control-label" for="phone">Phone Number <em>(you will use this to sign in)</em></label>
+		<input class="form-control" type="tel" placeholder="Phone Number" name="phone" ng-model="newUser.phone" name="phone" required phone-input>
+		<div ng-show="createUserForm.$submitted || createUserForm.phone.$touched">
+			<p ng-show="createUserForm.phone.$error.required" class="text-danger">Please enter your phone number.</p>
+		</div>
+	</div>
+
+	<!-- <div class="form-group">
+		<label>Email Address</label>
+		<input class="form-control" type="text" placeholder="yourname@domain.com" name="email" ng-model="newUser.email">
+	</div> -->
+
+	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.pw.$invalid }">
+		<label class="control-label" for="pw">Create a password for your account</label>
+		<input class="form-control" type="password" placeholder="Create Password" id="pw1" name="pw" ng-model="newUser.password" required>
+		<div ng-show="createUserForm.$submitted || createUserForm.pw.$touched">
+			<p ng-show="createUserForm.pw.$error.required" class="text-danger">Please create a password.</p>
+		</div>
+	</div>
+
+	<div class="form-group pw-check-field" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.pw2.$invalid }">
+		<label class="control-label" for="pw2">Re-enter your new password</label>
+		<input class="form-control" ng-model="pw2" type="password" placeholder="Confirm Password" name="pw2" pw-check="pw1" required>
+		<div ng-show="createUserForm.$submitted || createUserForm.pw2.$touched">
+			<p ng-show="createUserForm.pw2.$error.required" class="text-danger">Please enter your password again.</p>
+			<p ng-show="createUserForm.pw2.$error.pwmatch" class="text-danger">These passwords don't match!</p>
+		</div>
 	</div>
 
 	<div class="form-group">
-		<label>Phone Number <italic>This will be your username</italic></label><br/>
-		<input class="form-control" type="text" placeholder="Phone #" name="phone" ng-model="newUser.phone"><br/>
-	</div>
+		<!-- <div class="error alert alert-danger" ng-show="errorInRequest">
+			<span class="generalError" ng-hide="pwError">{{error}}</span>
+			<span class="pwError" ng-show="pwError">Password needs to be longer than 6 characters.</span>
+		</div> -->
+		<fieldset>
+				<div data-ng-show="error.errors" class="alert alert-danger">
+						<strong data-ng-repeat="err in error.errors">
+							<p data-ng-bind="err.message"></p>
+							Please contact us at <a href="mailto:hello@justfix.nyc">hello@justfix.nyc</a>
+						</strong>
+				</div>
+				<div data-ng-show="error && !error.errors" class="alert alert-danger">
+						<strong>
+							<p data-ng-bind="error"></p>
+							Please contact us at <a href="mailto:hello@justfix.nyc">hello@justfix.nyc</a>
+						</strong>
+				</div>
+				<div data-ng-show="userError" class="alert alert-warning">
+						<strong>
+							Please complete the above fields in order to create your account!
+						</strong>
+				</div>
+		</fieldset>
 
-	<div class="form-group">
-		<label>Email Address</label><br/>
-		<input class="form-control" type="text" placeholder="yourname@domain.com" name="email" ng-model="newUser.email"><br/>
-	</div>
-
-	<div class="form-group">
-		<label>Create password for your account</label><br/>
-		<input class="form-control" type="password" placeholder="password" id="pw1" name="pw" ng-model="newUser.password"><br/>
-	</div>
-
-	<div class="form-group">
-		<label>Re-enter Password</label><br/>
-		<input class="form-control" ng-model="pw2" type="password" placeholder="verify" name="pw2" pw-check="pw1"><br/>
-	</div>
-	<div class="clearfix"></div>
-	<div class="error alert alert-danger" ng-show="errorInRequest">
-		<span class="generalError" ng-hide="pwError">{{error}}</span>
-		<span class="pwError" ng-show="pwError">Password needs to be longer than 6 characters.</span>
-	</div>
-	<div class="clearfix"></div>
-
-	<div ui-sref="onboarding.problems" type="button" class="btn btn-default back pull-left">
-		Back
-	</div>
-	<div type="button" class="btn btn-primary create-btn pull-right" ng-click="createAndNext()">
-		Create Account
+    <div class="row">
+        <div class="col-xs-4">
+            <a ui-sref="onboarding.problems" class="btn btn-block btn-default">
+              Back
+            </a>
+        </div>
+        <div class="col-xs-8">
+            <input type="submit"  class="btn btn-primary btn-block pull-right" value="Create Account">
+        </div>
+    </div>
 	</div>
 </form>

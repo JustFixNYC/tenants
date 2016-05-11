@@ -3,7 +3,8 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
+var _ = require('lodash'),
+    mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     crypto = require('crypto'),
     ActivitySchema = require('./activity.server.model.js'),
@@ -58,10 +59,6 @@ var UserSchema = new Schema({
     default: ''
   },
   unit: {
-    type: String,
-    default: ''
-  },
-  nycha: {
     type: String,
     default: ''
   },
@@ -131,7 +128,8 @@ var UserSchema = new Schema({
       default: false
     },
     key : {
-      type : String
+      type : String,
+      default: ''
     }
   },
   referral: {
@@ -148,13 +146,52 @@ var UserSchema = new Schema({
 });
 
 /**
- * Hook a pre save method to hash the password
+ * Hook a pre save method to hash the password, and do user updating things
+ * This is pretty nice to have in one spot!
  */
 UserSchema.pre('save', function(next) {
   if (this.password && this.password.length > 6) {
     this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
     this.password = this.hashPassword(this.password);
   }
+
+
+  var userProblems = [];
+
+  // go through all issues and problems
+  // check to see if the user has:
+  // - selected emergency issues, or not
+  // - completed details for all issues, or not
+  // - if the user hasn't selected any issues
+  if(this.problems.length == 0) {
+    _.pull(this.actionFlags, 'hasProblems');
+  } else {
+    this.actionFlags.push('hasProblems');
+  }
+
+  for(var i = 0; i < this.problems.length; i++) {
+    var problem = this.problems[i];
+    userProblems.push(problem.key);
+
+    for(var j = 0; j < problem.issues.length; j++) {
+
+      if(problem.issues[j].emergency && !_.contains(this.actionFlags, 'hasEmergencyIssues')) {
+        this.actionFlags.push('hasEmergencyIssues');
+      }
+    }
+  }
+
+  if(_.intersection(userProblems, this.actionFlags).length == userProblems.length) {
+    if(!_.contains(this.actionFlags, 'allInitial')) this.actionFlags.push('allInitial');
+  } else {
+    _.pull(this.actionFlags, 'allInitial');
+  }
+
+
+  // check NYCHA housing
+  // if(user.nycha === 'yes') user.actionFlags.push('isNYCHA');
+
+
   next();
 });
 

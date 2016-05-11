@@ -1,12 +1,12 @@
 <div class="modal-header">
-  <h3 class="modal-title">{{ newActivity.key | areaTitle }} Details</h3>
+  <h3 class="modal-title">{{ newActivity.key | problemTitle }} Details</h3>
 </div>
 <form class="update-activity-form" name="addDetailsForm">
   <div class="modal-body" stop-event="touchend">
     <p>
     Please add some details for the following issues:
     <ul class="modal-issue-list">
-      <li data-ng-repeat="issue in issues" data-ng-bind="issue.title"></li>
+      <li data-ng-repeat="issue in issues" data-ng-bind="issue.key"></li>
     </ul>
     </p>
       <div class="form-group">

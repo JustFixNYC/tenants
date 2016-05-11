@@ -6,8 +6,10 @@ angular.module('core').directive('goToTop', function($document) {
         link: function (scope, elm, attrs) {
             elm.bind("click", function () {
 
+
+              // console.log('blah');
                 // Maybe abstract this out in an animation service:
-                // Ofcourse you can replace all this with the jQ 
+                // Ofcourse you can replace all this with the jQ
                 // syntax you have above if you are using jQ
                 function scrollToTop(element, to, duration) {
                     if (duration < 0) return;

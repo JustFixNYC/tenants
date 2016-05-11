@@ -18,18 +18,27 @@ $grey: #E0E0E0;
 }
 
 
-.onboarding-user-create {
-	h3 {
-		margin-top: 0.5em;
-		font-size: 2em;
-		font-weight: 400;
+.create-user-form {
+
+	max-width: $screen-sm-min;
+
+
+	.controls .btn {
+		margin: 3px;
+
+		&:focus, &:active, &.active {
+			background-color: $justfix-blue;
+			border-color: $justfix-blue !important;
+			color: #fff;
+		}
 	}
 
-	text-align: center;
+	.apt-field {
+		width: 30%;
+	}
 
-	p {
-		margin: 10px auto;
-		max-width: 500px;
+	.pw-check-field {
+		margin-bottom: 30px;
 	}
 
 	form {
@@ -46,19 +55,19 @@ $grey: #E0E0E0;
 	}
 }
 
-.borough,
-.nycha {
-	margin: 0.25em;
-	width: auto;
-
-	@include transition(0.2s all);
-
-	&.selected,
-	&.active {
-		background: $justfix-blue;
-		color: #fff;
-	}
-}
+// .borough,
+// .nycha {
+// 	margin: 0.25em;
+// 	width: auto;
+//
+// 	@include transition(0.2s all);
+//
+// 	&.selected,
+// 	&.active {
+// 		background: $justfix-blue;
+// 		color: #fff;
+// 	}
+// }
 
 .onboarding-tutorial {
 	// This is full of lies.
@@ -79,24 +88,6 @@ $grey: #E0E0E0;
 
 	.body-wrap {
 		margin: 0 20px;
-	}
-
-	.alert {
-		position: relative;
-		top: -22px;
-		border-radius: 0px;
-		color: white;
-		text-align: left;
-
-		@include make-row;
-
-		.success-check {
-			margin-right: 10px;
-			padding: 5px;
-			border-radius: 50%;
-			background: white;
-			color: $brand-success;
-		}
 	}
 
 	.header {

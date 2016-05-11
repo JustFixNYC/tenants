@@ -2,7 +2,12 @@ html, body {
   overflow-x: hidden; }
 
 body {
-  background-color: #F6F6F6; }
+  background-color: #F6F6F6;
+  -webkit-transition: background-color 750ms ease;
+  -moz-transition: background-color 750ms ease;
+  transition: background-color 750ms ease; }
+  body.white-bg {
+    background-color: #fff; }
 
 a.text-link {
   color: #8CC152;
@@ -35,10 +40,13 @@ h3 {
   display: none !important; }
 
 .ng-invalid.ng-dirty {
-  border-color: #FA787E; }
+  border-color: #DA4453; }
 
 .ng-valid.ng-dirty {
-  border-color: #78FA89; }
+  border-color: #8CC152; }
+
+label.control-label em {
+  font-weight: normal; }
 
 .page-header {
   margin-top: 0;
@@ -63,6 +71,33 @@ h3 {
     text-align: center; }
   .page-header p {
     margin: 15px 0 0 0; }
+  .page-header.left h1 {
+    text-align: left; }
+
+.alert-success {
+  background-color: #8CC152; }
+
+.alert-major {
+  position: relative;
+  /* not sure why we need the extra 2px... */
+  top: -22px;
+  border-radius: 0px;
+  margin-bottom: 0;
+  color: white;
+  text-align: center;
+  letter-spacing: 2px;
+  margin-left: -15px;
+  margin-right: -15px; }
+  .alert-major::after {
+    clear: both;
+    content: "";
+    display: table; }
+  .alert-major .success-check {
+    margin-right: 5px;
+    padding: 5px;
+    border-radius: 50%;
+    background: white;
+    color: #8CC152; }
 
 .section-header {
   margin-left: -15px;
@@ -90,13 +125,16 @@ h3 {
       display: table; }
   .section-header.bg-danger {
     background-color: #E85D5D; }
+  .section-header.bg-success {
+    background-color: #37BC9B; }
 
 .btn:not(.btn-sm), .form-control {
   padding-top: 10px;
-  padding-bottom: 10px; }
+  padding-bottom: 10px;
+  height: auto;
+  -webkit-appearance: none; }
 
 .btn-block {
-  float: none;
   max-width: 180px;
   margin: 0 auto; }
   .btn-block.btn-link {
@@ -698,13 +736,14 @@ header {
 @media (min-width: 992px) {
   .nav-users {
     position: fixed; } }
-.share-section-header {
+.share-section-header.closed {
   margin-bottom: 0; }
 
 .activities-container .share-section {
   margin-left: -15px;
   margin-right: -15px;
-  padding-top: 30px;
+  padding-top: 20px;
+  padding-bottom: 5px;
   background-color: #fff; }
   .activities-container .share-section::after {
     clear: both;
@@ -718,6 +757,8 @@ header {
     line-height: 28px; }
 .share-section .alert {
   margin-bottom: 30px; }
+.share-section .share-link h2 {
+  margin-top: 0; }
 
 .user-profile p {
   margin: 0; }
@@ -854,9 +895,10 @@ header {
     position: relative;
     top: 8px; }
 .issues-modal .modal-body .selecter-options {
-  border: 1px solid #E6E9ED; }
+  border: 1px solid #E6E9ED;
+  max-height: 55vh; }
   .issues-modal .modal-body .selecter-options .selecter-item {
-    padding: 10px; }
+    padding: 12px 10px; }
     .issues-modal .modal-body .selecter-options .selecter-item .input-group .btn.glyphicon {
       top: 0; }
     .issues-modal .modal-body .selecter-options .selecter-item.item-other:hover {
@@ -1025,35 +1067,25 @@ header {
   margin: 0px;
   font-weight: 700; }
 
-.onboarding-user-create {
-  text-align: center; }
-  .onboarding-user-create h3 {
-    margin-top: 0.5em;
-    font-size: 2em;
-    font-weight: 400; }
-  .onboarding-user-create p {
+.create-user-form {
+  max-width: 768px; }
+  .create-user-form .controls .btn {
+    margin: 3px; }
+    .create-user-form .controls .btn:focus, .create-user-form .controls .btn:active, .create-user-form .controls .btn.active {
+      background-color: #0096D7;
+      border-color: #0096D7 !important;
+      color: #fff; }
+  .create-user-form .apt-field {
+    width: 30%; }
+  .create-user-form .pw-check-field {
+    margin-bottom: 30px; }
+  .create-user-form form {
     margin: 10px auto;
     max-width: 500px; }
-  .onboarding-user-create form {
-    margin: 10px auto;
-    max-width: 500px; }
-    .onboarding-user-create form .form-group {
+    .create-user-form form .form-group {
       text-align: left; }
-      .onboarding-user-create form .form-group.apt {
+      .create-user-form form .form-group.apt {
         width: 50%; }
-
-.borough,
-.nycha {
-  margin: 0.25em;
-  width: auto;
-  -webkit-transition: 0.2s all;
-  -moz-transition: 0.2s all;
-  transition: 0.2s all; }
-  .borough.selected, .borough.active,
-  .nycha.selected,
-  .nycha.active {
-    background: #0096D7;
-    color: #fff; }
 
 .onboarding-tutorial {
   margin-left: -15px;
@@ -1079,24 +1111,6 @@ header {
     display: table; }
   .onboarding-tutorial .body-wrap {
     margin: 0 20px; }
-  .onboarding-tutorial .alert {
-    position: relative;
-    top: -22px;
-    border-radius: 0px;
-    color: white;
-    text-align: left;
-    margin-left: -15px;
-    margin-right: -15px; }
-    .onboarding-tutorial .alert::after {
-      clear: both;
-      content: "";
-      display: table; }
-    .onboarding-tutorial .alert .success-check {
-      margin-right: 10px;
-      padding: 5px;
-      border-radius: 50%;
-      background: white;
-      color: #5cb85c; }
   .onboarding-tutorial .header {
     margin-bottom: 2em; }
   .onboarding-tutorial .icon {

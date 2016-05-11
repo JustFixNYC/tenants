@@ -41,7 +41,7 @@ angular.module('problems').controller('ModalProblemController', ['$scope', 'Prob
 		};
 
 
-		$scope.save = function() {
+		$scope.save = function(event) {
 			// did we end up making our other issue -- if it's not created in the above loop or the parent directive, then this doesn't get fired
 			// if($scope.other) {
 			// 	$scope.tempIssues.push($scope.other);
@@ -49,6 +49,12 @@ angular.module('problems').controller('ModalProblemController', ['$scope', 'Prob
 			// console.log()
 			// Pass our temporary copy w/ updates back up our modal function at problem-checklist directive (line 93)
 			// $modalInstance.close($scope.tempIssues);
+
+			// console.log($scope);
+			if($scope.newOther && $scope.newOther.key.length) {
+				$scope.addOther(event);
+			}
+
 			$modalInstance.close();
 		}
 		$scope.cancel = function() {
