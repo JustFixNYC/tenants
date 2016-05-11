@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('actions')
-  .directive('statusUpdate', ['$rootScope', '$filter', '$sce', '$timeout', 'Activity', 'Actions', 'Issues',
-    function ($rootScope, $filter, $sce, $timeout, Activity, Actions, Issues) {
+  .directive('statusUpdate', ['$rootScope', '$filter', '$sce', '$timeout', 'Activity', 'Actions', 'Problems',
+    function ($rootScope, $filter, $sce, $timeout, Activity, Actions, Problems) {
     return {
       restrict: 'E',
       templateUrl: 'modules/actions/partials/status-update.client.view.html',
@@ -14,7 +14,7 @@ angular.module('actions')
         // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
         // scope.action is a $resource!
 
-        scope.problems = Issues.getUserAreas().map(function (a) { return $filter('areaTitle')(a) });
+        scope.problems = Problems.getUserProblems();
 
         scope.status = {
           expanded: false,

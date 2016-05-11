@@ -12,10 +12,12 @@ angular.module('core').directive('toggleSharing', ['Users', 'Authentication',
         }
 
         elm.bind('click', function(event) {
-          if( event.target.tagName === "INPUT" ) {
-            if(elm[0].querySelector('input').checked);
+          event.stopPropagation();
+          console.log(event.target.tagName);
+          if( event.target.tagName === "INPUT") {
+            // alert('clicked');
+            // elm[0].querySelector('input').checked = !elm[0].querySelector('input').checked;
             Users.enableSharing(function (user) {
-              console.log(user);
               Authentication.user = user;
             });
           }

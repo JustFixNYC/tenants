@@ -74,9 +74,10 @@
 			// talk to ashley about this
 			// max-height: none;
 			border: 1px solid $lightgray-dark;
+      max-height: 55vh;
 
 			.selecter-item {
-				padding: 10px;
+				padding: 12px 10px;
 
 				.input-group .btn.glyphicon {
 					top: 0;

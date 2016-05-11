@@ -21,16 +21,20 @@ var ReferralSchema = new Schema({
   },
   email: {
     type: String,
-    default: 'dan@justfix.nyc'
+    default: 'hello@justfix.nyc'
   },
   totalUsers: {
     type: Number,
     default: 0
   },
-  codes: [{
+  code: {
     type: String,
-    default: 'XXXX-XXXX'
-  }]
+    default: ''
+  },
+  inUse: {
+    type: Number,
+    default: 0
+  }
 });
 
 var Referral = mongoose.model('Referral', ReferralSchema);

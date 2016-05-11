@@ -23,50 +23,69 @@ once user logs in, start child process...
 
 */
 
-var areaTitle = function(area) {
-  switch(area) {
-    case 'generalApt': return 'Whole Apartment';
-    case 'entryHallway': return 'Entry/Hallway';
-    case 'kitchen': return 'Kitchen';
-    case 'bathroom': return 'Bathrooms';
-    case 'diningRoom': return 'Dining Room';
-    case 'livingRoom': return 'Living Room';
-    case 'bedrooms': return 'Bedrooms';
-    case 'publicAreas': return 'Public Areas';
-    default: return '';
-  }
-};
 
 var getAreaActions = function(user) {
 
   var areaActions = [];
   var issues = user.issues;
+  var problems = user.problems;
 
-  for(var area in issues) {
-    if(issues[area].length) {
 
-      // make sure that area isn't already in action flags
-      // this means that the user hasn't "added details"
-      if(user.actionFlags.indexOf(area) === -1) {
+  // {
+  //   "title": "Complete your Issue Checklist",
+  //   "activityTitle": "DHCR Decreased Services App",
+  //   "content": "In order to create a letter of complaint and other actions",
+  //   "key": "decreasedServices",
+  //   "addIf": ["getRentalHistory"],
+  //   "type": "once",
+  //   "cta": {
+  //     "type": "link",
+  //     "buttonTitle": "View form",
+  //     "url": "http://www.nyshcr.org/forms/rent/ra84.pdf"
+  //   },
+  //   "followUp": {
+  //     "title": "Have you heard back from DHCR yet?"
+  //   }
+  // },
 
-        areaActions.push({
-          title: areaTitle(area) + ' Issues',
-          activityTitle: 'Added Photos of ' + areaTitle(area) + ' Issues',
-          content: 'Add some initial information about your <b>' + areaTitle(area) + '</b> issues. This will help to provide evidence for the issues you selected.',
-          key: area,
-          addIf: ['initial'],
-          type: 'once',
-          cta: {
-            type: 'initialContent',
-            buttonTitle: '<span class="glyphicon glyphicon-camera pull-left"></span> Add Details',
-            template: 'add-details.client.view.html',
-            controller: 'AddDetailsController'
-          },
-          isFollowUp: false,
-          hasFollowUp: false
-        });
+  if(problems.length == 0) {
+    areaActions.push({
+      title: 'Complete your Issue Checklist',
+      content: 'In order to create a letter of complaint and other actions, you should start by selecting some issues you are looking to resolve.',
+      addIf: ['initial'],
+      type: 'once',
+      cta: {
+        type: 'link-internal',
+        buttonTitle: 'Issue Checklist',
+        url: 'updateProblems'
+      },
+      hasFollowUp: false
+    });
+  }
 
-      }
+  for(var i = 0; i < problems.length; i++) {
+
+    var p = problems[i];
+
+    // make sure that area isn't already in action flags
+    // this means that the user hasn't "added details"
+    if(!_.contains(user.actionFlags, p.key)) {
+      areaActions.push({
+        title: 'Add Issue Details',
+        activityTitle: 'Added Photos of ' + p.title + ' Issues',
+        content: 'Add some initial information about your <b>' + p.title + '</b> issues. This will help to provide evidence for the issues you selected.',
+        key: p.key,
+        addIf: ['initial'],
+        type: 'once',
+        cta: {
+          type: 'initialContent',
+          buttonTitle: '<span class="glyphicon glyphicon-camera pull-left"></span> Add Details',
+          template: 'add-details.client.view.html',
+          controller: 'AddDetailsController'
+        },
+        isFollowUp: false,
+        hasFollowUp: false
+      });
     }
   }
 
@@ -81,8 +100,6 @@ var getAreaActions = function(user) {
 var generateActions = function(user) {
 
   var actions = getAreaActions(user);
-
-
 
   //iterate through full list of actions, push
   fullActions.forEach(function (action) {

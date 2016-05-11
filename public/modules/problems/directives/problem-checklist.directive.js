@@ -1,25 +1,5 @@
 'use strict';
 
-// lets make our lives easier!
-// theres probably a better place to put these...
-Array.prototype.containsByKey = Array.prototype.containsByKey || function(key) {
-  var i, l = this.length;
-  for (i = 0; i < l; i++) if (this[i].key == key) return true;
-  return false;
-};
-
-Array.prototype.getByKey = Array.prototype.getByKey || function(key) {
-  var i, l = this.length;
-  for (i = 0; i < l; i++) if (this[i].key == key) return this[i];
-  return null;
-};
-
-Array.prototype.removeByKey = Array.prototype.removeByKey || function(key) {
-  var i, l = this.length;
-  for (i = l-1; i >= 0; i--) if (this[i].key == key) this.splice(i,1);
-  return;
-};
-
 angular.module('onboarding').directive('problemsChecklist', ['Authentication', 'Problems', '$modal',
   function(Authentication, Problems, $modal) {
     return {
@@ -48,8 +28,20 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 				    newProb.relatedActivities = [];
 
 				    return newProb;
-					}
+					};
 
+
+          // this is a reference to whichever user we're working with, i.e.
+          // scope.newUser or Authentication.user
+          // scope.ourUser;
+
+          // user exists
+          if(!Authentication.user) {
+            // This needs to be tested to see if it actually... works...
+            scope.ourUser = scope.newUser;
+          } else {
+            scope.ourUser = Authentication.user;
+          }
 
           // get problems from service
           Problems.getLocalFile().then(function (data) {
@@ -62,6 +54,22 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
             // 		curr.active = true;
             // 	}
             // });
+
+            // initialize numChecked
+            scope.ourUser.problems.forEach(function (userProb) {
+
+              var prob = scope.problems.getByKey(userProb.key);
+
+              prob.numChecked = userProb.issues.length;
+
+              userProb.issues.forEach(function (i) {
+                if(!prob.issues.containsByKey(i.key)) {
+                  prob.issues.push(i);
+                }
+              });
+            });
+
+
           });
 
 
@@ -77,17 +85,8 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
           // 	}
           // }
 
-          // this is a reference to whichever user we're working with, i.e.
-          // scope.newUser or Authentication.user
-          scope.ourUser;
 
-          // user exists
-          if(!Authentication.user) {
-            // This needs to be tested to see if it actually... works...
-            scope.ourUser = scope.newUser;
-          } else {
-            scope.ourUser = Authentication.user;
-          }
+
 
           // just referring to this as scope.ourUser.problems
           // var ourUserProblems = scope.ourUser.problems;
@@ -150,8 +149,6 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
               if(ourUserCurrentProblem.issues.length == 0) {
                 scope.ourUser.problems.removeByKey(ourUserCurrentProblem.key);
               }
-            
-              console.log(scope.ourUser.problems);
 
               // lectedIssues){
               // f we got updates as set by the modal controller, our CURRENT problem should be updated accordingly
