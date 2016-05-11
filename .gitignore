@@ -9,7 +9,6 @@ app/tests/coverage/
 .idea/
 app/mongodb
 uploads
-public/dist/*
 config/env/development.js
 public/styles/*
 public/styles/style.css
