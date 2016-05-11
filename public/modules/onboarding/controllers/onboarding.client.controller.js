@@ -8,19 +8,18 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 		// create newUser.problems only once (handles next/prev)
 		$scope.newUser.problems = [];
 
+
+
 		$scope.newUser = {
-			firstName: 'Dan',
-			lastName: 'Kass',
 			borough: 'Brooklyn',
 			address: '654 Park Place',
 			unit: '1RF',
-			phone: '5555555555',
-			password: 'password',
+			phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
 			problems: []
 		};
 
 	  $scope.accessCode = {
-			value: 'test5',
+			value: 'bigappsnight',
 			valid: false
 		};
 
