@@ -69,10 +69,6 @@
 	}
 
 	.btn-wrap {
-		/* margin: 30px auto 50px auto;
-		width: 100%;
-		text-align: center;
-		max-width: 500px; */
 
 		.btn {
 			width: 100%;
@@ -100,17 +96,30 @@
 }
 
 .footer-links {
-	margin-top: 20px;
+	margin-top: 5em;
 	text-align: center;
-	background: #fff;
-	@include make-row();
+
+	@media (max-width: $screen-xs) {
+		@include make-row();
+	}
 
 	a {
 
+		@media (min-width: $screen-sm) {
+	    margin: 0 8.3% 30px 8.3%;
+		}
+		@media (max-width: $screen-md) {
+			padding: 0px;
+		}
+
 		.footer-link {
-			padding: 10% 0;
+			background: #fff;
+			padding: 3em 0;
 			color: $gray;
-			border-right: 1px solid $gray-lighter;
+
+			@media (max-width: $screen-md) {
+				border-right: 1px solid $gray-lighter;
+			}
 		}
 
 		&:last-child {

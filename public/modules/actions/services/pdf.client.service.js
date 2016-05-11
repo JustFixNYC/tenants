@@ -85,7 +85,8 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
       $http({
 	  		method: 'POST',
 	  		// Placeholder URL, needs to be attached to a real URL w/ JustFix (Also, using goddamnedtestbucket, let's get that out of there...)
-	  		url:'http://pdf-microservice.herokuapp.com/complaint-letter',
+	  		// url:'http://pdf-microservice.herokuapp.com/complaint-letter',
+	  		url: 'http://localhost:5000/complaint-letter',
 	  		data: assembledObject
 	  	}).then(
 	  		function successfulPdfPost(response){

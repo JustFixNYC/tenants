@@ -1,8 +1,8 @@
 
 'use strict';
 
-angular.module('kyr').controller('KyrController', ['kyrService', '$scope',
-	function(kyrService, $scope) {
+angular.module('kyr').controller('KyrController', ['kyrService', '$scope', 'Pdf',
+	function(kyrService, $scope, Pdf) {
 		var emptyArray = [];
 		$scope.kyrResponse;
 
@@ -11,4 +11,5 @@ angular.module('kyr').controller('KyrController', ['kyrService', '$scope',
 		}, function(err) {
 			console.log(err);
 		});
+		
 	}]);
