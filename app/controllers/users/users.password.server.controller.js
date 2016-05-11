@@ -253,10 +253,12 @@ exports.changePassword = function(req, res) {
 exports.verifyPassword = function(req, res) {
 	// Init Variables
 	var passwordDetails = req.body;
+	console.log(passwordDetails);
+	console.log(req.user);
 
 	User.findById(req.user.id, function(err, user) {
 		if (!err && user) {
-			if (user.authenticate(passwordDetails.currentPassword)) {
+			if (user.authenticate(passwordDetails.password)) {
 				res.send('message correct');
 			} else {
 				res.status(400).send({

@@ -47,15 +47,22 @@
 	}
 
 	.user-container {
+		@include make-row;
 
 		a {
 			display: block;
-			background: #fff;
 			padding: 10px 15px;
-			border: 1px solid $gray-lighter;
-			border-top: none;
+			border-bottom: 1px solid $gray-lighter;
 			color: $gray;
 			cursor: pointer;
+
+			.glyphicon {
+				color: lighten($gray-light, 20);
+			}
+
+			&:first-child {
+				border-top: 1px solid $gray-lighter;
+			}
 		}
 	}
 

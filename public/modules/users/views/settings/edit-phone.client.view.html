@@ -1,5 +1,28 @@
-<div class="verify-pw">
-	<form>
-		<input type="password" ng-model="user.test" pw-check="user.password">
+<div class="page-header">
+	<h1>Change Phone</h1>
+</div>
+<div class="verify-pw col-md-offset-3 col-md-6">
+	<form class="form-group" class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4" ng-if="!passwordVerified">
+		<label class="">Please verify your account by re-entering your password:</label>
+		<input class="form-control" type="password" ng-model="password" placeholder="Current Password">
+		<br/>
+		<div class="btn btn-default col-xs-4" ui-sref="settings.profile">Cancel</div> 
+		<input type="submit" class="btn btn-primary col-xs-7 pull-right" ng-click="verifyPassword(password)" value="Verify">
+		<div class="clearfix"></div>
+		<div class="error alert alert-danger" ng-show="passwordError">{{errorMessage}}</div>
 	</form>
+
+	<form name="passwordConfirmation" class="form group col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4" ng-if="passwordVerified" data-ng-submit="updateUserProfile(passwordConfirmation.$valid)">
+		<label>New Phone Number</label>
+		<input class="form-control" type="phone" ng-model="user.phone">
+		<br/>
+		<div class="btn btn-default col-xs-4" ui-sref="settings.profile">Cancel</div>
+		<input type="submit" class="btn btn-primary col-xs-7 pull-right" value="Save">
+	</form>
+	<div class="clearfix"></div>
+	<br/>
+	<div class="message">
+		<div class="alert alert-success" ng-show="success">Phone changed successfully!</div>
+		<div class="alert alert-danger" ng-show="errorPhone">{{errorPhone}}</div>
+	</div>
 </div>

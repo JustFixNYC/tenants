@@ -1,32 +1,33 @@
 <div class="page-header">
+	<img src="/modules/core/img/sections/profile.svg" alt="Profile" />
 	<h1>Profile</h1>
 </div>
-<div class="user-profile">
+<div class="user-profile col-md-offset-3 col-md-6">
 	<p>{{user.fullName}}</p>
 	<p>{{user.phone}}</p>
 	<p>{{user.address}}</p>
 	<p>{{user.unit}}</p>
 	<p>{{user.borough}}, NY  {{user.geo.zip}}</p>
 	<br/>
-	<p><strong>Advocate Information:</strong></p>
+	<p ng-if="user.referral"><strong>Advocate Information:</strong></p>
 	<p>{{user.referral.name}}</p>
 	<p>{{user.referral.organization}}</p>
 	<p>{{user.referral.phone}}</p>
 	<p>{{user.referral.email}}</p>
 	<br/>
 	<div class="user-container">
-		<a ng-href="#!/settings/edit">
-			Edit my profile <span class="glyphicon glyphicon-menu-right pull-right"></span>
+		<a ui-sref="settings.edit">
+			<strong>Edit my profile<span class="glyphicon glyphicon-menu-right pull-right"></span></strong> 
 		</a>
-		<a ui-sref="phone">
-			Change phone number <span class="glyphicon glyphicon-menu-right pull-right"></span>
+		<a ui-sref="settings.phone">
+			<strong>Change phone number <span class="glyphicon glyphicon-menu-right pull-right"></span></strong> 
 		</a>
-		<a href="#!/settings/password">
-			Change password <span class="glyphicon glyphicon-menu-right pull-right"></span>
+		<a ui-sref="settings.password">
+			<strong>Change password <span class="glyphicon glyphicon-menu-right pull-right"></span></strong> 
 		</a>
 	</div>
 	<br/>
 	<div class="btn-wrap">
-		<a class="btn btn-primary center-block col-xs-4">Sign out</a>
+		<a class="btn btn-primary center-block col-xs-4" ng-click="signOut()">Sign out</a>
 	</div>
 </div>
