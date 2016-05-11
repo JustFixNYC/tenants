@@ -773,6 +773,18 @@ header {
     background: #0096D7;
     box-shadow: none;
     color: #fff; }
+    .problem.active .problem-icon .glyphicon.bedrooms {
+      background-image: url("/modules/problems/img/whiteicons_Bedroom.svg"); }
+    .problem.active .problem-icon .glyphicon.living-room {
+      background-image: url("/modules/problems/img/whiteicons_Living_Room.svg"); }
+    .problem.active .problem-icon .glyphicon.bathroom {
+      background-image: url("/modules/problems/img/whiteicons_Bathroom.svg"); }
+    .problem.active .problem-icon .glyphicon.public {
+      background-image: url("/modules/problems/img/whiteicons_Public_Areas.svg"); }
+    .problem.active .problem-icon .glyphicon.home {
+      background-image: url("/modules/problems/img/whiteicons_Entire_Home.svg"); }
+    .problem.active .problem-icon .glyphicon.landlord {
+      background-image: url("/modules/problems/img/whiteicons_Landlord.svg"); }
   .problem .problem-icon {
     position: relative;
     top: 50%;
@@ -784,7 +796,40 @@ header {
     text-align: center; }
     .problem .problem-icon .glyphicon {
       font-size: 2.25em;
-      margin-bottom: 10px; }
+      margin-bottom: 10px;
+      background-size: contain;
+      background-position: center center;
+      background-repeat: no-repeat; }
+      .problem .problem-icon .glyphicon.bedrooms {
+        background-image: url("/modules/problems/img/icons_Bedroom.svg"); }
+        .problem .problem-icon .glyphicon.bedrooms:before {
+          content: 'test';
+          opacity: 0; }
+      .problem .problem-icon .glyphicon.living-room {
+        background-image: url("/modules/problems/img/icons_Living_Room.svg"); }
+        .problem .problem-icon .glyphicon.living-room:before {
+          content: 'test';
+          opacity: 0; }
+      .problem .problem-icon .glyphicon.bathroom {
+        background-image: url("/modules/problems/img/icons_Bathroom.svg"); }
+        .problem .problem-icon .glyphicon.bathroom:before {
+          content: 'test';
+          opacity: 0; }
+      .problem .problem-icon .glyphicon.public {
+        background-image: url("/modules/problems/img/icons_Public_Areas.svg"); }
+        .problem .problem-icon .glyphicon.public:before {
+          content: 'test';
+          opacity: 0; }
+      .problem .problem-icon .glyphicon.home {
+        background-image: url("/modules/problems/img/icons_Entire_Home.svg"); }
+        .problem .problem-icon .glyphicon.home:before {
+          content: 'test';
+          opacity: 0; }
+      .problem .problem-icon .glyphicon.landlord {
+        background-image: url("/modules/problems/img/icons_Landlord.svg"); }
+        .problem .problem-icon .glyphicon.landlord:before {
+          content: 'test';
+          opacity: 0; }
     .problem .problem-icon p {
       margin-bottom: 0; }
 
@@ -1109,13 +1154,8 @@ header {
     text-align: left;
     text-decoration: underline;
     color: #5cb85c; }
-.kyr-detail .btn-wrap {
-  /* margin: 30px auto 50px auto;
-  width: 100%;
-  text-align: center;
-  max-width: 500px; */ }
-  .kyr-detail .btn-wrap .btn {
-    width: 100%; }
+.kyr-detail .btn-wrap .btn {
+  width: 100%; }
 .kyr-detail blockquote {
   margin-top: 20px;
   border-radius: 5px;
@@ -1132,19 +1172,29 @@ header {
   border-top: 1px solid #eeeeee; }
 
 .footer-links {
-  margin-top: 20px;
-  text-align: center;
-  background: #fff;
-  margin-left: -15px;
-  margin-right: -15px; }
-  .footer-links::after {
-    clear: both;
-    content: "";
-    display: table; }
+  margin-top: 5em;
+  text-align: center; }
+  @media (max-width: 480px) {
+    .footer-links {
+      margin-left: -15px;
+      margin-right: -15px; }
+      .footer-links::after {
+        clear: both;
+        content: "";
+        display: table; } }
+  @media (min-width: 768px) {
+    .footer-links a {
+      margin: 0 8.3% 30px 8.3%; } }
+  @media (max-width: 992px) {
+    .footer-links a {
+      padding: 0px; } }
   .footer-links a .footer-link {
-    padding: 10% 0;
-    color: #555555;
-    border-right: 1px solid #eeeeee; }
+    background: #fff;
+    padding: 3em 0;
+    color: #555555; }
+    @media (max-width: 992px) {
+      .footer-links a .footer-link {
+        border-right: 1px solid #eeeeee; } }
   .footer-links a:last-child .footer-link {
     border-right: none; }
 

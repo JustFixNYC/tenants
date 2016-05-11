@@ -14,6 +14,36 @@
 		background: $justfix-blue;
     box-shadow: none;
 		color: #fff;
+
+		.problem-icon {
+			.glyphicon {
+
+				&.bedrooms {
+	      	background-image: url('/modules/problems/img/whiteicons_Bedroom.svg');
+	      }
+
+	      &.living-room {
+	      	background-image: url('/modules/problems/img/whiteicons_Living_Room.svg');
+	      }
+
+	      &.bathroom {
+	      	background-image: url('/modules/problems/img/whiteicons_Bathroom.svg');
+	      }
+
+	      &.public {
+	      	background-image: url('/modules/problems/img/whiteicons_Public_Areas.svg');
+	      }
+
+	      &.home {
+	      	background-image: url('/modules/problems/img/whiteicons_Entire_Home.svg');
+	      }
+
+	      &.landlord {
+	      	background-image: url('/modules/problems/img/whiteicons_Landlord.svg');
+	      }
+
+			}
+		}
 	}
 
   .problem-icon {
@@ -25,6 +55,66 @@
     .glyphicon {
       font-size: 2.25em;
       margin-bottom: 10px;
+      background-size: contain;
+      background-position: center center;
+      background-repeat: no-repeat;
+
+      &.bedrooms {
+      	background-image: url('/modules/problems/img/icons_Bedroom.svg');
+
+      	&:before {
+      		content: 'test';
+      		opacity: 0;
+      	}
+      }
+
+      &.living-room {
+      	background-image: url('/modules/problems/img/icons_Living_Room.svg');
+
+      	&:before {
+      		content: 'test';
+      		opacity: 0;
+      	}
+
+      }
+
+      &.bathroom {
+      	background-image: url('/modules/problems/img/icons_Bathroom.svg');
+
+      	&:before {
+      		content: 'test';
+      		opacity: 0;
+      	}
+
+      }
+
+      &.public {
+      	background-image: url('/modules/problems/img/icons_Public_Areas.svg');
+
+      	&:before {
+      		content: 'test';
+      		opacity: 0;
+      	}
+
+      }
+
+      &.home {
+      	background-image: url('/modules/problems/img/icons_Entire_Home.svg');
+
+      	&:before {
+      		content: 'test';
+      		opacity: 0;
+      	}
+      }
+
+      &.landlord {
+      	background-image: url('/modules/problems/img/icons_Landlord.svg');
+
+      	&:before {
+      		content: 'test';
+      		opacity: 0;
+      	}
+      }
     }
 
     p {

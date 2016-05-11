@@ -150,8 +150,6 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
               if(ourUserCurrentProblem.issues.length == 0) {
                 scope.ourUser.problems.removeByKey(ourUserCurrentProblem.key);
               }
-            
-              console.log(scope.ourUser.problems);
 
               // lectedIssues){
               // f we got updates as set by the modal controller, our CURRENT problem should be updated accordingly

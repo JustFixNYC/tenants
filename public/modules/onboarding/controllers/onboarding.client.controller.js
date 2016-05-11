@@ -27,7 +27,8 @@ angular.module('onboarding').controller('OnboardingController', ['$scope', '$loc
 		          $scope.newUser.referral = success.referral;
 							$scope.newUser.referral.code = $scope.accessCode.value;
 		        } else {
-		         	$scope.codeWrong = true;
+		          $scope.accessCode.valid = true;
+		         	// $scope.codeWrong = true;
 		        }
 		      }, function(error) {
 		        $scope.codeError = true;

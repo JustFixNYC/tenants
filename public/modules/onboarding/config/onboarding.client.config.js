@@ -4,8 +4,8 @@ angular.module('onboarding').run(['$rootScope', '$state', 'Authentication', '$wi
 
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 		if(toState.onboarding && toState.name !== 'onboarding.accessCode') {
-			event.preventDefault();
-			$state.go('onboarding.accessCode');
+			// event.preventDefault();
+			// $state.go('onboarding.accessCode');
 		}
 	});
 
