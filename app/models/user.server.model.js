@@ -45,11 +45,11 @@ var UserSchema = new Schema({
     trim: true,
     default: ''
   },
-  email: {
+  /*email: {
   	type: String,
   	default: '',
   	unique: true
-  },
+  },*/
   borough: {
     type: String,
     default: ''

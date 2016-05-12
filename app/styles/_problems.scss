@@ -22,6 +22,10 @@
 	      	background-image: url('/modules/problems/img/whiteicons_Bedroom.svg');
 	      }
 
+	      &.kitchen {
+	      	background-image: url('/modules/problems/img/whiteicons_Kitchen.svg');
+	      }
+
 	      &.living-room {
 	      	background-image: url('/modules/problems/img/whiteicons_Living_Room.svg');
 	      }
@@ -44,85 +48,94 @@
 
 			}
 		}
-	}
+	} 
+}
 
-  .problem-icon {
-    @include vertical-align();
-    max-width: 90px;
-    margin: 0 auto;
-    text-align: center;
+.problem-icon {
+  @include vertical-align();
+  max-width: 90px;
+  margin: 0 auto;
+  text-align: center;
 
-    .glyphicon {
-      font-size: 2.25em;
-      margin-bottom: 10px;
-      background-size: contain;
-      background-position: center center;
-      background-repeat: no-repeat;
+  .glyphicon {
+    font-size: 2.25em;
+    margin-bottom: 10px;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
 
-      &.bedrooms {
-      	background-image: url('/modules/problems/img/icons_Bedroom.svg');
+    &.bedrooms {
+    	background-image: url('/modules/problems/img/icons_Bedroom.svg');
 
-      	&:before {
-      		content: 'test';
-      		opacity: 0;
-      	}
-      }
-
-      &.living-room {
-      	background-image: url('/modules/problems/img/icons_Living_Room.svg');
-
-      	&:before {
-      		content: 'test';
-      		opacity: 0;
-      	}
-
-      }
-
-      &.bathroom {
-      	background-image: url('/modules/problems/img/icons_Bathroom.svg');
-
-      	&:before {
-      		content: 'test';
-      		opacity: 0;
-      	}
-
-      }
-
-      &.public {
-      	background-image: url('/modules/problems/img/icons_Public_Areas.svg');
-
-      	&:before {
-      		content: 'test';
-      		opacity: 0;
-      	}
-
-      }
-
-      &.home {
-      	background-image: url('/modules/problems/img/icons_Entire_Home.svg');
-
-      	&:before {
-      		content: 'test';
-      		opacity: 0;
-      	}
-      }
-
-      &.landlord {
-      	background-image: url('/modules/problems/img/icons_Landlord.svg');
-
-      	&:before {
-      		content: 'test';
-      		opacity: 0;
-      	}
-      }
+    	&:before {
+    		content: 'test';
+    		opacity: 0;
+    	}
     }
 
-    p {
-      margin-bottom: 0;
+    &.kitchen {
+    	background-image: url('/modules/problems/img/icons_Kitchen.svg');
+
+    	&:before {
+    		content: 'test';
+    		opacity: 0;
+    	}
+    }
+
+    &.living-room {
+    	background-image: url('/modules/problems/img/icons_Living_Room.svg');
+
+    	&:before {
+    		content: 'test';
+    		opacity: 0;
+    	}
+
+    }
+
+    &.bathroom {
+    	background-image: url('/modules/problems/img/icons_Bathroom.svg');
+
+    	&:before {
+    		content: 'test';
+    		opacity: 0;
+    	}
+
+    }
+
+    &.public {
+    	background-image: url('/modules/problems/img/icons_Public_Areas.svg');
+
+    	&:before {
+    		content: 'test';
+    		opacity: 0;
+    	}
+
+    }
+
+    &.home {
+    	background-image: url('/modules/problems/img/icons_Entire_Home.svg');
+
+    	&:before {
+    		content: 'test';
+    		opacity: 0;
+    	}
+    }
+
+    &.landlord {
+    	background-image: url('/modules/problems/img/icons_Landlord.svg');
+
+    	&:before {
+    		content: 'test';
+    		opacity: 0;
+    	}
     }
   }
 
+  p {
+    margin-bottom: 0;
+  }
 }
+
 
 
 .issues-modal {
