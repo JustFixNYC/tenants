@@ -5,8 +5,6 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
   	var assemble = function(landlordName, landlordAddr) {
 
-
-
   		// This block assembles our issues list PhantomJS
   		var assembledObject = {
   			issues: []
@@ -33,40 +31,45 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
   			'address': landlordAddr.length ? landlordAddr : ''
 	  	};
 
-      for(var issue in user.issues) {
-        var key = issue,
-            title = $filter('areaTitle')(key),
-            vals = user.issues[issue];
+      for(var i = 0; i < user.problems.length; i++) {
 
-        if(vals.length) {
-        	var tempObject = {};
+      	var problemPush = angular.copy(user.problems[i]);
 
-        	// Here we go...
-          var activityIdx = user.activity.map(function(i) { return i.key; }).indexOf(key);
-          if(activityIdx !== -1) var activity = user.activity[activityIdx];
+      	assembledObject.issues.push(problemPush);
 
-          tempObject.title = title;
-          tempObject.vals = [];
+        // var key = problems,
+        //     title = $filter('areaTitle')(key),
+        //     vals = user.issues[issue];
 
-          vals.forEach(function(v) {
-            tempObject.vals.push({title: v.title, emergency: v.emergency});
-          });
+        // if(vals.length) {
+        // 	var tempObject = {};
 
-          if(activity) {
-            tempObject.startDate = $filter('date')(activity.date, 'longDate');
+        // 	// Here we go...
+        //   var activityIdx = user.activity.map(function(i) { return i.key; }).indexOf(key);
+        //   if(activityIdx !== -1) var activity = user.activity[activityIdx];
 
-            if(activity.description) {
-            	tempObject.description = activity.description;
-            }
+        //   tempObject.title = title;
+        //   tempObject.vals = [];
 
-            // @meegan - why is this here?
-            activity = undefined;
-          }
+        //   vals.forEach(function(v) {
+        //     tempObject.vals.push({title: v.title, emergency: v.emergency});
+        //   });
 
-          assembledObject.issues.push(tempObject);
+        //   if(activity) {
+        //     tempObject.startDate = $filter('date')(activity.date, 'longDate');
 
-          issuesCount++;
-        }
+        //     if(activity.description) {
+        //     	tempObject.description = activity.description;
+        //     }
+
+        //     // @meegan - why is this here?
+        //     activity = undefined;
+        //   }
+
+        //   assembledObject.issues.push(tempObject);
+
+        //   issuesCount++;
+        // }
       }
 
       // console.log(assembledObject);
@@ -84,9 +87,8 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
       $http({
 	  		method: 'POST',
-	  		// Placeholder URL, needs to be attached to a real URL w/ JustFix (Also, using goddamnedtestbucket, let's get that out of there...)
-	  		// url:'http://pdf-microservice.herokuapp.com/complaint-letter',
-	  		url: 'http://localhost:5000/complaint-letter',
+	  		url:'http://pdf-microservice.herokuapp.com/complaint-letter',
+	  		// url: 'http://localhost:5000/complaint-letter',
 	  		data: assembledObject
 	  	}).then(
 	  		function successfulPdfPost(response){
@@ -102,19 +104,7 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
     };
 
-
-  	// var getRequest = function () {
-  	// 	var user = Authentication.user;
-    //
-  	// 	if(user.complaintUrl !== '') {
-  	// 		return user.complaintUrl;
-  	// 	} else {
-  	// 		postRequest();
-  	// 	}
-  	// };
-
   	return {
   		createComplaint : createComplaint
-  		// getComplaint: getRequest
   	};
   }]);

@@ -44,6 +44,8 @@
 .user-profile {
 	p {
 		margin: 0;
+		font-size: 16px;
+		font-weight: 600;
 	}
 
 	.user-container {
@@ -51,7 +53,8 @@
 
 		a {
 			display: block;
-			padding: 10px 15px;
+			background: #fff;
+			padding: 15px 20px;
 			border-bottom: 1px solid $gray-lighter;
 			color: $gray;
 			cursor: pointer;
@@ -89,6 +92,11 @@
 
   .btn {
     margin: 2px 0;
+
+    &.active {
+    	background-color: $justfix-blue;
+    	color: $white;
+    }
 
     &.btn-step {
       width: 100%;

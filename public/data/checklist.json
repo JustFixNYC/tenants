@@ -3,6 +3,7 @@
     "key": "bedrooms",
     "title":"Bedrooms",
     "icon": "bedrooms",
+    "iconImage": "/public/modules/problems/img/",
     "issues": [ 
       { "key" : "Peeling Paint", "emergency": false },
       { "key" : "Cracked Walls", "emergency": false },
@@ -23,7 +24,7 @@
   {
     "key": "kitchen",
     "title": "Kitchen",
-    "icon": "glyphicon-cutlery",
+    "icon": "kitchen",
     "issues": [      
       { "key": "Peeling Paint", "emergency": false },
       { "key": "Cracked Walls", "emergency": false },

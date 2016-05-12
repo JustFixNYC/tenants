@@ -2,9 +2,9 @@
 	<img src="/modules/core/img/sections/profile.svg" alt="Profile" />
 	<h1>Profile</h1>
 </div>
-<div class="user-profile col-md-offset-3 col-md-6">
+<div class="user-profile">
 	<p>{{user.fullName}}</p>
-	<p>{{user.phone}}</p>
+	<p>{{user.phone | tel}}</p>
 	<p>{{user.address}}</p>
 	<p>{{user.unit}}</p>
 	<p>{{user.borough}}, NY  {{user.geo.zip}}</p>
@@ -12,7 +12,7 @@
 	<p ng-if="user.referral"><strong>Advocate Information:</strong></p>
 	<p>{{user.referral.name}}</p>
 	<p>{{user.referral.organization}}</p>
-	<p>{{user.referral.phone}}</p>
+	<p>{{user.referral.phone | tel}}</p>
 	<p>{{user.referral.email}}</p>
 	<br/>
 	<div class="user-container">

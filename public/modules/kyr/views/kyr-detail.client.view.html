@@ -8,10 +8,9 @@
 		<p><b>Want to learn more?</b></p>
 		<a class="learn-more-kyr" ng-repeat="block in kyr.learnMore" ng-href="{{block.link}}">{{block.title}}</a>
 	</div>
-  <div ng-show="canExpand">
-		<button class="btn btn-block btn-default col-xs-7" ng-click="expand = !expand">
-			<span ng-show="!expand">Read More</span>
-			<span ng-show="expand">Hide More</span>
+  <div ng-show="canExpand" ng-hide="expand">
+		<button class="btn btn-default col-xs-12" ng-click="expand = !expand">
+			<span ng-show="!expand"><strong>READ MORE</strong></span>
 		</button>
   </div>
   <div class="clearfix"></div>
@@ -37,7 +36,7 @@
 				<span>Take Action</span>
 			</div>
 		</a>
-		<a href="#!/home" class="col-xs-6 col-sm-4 pull-right">
+		<a href="#!/find-help" class="col-xs-6 col-sm-4 pull-right">
 			<div class="footer-link phone">
 	      <img src="/modules/core/img/sections/help.svg" alt="Find Help" />
 	      <br/>

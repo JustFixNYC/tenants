@@ -42,7 +42,7 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
     $scope.signOut = function() {
     	$http.get('/auth/signout')
     		.then(function(success) {
-    			console.log(success);
+    			$location.path('/');
     		}, function(err) {
     			console.log(err);
     		});

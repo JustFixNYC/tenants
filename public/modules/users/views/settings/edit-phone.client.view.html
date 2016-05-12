@@ -12,9 +12,9 @@
 		<div class="error alert alert-danger" ng-show="passwordError">{{errorMessage}}</div>
 	</form>
 
-	<form name="passwordConfirmation" class="form group col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4" ng-if="passwordVerified" data-ng-submit="updateUserProfile(passwordConfirmation.$valid)">
+	<form name="passwordConfirmation" class="form group col-xs-12 col-md-offset-6 col-md-2" ng-if="passwordVerified" data-ng-submit="updateUserProfile(passwordConfirmation.$valid)">
 		<label>New Phone Number</label>
-		<input class="form-control" type="phone" ng-model="user.phone">
+		<input class="form-control" type="phone" ng-model="user.phone" phone-input>
 		<br/>
 		<div class="btn btn-default col-xs-4" ui-sref="settings.profile">Cancel</div>
 		<input type="submit" class="btn btn-primary col-xs-7 pull-right" value="Save">
