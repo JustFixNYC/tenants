@@ -5,7 +5,7 @@ angular.module('issues').config(['$stateProvider', '$urlRouterProvider',
 	function($stateProvider, $urlRouterProvider) {
 
 		// Jump to first child state
-		$urlRouterProvider.when('/issues/create', '/issues/create/access-code');
+		$urlRouterProvider.when('/issues/create', '/issues/create/checklist');
 
 		// Issues state routing
 		$stateProvider.

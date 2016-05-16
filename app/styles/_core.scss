@@ -222,5 +222,12 @@ label.control-label em {
 
 
 footer {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: $justfix-blue-darkest;
   margin-top: 75px;
+
+  & > p {
+    color: #fff;
+  }
 }

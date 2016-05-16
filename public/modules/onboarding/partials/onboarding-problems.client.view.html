@@ -15,7 +15,8 @@
         </div>
         <div class="col-xs-8">
             <a ui-sref="onboarding.details" class="btn btn-primary btn-block pull-right">
-              Continue
+              <span ng-if="newUser.problems.length">Continue</span>
+              <span ng-if="!newUser.problems.length">Skip For Now</span>
             </a>
         </div>
     </div>
