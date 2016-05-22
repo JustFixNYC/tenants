@@ -113,7 +113,7 @@ var generateActions = function(user) {
     // var reject = user.actionFlags.indexOf(action.key) !== -1 && action.type == 'once';
     var reject = _.contains(user.actionFlags, action.key) && action.type == 'once';
 
-    if(add && !reject) {
+    if(add /*&& !reject*/) {
       if(action.followUp) action.hasFollowUp = true;
       else action.hasFollowUp = false;
 

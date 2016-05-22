@@ -13,8 +13,6 @@ angular.module('actions').controller('ActionsController', ['$scope', '$filter', 
       else return false;
     };
 
-    // console.log($scope.userCompletedDetails());
-
     $scope.list = function() {
       Actions.query(function(actions) {
         $scope.onceActions = $filter('filter')(actions, { $: 'once' }, true);
