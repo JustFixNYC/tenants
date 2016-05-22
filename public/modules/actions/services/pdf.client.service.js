@@ -7,7 +7,8 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
   		// This block assembles our issues list PhantomJS
   		var assembledObject = {
-  			issues: []
+  			issues: [],
+  			emergency: false
   		};
   		var issuesCount = 0;
 
@@ -35,44 +36,14 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
       	var problemPush = angular.copy(user.problems[i]);
 
-      	assembledObject.issues.push(problemPush);
+      	problemPush.issues.map(function(curr, idx, arr) {
+      		if(curr.emergency === true) {
+      			assembledObject.emergency = true;
+      		}
+      	});
 
-        // var key = problems,
-        //     title = $filter('areaTitle')(key),
-        //     vals = user.issues[issue];
-
-        // if(vals.length) {
-        // 	var tempObject = {};
-
-        // 	// Here we go...
-        //   var activityIdx = user.activity.map(function(i) { return i.key; }).indexOf(key);
-        //   if(activityIdx !== -1) var activity = user.activity[activityIdx];
-
-        //   tempObject.title = title;
-        //   tempObject.vals = [];
-
-        //   vals.forEach(function(v) {
-        //     tempObject.vals.push({title: v.title, emergency: v.emergency});
-        //   });
-
-        //   if(activity) {
-        //     tempObject.startDate = $filter('date')(activity.date, 'longDate');
-
-        //     if(activity.description) {
-        //     	tempObject.description = activity.description;
-        //     }
-
-        //     // @meegan - why is this here?
-        //     activity = undefined;
-        //   }
-
-        //   assembledObject.issues.push(tempObject);
-
-        //   issuesCount++;
-        // }
+      	assembledObject.issues.push(problemPush); 
       }
-
-      // console.log(assembledObject);
 
       return assembledObject;
 
