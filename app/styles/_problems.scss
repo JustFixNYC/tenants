@@ -54,11 +54,12 @@
 
 .glyphicon-addl {
 	display: inline-block;
-  margin: 10px auto;
+  margin: 0px 10px;
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
-  font-size: 2em;
+  height: 1.25em;
+  width: 1.5em;
 
   &:before {
   	content: 'empty';
@@ -101,6 +102,11 @@
   max-width: 90px;
   margin: 0 auto;
   text-align: center;
+
+  .glyphicon-addl {
+  	font-size: 1.25em;
+  	margin: 10px;
+  }
 
   p {
     margin-bottom: 0;

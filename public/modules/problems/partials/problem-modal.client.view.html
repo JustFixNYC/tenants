@@ -1,9 +1,7 @@
 <div class="issues-modal">
   <div class="modal-header">
       <h4 class="modal-title">
-      	<span class="problem-icon">
-					<span class="glyphicon-addl" ng-class="userProblem.icon"></span>
-				</span>
+				<span class="glyphicon-addl" ng-class="userProblem.key"></span>
 				{{userProblem.title}}
 				<span class="badge pull-right" data-ng-class="{ 'badge-primary' : userProblem.issues.length }">
 					{{ userProblem.issues.length }} issue{{ userProblem.issues.length == 1 ? '' : 's' }}
