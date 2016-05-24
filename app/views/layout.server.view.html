@@ -81,7 +81,7 @@
 		<section class="container">
 			{% block content %}{% endblock %}
 		</section>
-		<footer class="container" data-ng-include="'/modules/core/views/footer.client.view.html'"></footer>
+		<footer class="container" ng-class="{'no-margin': noMargin}" data-ng-include="'/modules/core/views/footer.client.view.html'"></footer>
 	</section>
 	<loading ng-if="$root.loading"></loading>
 
