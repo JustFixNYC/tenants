@@ -14,12 +14,14 @@
       .state('kyr', {
         url: '/kyr',
         templateUrl: 'modules/kyr/views/kyr.client.view.html',
-        controller: 'KyrController'
+        controller: 'KyrController',
+				data: { protected: true }
       })
       .state('kyrDetail', {
       	url: '/kyr/:kyrId',
       	templateUrl: 'modules/kyr/views/kyr-detail.client.view.html',
-      	controller: 'KyrDetailController'
+      	controller: 'KyrDetailController',
+				data: { protected: true }
       });
   }
 })();

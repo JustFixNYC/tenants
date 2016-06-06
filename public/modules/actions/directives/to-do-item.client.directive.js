@@ -107,6 +107,7 @@ angular.module('actions')
             //animation: false,
             templateUrl: 'modules/actions/partials/modals/' + scope.action.cta.template,
             controller: scope.action.cta.controller,
+            backdrop: 'static',
             resolve: {
               newActivity: function () { return scope.newActivity; }
             }

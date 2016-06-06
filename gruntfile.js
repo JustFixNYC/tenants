@@ -33,6 +33,7 @@ module.exports = function(grunt) {
 			},
 			serverJSON: {
 				files: watchFiles.serverJSON,
+				tasks: ['jshint'],
 				options: {
 					livereload: true,
 				}

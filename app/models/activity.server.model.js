@@ -43,7 +43,11 @@ var ActivitySchema = new Schema({
     relatedProblems: [{
 			type: Schema.Types.ObjectId,
 			ref: 'Problem'
-		}]
+		}],
+    problems: {
+      type: Schema.Types.Mixed,
+      default: {}
+    }
 });
 
 module.exports = ActivitySchema;

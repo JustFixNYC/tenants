@@ -2,6 +2,10 @@
 
   <status-update></status-update>
 
+  <alert data-ng-show="$root.dashboardSuccess" type="success" close="$root.dashboardSuccess = false"><strong>Well done!</strong> Your issue checklist has been updated. Check your <a ui-sref="listActivity">Case History</a> to see the changes.</alert>
+  <alert data-ng-show="$root.dashboardError" type="danger" close="$root.dashboardError = false">We're sorry, something went wrong with updating your checklist. Please <a ui-sref="contact">Contact Us</a> to report this issue.</alert>
+
+
   <div class="grid">
     <a class="col-xs-6 col-sm-4" ui-sref="listActions">
       <img src="/modules/core/img/sections/action.svg" alt="Take Action" />
@@ -12,8 +16,8 @@
       Case History
     </a>
     <a class="col-xs-6 col-sm-4" ui-sref="updateProblems">
-      <img src="/modules/core/img/sections/issues.svg" alt="Issues Checklist" />
-      Issues Checklist
+      <img src="/modules/core/img/sections/issues.svg" alt="Issue Checklist" />
+      Issue Checklist
     </a>
     <a class="col-xs-6 col-sm-4" ui-sref="settings.profile">
       <img src="/modules/core/img/sections/profile.svg" alt="Profile" />
@@ -36,10 +40,10 @@
   </div>
   <div class="share-section" collapse="shareCollapsed">
     <p class="lead"><b>
-      {{ authentication.user.referral.name }}<br />
-      {{ authentication.user.referral.organization }}<br />
-      {{ authentication.user.referral.phone | tel }}<br />
-      {{ authentication.user.referral.email }}
+      {{ ::authentication.user.referral.name }}<br />
+      {{ ::authentication.user.referral.organization }}<br />
+      {{ ::authentication.user.referral.phone | tel }}<br />
+      {{ ::authentication.user.referral.email }}
     </b></p>
     <div class="row share-controls">
       <div class="col-xs-6">
@@ -48,8 +52,8 @@
         </a>
       </div>
       <div class="col-xs-6">
-        <a class="btn btn-success btn-block pull-right" sms-message>
-            Text
+        <a class="btn btn-success btn-block pull-right" ng-href="tel:{{authentication.user.referral.phone}}">
+            Call
         </a>
       </div>
     </div>

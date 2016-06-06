@@ -7,8 +7,8 @@
 // });
 
 
-angular.module('activity').controller('ActivityPublicController', ['$scope', '$location', '$http', 'Activity', 'Lightbox',
-  function($scope, $location, $http, Activity, Lightbox) {
+angular.module('activity').controller('ActivityPublicController', ['$scope', '$location', '$http', '$filter', 'Activity', 'Lightbox',
+  function($scope, $location, $http, $filter, Activity, Lightbox) {
 
 
     var query = $location.search();
@@ -22,16 +22,7 @@ angular.module('activity').controller('ActivityPublicController', ['$scope', '$l
     };
 
     $scope.activityTemplate = function(key) {
-      var template = '/modules/activity/partials/';
-      switch(key) {
-        case 'sendLetter':
-          template += 'complaint-letter.client.view.html';
-          break;
-        default:
-          template += 'default-activity.client.view.html';
-          break;
-      };
-      return template;
+      return $filter('activityTemplate')(key);
     };
 
     $scope.compareDates = function(start, created) {

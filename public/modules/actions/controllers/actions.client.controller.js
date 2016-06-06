@@ -6,6 +6,16 @@ angular.module('actions').controller('ActionsController', ['$scope', '$filter', 
     //$scope.authentication = Authentication;
     $scope.user = Authentication.user;
 
+    // 
+    // $scope.userCompletedDetailsProgress = function() {
+    //
+    //   var prog = 0,
+    //       $scope.user.problems
+    //   $scope.user.problems
+    //
+    //   return prog;
+    // };
+
     $scope.userCompletedDetails = function() {
       if($scope.user.actionFlags) {
         return $scope.user.actionFlags.indexOf('allInitial') !== -1;

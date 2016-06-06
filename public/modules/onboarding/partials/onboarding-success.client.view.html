@@ -5,14 +5,13 @@
 	<div class="page-header left">
 		<h1>Your Building Advocate</h1>
 	</div>
-	<p>Based on the access code you provided, we've connected you to the advocate working with your building. Their contact information will be stored in your account, so you can connect with them at any time.</p>
-	<br />
-	<p class="lead text-center"><b>
+	<p>We've connected you to the advocate working with your building! Their contact information will be stored in your account, so you can connect with them at any time.</p>
+	<h2 class="text-center">
 		{{ newUser.referral.name }}<br />
 		{{ newUser.referral.organization }}<br />
 		{{ newUser.referral.phone | tel }}<br />
 		{{ newUser.referral.email }}
-	</b></p>
+	</h2>
 	<div class="share-section">
 		<h2>
 			<span ng-if="!newUser.sharing.enabled">Share My Case:</span>
@@ -24,7 +23,7 @@
 		</h2>
 
 		<div class="alert alert-warning" ng-if="!newUser.sharing.enabled">
-			This allows your advocate to view the evidence you upload to the site. It doesn't allow them to view every details or your personal information, and you can disable it anytime by going to your Case History page.
+			This allows your advocate to view the evidence you upload to the site; it does not give access to the rest of your account. You can opt in later or disable at any time.
 		</div>
 
 	</div>

@@ -48,7 +48,7 @@
 
 			}
 		}
-	} 
+	}
 }
 
 .problem-icon {
@@ -56,6 +56,10 @@
   max-width: 90px;
   margin: 0 auto;
   text-align: center;
+
+  .problem-num {
+    font-size: 85%;
+  }
 
   .glyphicon {
     font-size: 2.25em;

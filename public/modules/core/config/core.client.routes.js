@@ -47,6 +47,13 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 				protected: true,
 				disableBack: true
 			}
-		});
+		})
+		.state('contact', {
+			url: '/contact',
+			templateUrl: 'modules/core/views/contact.client.view.html',
+			data: {
+			},
+			globalStyles: 'white-bg'
+		})
 	}
 ]);
