@@ -1,4 +1,4 @@
-<!-- <div ng-if="!accessCode.valid"> -->
+<!-- <div class="col-md-6 col-md-offset-3"> -->
 	<div class="page-header">
 		<img src="/modules/core/img/brand/icon_only.svg" alt="JustFix.nyc" />
 		<h1>Welcome to<br/>JustFix.nyc!</h1>
@@ -18,4 +18,3 @@
 	<div class="error-text alert alert-danger" ng-if="!codeErrorMessage.length" ng-show="codeError">There was an error submitting this code. Please <a ui-sref="contact">Contact Us</a> if you need assistance.</div>
 	<div class="error-text alert alert-warning" ng-if="codeErrorMessage.length" ng-show="codeError">{{ codeErrorMessage }} Please <a ui-sref="contact">Contact Us</a> if you need assistance.</div>
 	<div class="error-text alert alert-warning" ng-show="codeWrong">Sorry! This access code does not match anything in our database - please double check that you entered the correct code. Please <a ui-sref="contact">Contact Us</a> if you need assistance.</div>
-<!-- </div> -->

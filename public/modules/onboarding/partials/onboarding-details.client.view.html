@@ -4,7 +4,6 @@
 	<p>Your account will store your evidence and case details for you. <b><em>This information will never be shared without asking for your permission first.</em></b></p>
 </div>
 <form name="createUserForm" class="create-user-form" ng-submit="createAndNext(createUserForm.$valid)" novalidate>
-
 	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.firstName.$invalid }">
 		<label class="control-label" for="firstName">First Name</label>
 		<input class="form-control" type="text" placeholder="First Name" name="firstName" ng-model="newUser.firstName" required>
@@ -21,7 +20,6 @@
 		</div>
 	</div>
 
-	<!-- probably should reapproach this -->
 	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.borough.$invalid }">
 		<label class="control-label" for="borough">Borough</label>
 		<div class="controls">
@@ -52,12 +50,6 @@
 		</div>
 	</div>
 
-	<!-- <div class="form-group">
-		<label>Do you live in NYCHA housing?</label>
-		<button class="btn btn-default nycha" ng-class="{'selected': newUser.nycha === 'yes'}" ng-click="newUser.nycha = 'yes'">Yes</button>
-		<button class="btn btn-default nycha" ng-class="{'selected': newUser.nycha === 'no'}" ng-click="newUser.nycha = 'no'">No</button>
-	</div> -->
-
 	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.phone.$invalid }">
 		<label class="control-label" for="phone">Phone Number <em>(you will use this to sign in)</em></label>
 		<input class="form-control" type="tel" placeholder="Phone Number" name="phone" ng-model="newUser.phone" name="phone" required phone-input>
@@ -65,11 +57,6 @@
 			<p ng-show="createUserForm.phone.$error.required" class="text-danger">Please enter your phone number.</p>
 		</div>
 	</div>
-
-	<!-- <div class="form-group">
-		<label>Email Address</label>
-		<input class="form-control" type="text" placeholder="yourname@domain.com" name="email" ng-model="newUser.email">
-	</div> -->
 
 	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.pw.$invalid }">
 		<label class="control-label" for="pw">Create a password for your account <em>(must be at least 6 characters)</em></label>
@@ -82,7 +69,7 @@
 
 	<div class="form-group pw-check-field" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.pw2.$invalid }">
 		<label class="control-label" for="pw2">Re-enter your new password</label>
-		<input class="form-control" ng-model="pw2" type="password" placeholder="Confirm Password" name="pw2" pw-check="pw1" required>
+		<input class="form-control" ng-model="pw2" type="password" placeholder="Confirm Password" name="pw2" pw-check="pw1" ng-minlength="6" required>
 		<div ng-show="createUserForm.$submitted || createUserForm.pw2.$touched">
 			<p ng-show="createUserForm.pw2.$error.required" class="text-danger">Please enter your password again.</p>
 			<p ng-show="createUserForm.pw2.$error.pwmatch" class="text-danger">These passwords don't match!</p>
@@ -90,10 +77,6 @@
 	</div>
 
 	<div class="form-group">
-		<!-- <div class="error alert alert-danger" ng-show="errorInRequest">
-			<span class="generalError" ng-hide="pwError">{{error}}</span>
-			<span class="pwError" ng-show="pwError">Password needs to be longer than 6 characters.</span>
-		</div> -->
 		<fieldset>
 				<div data-ng-show="error.errors" class="alert alert-danger">
 						<strong data-ng-repeat="err in error.errors">

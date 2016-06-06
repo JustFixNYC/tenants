@@ -231,6 +231,10 @@ footer {
   background-color: $justfix-blue-darkest;
   margin-top: 75px;
 
+  &.no-margin {
+  	margin-top: 0px;
+  }
+
   & > p {
     color: #fff;
   }

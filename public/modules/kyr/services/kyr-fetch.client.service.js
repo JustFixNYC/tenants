@@ -7,7 +7,7 @@ angular.module('kyr').factory('kyrService', ['$resource', '$http', '$q',
 		// Should be able to bring this over as a Query All from mongoDB at a later state
 		this.fetch = function () {
 			var deferred = $q.defer();
-			$http.get('/data/kyr-new.json').then(function(data){
+			$http.get('/data/kyr.json').then(function(data){
 				var finalData = data.data;
 				deferred.resolve(finalData);
 			}, function(err) {
@@ -20,7 +20,7 @@ angular.module('kyr').factory('kyrService', ['$resource', '$http', '$q',
 		// Query single kyr
 		this.single = function(id) {
 			var deferred = $q.defer();
-			$http.get('/data/kyr-new.json').then(function(data){
+			$http.get('/data/kyr.json').then(function(data){
 
 				// Get correct Know Your Rights
 				var finalKyr = data.data[id];
@@ -37,7 +37,6 @@ angular.module('kyr').factory('kyrService', ['$resource', '$http', '$q',
 				if(id <= 0) {
 					finalKyr.prev = false;
 				} else {
-					console.log('prev?');
 					finalKyr.prev = id;
 				}
 

@@ -1,7 +1,7 @@
 <div class="page-header">
 	<h1>Change Phone</h1>
 </div>
-<div class="verify-pw col-md-offset-3 col-md-6">
+<div class="verify-pw row col-md-offset-3 col-md-6">
 	<form class="form-group" class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4" ng-if="!passwordVerified">
 		<label class="">Please verify your account by re-entering your password:</label>
 		<input class="form-control" type="password" ng-model="password" placeholder="Current Password">
@@ -12,7 +12,7 @@
 		<div class="error alert alert-danger" ng-show="passwordError">{{errorMessage}}</div>
 	</form>
 
-	<form name="passwordConfirmation" class="form group col-xs-12 col-md-offset-6 col-md-2" ng-if="passwordVerified" data-ng-submit="updateUserProfile(passwordConfirmation.$valid)">
+	<form name="passwordConfirmation" class="form group row col-md-offset-4 col-md-4" ng-if="passwordVerified" data-ng-submit="updateUserProfile(passwordConfirmation.$valid)">
 		<label>New Phone Number</label>
 		<input class="form-control" type="phone" ng-model="user.phone" phone-input>
 		<br/>

@@ -2,7 +2,6 @@
   {
     "key": "bedrooms",
     "title":"Bedrooms",
-    "icon": "bedrooms",
     "iconImage": "/public/modules/problems/img/",
     "issues": [ 
       { "key" : "Peeling Paint", "emergency": false },
@@ -24,7 +23,6 @@
   {
     "key": "kitchen",
     "title": "Kitchen",
-    "icon": "kitchen",
     "issues": [      
       { "key": "Peeling Paint", "emergency": false },
       { "key": "Cracked Walls", "emergency": false },
@@ -56,7 +54,6 @@
   {
     "key":"livingRoom",
     "title": "Living Room",
-    "icon": "living-room",
     "issues": [ 
       { "key": "Peeling Paint", "emergency": false },
       { "key": "Cracked Walls", "emergency": false },
@@ -78,7 +75,6 @@
   {
     "key": "bathroom",
     "title": "Bathroom",
-    "icon": "bathroom",
     "issues": [    
       { "key": "Peeling Paint", "emergency": true },
       { "key": "Cracked Walls", "emergency": true },
@@ -119,7 +115,6 @@
    {
     "key": "entireHome",
     "title": "Entire Home",
-    "icon": "home",
     "issues": [
       { "key": "Mice", "emergency": false },
       { "key": "Rats", "emergency": false },
@@ -144,7 +139,6 @@
   {
     "key": "publicAreas",
     "title": "Public Areas",
-    "icon": "public",
     "issues": [
       { "key": "Painting overdue (3 years)", "emergency" : false },
       { "key": "Peeling/flaking paint", "emergency" : false },
@@ -168,7 +162,6 @@
   {
     "key": "landlordIssues",
     "title": "Landlord Issues",
-    "icon": "landlord",
     "issues": [ 
       { "key": "Not receiving rent receipts", "emergency": false },
       { "key": "No lease", "emergency": false },
