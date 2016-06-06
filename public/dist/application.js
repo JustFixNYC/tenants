@@ -186,14 +186,22 @@ angular.module('actions').controller('ActionsController', ['$scope', '$filter', 
     //$scope.authentication = Authentication;
     $scope.user = Authentication.user;
 
+    // 
+    // $scope.userCompletedDetailsProgress = function() {
+    //
+    //   var prog = 0,
+    //       $scope.user.problems
+    //   $scope.user.problems
+    //
+    //   return prog;
+    // };
+
     $scope.userCompletedDetails = function() {
       if($scope.user.actionFlags) {
         return $scope.user.actionFlags.indexOf('allInitial') !== -1;
       }
       else return false;
     };
-
-    // console.log($scope.userCompletedDetails());
 
     $scope.list = function() {
       Actions.query(function(actions) {
@@ -680,6 +688,7 @@ angular.module('actions')
             //animation: false,
             templateUrl: 'modules/actions/partials/modals/' + scope.action.cta.template,
             controller: scope.action.cta.controller,
+            backdrop: 'static',
             resolve: {
               newActivity: function () { return scope.newActivity; }
             }
@@ -817,7 +826,7 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', 'Authen
         case 'share':
         message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
            ' I\'m experiencing issues with my apartment and would like to get them resolved.' +
-           ' The public URL for my Case History is http://justfix.nyc/public/' + user.sharing.key + '. Thank you!';
+           ' A link to my Case History can be found at http://justfix.nyc/share/' + user.sharing.key + '. Thank you!';
         break;
         default:
           message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
@@ -920,7 +929,8 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
   		// This block assembles our issues list PhantomJS
   		var assembledObject = {
-  			issues: []
+  			issues: [],
+  			emergency: false
   		};
   		var issuesCount = 0;
 
@@ -948,44 +958,14 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
       	var problemPush = angular.copy(user.problems[i]);
 
-      	assembledObject.issues.push(problemPush);
+      	problemPush.issues.map(function(curr, idx, arr) {
+      		if(curr.emergency === true) {
+      			assembledObject.emergency = true;
+      		}
+      	});
 
-        // var key = problems,
-        //     title = $filter('areaTitle')(key),
-        //     vals = user.issues[issue];
-
-        // if(vals.length) {
-        // 	var tempObject = {};
-
-        // 	// Here we go...
-        //   var activityIdx = user.activity.map(function(i) { return i.key; }).indexOf(key);
-        //   if(activityIdx !== -1) var activity = user.activity[activityIdx];
-
-        //   tempObject.title = title;
-        //   tempObject.vals = [];
-
-        //   vals.forEach(function(v) {
-        //     tempObject.vals.push({title: v.title, emergency: v.emergency});
-        //   });
-
-        //   if(activity) {
-        //     tempObject.startDate = $filter('date')(activity.date, 'longDate');
-
-        //     if(activity.description) {
-        //     	tempObject.description = activity.description;
-        //     }
-
-        //     // @meegan - why is this here?
-        //     activity = undefined;
-        //   }
-
-        //   assembledObject.issues.push(tempObject);
-
-        //   issuesCount++;
-        // }
+      	assembledObject.issues.push(problemPush); 
       }
-
-      // console.log(assembledObject);
 
       return assembledObject;
 
@@ -1039,7 +1019,7 @@ angular.module('activity').config(['$stateProvider', '$urlRouterProvider',
 				data: { protected: true }
 			})
 			.state('showPublic', {
-				url: '/public',
+				url: '/share',
 				templateUrl: 'modules/activity/views/list-activity-public.client.view.html',
 				data: { disableBack: true }
 			});
@@ -1056,8 +1036,8 @@ angular.module('activity').config(['$stateProvider', '$urlRouterProvider',
 // });
 
 
-angular.module('activity').controller('ActivityPublicController', ['$scope', '$location', '$http', 'Activity', 'Lightbox',
-  function($scope, $location, $http, Activity, Lightbox) {
+angular.module('activity').controller('ActivityPublicController', ['$scope', '$location', '$http', '$filter', 'Activity', 'Lightbox',
+  function($scope, $location, $http, $filter, Activity, Lightbox) {
 
 
     var query = $location.search();
@@ -1071,16 +1051,7 @@ angular.module('activity').controller('ActivityPublicController', ['$scope', '$l
     };
 
     $scope.activityTemplate = function(key) {
-      var template = '/modules/activity/partials/';
-      switch(key) {
-        case 'sendLetter':
-          template += 'complaint-letter.client.view.html';
-          break;
-        default:
-          template += 'default-activity.client.view.html';
-          break;
-      };
-      return template;
+      return $filter('activityTemplate')(key);
     };
 
     $scope.compareDates = function(start, created) {
@@ -1105,12 +1076,12 @@ angular.module('activity').controller('ActivityPublicController', ['$scope', '$l
 // });
 
 
-angular.module('activity').controller('ActivityController', ['$scope', '$location', '$http', 'Authentication', 'Users', 'Activity', 'Lightbox',
-  function($scope, $location, $http, Authentication, Users, Activity, Lightbox) {
+angular.module('activity').controller('ActivityController', ['$scope', '$location', '$http', '$filter', 'Authentication', 'Users', 'Activity', 'Lightbox',
+  function($scope, $location, $http, $filter, Authentication, Users, Activity, Lightbox) {
 
     $scope.authentication = Authentication;
 
-    $scope.shareCollapsed = true;
+    $scope.shareCollapsed = false;
 
     $scope.list = function() {
 
@@ -1119,16 +1090,7 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
     };
 
     $scope.activityTemplate = function(key) {
-      var template = '/modules/activity/partials/';
-      switch(key) {
-        case 'sendLetter':
-          template += 'complaint-letter.client.view.html';
-          break;
-        default:
-          template += 'default-activity.client.view.html';
-          break;
-      };
-      return template;
+      return $filter('activityTemplate')(key);
     };
 
     $scope.compareDates = function(start, created) {
@@ -1143,6 +1105,28 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
 
 	}
 ]);
+
+'use strict';
+
+angular.module('activity').filter('activityTemplate', function() {
+  return function(input) {
+
+    var template = '/modules/activity/partials/';
+    switch(input) {
+      case 'sendLetter':
+        template += 'complaint-letter.client.view.html';
+        break;
+      case 'checklist':
+        template += 'checklist.client.view.html';
+        break;
+      default:
+        template += 'default-activity.client.view.html';
+        break;
+    };
+    return template;
+
+  };
+});
 
 'use strict';
 
@@ -1399,7 +1383,14 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 				protected: true,
 				disableBack: true
 			}
-		});
+		})
+		.state('contact', {
+			url: '/contact',
+			templateUrl: 'modules/core/views/contact.client.view.html',
+			data: {
+			},
+			globalStyles: 'white-bg'
+		})
 	}
 ]);
 
@@ -1449,11 +1440,14 @@ angular.module('core').controller('HeaderController', ['$scope', '$window', 'Aut
 'use strict';
 
 
-angular.module('core').controller('HomeController', ['$scope', 'Authentication', 'deviceDetector',
-	function($scope, Authentication, deviceDetector) {
+angular.module('core').controller('HomeController', ['$rootScope', '$scope', 'Authentication', 'deviceDetector',
+	function($rootScope, $scope, Authentication, deviceDetector) {
 		// This provides Authentication context.
 		$scope.authentication = Authentication;
     $scope.device = deviceDetector;
+
+
+		$rootScope.closeDashboardAlert = false;
 
 	}
 ]);
@@ -1650,6 +1644,13 @@ angular.module('core').directive('phoneInput', ["$filter", "$browser", function(
       var listener = function() {
         var value = $element.val().replace(/[^0-9]/g, '');
         $element.val($filter('tel')(value, false));
+        
+        // Not sure if this is the best solution...
+        if(value.length < 10 || value.search(/[^a-z]/g)) {
+        	ngModelCtrl.$setValidity('', false); 
+        } else {
+        	ngModelCtrl.$setValidity('', true); 
+        }
       };
 
       // This runs when we update the text field
@@ -2683,6 +2684,26 @@ angular.module('issues').factory('Issues', ['$http', '$q', 'Authentication',
   }
 ]);
 
+'use strict';
+
+// Setting up route
+angular.module('kyr').run(['$rootScope', '$state', '$window', '$location',
+  function($rootScope, $state, $window, $location) {
+
+  	// Remove footer margin
+  	// Might want to move this into the the core config, if we're reusing this
+  	$rootScope.$on('$stateChangeSuccess', function(){
+  		$rootScope.noMargin = $state.current.noMargin;
+
+  		// Hmm, should discuss this...
+  		if($state.current.localHistory) {
+  			$rootScope.showKyrBackBtn = true;
+  		} else {
+  			$rootScope.showKyrBackBtn = false;
+  		}
+  	});
+  }
+]);
 (function () {
   'use strict';
 
@@ -2691,20 +2712,29 @@ angular.module('issues').factory('Issues', ['$http', '$q', 'Authentication',
     .module('kyr')
     .config(routeConfig);
 
-  routeConfig.$inject = ['$stateProvider'];
+  routeConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
 
-  function routeConfig($stateProvider) {
+  function routeConfig($stateProvider, $urlRouterProvider) {
     // Kyr state routing
+
+
+    // [TODO] eventually we won't need noMargin 
     $stateProvider
       .state('kyr', {
         url: '/kyr',
         templateUrl: 'modules/kyr/views/kyr.client.view.html',
-        controller: 'KyrController'
+        controller: 'KyrController',
+        noMargin: true
       })
       .state('kyrDetail', {
       	url: '/kyr/:kyrId',
       	templateUrl: 'modules/kyr/views/kyr-detail.client.view.html',
-      	controller: 'KyrDetailController'
+      	controller: 'KyrDetailController',
+      	noMargin: true,
+				data: {
+					disableBack: true
+				},
+				localHistory: true
       });
   }
 })();
@@ -2762,7 +2792,7 @@ angular.module('kyr').factory('kyrService', ['$resource', '$http', '$q',
 		// Should be able to bring this over as a Query All from mongoDB at a later state
 		this.fetch = function () {
 			var deferred = $q.defer();
-			$http.get('/data/kyr-new.json').then(function(data){
+			$http.get('/data/kyr.json').then(function(data){
 				var finalData = data.data;
 				deferred.resolve(finalData);
 			}, function(err) {
@@ -2775,7 +2805,7 @@ angular.module('kyr').factory('kyrService', ['$resource', '$http', '$q',
 		// Query single kyr
 		this.single = function(id) {
 			var deferred = $q.defer();
-			$http.get('/data/kyr-new.json').then(function(data){
+			$http.get('/data/kyr.json').then(function(data){
 
 				// Get correct Know Your Rights
 				var finalKyr = data.data[id];
@@ -2792,7 +2822,6 @@ angular.module('kyr').factory('kyrService', ['$resource', '$http', '$q',
 				if(id <= 0) {
 					finalKyr.prev = false;
 				} else {
-					console.log('prev?');
 					finalKyr.prev = id;
 				}
 
@@ -2887,6 +2916,9 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 
 
 		$scope.newUser = {
+			firstName: 'Dan',
+			lastName: "Stevenson",
+			password: "password",
 			borough: 'Brooklyn',
 			address: '654 Park Place',
 			unit: '1RF',
@@ -2895,7 +2927,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 		};
 
 	  $scope.accessCode = {
-			value: 'bigappsnight',
+			value: 'test5',
 			valid: false
 		};
 
@@ -2970,6 +3002,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 
 				}).error(function(err) {
 					$rootScope.loading = false;
+					console.log(err);
         	$scope.error = err;
 				});
 
@@ -3056,8 +3089,14 @@ angular.module('onboarding').factory('UserListingService', ['$resource', functio
 'use strict';
 
 // Setting up route
-angular.module('problems').run(['$rootScope', '$state', '$window', 'Authentication',
-  function($rootScope, $state, $window, Authentication) {
+angular.module('problems').run(['$rootScope', '$state', '$window', 'Authentication', 'Users', 'Problems',
+  function($rootScope, $state, $window, Authentication, Users, Problems) {
+
+
+    // $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+    //
+  	// });
+
 
   }
 ]);
@@ -3089,24 +3128,6 @@ angular.module('problems').controller('ModalProblemController', ['$scope', 'Prob
 		// only use this in case of "cancel"
 		var userIssuesClone = $scope.userProblem.issues.slice(0);
 
-		// $scope.checkString = '';
-		// $scope.tempIssues = [];
-		// $scope.other = undefined;
-
-		// Active mapper/other issue tracker
-		// for (var i = 0; i < userProblem.issues.length; i++) {
-		// 	// Temp issues is a new copy of our user Problems -- we can't use the actual user Problem, because it could be directly from our user's object
-		// 	$scope.tempIssues.push(userProblem.issues[i]);
-		// 	// Check string handles our active state on init, so when we call our problem-issue-item directive (line 10)
-		// 	$scope.checkString += userProblem.issues[i].key;
-		//
-		// 	// If issues exists for this problem, create it in the scope and we'll reference it in the problem-issue-directive (line 33)
-		// 	if(userProblem.issues[i].key == 'other') {
-		// 		$scope.other = $scope.tempIssues[i];
-		// 		$scope.tempIssues.splice(i, 1);
-		// 	}
-		// }
-
 		// we should just take advantage of angulars data binding here
 		$scope.isSelected = function(issue) {
 			return $scope.userProblem.issues.containsByKey(issue.key);
@@ -3120,17 +3141,8 @@ angular.module('problems').controller('ModalProblemController', ['$scope', 'Prob
 			}
 		};
 
-
 		$scope.save = function(event) {
 			// did we end up making our other issue -- if it's not created in the above loop or the parent directive, then this doesn't get fired
-			// if($scope.other) {
-			// 	$scope.tempIssues.push($scope.other);
-			// }
-			// console.log()
-			// Pass our temporary copy w/ updates back up our modal function at problem-checklist directive (line 93)
-			// $modalInstance.close($scope.tempIssues);
-
-			// console.log($scope);
 			if($scope.newOther && $scope.newOther.key.length) {
 				$scope.addOther(event);
 			}
@@ -3139,38 +3151,53 @@ angular.module('problems').controller('ModalProblemController', ['$scope', 'Prob
 		}
 		$scope.cancel = function() {
 			$scope.userProblem.issues = userIssuesClone;
-			$modalInstance.close();
+			$modalInstance.dismiss();
 		}
 
 	}])
 
 'use strict';
 
-angular.module('problems').controller('ProblemsController', ['$scope', '$state', 'Authentication', 'Users', 'Problems',
-	function($scope, $state, Authentication, Users, Problems) {
+angular.module('problems').controller('ProblemsController', ['$rootScope', '$scope', '$state', 'Authentication', 'Users', 'Problems',
+	function($rootScope, $scope, $state, Authentication, Users, Problems) {
 
-		// should probably check for unsaved changes...
+		$scope.user = Authentication.user;
 
-		$scope.updateSuccess = false;
-		$scope.updateFail = false;
+		$scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
 
-		$scope.updateProblems = function() {
-			var user = new Users(Authentication.user);
+			// make sure this only happens once (no infinite loops)
+			// AND only happens if they've actually changed anything...
+			if($scope.hasChangedProblems && !toState.updated) {
 
-			// Meegan -- WHAT HAVE I TOLD YOU ABOUT COPY PASTING. Repeating block, bring this into onboarding
-			user.firstName = user.fullName.split(' ')[0];
-			user.lastName = user.fullName.split(' ')[1];
+			  event.preventDefault();
+				toState.updated = true;
+			  $rootScope.loading = true;
 
-			user.$update(function(response) {
-				Authentication.user = response;
-				$scope.updateSuccess = true;
-				$scope.updateFail = false;
-			}, function(response) {
-				$scope.updateSuccess = false;
-				$scope.updateFail = true;
-				$scope.error = response.data.message;
-			});
-		};
+			  var user = new Users(Authentication.user);
+				user.$updateChecklist(function(response) {
+
+			    $rootScope.loading = false;
+					$rootScope.dashboardSuccess = true;
+
+			    Authentication.user = response;
+			    $state.go(toState);
+
+				}, function(response) {
+
+			    $rootScope.loading = false;
+					$rootScope.dashboardError = true;
+					$state.go(toState);
+
+				});
+
+			// this gets called a second time with $state.go,
+			// so we're just going to pass things along
+			} else if(toState.updated) {
+			  toState.updated = false;
+			}
+
+		});
+
 
 	}])
 
@@ -3183,10 +3210,6 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
       restrict: 'E',
       scope: false,
       link: function postLink(scope, element, attrs) {
-
-          // displaying the state for problems can be handled by something like
-          // ourUser.problems[problem].length
-					// var problemsActiveString = '';
 
 					// problemAssembler, if we don't have the problem set we just clear it out here
 					var newProblem = function(problem) {
@@ -3222,14 +3245,6 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
           // get problems from service
           Problems.getLocalFile().then(function (data) {
             scope.problems = data;
-            // Set state if problems exist (NOT ACTIVE ON BOARDING)
-
-            // you can just use the length of ourUser.problems (see above)
-            // scope.problems.map(function(curr, idx, arr){
-            // 	if(problemsActiveString.indexOf(curr.key) > -1){
-            // 		curr.active = true;
-            // 	}
-            // });
 
             // initialize numChecked
             scope.ourUser.problems.forEach(function (userProb) {
@@ -3249,23 +3264,7 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
           });
 
 
-          // // inherit newUser.problems or user.problems
-          // if(attrs.onboarding === 'true') {
-          // 	// Needs to not reset if landing on this page
-          // 	var ourUserProblems = scope.newUser.problems = [];
-          // } else {
-          // 	// This needs to be tested to see if it actually... works...
-          // 	var ourUserProblems = Authentication.user.problems;
-          // 	for(var i = 0; i < ourUserProblems.length; i++){
-          // 		problemsActiveString += ourUserProblems[i].key;
-          // 	}
-          // }
-
-
-
-
-          // just referring to this as scope.ourUser.problems
-          // var ourUserProblems = scope.ourUser.problems;
+          scope.hasChangedProblems = false;
 
           // modal opening/closing
           // passing scopes
@@ -3282,20 +3281,7 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
             }
 
             var ourUserCurrentProblem = scope.ourUser.problems.getByKey(problem.key);
-
-						// // check if user has already filled out the CURRENT problem, set it, and remove it from ALL problems
-						// ourUserProblems.map(function(curr, idx, arr){
-						// 	if(curr.key == problem.key) {
-						// 		ourUserCurrentProblem = curr;
-						// 		arr.splice(idx, 1);
-						// 	}
-						// });
-            //
-						// // If the user didn't set the CURRENT problem, build new one
-						// if(!ourUserCurrentProblem) {
-						// 	ourUserCurrentProblem = newProblem(problem);
-						// }
-						// console.log(ourUserCurrentProblem);
+            var numIssuesOnModalOpen = ourUserCurrentProblem.issues.length;
 
 						// Open modal
 						var modalInstance = $modal.open({
@@ -3303,6 +3289,7 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 				      templateUrl: 'modules/problems/partials/problem-modal.client.view.html',
 				      controller: 'ModalProblemController',
 				      size: 'md',
+              scope: scope,
               backdrop: 'static',
 				      resolve: {
 				      	// All issues straight from the json fetch
@@ -3316,9 +3303,15 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 				      }
 				    });
 
-				   	modalInstance.result.then(function(){
+				   	modalInstance.result.then(function() {
 
+              // in order to display on the grid icons
               scope.currentProblem.numChecked = ourUserCurrentProblem.issues.length;
+
+              // check if anything has changed...
+              if(numIssuesOnModalOpen != ourUserCurrentProblem.issues.length) {
+                scope.hasChangedProblems = true;
+              }
 
               // check if the modal was closed and no issues were selectedIssues
               // if so, remove from ourUser.problems
@@ -3326,30 +3319,15 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
                 scope.ourUser.problems.removeByKey(ourUserCurrentProblem.key);
               }
 
-              // lectedIssues){
-              // f we got updates as set by the modal controller, our CURRENT problem should be updated accordingly
-              // serCurrentProblem.issues = selectedIssues;
-              // e pass the CURRENT problem into ALL problems -- no duplates, as we either created this issue brand new or deleted it from the original object
-              // e.ourUser.problems.push(ourUserCurrentProblem);
-              //
-              // X active state handle
-              //   // see above comments about state
-              //   // ectedIssues.length == 0) {
-              //   // .currentProblem.active = false;
-              //   //  {
-              //   // .currentProblem.active = true;
-              //   //
-              // e {
-              // emember when we removed the original problem? This should attach it back into our object
-              // urUserCurrentProblem.issues.length > 0) {
-              // pe.ourUser.problems.push(ourUserCurrentProblem);
-              //
-              // rn;
-              //
+            // modal was cancelled/dismissed
+				   	}, function () {
 
-              // Reset current and global user
-              // ourUserCurrentProblem = undefined;
-				   	});
+              // this means a newProblem was created (see line 77)
+              // but never actually used
+              if(ourUserCurrentProblem.issues.length == 0) {
+                scope.ourUser.problems.removeByKey(ourUserCurrentProblem.key);
+              }
+            });
 
 					};
 
@@ -3871,6 +3849,10 @@ angular.module('users').factory('Users', ['$resource',
 			enableSharing: {
 				method: 'GET',
 				url: '/users/public'
+			},
+			updateChecklist: {
+				method: 'PUT',
+				url: '/users/checklist'
 			}
       // ,
       // getIssues: {
