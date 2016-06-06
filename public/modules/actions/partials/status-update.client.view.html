@@ -25,7 +25,7 @@
               class="pull-left select-photos">
           <span class="glyphicon glyphicon-camera"></span>
         </div>
-        <div class="tag-issue-toggle pull-right" ng-click="toggleTagging()">
+        <div class="tag-issue-toggle pull-right" ng-click="toggleTagging()" ng-class="{ 'active' : newActivity.problems.length }" ng-if="problems.length">
           Tag Issue
           <span ng-if="newActivity.problems.length">({{newActivity.problems.length}})</span>
           <span class="glyphicon pull-right"
@@ -48,12 +48,12 @@
       </div>
       <button class="btn btn-info pull-right" data-ng-click="createActivity(statusUpdate.$valid)">
           <span class="glyphicon glyphicon-ok pull-left" style="padding-top:1px"></span>
-          Add To My Case
+          Add To Your Case
       </button>
     </form>
   </div>
 </div>
 
 <alert data-ng-if="status.completed" data-ng-show="!status.closeAlert" type="success" close="closeAlert()"><strong>Well done!</strong> We've added <em>{{ newActivity.title }}</em> to your <a ui-sref="listActivity">Case History</a>.</alert>
-<alert data-ng-show="!status.closeErrorAlert" type="danger" close="status.closeErrorAlert = true">We're sorry, something went wrong...</alert>
+<alert data-ng-show="!status.closeErrorAlert" type="danger" close="status.closeErrorAlert = true">We're sorry, something went wrong! Please <a ui-sref="contact">Contact Us</a> to report this issue.</alert>
 <!-- <alert data-ng-if="error.length" data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert> -->

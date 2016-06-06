@@ -7,12 +7,12 @@
 // });
 
 
-angular.module('activity').controller('ActivityController', ['$scope', '$location', '$http', 'Authentication', 'Users', 'Activity', 'Lightbox',
-  function($scope, $location, $http, Authentication, Users, Activity, Lightbox) {
+angular.module('activity').controller('ActivityController', ['$scope', '$location', '$http', '$filter', 'Authentication', 'Users', 'Activity', 'Lightbox',
+  function($scope, $location, $http, $filter, Authentication, Users, Activity, Lightbox) {
 
     $scope.authentication = Authentication;
 
-    $scope.shareCollapsed = true;
+    $scope.shareCollapsed = false;
 
     $scope.list = function() {
 
@@ -21,16 +21,7 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
     };
 
     $scope.activityTemplate = function(key) {
-      var template = '/modules/activity/partials/';
-      switch(key) {
-        case 'sendLetter':
-          template += 'complaint-letter.client.view.html';
-          break;
-        default:
-          template += 'default-activity.client.view.html';
-          break;
-      };
-      return template;
+      return $filter('activityTemplate')(key);
     };
 
     $scope.compareDates = function(start, created) {

@@ -104,6 +104,10 @@
         font-weight: 600;
         line-height: 36px;
 
+        &.active {
+          color: $justfix-blue;
+        }
+
         .glyphicon {
           margin-left: 4px;
           font-size: 10px;

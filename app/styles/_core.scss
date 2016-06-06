@@ -37,10 +37,13 @@ a.text-link {
 h2 {
   font-weight: 600;
   font-size: 16px;
+  line-height: 1.4;
+  margin-top: 15px;
 }
 h3 {
   font-weight: 600;
   font-size: 14px;
+  line-height: 1.4;
 }
 
 .content {
@@ -54,6 +57,7 @@ h3 {
 
   section.container {
     min-height: 300px;
+    max-width: 768px;
   }
 }
 .undecorated-link:hover {

@@ -51,7 +51,7 @@ var getAreaActions = function(user) {
   if(problems.length == 0) {
     areaActions.push({
       title: 'Complete your Issue Checklist',
-      content: 'In order to create a letter of complaint and other actions, you should start by selecting some issues you are looking to resolve.',
+      content: 'In order to create a letter of complaint, start by selecting the issues you are looking to resolve.',
       addIf: ['initial'],
       type: 'once',
       cta: {

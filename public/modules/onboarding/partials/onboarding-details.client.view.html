@@ -1,10 +1,9 @@
-
+<div class="page-header">
+	<h3>(Step 2 of 2)</h3>
+	<h1>Create Your Account</h1>
+	<p>Your account will store your evidence and case details for you. <b><em>This information will never be shared without asking for your permission first.</em></b></p>
+</div>
 <form name="createUserForm" class="create-user-form" ng-submit="createAndNext(createUserForm.$valid)" novalidate>
-	<div class="page-header">
-		<h3>(Step 2 of 2)</h3>
-		<h1>Create Your Account</h1>
-		<p>Your account will store your history and case details for you. This information will never be shared without asking for your permission first.</p>
-	</div>
 	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.firstName.$invalid }">
 		<label class="control-label" for="firstName">First Name</label>
 		<input class="form-control" type="text" placeholder="First Name" name="firstName" ng-model="newUser.firstName" required>
@@ -64,6 +63,7 @@
 		<input class="form-control" type="password" placeholder="Create Password" id="pw1" name="pw" ng-model="newUser.password" ng-minlength="6" required>
 		<div ng-show="createUserForm.$submitted || createUserForm.pw.$touched">
 			<p ng-show="createUserForm.pw.$error.required" class="text-danger">Please create a password.</p>
+			<p ng-show="createUserForm.pw.$error.minlength" class="text-danger">Password should be at least 6 characters.</p>
 		</div>
 	</div>
 
@@ -81,16 +81,16 @@
 				<div data-ng-show="error.errors" class="alert alert-danger">
 						<strong data-ng-repeat="err in error.errors">
 							<p data-ng-bind="err.message"></p>
-							Please contact us at <a href="mailto:hello@justfix.nyc">hello@justfix.nyc</a>
+							Please <a ui-sref="contact" target="_blank">Contact Us</a> if you need assistance.
 						</strong>
 				</div>
 				<div data-ng-show="error && !error.errors" class="alert alert-danger">
 						<strong>
 							<p data-ng-bind="error"></p>
-							Please contact us at <a href="mailto:hello@justfix.nyc">hello@justfix.nyc</a>
+							Please <a ui-sref="contact" target="_blank">Contact Us</a> if you need assistance.
 						</strong>
 				</div>
-				<div data-ng-show="userError" class="alert alert-warning">
+				<div data-ng-show="userError" class="alert alert-danger">
 						<strong>
 							Please complete the above fields in order to create your account!
 						</strong>

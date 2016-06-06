@@ -51,7 +51,7 @@ var s3upload = function(file) {
 
 };
 
-var create = function(req, res) {
+var create = function(req, res, next) {
   var user = req.user;
   var activity = req.body;
   //var files = req.files;
@@ -72,7 +72,7 @@ var create = function(req, res) {
 
     // check date
     //console.log('date', activity.date);
-    if(!activity.startDate) activity.startDate = Date.now();
+    // if(!activity.startDate) activity.startDate = Date.now();
     //console.log('new date', activity.date);
 
     // init photos array
@@ -101,25 +101,7 @@ var create = function(req, res) {
       // add activity object
       user.activity.push(activity);
 
-      // add activity to db
-      user.save(function(err) {
-        if(err) {
-          return res.status(400).send({
-            message: errorHandler.getErrorMessage(err)
-          });
-        } else {
-          req.login(user, function(err) {
-            if (err) {
-              res.status(400).send(err);
-            } else {
-              res.json(user);
-              res.end(); // important to update session
-            }
-          });
-
-        }
-      });
-
+      next();
 
     });  // end of Q.allSettled
 

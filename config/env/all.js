@@ -45,7 +45,8 @@ module.exports = {
 				'public/lib/angular-dynamic-locale/src/tmhDynamicLocale.js',
 				'public/lib/cartodb.js/cartodb.js',
 				'public/external/mapbox-gl.js',
-				'public/external/leaflet-mapbox-gl.js'
+				'public/external/leaflet-mapbox-gl.js',
+				'public/lib/deep-diff/releases/deep-diff-0.3.3.min.js'
 		  ]
 	  },
 	  css: [

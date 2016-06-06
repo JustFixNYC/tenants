@@ -25,7 +25,7 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', 'Authen
         case 'share':
         message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
            ' I\'m experiencing issues with my apartment and would like to get them resolved.' +
-           ' The public URL for my Case History is http://justfix.nyc/public/' + user.sharing.key + '. Thank you!';
+           ' A link to my Case History can be found at http://justfix.nyc/share/' + user.sharing.key + '. Thank you!';
         break;
         default:
           message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +

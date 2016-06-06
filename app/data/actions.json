@@ -24,7 +24,7 @@
   {
     "title": "Call Tenant Harassment Hotline",
     "activityTitle": "Called Tenant Harassment Hotline",
-    "content": "It looks like you live in an area that experiences a <b>large amount of turnover and harassment</b> and are eligible to call the New York City Tenant Protection Hotline. Hours: Monday – Friday, 10AM – 4PM.",
+    "content": "It looks like you live in an area that experiences a <b>large amount of turnover and harassment</b> and are eligible to call the New York City Tenant Protection Hotline. Hours: Monday – Friday (10AM – 4PM)",
     "key": "contactHarassment",
     "addIf": ["isHarassmentElligible"],
     "type": "recurring",
@@ -83,7 +83,7 @@
   {
     "title": "Call Housing Court Answers",
     "activityTitle": "Called Housing Court Answers",
-    "content": "Housing Court Answers is a great resource to go for information about legal issues. Telephone assistance is from 9 am to 5 pm, Tuesday through Thursday",
+    "content": "Housing Court Answers is a great resource to go for information about legal issues. Hours: Tuesday - Thursday (9AM - 5PM)",
     "key": "contactLegalServices",
     "addIf": ["sendLetter", "contact311"],
     "type": "legal",
@@ -99,7 +99,7 @@
   {
     "title": "Call the MetCouncil Hotline",
     "activityTitle": "Called the MetCouncil Hotline",
-    "content": "The MetCouncil provides a free tenants’ rights telephone hotline that can give brief answers to your rights as a tenant.",
+    "content": "The MetCouncil on Housing provides a free tenants' rights hotline that can answer questions about your rights as a tenant. Hours: Mondays & Wednesdays (1:30PM - 8PM), Friday (1:30PM - 5PM)",
     "key": "callHotline",
     "addIf": ["initial"],
     "type": "recurring",
@@ -115,7 +115,7 @@
   {
     "title": "Mail an Official Letter of Complaint",
     "activityTitle": "Created an Official Letter of Complaint",
-    "content": "Before you can go to Housing Court, you need to send an official letter of complaint to your landlord describing your case. <b>We've drafted a letter that you can send, including a list of the issues that need repair.</b><span ng-if='!userCompletedDetails()'><br /><br />Make sure to <b>Add Issue Details</b> (located above) first to provide the most detailed information!</span>",
+    "content": "In order to have a formal record of your requests, you need to mail a letter to your landlord. <b>We've drafted a letter that you can send including the issues that you've selected.</b><span ng-if='!userCompletedDetails()'><br /><br />Make sure to <b>Add Issue Details</b> (located above) first to provide the most detailed information!</span>",
     "key": "sendLetter",
     "addIf": ["hasProblems"],
     "type": "once",
@@ -129,7 +129,7 @@
   {
     "title": "DHCR Decreased Services App",
     "activityTitle": "DHCR Decreased Services App",
-    "content": "In order to seek a rent reduction for your <b>rent-stabilized apartment</b>, you must submit a formal complaint to DHCR. Use your <b>Your Case</b> to fill this form out!",
+    "content": "In order to seek a rent reduction for your <b>rent-stabilized apartment</b>, you must submit a formal complaint to DHCR. Use your <b>Case History</b> to fill this form out!",
     "key": "decreasedServices",
     "addIf": ["getRentalHistory"],
     "type": "once",
@@ -145,7 +145,7 @@
   {
     "title": "HP Action",
     "activityTitle": "HP Action",
-    "content": "HP Actions are summary proceedings that offer quick and cheap resolution to repair issues, and legal recourse if your landlord doesn't comply. <b>You must go to your borough’s Housing Court to file the HP Action.</b>",
+    "content": "HP Actions are housing court proceedings that offer quick and cheap resolution to repair issues, and legal recourse if your landlord doesn't comply. <b>You must go to the {{user.borough}} Housing Court to file the HP Action.</b>",
     "key": "HPAction",
     "addIf": ["sendLetter"],
     "type": "legal",
