@@ -3,9 +3,6 @@
 var _ = require('lodash'),
     errorHandler = require('./errors.server.controller');
 
-// This guy didn't work so well
-// var deep = require('deep-diff');
-
 /**
   *   Utility functions. These are used on the front-end as well.
   */

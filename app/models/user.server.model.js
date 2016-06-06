@@ -5,7 +5,6 @@
  */
 var _ = require('lodash'),
     mongoose = require('mongoose'),
-    diff = require('deep-diff').diff,
     Schema = mongoose.Schema,
     crypto = require('crypto'),
     ActivitySchema = require('./activity.server.model.js'),
@@ -141,19 +140,6 @@ var UserSchema = new Schema({
   }
 });
 
-//
-// UserSchema.path('problems').set(function (newProblems) {
-//
-//   var that = this;
-//   that._origIssues = {};
-//
-//   this.problems.forEach(function (problem) {
-//     that._origIssues[problem.key] = problem.issues;
-//   });
-//   return newProblems;
-// });
-
-
 /**
  * Hook a pre save method to hash the password, and do user updating things
  * This is pretty nice to have in one spot!
@@ -199,59 +185,6 @@ UserSchema.pre('save', function(next) {
   } else {
     _.pull(this.actionFlags, 'allInitial');
   }
-
-
-
-
-
-  // // console.log(this._origIssues);
-  // // console.log('------------------------------------------------------------------------');
-  // // console.log(userIssues);
-  //
-  // // console.log(diff(this._origIssues, userIssues));
-  //
-  //
-  // // iterate through each issue
-  // for (var userProblem in userIssues) {
-  //   // make sure this is an actual prop
-  //   if (userIssues.hasOwnProperty(userProblem)) {
-  //     //  alert(key + " -> " + p[key]);
-  //
-  //     var origIssues = this._origIssues[userProblem];
-  //     var newIssues = userIssues[userProblem];
-  //
-  //     if(origIssues == null) {
-  //       // this is a new problem
-  //     } else {
-  //       console.log(userProblem + '/n/n');
-  //       console.log(origIssues);
-  //       console.log('------------------------------------------------------------------------');
-  //       console.log(newIssues);
-  //
-  //       // newIssues.forEach(function (issue) {
-  //       //
-  //       // });
-  //
-  //
-  //       console.log(diff(origIssues, newIssues));
-  //     }
-  //
-  //     // if(newIssues == null) {
-  //     //   // this was deleted
-  //     // }
-  //
-  //   }
-  // }
-
-  // Return all elements in A, unless in B
-// return a.filter(function(obj){
-//     return !(obj.id in bIds);
-// });
-
-
-
-
-  // console.log(diff(this._origProblems, this.problems));
 
   // check NYCHA housing
   // if(user.nycha === 'yes') user.actionFlags.push('isNYCHA');
