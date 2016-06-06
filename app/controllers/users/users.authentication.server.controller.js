@@ -49,6 +49,8 @@ exports.signup = function(req, res) {
   var user = new User(req.body);
   var message = null;
 
+  console.log('new user', user);
+
   var save = function() {
     saveUser(req, user)
       .then(function (user) { res.json(user); })

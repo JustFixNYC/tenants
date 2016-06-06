@@ -10,6 +10,10 @@ angular.module('users').factory('Users', ['$resource',
 			enableSharing: {
 				method: 'GET',
 				url: '/users/public'
+			},
+			updateChecklist: {
+				method: 'PUT',
+				url: '/users/checklist'
 			}
       // ,
       // getIssues: {

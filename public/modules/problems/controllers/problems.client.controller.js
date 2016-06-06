@@ -1,29 +1,44 @@
 'use strict';
 
-angular.module('problems').controller('ProblemsController', ['$scope', '$state', 'Authentication', 'Users', 'Problems',
-	function($scope, $state, Authentication, Users, Problems) {
+angular.module('problems').controller('ProblemsController', ['$rootScope', '$scope', '$state', 'Authentication', 'Users', 'Problems',
+	function($rootScope, $scope, $state, Authentication, Users, Problems) {
 
-		// should probably check for unsaved changes...
+		$scope.user = Authentication.user;
 
-		$scope.updateSuccess = false;
-		$scope.updateFail = false;
+		$scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
 
-		$scope.updateProblems = function() {
-			var user = new Users(Authentication.user);
+			// make sure this only happens once (no infinite loops)
+			// AND only happens if they've actually changed anything...
+			if($scope.hasChangedProblems && !toState.updated) {
 
-			// Meegan -- WHAT HAVE I TOLD YOU ABOUT COPY PASTING. Repeating block, bring this into onboarding
-			user.firstName = user.fullName.split(' ')[0];
-			user.lastName = user.fullName.split(' ')[1];
+			  event.preventDefault();
+				toState.updated = true;
+			  $rootScope.loading = true;
 
-			user.$update(function(response) {
-				Authentication.user = response;
-				$scope.updateSuccess = true;
-				$scope.updateFail = false;
-			}, function(response) {
-				$scope.updateSuccess = false;
-				$scope.updateFail = true;
-				$scope.error = response.data.message;
-			});
-		};
+			  var user = new Users(Authentication.user);
+				user.$updateChecklist(function(response) {
+
+			    $rootScope.loading = false;
+					$rootScope.dashboardSuccess = true;
+
+			    Authentication.user = response;
+			    $state.go(toState);
+
+				}, function(response) {
+
+			    $rootScope.loading = false;
+					$rootScope.dashboardError = true;
+					$state.go(toState);
+
+				});
+
+			// this gets called a second time with $state.go,
+			// so we're just going to pass things along
+			} else if(toState.updated) {
+			  toState.updated = false;
+			}
+
+		});
+
 
 	}])

@@ -47,10 +47,8 @@
 
 			}
 		}
-	} 
+	}
 }
-
-
 
 .glyphicon-addl {
 	display: inline-block;
@@ -114,12 +112,8 @@
 }
 
 .problem-num {
-	opacity: 0;
 	min-height: 1em;
-
-	&.show {
-		opacity: 1;
-	}
+  font-size: 85%;
 }
 
 .issues-modal {

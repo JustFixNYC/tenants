@@ -100,6 +100,6 @@
     </form>
   </div>
 </div>
-<alert data-ng-show="action.completed" data-ng-show="!action.closeAlert" type="success" close="closeAlert()"><strong>Well done!</strong> We've added <em>{{ action.title }}</em> to <a ui-sref="listActivity">Your Case</a>.</alert>
-<alert data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert>
+<alert data-ng-show="action.completed" data-ng-show="!action.closeAlert" type="success" close="closeAlert()"><strong>Well done!</strong> We've added <em>{{ action.title }}</em> to your <a ui-sref="listActivity">Case History</a>.</alert>
+<alert data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong! Please <a ui-sref="contact">Contact Us</a> to report this issue.</alert>
 <!-- <alert data-ng-if="error.length" data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert> -->

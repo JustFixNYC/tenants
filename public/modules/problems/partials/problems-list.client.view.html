@@ -2,9 +2,9 @@
   <div class="problem" ng-click="open(problem)" ng-class="{'active': ourUser.problems.containsByKey(problem.key) }">
     <div class="problem-icon">
       <span class="glyphicon-addl" ng-class="problem.key"></span>
-      <p ng-bind="problem.title"></p>
-      <span class="problem-num" ng-class="{'show': problem.numChecked}">
-        ({{ problem.numChecked }})
+      <p ng-bind="problem.title"></p> 
+      <span class="problem-num" ng-if="problem.numChecked && problem.numChecked > 0">
+        <i>({{ problem.numChecked }} issues)</i>
       </span>
     </div>
   </div>

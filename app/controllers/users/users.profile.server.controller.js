@@ -37,6 +37,7 @@ exports.update = function(req, res) {
 						res.status(400).send(err);
 					} else {
 						res.json(user);
+						res.end(); // important to update session
 					}
 				});
 			}

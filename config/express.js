@@ -128,9 +128,28 @@ module.exports = function(db) {
 		console.error(err.stack);
 
 		// Error page
-		res.status(500).render('500', {
-			error: err.stack
+
+
+		// using the message part for the moment
+		// res.status(500).render('500', {
+		// 	error: err.stack
+		// });
+
+		res.status(500).send({
+			errors: [{
+				message: err.stack
+			}]
 		});
+
+		/*
+
+			Should this render a page or just return the error?
+			When are times that it should do one or the other, and
+			how do we distinguish that?
+
+			Questions for new versions that break less.
+
+		 */
 	});
 
 	// Assume 404 since no middleware responded

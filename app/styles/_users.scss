@@ -3,17 +3,19 @@
 		position: fixed;
 	}
 }
-.share-section-header.closed {
+.share-section-header.open {
 	margin-bottom: 0;
 }
 
 .share-section {
 
+	margin-bottom: 30px;
+
 	.activities-container & {
 		@include make-row;
-		padding-top: 20px;
-    padding-bottom: 5px;
+		padding: 20px 15px 5px 15px;
 		background-color: #fff;
+		margin-bottom: 0;
 	}
 
 
@@ -30,7 +32,7 @@
 	}
 
 	.alert {
-		margin-bottom: 30px;
+
 	}
 
 	.share-link {

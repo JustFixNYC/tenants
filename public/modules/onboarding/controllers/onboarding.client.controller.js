@@ -11,6 +11,9 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 
 
 		$scope.newUser = {
+			firstName: 'Dan',
+			lastName: "Stevenson",
+			password: "password",
 			borough: 'Brooklyn',
 			address: '654 Park Place',
 			unit: '1RF',
@@ -19,7 +22,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 		};
 
 	  $scope.accessCode = {
-			value: 'bigappsnight',
+			value: 'test5',
 			valid: false
 		};
 
@@ -94,6 +97,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 
 				}).error(function(err) {
 					$rootScope.loading = false;
+					console.log(err);
         	$scope.error = err;
 				});
 

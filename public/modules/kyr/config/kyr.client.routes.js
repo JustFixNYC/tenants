@@ -10,6 +10,9 @@
 
   function routeConfig($stateProvider, $urlRouterProvider) {
     // Kyr state routing
+
+
+    // [TODO] eventually we won't need noMargin 
     $stateProvider
       .state('kyr', {
         url: '/kyr',
