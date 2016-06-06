@@ -1,8 +1,8 @@
 <div class="activity-panel-default">
 
-  <div data-ng-if="compareDates(activity.startDate, activity.createdDate)">
-    <p><b>Date:</b> {{ activity.startDate | date:'longDate' }}</p>
-  </div>
+  <!-- <div data-ng-if="compareDates(activity.startDate, activity.createdDate)">
+    <p><b>Date of Action:</b> {{ activity.startDate | date:'longDate' }}</p>
+  </div> -->
 
   <div data-ng-if="activity.fields.length">
     <p data-ng-repeat="field in activity.fields"><b>{{field.title}}</b> {{field.value}}</p>

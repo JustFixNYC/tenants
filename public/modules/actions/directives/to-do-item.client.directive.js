@@ -7,9 +7,8 @@ angular.module('actions')
       restrict: 'E',
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
       controller: function($scope, $element, $attrs) {
-        $scope.filterContentHTML = function() {
-          return $sce.trustAsHtml($scope.action.content);
-        };
+        $scope.filterTitleHTML = function() { return $sce.trustAsHtml($scope.action.title); };
+        $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
         $scope.filterButtonTitleHTML = function() { return $sce.trustAsHtml($scope.action.cta.buttonTitle); };
         $scope.closeErrorAlert = true;
       },
@@ -47,7 +46,7 @@ angular.module('actions')
           }
 
           // if action has custom fields, initialize those in the newActivity object
-          if(scope.action.followUp && scope.action.followUp.fields) {
+          if(scope.action.followUp.fields) {
             scope.newActivity.fields = [];
             angular.forEach(scope.action.followUp.fields, function(field, idx) {
               scope.newActivity.fields.push({ title: field.title });

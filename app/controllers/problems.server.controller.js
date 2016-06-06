@@ -1,7 +1,8 @@
 'use strict';
 
 var _ = require('lodash'),
-    errorHandler = require('./errors.server.controller');
+    errorHandler = require('./errors.server.controller'),
+    problems = require('../../public/data/checklist.json');
 
 /**
   *   Utility functions. These are used on the front-end as well.
@@ -32,14 +33,14 @@ var createProblemActivities = function(user, added, removed) {
   if(added.length) {
     user.activity.push({
       key: 'checklist',
-      title: 'Added Issues to checklist',
+      title: 'Added issues to checklist',
       problems: added
     });
   }
   if(removed.length) {
     user.activity.push({
       key: 'checklist',
-      title: 'Removed Issues from checklist',
+      title: 'Removed issues from checklist',
       problems: removed
     });
   }
@@ -155,4 +156,8 @@ exports.updateActivitiesFromChecklist = function(req, res, next) {
     next();
   }
 
+};
+
+exports.getProblemKeys = function() {
+  return _.pluck(problems, 'key');
 };

@@ -33,6 +33,10 @@
     @include panel-title;
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
+
+    .glyphicon-addl {
+      margin-right: 5px;
+    }
   }
 
   .panel-body {
@@ -85,6 +89,10 @@
   }
   &.ng-leave.ng-leave-active{
     @include transform(translateX(-100%));
+  }
+
+  input[type="date"] {
+    margin-bottom: 5px;
   }
 }
 

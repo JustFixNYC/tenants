@@ -52,7 +52,7 @@
 
 .glyphicon-addl {
 	display: inline-block;
-  margin: 0px 10px;
+  // margin: 0px 10px;
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
@@ -102,8 +102,8 @@
   text-align: center;
 
   .glyphicon-addl {
-  	font-size: 1.25em;
-  	margin: 10px;
+  	font-size: 1.65em;
+  	margin-bottom: 10px;
   }
 
   p {
@@ -137,13 +137,19 @@
 			border-bottom: none;
 			padding-bottom: 0;
 
-			.glyphicon {
-				font-size: 24px;
-				padding-right: 5px;
+			.glyphicon-addl {
+				font-size: 18px;
+				margin-right: 5px;
 			}
+
+      .issues-modal-title {
+        position: relative;
+        top: 2px;
+      }
+
 			.badge {
 				position: relative;
-				top: 8px;
+				top: 4px;
 			}
 		}
 	}

@@ -5,9 +5,8 @@ var _ = require('lodash'),
     errorHandler = require('./errors.server.controller'),
     s3Handler = require('../services/s3.server.service'),
     mongoose = require('mongoose'),
+    problemsHandler = require('./problems.server.controller.js'),
     User = mongoose.model('User');
-
-var aptSpaces = ['generalApt', 'entryHallway', 'kitchen', 'bathroom', 'diningRoom', 'livingRoom', 'bedrooms', 'publicAreas', 'otherContent'];
 
 var list = function(req, res) {
   if(req.user) {
@@ -54,7 +53,6 @@ var s3upload = function(file) {
 var create = function(req, res, next) {
   var user = req.user;
   var activity = req.body;
-  //var files = req.files;
 
   //console.log(req.body, req.files);
   // don't forget to delete all req.files when done
@@ -67,13 +65,16 @@ var create = function(req, res, next) {
     // if(idx < 0) return res.status(500).send({ message: 'Follow up key not found, this is bad' });
     if(idx !== -1) user.followUpFlags.splice(idx, 1);
 
+
     // add to action flags
     if(!_.contains(user.actionFlags, activity.key)) user.actionFlags.push(activity.key);
 
-    // check date
-    //console.log('date', activity.date);
-    // if(!activity.startDate) activity.startDate = Date.now();
-    //console.log('new date', activity.date);
+
+    // add ref to problems
+    console.log(activity.key);
+    console.log(problemsHandler.getProblemKeys());
+
+
 
     // init photos array
     activity.photos = [];

@@ -71,9 +71,9 @@ var getAreaActions = function(user) {
     // this means that the user hasn't "added details"
     if(!_.contains(user.actionFlags, p.key)) {
       areaActions.push({
-        title: 'Add Issue Details',
-        activityTitle: 'Added Photos of ' + p.title + ' Issues',
-        content: 'Add some initial information about your <b>' + p.title + '</b> issues. This will help to provide evidence for the issues you selected.',
+        title: 'Gather Evidence',
+        activityTitle: p.title + ' issues began',
+        content: 'Upload photos and information about your <b>' + p.title + '</b> issues. The more documentation you have, the stronger your case will be!',
         key: p.key,
         addIf: ['initial'],
         type: 'once',
