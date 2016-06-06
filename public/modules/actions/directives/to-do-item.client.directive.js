@@ -17,17 +17,6 @@ angular.module('actions')
         // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
         // scope.action is a $resource!
 
-        //console.log(scope);
-
-        // console.log(scope.action);
-
-        // used to hide the completed alert
-        // scope.status = {
-        //   closeAlert: false,
-        //   closeErrorAlert: true,
-        //   completed: false
-        // };
-
         scope.followUpSubmitted = false;
 
         //scope.completed = false;
@@ -44,16 +33,15 @@ angular.module('actions')
           if(scope.action.startDate) {
             scope.newActivity.startDate = new Date(scope.action.startDate);
           }
-
-          // if action has custom fields, initialize those in the newActivity object
-          if(scope.action.followUp.fields) {
-            scope.newActivity.fields = [];
-            angular.forEach(scope.action.followUp.fields, function(field, idx) {
-              scope.newActivity.fields.push({ title: field.title });
-            });
-          }
         }
 
+        // if action has custom fields, initialize those in the newActivity object
+        if(scope.action.followUp && scope.action.followUp.fields) {
+          scope.newActivity.fields = [];
+          angular.forEach(scope.action.followUp.fields, function(field, idx) {
+            scope.newActivity.fields.push({ title: field.title });
+          });
+        }
 
 
         var getSection = function(type) {
@@ -83,24 +71,6 @@ angular.module('actions')
         };
 
         scope.openModal = function() {
-
-          // ModalService.showModal({
-          //   templateUrl: 'modules/actions/partials/modals/' + scope.action.cta.template,
-          //   controller: scope.action.cta.controller,
-          //   inputs: {
-          //     newActivity: scope.newActivity
-          //   }
-          // }).then(function(modal) {
-
-          //   console.log(modal);
-
-          //   modal.element.modal();
-          //   // modal.close.then(function(result) {
-          //   //   $scope.yesNoResult = result ? "You said Yes" : "You said No";
-          //   // });
-          // });
-
-          scope.newActivity.startDate = new Date();
 
           var modalInstance = $modal.open({
             //animation: false,

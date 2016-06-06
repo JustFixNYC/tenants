@@ -29,8 +29,8 @@ var s3upload = function(file) {
 
   if(!file) uploaded.reject('no file?');
 
-  console.log(file);
-  console.log(file.originalFilename);
+  // console.log('file', file);
+  // console.log('origname', file.originalFilename);
 
   var type = file.originalFilename.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[0];
 
@@ -42,7 +42,7 @@ var s3upload = function(file) {
 
       uploaded.resolve({ url: data.Location, thumb: resizedUrl });
     }).fail(function (err) {
-      console.log(err);
+      console.log('error', err);
       uploaded.reject(err);
     });
 
@@ -70,18 +70,12 @@ var create = function(req, res, next) {
     if(!_.contains(user.actionFlags, activity.key)) user.actionFlags.push(activity.key);
 
 
-    // add ref to problems
-    console.log(activity.key);
-    console.log(problemsHandler.getProblemKeys());
-
-
-
     // init photos array
     activity.photos = [];
 
     var files = req.files['photos'];
 
-    console.log('files', files);
+    // console.log('files', files);
 
     // init photos queue
     var uploadQueue = [];
@@ -98,6 +92,14 @@ var create = function(req, res, next) {
           thumb: r.value.thumb
         });
       });
+
+      // add ref to problems
+      if(_.contains(problemsHandler.getProblemKeys(), activity.key)) {
+        var prob = user.problems.getByKey(activity.key);
+        prob.startDate = activity.startDate;
+        prob.description = activity.description;
+        prob.photos = activity.photos;
+      }
 
       // add activity object
       user.activity.push(activity);

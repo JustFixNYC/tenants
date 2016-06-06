@@ -23,8 +23,8 @@
 
     .panel-body {
       .activity-logged-date {
+        margin-top: 5px;
         font-size: 12px;
-
       }
     }
   }
@@ -51,17 +51,20 @@
 
   .thumb-list {
 
-    margin-top: 15px;
+    // margin-top: 15px;
 
     & > div {
       padding: 0;
+      text-align: center;
+    }
+
+    img {
+      margin: 0 auto;
+      max-height: 125px;
     }
   }
 
-  img {
-    height: 100%;
-    max-height: 125px;
-  }
+
 
 }
 

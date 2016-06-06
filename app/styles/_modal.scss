@@ -48,10 +48,10 @@
     min-height: 40px;
   }
 
-  img {
-    margin: 0 auto 10px auto;
+  .lightbox-image-container img {
+    margin: 50px auto 10px auto;
     display: block;
-    max-height: 250px;
     max-width: 100%;
+    height: auto !important;
   }
 }

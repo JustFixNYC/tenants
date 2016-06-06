@@ -7,22 +7,40 @@ var _ = require('lodash'),
 /**
   *   Utility functions. These are used on the front-end as well.
   */
-Array.prototype.containsByKey = Array.prototype.containsByKey || function(key) {
-  var i, l = this.length;
-  for (i = 0; i < l; i++) if (this[i].key == key) return true;
-  return false;
-};
 
-Array.prototype.getByKey = Array.prototype.getByKey || function(key) {
-  var i, l = this.length;
-  for (i = 0; i < l; i++) if (this[i].key == key) return this[i];
-  return null;
-};
+Object.defineProperty(Array.prototype, "containsByKey", {
+    enumerable: false,
+    writable: true,
+    value: function(key) {
+      var i, l = this.length;
+      for (i = 0; i < l; i++) if (this[i].key == key) return true;
+      return false;
+    }
+});
 
-Array.prototype.removeByKey = Array.prototype.removeByKey || function(key) {
-  var i, l = this.length;
-  for (i = l-1; i >= 0; i--) if (this[i].key == key) this.splice(i,1);
-  return;
+Object.defineProperty(Array.prototype, "getByKey", {
+    enumerable: false,
+    writable: true,
+    value: function(key) {
+      var i, l = this.length;
+      for (i = 0; i < l; i++) if (this[i].key == key) return this[i];
+      return null;
+    }
+});
+
+Object.defineProperty(Array.prototype, "removeByKey", {
+    enumerable: false,
+    writable: true,
+    value: function(key) {
+      var i, l = this.length;
+      for (i = l-1; i >= 0; i--) if (this[i].key == key) this.splice(i,1);
+      return;
+    }
+});
+
+
+exports.getProblemKeys = function() {
+  return _.pluck(problems, 'key');
 };
 
 
@@ -156,8 +174,4 @@ exports.updateActivitiesFromChecklist = function(req, res, next) {
     next();
   }
 
-};
-
-exports.getProblemKeys = function() {
-  return _.pluck(problems, 'key');
 };
