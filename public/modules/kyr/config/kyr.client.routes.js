@@ -12,7 +12,7 @@
     // Kyr state routing
 
 
-    // [TODO] eventually we won't need noMargin 
+    // [TODO] eventually we won't need noMargin
     $stateProvider
       .state('kyr', {
         url: '/kyr',
@@ -28,7 +28,8 @@
 				data: {
 					disableBack: true
 				},
-				localHistory: true
+				localHistory: true,
+        globalStyles: 'white-bg'
       });
   }
 })();

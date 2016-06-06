@@ -28,7 +28,7 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
   								' <br> New York, ' + zip
 	  	};
 	  	assembledObject.landlordInfo = {
-  			'name': landlordName.length ? landlordName : 'To whom it may concern',
+  			'name': landlordName.length ? 'Dear ' + landlordName : 'To whom it may concern',
   			'address': landlordAddr.length ? landlordAddr : ''
 	  	};
 
@@ -42,7 +42,7 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
       		}
       	});
 
-      	assembledObject.issues.push(problemPush); 
+      	assembledObject.issues.push(problemPush);
       }
 
       return assembledObject;
