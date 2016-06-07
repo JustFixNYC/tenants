@@ -67,9 +67,13 @@ h4 {
   // @media (min-width: $screen-xs-min) {
   //   margin-top: 130px;
   // }
+
   section.container {
     min-height: 300px;
     max-width: 768px;
+  }
+  body.landing & section.container {
+    max-width: 970px;
   }
 }
 .undecorated-link:hover {

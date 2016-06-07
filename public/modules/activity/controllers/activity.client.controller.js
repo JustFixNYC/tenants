@@ -11,6 +11,8 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
   function($scope, $location, $http, $filter, Authentication, Users, Activity, Lightbox) {
 
     $scope.authentication = Authentication;
+    $scope.location = $location.host();
+    console.log($scope.location);
 
     $scope.shareCollapsed = false;
 
