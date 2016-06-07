@@ -61,6 +61,7 @@ angular.module('findhelp').directive('cartoMap', ['$rootScope', 'CartoDB', funct
           .addTo(map)
           .done(function(layer) {
             mainSublayer = layer.getSubLayer(0);
+            scope.init();
             // do stuff
             //console.log("Layer has " + layer.getSubLayerCount() + " layer(s).");
           })
@@ -69,12 +70,17 @@ angular.module('findhelp').directive('cartoMap', ['$rootScope', 'CartoDB', funct
             console.log("An error occurred: " + err);
           });
 
-        scope.updateCartoMap = function(lat, lng, orgType) {
+        scope.updateCartoMap = function(lat, lng, type) {
 
-          //var boroughString = borough ? '' : 'NOT';
-          var orgString = orgType ? 'legal' : 'community';
+          var query, cartocss;
 
-          var query = "SELECT *, row_number() OVER (ORDER BY dist) as rownum FROM ( SELECT loc.cartodb_id, loc.the_geom, loc.the_geom_webmercator, round( (ST_Distance( ST_GeomFromText('Point(" + lng + " " + lat + ")', 4326)::geography, loc.the_geom::geography ) / 1609)::numeric, 1 ) AS dist FROM nyc_cbos_locations AS loc, nyc_cbos_service_areas AS sa WHERE ST_Intersects( ST_GeomFromText( 'Point(" + lng + " " + lat + ")', 4326 ), sa.the_geom ) AND loc.organization = sa.organization AND loc.org_type IN ('" + orgString + "') ORDER BY dist ASC ) T LIMIT 10";
+          if(type == 'legal' || type == 'community') {
+            query = "SELECT *, row_number() OVER (ORDER BY dist) as rownum FROM ( SELECT loc.cartodb_id, loc.the_geom, loc.the_geom_webmercator, round( (ST_Distance( ST_GeomFromText('Point(" + lng + " " + lat + ")', 4326)::geography, loc.the_geom::geography ) / 1609)::numeric, 1 ) AS dist FROM nyc_cbos_locations AS loc, nyc_cbos_service_areas AS sa WHERE ST_Intersects( ST_GeomFromText( 'Point(" + lng + " " + lat + ")', 4326 ), sa.the_geom ) AND loc.organization = sa.organization AND loc.org_type IN ('" + type + "') ORDER BY dist ASC ) T LIMIT 10";
+            cartocss = "#nyc_cbos_locations{marker-fill-opacity:.9;marker-line-color:#FFF;marker-line-width:1;marker-line-opacity:1;marker-placement:point;marker-type:ellipse;marker-width:10;marker-fill:#F60;marker-allow-overlap:true}#nyc_cbos_locations::labels{text-name:[rownum];text-face-name:'DejaVu Sans Book';text-size:20;text-label-position-tolerance:10;text-fill:#000;text-halo-fill:#FFF;text-halo-radius:2;text-dy:-10;text-allow-overlap:true;text-placement:point;text-placement-type:simple}";
+          } else {
+            query = "SELECT * FROM nyc_cbos_locations";
+            cartocss = "#nyc_cbos_locations{marker-fill-opacity:.9;marker-line-color:#FFF;marker-line-width:1;marker-line-opacity:1;marker-placement:point;marker-type:ellipse;marker-width:10;marker-fill:#F60;marker-allow-overlap:true}";
+          }
 
           if(userMarker) map.removeLayer(userMarker);
           userMarker = L.marker([lat,lng]);
@@ -82,18 +88,22 @@ angular.module('findhelp').directive('cartoMap', ['$rootScope', 'CartoDB', funct
 
           mainSublayer.set({
             sql: query,
-            cartocss: "#nyc_cbos_locations{marker-fill-opacity:.9;marker-line-color:#FFF;marker-line-width:1;marker-line-opacity:1;marker-placement:point;marker-type:ellipse;marker-width:10;marker-fill:#F60;marker-allow-overlap:true}#nyc_cbos_locations::labels{text-name:[rownum];text-face-name:'DejaVu Sans Book';text-size:20;text-label-position-tolerance:10;text-fill:#000;text-halo-fill:#FFF;text-halo-radius:2;text-dy:-10;text-allow-overlap:true;text-placement:point;text-placement-type:simple}"
+            cartocss: cartocss
           });
 
           CartoDB.getSQL().getBounds(query).done(function(bounds) {
-            //console.log(lat,lng);
             bounds.push([lat,lng]);
-            //console.log(bounds);
-          //$rootScope.cartoSQL.getBounds(query).done(function(bounds) {
             map.fitBounds(bounds, { padding: [10,10] });
           });
         };
 
-      }
-    };
+
+
+
+
+
+
+
+    }
+  };
 }]);

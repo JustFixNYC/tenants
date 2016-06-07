@@ -8,18 +8,14 @@
 
 	<carto-map></carto-map>
 
-	<div class="btn-center" ng-if="!searched">
-		<button class="btn btn-primary" ng-click="update(false)">Search {{ user.address }}, {{ user.borough }}</button>
-	</div>
-
-	<div class="resources-container" ng-if="searched">
+	<div class="resources-container">
 
 		<tabset>
-	    <tab heading="Community Groups" ng-click="update(false)">
+	    <tab heading="Community Groups" ng-click="update('community')">
 			</tab>
-			<tab heading="Legal Services" ng-click="update(true)">
+			<tab heading="Legal Services" ng-click="update('legal')">
 			</tab>
-			<tab heading="Hotlines">
+			<tab heading="Citywide Hotlines" ng-click="update('hotlines')">
 			</tab>
 		</tabset>
 
@@ -30,11 +26,11 @@
 				  <!-- <p class="lead">Results:</p> -->
 				  <div ng-repeat="r in resources" class="panel action-panel">
 				    <div class="panel-heading">
-				      <h3 class="panel-title">{{ r.rownum }}. {{ r.organization }}</h3>
+				      <h3 class="panel-title"><span ng-if="r.rownum">{{ r.rownum }}. </span>{{ r.organization }}</h3>
 				    </div>
 				    <div class="panel-body">
 				      <!-- <a ng-href="http://maps.google.com/?q={{ r.address }}"><p class="address">{{ r.address }} <em>({{ r.dist }}mi away)</em></p></a> -->
-				      <a ng-href="http://maps.google.com/?saddr={{ user.address }}&daddr={{ r.address }}" target="_blank"><p class="address">{{ r.address }} <em>({{ r.dist }}mi away)</em></p></a>
+				      <a ng-if="r.address" ng-href="http://maps.google.com/?saddr={{ user.address + ' ' + user.borough }}&daddr={{ r.address }}" target="_blank"><p class="address">{{ r.address }} <em>({{ r.dist }}mi away)</em></p></a>
 				      <p class="services">{{ r.services }}</p>
 				      <a  class="btn btn-success btn-block"
 				          ng-href="tel:{{ r.contact_information }}">
