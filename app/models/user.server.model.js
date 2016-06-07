@@ -145,15 +145,13 @@ var UserSchema = new Schema({
  * This is pretty nice to have in one spot!
  */
 UserSchema.pre('save', function(next) {
+
   if (this.password && this.password.length > 6) {
     this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
     this.password = this.hashPassword(this.password);
   }
 
-
   var userProblems = [];
-  // var userIssues = {};
-
   // go through all issues and problems
   // check to see if the user has:
   // - selected emergency issues, or not
@@ -188,7 +186,6 @@ UserSchema.pre('save', function(next) {
 
   // check NYCHA housing
   // if(user.nycha === 'yes') user.actionFlags.push('isNYCHA');
-
 
   next();
 });
