@@ -37,9 +37,8 @@
     @include make-row();
     background-color: #fff;
 
-    & > .container {
-      padding-top: 15px;
-      padding-bottom: 15px;
+    & > .resources {
+      padding: 15px;
     }
   }
 
