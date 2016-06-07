@@ -49,7 +49,7 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
   	};
 
-    var createComplaint = function(landlord) {
+    var createComplaint = function(landlord, accessDates) {
 
       var deferred = $q.defer();
     	var user = Authentication.user;

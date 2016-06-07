@@ -1,7 +1,12 @@
 <div class="panel action-panel" data-ng-show="!action.completed">
   <div class="panel-heading">
-    <h3 class="panel-title">
+    <!-- <h3 class="panel-title">
       {{ action.title }}{{ action.isFollowUp ? ' - Follow Up' : '' }}
+    </h3> -->
+    <h3 class="panel-title">
+      <span ng-if="action.cta.type == 'initialContent'" class="glyphicon-addl" ng-class="action.key"></span> 
+      <span data-ng-bind-html="filterTitleHTML()" compile-template></span>
+      {{ action.isFollowUp ? ' - Follow Up' : '' }}
     </h3>
   </div>
   <div class="panel-body" data-ng-if="!action.isFollowUp">

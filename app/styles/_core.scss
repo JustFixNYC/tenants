@@ -190,6 +190,11 @@ label.control-label em {
   height: auto;
   -webkit-appearance: none;
 }
+input[type="date"].form-control, input[type="time"].form-control, input[type="datetime-local"].form-control, input[type="month"].form-control {
+    line-height: 24px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
 
 .btn-block {
   max-width: 180px;

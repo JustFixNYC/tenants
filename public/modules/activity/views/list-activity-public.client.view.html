@@ -11,10 +11,10 @@
     </div>
     <div collapse="activityCollapsed">
       <div data-ng-if="activities.length">
-          <div data-ng-repeat="activity in activities | orderBy:'createdDate':true" class="panel activity-panel">
+          <div data-ng-repeat="activity in activities | orderBy:'startDate':true" class="panel activity-panel">
               <div class="panel-heading">
-                  <span>{{ activity.createdDate | date:'longDate' }}</span>
-                  <h3>{{ activity.title }}</h3>
+                  <p>{{ ::activity.startDate | date:'longDate' }}</p>
+                  <h3>{{ ::activity.title }}</h3>
               </div>
               <div class="panel-body">
 
@@ -23,7 +23,7 @@
                   <!-- <p><b>{{ activity.key | areaTitle }} {{ activity.title === 'Text/Photos' ? 'Details' : activity.title }}</b></p> -->
 
 
-
+                  <span class="pull-right activity-logged-date"><i>Logged on {{ ::activity.createdDate | date:'short' }}</i></span>
 
               </div>
           </div>

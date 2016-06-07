@@ -8,6 +8,7 @@ var _ = require('lodash'),
   errorHandler = require('../errors.server.controller'),
   actionsHandler = require('../actions.server.controller'),
   addressHandler = require('../../services/address.server.service'),
+  profileHandler = require('./users.profile.server.controller'),
   mongoose = require('mongoose'),
   passport = require('passport'),
   User = mongoose.model('User');
@@ -49,11 +50,9 @@ exports.signup = function(req, res) {
   var user = new User(req.body);
   var message = null;
 
-  console.log('new user', user);
-
   var save = function() {
     saveUser(req, user)
-      .then(function (user) { res.json(user); })
+      .then(function (user) {   console.log('new user', user); res.json(user); })
       .fail(function (err) { res.status(400).send(err); });
   };
 
@@ -62,6 +61,12 @@ exports.signup = function(req, res) {
   user.actionFlags.push('initial');
   user.fullName = user.firstName + ' ' + user.lastName;
 
+  // new user enabled sharing, so create a key
+  if(user.sharing.enabled) {
+    profileHandler.createPublicView().then(function(newUrl) {
+      user.sharing.key = newUrl;
+    });
+  }
 
   // check some address stuff
   addressHandler.requestGeoclient(user.borough, user.address)

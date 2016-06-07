@@ -35,10 +35,6 @@ var ProblemSchema = new Schema({
       type: Date,
       default: Date.now
     },
-    createdDate: {
-      type: Date,
-      default: Date.now
-    },
     key: {
       type: String,
       default: ''

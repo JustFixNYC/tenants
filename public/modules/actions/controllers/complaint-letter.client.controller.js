@@ -9,6 +9,8 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 			name: '',
 			address: ''
 		};
+		$scope.accessDates = [];
+		$scope.accessDates.push('');
 
 		$scope.status = {
 			loading: false,
@@ -16,13 +18,18 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 			error: false
 		}
 
+		$scope.addAccessDate = function() {
+			$scope.accessDates.push('');
+		};
+
 
 	  // var user = Authentication.user;
 
 	  $scope.createLetter = function () {
+			
 			$scope.status.loading = true;
 
-	  	Pdf.createComplaint($scope.landlord).then(
+	  	Pdf.createComplaint($scope.landlord, $scope.accessDates).then(
 	  		function success(data) {
 					$scope.status.loading = false;
 					$scope.status.created = true;

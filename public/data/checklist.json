@@ -3,7 +3,7 @@
     "key": "bedrooms",
     "title":"Bedrooms",
     "iconImage": "/public/modules/problems/img/",
-    "issues": [ 
+    "issues": [
       { "key" : "Peeling Paint", "emergency": false },
       { "key" : "Cracked Walls", "emergency": false },
       { "key" : "Mold on Walls", "emergency": false },
@@ -23,7 +23,7 @@
   {
     "key": "kitchen",
     "title": "Kitchen",
-    "issues": [      
+    "issues": [
       { "key": "Peeling Paint", "emergency": false },
       { "key": "Cracked Walls", "emergency": false },
       { "key": "Mold on Walls", "emergency": true },
@@ -54,7 +54,7 @@
   {
     "key":"livingRoom",
     "title": "Living Room",
-    "issues": [ 
+    "issues": [
       { "key": "Peeling Paint", "emergency": false },
       { "key": "Cracked Walls", "emergency": false },
       { "key": "Mold on Walls", "emergency": true },
@@ -75,7 +75,7 @@
   {
     "key": "bathroom",
     "title": "Bathroom",
-    "issues": [    
+    "issues": [
       { "key": "Peeling Paint", "emergency": true },
       { "key": "Cracked Walls", "emergency": true },
       { "key": "Mold on Walls", "emergency": true },
@@ -156,13 +156,13 @@
       { "key": "Illegal apartments in basement", "emergency": true },
       { "key": "No rent receipts given", "emergency": true },
       { "key": "Rent receipts incomplete (no date/ NYC address for landlord, etc.)", "emergency": true },
-      { "key": "Inadequate / no super service", "emergency": true }        
+      { "key": "Inadequate / no super service", "emergency": true }
     ]
   },
   {
     "key": "landlordIssues",
-    "title": "Landlord Issues",
-    "issues": [ 
+    "title": "Landlord",
+    "issues": [
       { "key": "Not receiving rent receipts", "emergency": false },
       { "key": "No lease", "emergency": false },
       { "key": "False documents", "emergency": false },
