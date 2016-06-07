@@ -18,9 +18,13 @@ footer {
 
   .footer-links {
 
+    display: table;
+    width: 100%;
+
     & > div {
       background-color: #fff;
-      display: inline-block;
+      // display: inline-block;
+      display: table-cell;
       margin-right: 0;
       width: 50%;
 
