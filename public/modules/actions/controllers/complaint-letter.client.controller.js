@@ -26,7 +26,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 	  // var user = Authentication.user;
 
 	  $scope.createLetter = function () {
-			
+
 			$scope.status.loading = true;
 
 	  	Pdf.createComplaint($scope.landlord, $scope.accessDates).then(

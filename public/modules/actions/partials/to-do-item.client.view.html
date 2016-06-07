@@ -4,7 +4,7 @@
       {{ action.title }}{{ action.isFollowUp ? ' - Follow Up' : '' }}
     </h3> -->
     <h3 class="panel-title">
-      <span ng-if="action.cta.type == 'initialContent'" class="glyphicon-addl" ng-class="action.key"></span> 
+      <span ng-if="action.cta.type == 'initialContent'" class="glyphicon-addl" ng-class="action.key"></span>
       <span data-ng-bind-html="filterTitleHTML()" compile-template></span>
       {{ action.isFollowUp ? ' - Follow Up' : '' }}
     </h3>
@@ -61,7 +61,7 @@
                       </span> -->
                     <!-- </p> -->
 
-                    <input type="date" class="form-control" name="startDate" ng-model="newActivity.startDate" required />
+                    <input type="date" class="form-control" name="startDate" ng-model="newActivity.startDate" mobile-date-placeholder placeholder="mm/dd/yyyy" required />
                 </div>
             </div>
             <div data-ng-if="action.followUp.fields">

@@ -195,6 +195,12 @@ input[type="date"].form-control, input[type="time"].form-control, input[type="da
     padding-top: 8px;
     padding-bottom: 8px;
 }
+input[type="date"].date-mobile:before {
+  content: attr(placeholder) !important;
+}
+input[type="date"].date-mobile:focus:before {
+  content: '' !important;
+}
 
 .btn-block {
   max-width: 180px;

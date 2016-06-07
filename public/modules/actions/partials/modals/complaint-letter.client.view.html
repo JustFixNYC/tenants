@@ -24,8 +24,8 @@
         <div class="form-group">
             <label class="control-label" for="accessDates">Provide a few apartment access dates for when repairs can be made.</label>
             <div class="controls">
-              <input ng-repeat="a in accessDates track by $index" type="date" class="form-control" name="accessDate" ng-model="accessDates[$index]" required />
-              <a ng-click="addAccessDate()">+ Add Access Date</a>
+              <input ng-repeat="a in accessDates track by $index" type="date" class="form-control" name="accessDate" ng-model="accessDates[$index]" mobile-date-placeholder placeholder="mm/dd/yyyy" required />
+              <a ng-if="accessDates.length < 4" ng-click="addAccessDate()">+ Add Access Date</a>
             </div>
         </div>
       </form>

@@ -16,8 +16,8 @@
 		<h2>
 			<span ng-if="!newUser.sharing.enabled">Share My Case:</span>
 			<span ng-if="newUser.sharing.enabled">Sharing (on):</span>
-			<label class="toggle pull-right">
-				<input type="checkbox" ng-model="newUser.sharing.enabled">
+			<label class="toggle pull-right" toggle-sharing>
+				<input type="checkbox">
 				<span class="handle"></span>
 			</label>
 		</h2>

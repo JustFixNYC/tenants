@@ -71,7 +71,7 @@ var getAreaActions = function(user) {
     // this means that the user hasn't "added details"
     if(!_.contains(user.actionFlags, p.key)) {
       areaActions.push({
-        title: 'Gather Evidence',
+        title: 'Add ' + p.title + ' Details',
         activityTitle: p.title + ' issues began',
         content: 'Upload photos and information about your <b>' + p.title + '</b> issues. The more documentation you have, the stronger your case will be!',
         key: p.key,
@@ -79,7 +79,7 @@ var getAreaActions = function(user) {
         type: 'once',
         cta: {
           type: 'initialContent',
-          buttonTitle: '<span class="glyphicon glyphicon-camera pull-left"></span> Add Details',
+          buttonTitle: '<span class="glyphicon glyphicon-camera pull-left"></span> Gather Evidence',
           template: 'add-details.client.view.html',
           controller: 'AddDetailsController'
         },
