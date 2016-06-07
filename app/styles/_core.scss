@@ -4,6 +4,9 @@ html, body {
 
 body {
   background-color: #F6F6F6;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 
   &.white-bg {
     background-color: #fff;
@@ -57,14 +60,13 @@ h4 {
 }
 
 .content {
-  // margin-bottom: 50px;
-	// margin-top: 100px;
+
+  flex: 1;
+  margin-bottom: 50px;
 
   // @media (min-width: $screen-xs-min) {
   //   margin-top: 130px;
   // }
-
-
   section.container {
     min-height: 300px;
     max-width: 768px;
@@ -240,20 +242,4 @@ input[type="date"].date-mobile:focus:before {
 
 .no-gutter [class*="col"] {
   padding: 0;
-}
-
-
-footer {
-  padding-top: 15px;
-  padding-bottom: 15px;
-  background-color: $justfix-blue-darkest;
-  margin-top: 75px;
-
-  &.no-margin {
-  	margin-top: 0px;
-  }
-
-  & > p {
-    color: #fff;
-  }
 }
