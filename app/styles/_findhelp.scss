@@ -8,7 +8,7 @@
 
 
   .nav-tabs {
-    display: table-row;
+    // display: table-row;
 
     li {
       width: 33.33%;
@@ -17,6 +17,11 @@
       text-align: center;
       text-transform: uppercase;
       font-size: 11px;
+
+      a {
+        display: block;
+        height: 50px;
+      }
     }
   }
 
@@ -32,9 +37,8 @@
     @include make-row();
     background-color: #fff;
 
-    & > .container {
-      padding-top: 15px;
-      padding-bottom: 15px;
+    & > .resources {
+      padding: 15px;
     }
   }
 

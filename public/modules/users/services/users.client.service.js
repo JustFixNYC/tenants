@@ -7,7 +7,7 @@ angular.module('users').factory('Users', ['$resource',
 			update: {
 				method: 'PUT'
 			},
-			enableSharing: {
+			toggleSharing: {
 				method: 'GET',
 				url: '/users/public'
 			},

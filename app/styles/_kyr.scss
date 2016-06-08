@@ -1,5 +1,5 @@
 .kyr {
-	
+
 	h3 {
 		margin-top: 0.5em;
 		font-size: 2em;
@@ -30,7 +30,7 @@
 		padding: 15px 35px 15px 20px;
 		color: $gray;
 		cursor: pointer;
-		
+
 		@include make-row;
 
 		&:first-child {
@@ -54,14 +54,14 @@
 .kyr-detail {
 	background: #fff;
 	@include make-row;
-	
+
 	h3 {
 		margin-top: 0.5em;
 		font-size: 2em;
 		font-weight: 400;
 	}
 
-	.learn-more-block {	
+	.learn-more-block {
 		margin: 1.5em 0 1.5em 0;
 		font-size: 16px;
 
@@ -95,39 +95,4 @@
 	margin: 20px 0;
 	padding-top: 10px;
 	border-top: 1px solid $gray-lighter;
-}
-
-.footer-links {
-	margin-top: 2em;
-	text-align: center;
-
-	@media (max-width: $screen-xs) {
-		@include make-row();
-	}
-
-	a {
-
-		@media (min-width: $screen-sm) {
-	    margin: 0 8.3% 30px 8.3%;
-		}
-		@media (max-width: $screen-md) {
-			padding: 0px;
-		}
-
-		.footer-link {
-			background: #fff;
-			padding: 3em 0;
-			color: $gray;
-
-			@media (max-width: $screen-md) {
-				border-right: 1px solid $gray-lighter;
-			}
-		}
-
-		&:last-child {
-			.footer-link {
-				border-right: none;
-			}
-		}
-	}
 }

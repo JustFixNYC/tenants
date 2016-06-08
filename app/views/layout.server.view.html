@@ -66,6 +66,8 @@
 	</script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAU7vbWOHS6wd2eJxgY3WBQw-GwHaAWqng&signed_in=true&callback=initGoogle"></script> -->
 
+	<script src="http://platform.twitter.com/widgets.js"></script>
+
 	<!-- HTML5 Shim -->
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,8 +83,8 @@
 		<section class="container">
 			{% block content %}{% endblock %}
 		</section>
-		<footer class="container" ng-class="{'no-margin': noMargin}" data-ng-include="'/modules/core/views/footer.client.view.html'"></footer>
 	</section>
+	<footer data-ng-include="'/modules/core/views/footer.client.view.html'"></footer>
 	<loading ng-if="$root.loading"></loading>
 
 	<!--Embedding The User Object-->

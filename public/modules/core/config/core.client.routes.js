@@ -24,7 +24,8 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 			templateUrl: 'modules/core/views/landing.client.view.html',
 			data: {
 				disableBack: true
-			}
+			},
+			globalStyles: 'landing white-bg'
 		})
 		.state('not-found', {
 			url: '/not-found',

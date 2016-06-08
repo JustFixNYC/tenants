@@ -7,7 +7,7 @@
   <div class="legal-disclaimer-trigger pull-right">
 		<a class="text" ng-click="showDisclaimer = !showDisclaimer">
 			<span ng-show="!showDisclaimer">+</span>
-			<span ng-show="showDisclaimer">-</span> 
+			<span ng-show="showDisclaimer">-</span>
 			 Legal Disclaimer
 		</a>
   </div>
@@ -23,24 +23,6 @@
   <div class="kyr-container">
 		<a class="kyr-item" ng-repeat="kyr in kyrResponse track by $index" ng-href="/#!/kyr/{{$index + 1}}">
 			<strong>{{kyr.title}} <span class="glyphicon glyphicon-menu-right pull-right"></span></strong>
-		</a>
-  </div>
-  <div class="footer-links">
-  	<a ui-sref="listActions" class="col-xs-6 col-sm-4 pull-left">
-			<div class="footer-link phone">
-	      <img src="/modules/core/img/sections/action.svg" alt="Take Action" />
-	      <br/>
-	      <br/>
-				<span>Take Action</span>
-			</div>
-		</a>
-		<a href="#!/find-help" class="col-xs-6 col-sm-4 pull-right">
-			<div class="footer-link phone">
-	      <img src="/modules/core/img/sections/help.svg" alt="Find Help" />
-	      <br/>
-	      <br/>
-				<span>Find Help</span>
-			</div>
 		</a>
   </div>
 </section>

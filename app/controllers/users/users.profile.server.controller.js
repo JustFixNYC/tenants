@@ -75,6 +75,18 @@ var makeNewURL = function(deferred) {
 };
 
 
+exports.createPublicView = function() {
+
+ 	var deferred = Q.defer();
+
+	makeNewURL().then(function (newUrl) {
+		deferred.resolve(newUrl);
+	});
+
+	return deferred.promise;
+};
+
+
 /**
  * Toggle user public view
  */
@@ -110,16 +122,6 @@ exports.togglePublicView = function(req, res, next) {
 	}
 };
 
-exports.createPublicView = function() {
-
- 	var deferred = Q.defer();
-
-	makeNewURL().then(function (newUrl) {
-		deferred.resolve(newUrl);
-	});
-
-	return deferred.promise;
-};
 
 /**
  *  Return all users. This probably shouldn't be here - using authorization middleware

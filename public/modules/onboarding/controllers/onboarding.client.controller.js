@@ -18,7 +18,10 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			address: '654 Park Place',
 			unit: '1RF',
 			phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
-			problems: []
+			problems: [],
+			sharing: {
+				enabled: false
+			}
 		};
 
 	  $scope.accessCode = {

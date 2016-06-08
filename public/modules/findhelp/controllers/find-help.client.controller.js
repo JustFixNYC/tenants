@@ -1,62 +1,33 @@
 'use strict';
 
-angular.module('findhelp').controller('FindHelpController', ['$scope', '$window', 'Authentication', 'CartoDB',
-	function ($scope, $window, Authentication, CartoDB) {
+angular.module('findhelp').controller('FindHelpController', ['$scope', '$window', 'Authentication', 'CartoDB', 'Hotlines',
+	function ($scope, $window, Authentication, CartoDB, Hotlines) {
 
     $scope.user = Authentication.user;
-		console.log($scope.user);
-    // $scope.user.address = '654 park place brooklyn';
-    // $scope.user.byLegal = false;
-		$scope.searched = false;
-    // $scope.hasLocal = true;
+		$scope.hotlines = [];
 
-
-    // if(!$window.Geocoder) {
-    //   // $log.info('ERROR: no geocoder set.');
-    //   console.error('warning: no geocoder set');
-    // } else {
-    //   var boundsNYC = new google.maps.LatLngBounds(
-    //       new google.maps.LatLng('40.496044', '-74.255735'),
-    //       new google.maps.LatLng('40.915256', '-73.700272')
-    //   );
-    // }
-
-
-    //var Geocoder = new google.maps.Geocoder();
-
-    // $scope.searchAddr = function() {
-    //   // $window.Geocoder.geocode({ 'address': $scope.user.address }, function(results, status) {
-    //   $window.Geocoder.geocode({
-    //     address: $scope.user.address,
-    //     bounds: boundsNYC
-    //   }, function(results, status) {
-    //     if (status === google.maps.GeocoderStatus.OK) {
-    //       $scope.user.lat = results[0].geometry.location.lat();
-    //       $scope.user.lng = results[0].geometry.location.lng();
-    //       $scope.error = false;
-    //       $scope.user.address = results[0].formatted_address;
-    //       $scope.user.borough = getUserBorough(results[0].formatted_address);
-    //       $scope.update();
-    //     } else {
-    //       $scope.error = true;
-    //       $scope.$apply();
-    //       console.error('Geocode was not successful for the following reason: ' + status);
-    //     }
-    //   });
-    // };
-
-    $scope.toggleOrgType = function(byLegal) {
-      $scope.user.byLegal = byLegal;
-      $scope.update();
-    };
-
-    $scope.update = function(byLegal) {
-			$scope.searched = true;
+    $scope.update = function(type) {
       var lat = $scope.user.geo.lat;
       var lng = $scope.user.geo.lon;
-      $scope.updateCartoMap(lat, lng, byLegal);
-      $scope.updateCartoList(lat, lng, byLegal);
+      $scope.updateCartoMap(lat, lng, type);
+
+			if(type == 'hotlines' && !$scope.hotlines.length) {
+				Hotlines.getLocalFile().then(function (data) {
+					$scope.resources = $scope.hotlines = data;
+				}, function (err) {
+					console.log("errors:" + errors);
+				});
+			} else if(type == 'hotlines' && $scope.hotlines.length) {
+				$scope.resources = $scope.hotlines;
+			} else {
+				$scope.updateCartoList(lat, lng, type);
+			}
+
     };
+
+		$scope.init = function() {
+			$scope.update('community');
+		};
 
     $scope.updateCartoList = function(lat, lng, orgType) {
       CartoDB.queryByLatLng(lat, lng, orgType)
