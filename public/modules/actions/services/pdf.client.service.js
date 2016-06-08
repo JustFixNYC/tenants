@@ -55,11 +55,13 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
     	var user = Authentication.user;
 
       var assembledObject = assemble(landlord.name, landlord.address);
+      // Hmm, handle this differently? pass into assembled object, maybe?
+      assembledObject.accessDates = accessDates;
 
       $http({
 	  		method: 'POST',
-	  		// url:'http://pdf-microservice.herokuapp.com/complaint-letter',
-	  		url: 'http://localhost:5000/complaint-letter',
+	  		url:'http://pdf-microservice.herokuapp.com/complaint-letter',
+	  		// url: 'http://localhost:5000/complaint-letter',
 	  		data: assembledObject
 	  	}).then(
 	  		function successfulPdfPost(response){
