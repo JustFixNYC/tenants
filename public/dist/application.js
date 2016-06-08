@@ -225,29 +225,23 @@ angular.module('actions').controller('AddDetailsController', ['$scope', '$filter
 
   $scope.issues = Problems.getUserIssuesByKey($scope.newActivity.key);
 
+  $scope.formSubmitted = false;
+
   // $scope.areas = Issues.getUserAreas().map(function (a) { return $filter('areaTitle')(a) });
 
   //console.log('update activity cntrl',$scope.newActivity);
-
-  $scope.dp = {
-    opened: false,
-  };
-
-  $scope.openDp = function() {
-
-      $scope.dp.opened = !$scope.dp.opened;
-      console.log('wtf');
-    };
-
-
- // $scope.open
 
   $scope.onFileSelect = function(files) {
     console.log(files);
   };
 
-  $scope.done = function () {
-    $modalInstance.close({ newActivity: $scope.newActivity });
+  $scope.done = function (isValid) {
+
+    $scope.formSubmitted = true;
+
+    if(isValid) {
+      $modalInstance.close({ newActivity: $scope.newActivity });
+    }
   };
 
   $scope.cancel = function () {
@@ -266,6 +260,8 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 			name: '',
 			address: ''
 		};
+		$scope.accessDates = [];
+		$scope.accessDates.push('');
 
 		$scope.status = {
 			loading: false,
@@ -273,13 +269,18 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 			error: false
 		}
 
+		$scope.addAccessDate = function() {
+			$scope.accessDates.push('');
+		};
+
 
 	  // var user = Authentication.user;
 
 	  $scope.createLetter = function () {
+
 			$scope.status.loading = true;
 
-	  	Pdf.createComplaint($scope.landlord).then(
+	  	Pdf.createComplaint($scope.landlord, $scope.accessDates).then(
 	  		function success(data) {
 					$scope.status.loading = false;
 					$scope.status.created = true;
@@ -588,9 +589,8 @@ angular.module('actions')
       restrict: 'E',
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
       controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
-        $scope.filterContentHTML = function() {
-          return $sce.trustAsHtml($scope.action.content);
-        };
+        $scope.filterTitleHTML = function() { return $sce.trustAsHtml($scope.action.title); };
+        $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
         $scope.filterButtonTitleHTML = function() { return $sce.trustAsHtml($scope.action.cta.buttonTitle); };
         $scope.closeErrorAlert = true;
       }],
@@ -598,17 +598,6 @@ angular.module('actions')
 
         // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
         // scope.action is a $resource!
-
-        //console.log(scope);
-
-        // console.log(scope.action);
-
-        // used to hide the completed alert
-        // scope.status = {
-        //   closeAlert: false,
-        //   closeErrorAlert: true,
-        //   completed: false
-        // };
 
         scope.followUpSubmitted = false;
 
@@ -626,16 +615,15 @@ angular.module('actions')
           if(scope.action.startDate) {
             scope.newActivity.startDate = new Date(scope.action.startDate);
           }
-
-          // if action has custom fields, initialize those in the newActivity object
-          if(scope.action.followUp && scope.action.followUp.fields) {
-            scope.newActivity.fields = [];
-            angular.forEach(scope.action.followUp.fields, function(field, idx) {
-              scope.newActivity.fields.push({ title: field.title });
-            });
-          }
         }
 
+        // if action has custom fields, initialize those in the newActivity object
+        if(scope.action.followUp && scope.action.followUp.fields) {
+          scope.newActivity.fields = [];
+          angular.forEach(scope.action.followUp.fields, function(field, idx) {
+            scope.newActivity.fields.push({ title: field.title });
+          });
+        }
 
 
         var getSection = function(type) {
@@ -665,24 +653,6 @@ angular.module('actions')
         };
 
         scope.openModal = function() {
-
-          // ModalService.showModal({
-          //   templateUrl: 'modules/actions/partials/modals/' + scope.action.cta.template,
-          //   controller: scope.action.cta.controller,
-          //   inputs: {
-          //     newActivity: scope.newActivity
-          //   }
-          // }).then(function(modal) {
-
-          //   console.log(modal);
-
-          //   modal.element.modal();
-          //   // modal.close.then(function(result) {
-          //   //   $scope.yesNoResult = result ? "You said Yes" : "You said No";
-          //   // });
-          // });
-
-          scope.newActivity.startDate = new Date();
 
           var modalInstance = $modal.open({
             //animation: false,
@@ -950,7 +920,7 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
   								' <br> New York, ' + zip
 	  	};
 	  	assembledObject.landlordInfo = {
-  			'name': landlordName.length ? landlordName : 'To whom it may concern',
+  			'name': landlordName.length ? 'Dear ' + landlordName : 'To whom it may concern',
   			'address': landlordAddr.length ? landlordAddr : ''
 	  	};
 
@@ -964,14 +934,14 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
       		}
       	});
 
-      	assembledObject.issues.push(problemPush); 
+      	assembledObject.issues.push(problemPush);
       }
 
       return assembledObject;
 
   	};
 
-    var createComplaint = function(landlord) {
+    var createComplaint = function(landlord, accessDates) {
 
       var deferred = $q.defer();
     	var user = Authentication.user;
@@ -1080,6 +1050,8 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
   function($scope, $location, $http, $filter, Authentication, Users, Activity, Lightbox) {
 
     $scope.authentication = Authentication;
+    $scope.location = $location.host();
+    console.log($scope.location);
 
     $scope.shareCollapsed = false;
 
@@ -1360,7 +1332,8 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 			templateUrl: 'modules/core/views/landing.client.view.html',
 			data: {
 				disableBack: true
-			}
+			},
+			globalStyles: 'landing white-bg'
 		})
 		.state('not-found', {
 			url: '/not-found',
@@ -1392,6 +1365,71 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 			globalStyles: 'white-bg'
 		})
 	}
+]);
+
+'use strict';
+
+angular.module('core').controller('FooterController', ['$scope', '$window', 'Authentication',
+  function($scope, $window, Authentication) {
+
+    var links = {
+      actions : {
+        link: 'listActions',
+        title: 'Take Action',
+        icon: '/modules/core/img/sections/action.svg'
+      },
+      activity : {
+        link: 'listActivity',
+        title: 'Case History',
+        icon: '/modules/core/img/sections/history.svg'
+      },
+      issues : {
+        link: 'updateProblems',
+        title: 'Issue Checklist',
+        icon: '/modules/core/img/sections/issues.svg'
+      },
+      profile : {
+        link: 'settings.profile',
+        title: 'Profile',
+        icon: '/modules/core/img/sections/profile.svg'
+      },
+      help : {
+        link: 'findHelp',
+        title: 'Find Help',
+        icon: '/modules/core/img/sections/help.svg'
+      },
+      kyr : {
+        link: 'kyr',
+        title: 'Know Your Rights',
+        icon: '/modules/core/img/sections/kyr.svg'
+      }
+    };
+
+    $scope.footerLinks = [];
+
+
+    // Collapsing the menu after navigation
+    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+      switch(toState.name) {
+        case 'kyr':
+          $scope.footerLinks = [ links.actions, links.help ];
+          break;
+        case 'findHelp': case 'listActions':
+          $scope.footerLinks = [ links.activity, links.kyr ];
+          break;
+        case 'listActivity':
+          $scope.footerLinks = [ links.issues, links.help ];
+          break;
+        case 'updateProblems':
+          $scope.footerLinks = [ links.actions, links.activity ];
+          break;
+        default:
+          $scope.footerLinks = [];
+          break;
+      };
+
+    });
+  }
 ]);
 
 'use strict';
@@ -1462,6 +1500,24 @@ angular.module('core').controller('LandingController', ['$scope', 'Authenticatio
     $scope.device = deviceDetector;
 	}
 ]);
+
+'use strict';
+
+angular.module('core').directive('bottomOnClick', ['$document', '$timeout', function($document, $timeout) {
+  return {
+    controller: ["$parse", "$element", "$attrs", "$scope", function($parse, $element, $attrs, $scope) {
+
+        var parent = $attrs.bottomOnClick;
+        var parentElm = document.getElementById(parent);
+
+        $element.bind('click', function(e) {
+          $timeout(function() {
+            parentElm.scrollTop = parentElm.scrollHeight;
+          }, 0);
+        });
+    }]
+  };
+}]);
 
 'use strict';
 
@@ -1636,6 +1692,32 @@ angular.module('core').directive('loading', ["$document", function($document) {
 
 'use strict';
 
+angular.module('core')
+  .directive('mobileDatePlaceholder', ['deviceDetector', function (deviceDetector) {
+    return {
+      restrict: 'A',
+      scope: false,
+      link: function (scope, elm, attrs) {
+
+        if(deviceDetector.isMobile() || deviceDetector.isTablet()) {
+          elm.addClass('date-mobile');
+        }
+
+        scope.$watch(attrs.ngModel, function (v) {
+          if(v) {
+            elm.removeClass('date-mobile');
+          }
+        });
+
+
+
+      }
+    };
+
+  }]);
+
+'use strict';
+
 angular.module('core').directive('phoneInput', ["$filter", "$browser", function($filter, $browser) {
   return {
     require: 'ngModel',
@@ -1775,6 +1857,41 @@ angular.module('core').directive('stopEvent', function () {
       }
     };
   });
+'use strict';
+
+angular.module('core').directive('twitterFollow', ['$timeout', function($timeout) {
+  return {
+    link: function (scope, element, attr) {
+      $timeout(function() {
+            twttr.widgets.createFollowButton (
+                'JustFixNYC',
+                element[0],
+                {
+                  showScreenName: false,
+                  showCount: false
+                }
+            );
+      });
+    }
+  };
+}]);
+
+'use strict';
+
+angular.module('core').directive('variableHeight', ['$document', '$timeout', function($document, $timeout) {
+  return {
+    controller: ["$parse", "$element", "$attrs", "$scope", function($parse, $element, $attrs, $scope) {
+
+        var parent = $attrs.variableHeight;
+        var parentElm = document.getElementById(parent);
+
+        $scope.$watch(function() {
+          angular.element(parentElm).css('height', $element[0].offsetHeight + 'px');
+        });
+    }]
+  };
+}]);
+
 'use strict';
 
 angular.module('core').directive('windowHeight', ['$window', 'deviceDetector', function($window, deviceDetector) {
@@ -2123,63 +2240,34 @@ angular.module('findhelp').config(['$stateProvider', '$urlRouterProvider',
 
 'use strict';
 
-angular.module('findhelp').controller('FindHelpController', ['$scope', '$window', 'Authentication', 'CartoDB',
-	function ($scope, $window, Authentication, CartoDB) {
+angular.module('findhelp').controller('FindHelpController', ['$scope', '$window', 'Authentication', 'CartoDB', 'Hotlines',
+	function ($scope, $window, Authentication, CartoDB, Hotlines) {
 
     $scope.user = Authentication.user;
-		console.log($scope.user);
-    // $scope.user.address = '654 park place brooklyn';
-    // $scope.user.byLegal = false;
-		$scope.searched = false;
-    // $scope.hasLocal = true;
+		$scope.hotlines = [];
 
-
-    // if(!$window.Geocoder) {
-    //   // $log.info('ERROR: no geocoder set.');
-    //   console.error('warning: no geocoder set');
-    // } else {
-    //   var boundsNYC = new google.maps.LatLngBounds(
-    //       new google.maps.LatLng('40.496044', '-74.255735'),
-    //       new google.maps.LatLng('40.915256', '-73.700272')
-    //   );
-    // }
-
-
-    //var Geocoder = new google.maps.Geocoder();
-
-    // $scope.searchAddr = function() {
-    //   // $window.Geocoder.geocode({ 'address': $scope.user.address }, function(results, status) {
-    //   $window.Geocoder.geocode({
-    //     address: $scope.user.address,
-    //     bounds: boundsNYC
-    //   }, function(results, status) {
-    //     if (status === google.maps.GeocoderStatus.OK) {
-    //       $scope.user.lat = results[0].geometry.location.lat();
-    //       $scope.user.lng = results[0].geometry.location.lng();
-    //       $scope.error = false;
-    //       $scope.user.address = results[0].formatted_address;
-    //       $scope.user.borough = getUserBorough(results[0].formatted_address);
-    //       $scope.update();
-    //     } else {
-    //       $scope.error = true;
-    //       $scope.$apply();
-    //       console.error('Geocode was not successful for the following reason: ' + status);
-    //     }
-    //   });
-    // };
-
-    $scope.toggleOrgType = function(byLegal) {
-      $scope.user.byLegal = byLegal;
-      $scope.update();
-    };
-
-    $scope.update = function(byLegal) {
-			$scope.searched = true;
+    $scope.update = function(type) {
       var lat = $scope.user.geo.lat;
       var lng = $scope.user.geo.lon;
-      $scope.updateCartoMap(lat, lng, byLegal);
-      $scope.updateCartoList(lat, lng, byLegal);
+      $scope.updateCartoMap(lat, lng, type);
+
+			if(type == 'hotlines' && !$scope.hotlines.length) {
+				Hotlines.getLocalFile().then(function (data) {
+					$scope.resources = $scope.hotlines = data;
+				}, function (err) {
+					console.log("errors:" + errors);
+				});
+			} else if(type == 'hotlines' && $scope.hotlines.length) {
+				$scope.resources = $scope.hotlines;
+			} else {
+				$scope.updateCartoList(lat, lng, type);
+			}
+
     };
+
+		$scope.init = function() {
+			$scope.update('community');
+		};
 
     $scope.updateCartoList = function(lat, lng, orgType) {
       CartoDB.queryByLatLng(lat, lng, orgType)
@@ -2278,6 +2366,7 @@ angular.module('findhelp').directive('cartoMap', ['$rootScope', 'CartoDB', funct
           .addTo(map)
           .done(function(layer) {
             mainSublayer = layer.getSubLayer(0);
+            scope.init();
             // do stuff
             //console.log("Layer has " + layer.getSubLayerCount() + " layer(s).");
           })
@@ -2286,12 +2375,17 @@ angular.module('findhelp').directive('cartoMap', ['$rootScope', 'CartoDB', funct
             console.log("An error occurred: " + err);
           });
 
-        scope.updateCartoMap = function(lat, lng, orgType) {
+        scope.updateCartoMap = function(lat, lng, type) {
 
-          //var boroughString = borough ? '' : 'NOT';
-          var orgString = orgType ? 'legal' : 'community';
+          var query, cartocss;
 
-          var query = "SELECT *, row_number() OVER (ORDER BY dist) as rownum FROM ( SELECT loc.cartodb_id, loc.the_geom, loc.the_geom_webmercator, round( (ST_Distance( ST_GeomFromText('Point(" + lng + " " + lat + ")', 4326)::geography, loc.the_geom::geography ) / 1609)::numeric, 1 ) AS dist FROM nyc_cbos_locations AS loc, nyc_cbos_service_areas AS sa WHERE ST_Intersects( ST_GeomFromText( 'Point(" + lng + " " + lat + ")', 4326 ), sa.the_geom ) AND loc.organization = sa.organization AND loc.org_type IN ('" + orgString + "') ORDER BY dist ASC ) T LIMIT 10";
+          if(type == 'legal' || type == 'community') {
+            query = "SELECT *, row_number() OVER (ORDER BY dist) as rownum FROM ( SELECT loc.cartodb_id, loc.the_geom, loc.the_geom_webmercator, round( (ST_Distance( ST_GeomFromText('Point(" + lng + " " + lat + ")', 4326)::geography, loc.the_geom::geography ) / 1609)::numeric, 1 ) AS dist FROM nyc_cbos_locations AS loc, nyc_cbos_service_areas AS sa WHERE ST_Intersects( ST_GeomFromText( 'Point(" + lng + " " + lat + ")', 4326 ), sa.the_geom ) AND loc.organization = sa.organization AND loc.org_type IN ('" + type + "') ORDER BY dist ASC ) T LIMIT 10";
+            cartocss = "#nyc_cbos_locations{marker-fill-opacity:.9;marker-line-color:#FFF;marker-line-width:1;marker-line-opacity:1;marker-placement:point;marker-type:ellipse;marker-width:10;marker-fill:#F60;marker-allow-overlap:true}#nyc_cbos_locations::labels{text-name:[rownum];text-face-name:'DejaVu Sans Book';text-size:20;text-label-position-tolerance:10;text-fill:#000;text-halo-fill:#FFF;text-halo-radius:2;text-dy:-10;text-allow-overlap:true;text-placement:point;text-placement-type:simple}";
+          } else {
+            query = "SELECT * FROM nyc_cbos_locations";
+            cartocss = "#nyc_cbos_locations{marker-fill-opacity:.9;marker-line-color:#FFF;marker-line-width:1;marker-line-opacity:1;marker-placement:point;marker-type:ellipse;marker-width:10;marker-fill:#F60;marker-allow-overlap:true}";
+          }
 
           if(userMarker) map.removeLayer(userMarker);
           userMarker = L.marker([lat,lng]);
@@ -2299,20 +2393,24 @@ angular.module('findhelp').directive('cartoMap', ['$rootScope', 'CartoDB', funct
 
           mainSublayer.set({
             sql: query,
-            cartocss: "#nyc_cbos_locations{marker-fill-opacity:.9;marker-line-color:#FFF;marker-line-width:1;marker-line-opacity:1;marker-placement:point;marker-type:ellipse;marker-width:10;marker-fill:#F60;marker-allow-overlap:true}#nyc_cbos_locations::labels{text-name:[rownum];text-face-name:'DejaVu Sans Book';text-size:20;text-label-position-tolerance:10;text-fill:#000;text-halo-fill:#FFF;text-halo-radius:2;text-dy:-10;text-allow-overlap:true;text-placement:point;text-placement-type:simple}"
+            cartocss: cartocss
           });
 
           CartoDB.getSQL().getBounds(query).done(function(bounds) {
-            //console.log(lat,lng);
             bounds.push([lat,lng]);
-            //console.log(bounds);
-          //$rootScope.cartoSQL.getBounds(query).done(function(bounds) {
             map.fitBounds(bounds, { padding: [10,10] });
           });
         };
 
-      }
-    };
+
+
+
+
+
+
+
+    }
+  };
 }]);
 
 'use strict';
@@ -2341,18 +2439,42 @@ angular.module('findhelp')
 
     /* public functions */
     return {
-      queryByLatLng: function(lat, lng, orgType) {
-
-        //var boroughString = borough ? '' : 'NOT';
-        var orgString = orgType ? 'legal' : 'community';
+      queryByLatLng: function(lat, lng, type) {
         // var query = "SELECT *, row_number() OVER (ORDER BY dist) as rownum FROM ( SELECT bcl.organization, bcl.contact_information, bcl.address, bcl.services, round( (ST_Distance( ST_GeomFromText('Point(" + lng + " " + lat + ")', 4326)::geography, bcl.the_geom::geography ) / 1609)::numeric, 1 ) AS dist FROM brooklyn_cbos_locations AS bcl, brooklyn_cbos AS bc WHERE ST_Intersects( ST_GeomFromText( 'Point(" + lng + " " + lat + ")', 4326 ), bc.the_geom ) AND bc.cartodb_id = bcl.cartodb_id AND bc.service_area_type " + boroughString + " IN ('borough') ORDER BY dist ASC ) T";
-        var query = "SELECT *, row_number() OVER (ORDER BY dist) as rownum FROM ( SELECT loc.organization, loc.contact_information, loc.address, loc.services, round( (ST_Distance( ST_GeomFromText('Point(" + lng + " " + lat + ")', 4326)::geography, loc.the_geom::geography ) / 1609)::numeric, 1 ) AS dist FROM nyc_cbos_locations AS loc, nyc_cbos_service_areas AS sa WHERE ST_Intersects( ST_GeomFromText( 'Point(" + lng + " " + lat + ")', 4326 ), sa.the_geom ) AND loc.organization = sa.organization AND loc.org_type IN ('" + orgString + "') ORDER BY dist ASC ) T LIMIT 10";
+        var query = "SELECT *, row_number() OVER (ORDER BY dist) as rownum FROM ( SELECT loc.organization, loc.contact_information, loc.address, loc.services, round( (ST_Distance( ST_GeomFromText('Point(" + lng + " " + lat + ")', 4326)::geography, loc.the_geom::geography ) / 1609)::numeric, 1 ) AS dist FROM nyc_cbos_locations AS loc, nyc_cbos_service_areas AS sa WHERE ST_Intersects( ST_GeomFromText( 'Point(" + lng + " " + lat + ")', 4326 ), sa.the_geom ) AND loc.organization = sa.organization AND loc.org_type IN ('" + type + "') ORDER BY dist ASC ) T LIMIT 10";
         //console.log(query);
         return cartoSQL.execute(query);
       },
       getSQL: function() { return cartoSQL; }
     }
 }]);
+
+'use strict';
+
+angular.module('onboarding').factory('Hotlines', ['$http', '$q',
+	function($http, $q){
+
+		var requestLocalFile = function() {
+			var deferred = $q.defer();
+
+			$http.get('data/hotlines.json').then(function(response) {
+				deferred.resolve(response.data);
+			}, function(err) {
+				deferred.reject(err);
+			});
+
+			return deferred.promise;
+		};
+
+		return {
+			getLocalFile: function() {
+				return requestLocalFile();
+			}
+		};
+
+
+
+	}]);
 
 'use strict';
 
@@ -2718,7 +2840,7 @@ angular.module('kyr').run(['$rootScope', '$state', '$window', '$location',
     // Kyr state routing
 
 
-    // [TODO] eventually we won't need noMargin 
+    // [TODO] eventually we won't need noMargin
     $stateProvider
       .state('kyr', {
         url: '/kyr',
@@ -2734,7 +2856,8 @@ angular.module('kyr').run(['$rootScope', '$state', '$window', '$location',
 				data: {
 					disableBack: true
 				},
-				localHistory: true
+				localHistory: true,
+        globalStyles: 'white-bg'
       });
   }
 })();
@@ -2923,7 +3046,10 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			address: '654 Park Place',
 			unit: '1RF',
 			phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
-			problems: []
+			problems: [],
+			sharing: {
+				enabled: false
+			}
 		};
 
 	  $scope.accessCode = {
@@ -3800,22 +3926,26 @@ angular.module('core').directive('toggleSharing', ['Users', 'Authentication',
   function(Users, Authentication) {
     return {
       restrict: 'A',
-      scope: true,
+      scope: false,
       link: function (scope, elm, attrs) {
 
-        if(Authentication.user.sharing.enabled) {
+        if(Authentication.user && Authentication.user.sharing.enabled) {
           elm[0].querySelector('input').checked = true;
         }
 
-        elm.bind('click', function(event) {
+        elm.bind('touchstart click', function(event) {
           event.stopPropagation();
-          console.log(event.target.tagName);
-          if( event.target.tagName === "INPUT") {
-            // alert('clicked');
-            // elm[0].querySelector('input').checked = !elm[0].querySelector('input').checked;
-            Users.enableSharing(function (user) {
+          event.preventDefault();
+
+          elm[0].querySelector('input').checked = !elm[0].querySelector('input').checked;
+
+          if(Authentication.user) {
+            Users.toggleSharing(function (user) {
               Authentication.user = user;
             });
+          } else if(scope.newUser) {
+            scope.newUser.sharing.enabled = elm[0].querySelector('input').checked;
+            scope.$apply();
           }
 
         });
@@ -3846,7 +3976,7 @@ angular.module('users').factory('Users', ['$resource',
 			update: {
 				method: 'PUT'
 			},
-			enableSharing: {
+			toggleSharing: {
 				method: 'GET',
 				url: '/users/public'
 			},
