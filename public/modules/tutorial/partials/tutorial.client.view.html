@@ -5,11 +5,11 @@
 	    <carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
 	      <slide ng-repeat="slide in slides track by $index" index="$index">
 	      	<div class="image-wrap">
+	          <h4>{{slide.title}}</h4>
 	      		<img ng-src="{{slide.image}}" alt="{{slide.title}}">
 	      	</div>
 	        <div class="text">
-	          <h4>{{slide.title}}</h4>
-	          <p>{{slide.text}}</p>
+	          <p ng-bind-html="slide.text"></p>
 	        </div>
 	      </slide>
 	    </carousel>
