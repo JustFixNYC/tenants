@@ -12,7 +12,7 @@ angular.module('tutorial').config(['$stateProvider', '$urlRouterProvider',
 		$stateProvider
 		.state('tutorial', {
       url: '/tutorial',
-			templateUrl: 'modules/tutorial/views/intro.client.view.html',
+			templateUrl: 'modules/tutorial/views/tutorial.client.view.html',
       abstract: true,
       data: {
         disableBack: true
@@ -20,7 +20,11 @@ angular.module('tutorial').config(['$stateProvider', '$urlRouterProvider',
     })
 		.state('tutorial.intro', {
 			url: '/intro',
-			templateUrl: 'modules/tutorial/views/intro.client.view.html'
+			templateUrl: 'modules/tutorial/partials/intro.client.view.html'
+		})
+		.state('tutorial.main', {
+			url: '/main',
+			templateUrl: 'modules/tutorial/partials/tutorial.client.view.html'
 		});
 	}
 ]);

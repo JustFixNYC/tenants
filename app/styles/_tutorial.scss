@@ -1,0 +1,38 @@
+.tutorial {
+	
+	.logo {
+		text-align: center;
+	}
+
+	h1 {
+		margin: 1em auto;
+	}
+
+	img {
+		margin: auto;
+		width: 75px;
+		text-align: center;
+	}
+
+	// style overwrites for the carousel
+	.carousel-control {
+		color: $justfix-blue;
+
+		&.left,
+		&.right {
+			background-image: none;
+		}
+	}
+
+	.carousel-indicators {
+		li {
+			border-color: $justfix-blue;
+			background-color: $justfix-blue;
+			opacity: 0.4;
+
+			&.active {
+				opacity: 1;
+			}
+		}
+	}
+}

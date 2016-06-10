@@ -1,0 +1,18 @@
+<section class="tutorial" data-ng-controller="TutorialController">
+
+	<div>
+	  <div>
+	    <carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+	      <slide ng-repeat="slide in slides track by $index" index="$index">
+	      	<div class="image-wrap">
+	      		<img ng-src="{{slide.image}}" alt="{{slide.title}}">
+	      	</div>
+	        <div class="text">
+	          <h4>{{slide.title}}</h4>
+	          <p>{{slide.text}}</p>
+	        </div>
+	      </slide>
+	    </carousel>
+	  </div>
+	</div>
+</section>
