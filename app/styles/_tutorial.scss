@@ -1,4 +1,16 @@
+.no-header-spacing {
+	
+	header {
+		border: none;
+	}
+
+	#header-wrapper {
+		margin-bottom: 0px;
+	}
+}
+
 .tutorial {
+	@include make-row();
 	
 	// Intro styles
 	.logo {
@@ -6,38 +18,82 @@
 	}
 
 	h1 {
-		margin: 1em auto;
+		margin: 0em;
+		padding: 2em 0 1em;
+		color: #fff;
 	}
 
 	img {
 		margin: auto;
-		width: 75px;
 		text-align: center;
 	}
 
 	// style overwrites for the carousel
 	.carousel-control {
+		top: auto;
+		bottom: -20px;
+		opacity: 1;
+		padding: 0 15px;
 		color: $justfix-blue;
 
 		&.left,
 		&.right {
 			background-image: none;
+			margin: auto;
 		}
+
+		&.left {
+			left: 20px;
+		}
+
+		&.right {
+			right: 20px;
+		}
+
+		.glyphicon-chevron-left:before {
+	    content: "\e257";
+	    }
+
+	  .glyphicon-chevron-right:before {
+	  	content: "\e258";
+	  }
 	}
 
 	.carousel-indicators {
+		bottom: -29px;
+		margin-bottom: 0px;
+
 		li {
+			margin: 0 5px;
 			border-color: $justfix-blue;
 			background-color: $justfix-blue;
 			opacity: 0.4;
+			width: 7px;
+			height: 7px;
 
 			&.active {
+				margin: 0 5px;
 				opacity: 1;
+				width: 7px;
+				height: 7px;
 			}
 		}
 	}
 
 	// Custom styling
+	.image-wrap {
+		background-color: $justfix-blue-dark;
+	}
 
+	.carousel {
+		h1 { 
+			color: $white;
+		}
+
+		.text {
+			margin: 0 15px;
+			padding: 2em 30px;
+		}
+	}
 
 }

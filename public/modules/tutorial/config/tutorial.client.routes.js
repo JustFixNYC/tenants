@@ -24,7 +24,8 @@ angular.module('tutorial').config(['$stateProvider', '$urlRouterProvider',
 		})
 		.state('tutorial.main', {
 			url: '/main',
-			templateUrl: 'modules/tutorial/partials/tutorial.client.view.html'
+			templateUrl: 'modules/tutorial/partials/tutorial.client.view.html',
+			globalStyles: 'no-header-spacing'
 		});
 	}
 ]);
