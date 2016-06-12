@@ -9,18 +9,40 @@
 	}
 }
 
+.tutorial-intro {
+	.page-header{
+		h1 {    
+			margin-top: 30px;
+    	margin-bottom: 30px;
+			color: $darkgray-dark;
+			line-height: 1.5em;
+			
+			&.no-margin-bottom {
+				margin-bottom: 0px;
+			}
+		}
+	}
+}
+
 .tutorial {
-	@include make-row();
+
+	.main {
+		@include make-row();
+
+		h1 {
+			margin: 0em;
+			padding: 2em 0 1em;
+			color: $white;
+		}
+
+		p {
+			font-size: 16px;
+		}
+	}
 	
 	// Intro styles
 	.logo {
 		text-align: center;
-	}
-
-	h1 {
-		margin: 0em;
-		padding: 2em 0 1em;
-		color: #fff;
 	}
 
 	img {
@@ -94,6 +116,13 @@
 			margin: 0 15px;
 			padding: 2em 30px;
 		}
+	}
+
+	.btn {
+		position: absolute;
+		left: 50%;
+
+		@include transform(translateX(-50%));
 	}
 
 }

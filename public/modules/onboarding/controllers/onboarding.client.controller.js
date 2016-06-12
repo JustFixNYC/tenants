@@ -96,7 +96,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 					$rootScope.loading = false;
 					$scope.authentication.user = response;
 					console.log('create account post save', response);
-					$location.path('/onboarding/tutorial');
+					$location.path('/tutorial');
 
 				}).error(function(err) {
 					$rootScope.loading = false;
