@@ -35,14 +35,20 @@
     @media (min-width: $screen-sm-min) {
 
       border-bottom: none;
+      padding: 30px 0;
 
       a {
         font-size: 17px;
-        padding: 3em;
-        border-left: 2px solid $lightgray-dark;
-        border-right: 2px solid $lightgray-dark;
-        border-bottom: 2px solid $lightgray-dark;
-        margin: 0 8.3% 30px 8.3%;
+        padding: 2em 0.5em;
+        // border-left: 2px solid $lightgray-dark;
+        // border-right: 2px solid $lightgray-dark;
+        // border-bottom: 2px solid $lightgray-dark;
+        border: none;
+        margin: 0 4% 30px 4%;
+
+        &:nth-child(odd) {
+          border-right: none;
+        }
       }
 
 
