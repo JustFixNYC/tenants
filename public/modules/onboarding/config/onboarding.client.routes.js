@@ -39,11 +39,6 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
         url: '/personal',
         templateUrl: 'modules/onboarding/partials/onboarding-details.client.view.html',
         onboarding: true
-      })
-      .state('onboarding.tutorial', {
-        url: '/tutorial',
-        templateUrl: 'modules/onboarding/partials/onboarding-tutorial.client.view.html',
-        onboarding: true
       });
 
 }]);
