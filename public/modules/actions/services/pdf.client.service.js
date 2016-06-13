@@ -3,6 +3,8 @@
 angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$filter',
   function Pdf($http, $q, Authentication, $filter) {
 
+    var user = Authentication.user;
+
   	var assemble = function(landlordName, landlordAddr) {
 
   		// This block assembles our issues list PhantomJS
@@ -52,7 +54,6 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
     var createComplaint = function(landlord, accessDates) {
 
       var deferred = $q.defer();
-    	var user = Authentication.user;
 
       var assembledObject = assemble(landlord.name, landlord.address);
       // Hmm, handle this differently? pass into assembled object, maybe?

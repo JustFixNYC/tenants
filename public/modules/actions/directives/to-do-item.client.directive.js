@@ -23,7 +23,6 @@ angular.module('actions')
         if(!scope.action.completed) scope.action.completed = false;
 
         scope.newActivity = {
-          startDate: '',
           title: scope.action.activityTitle,
           key: scope.action.key
         };

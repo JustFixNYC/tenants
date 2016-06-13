@@ -13,15 +13,11 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 
 						var newProb = {};
 
-						newProb.startDate = new Date();
-				    newProb.createdDate = new Date();
 				   	newProb.key = problem.key;
 				    newProb.title = problem.title;
 				    newProb.icon = problem.icon;
-				    newProb.description = '';
 				    newProb.issues = [];
 				    newProb.photos = [];
-				    newProb.relatedActivities = [];
 
 				    return newProb;
 					};
