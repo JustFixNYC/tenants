@@ -59,7 +59,6 @@ angular.module('core').controller('FooterController', ['$scope', '$window', 'Aut
           break;
         default:
           $scope.footerLinks = [];
-          console.log(toState.name);
           break;
       };
 

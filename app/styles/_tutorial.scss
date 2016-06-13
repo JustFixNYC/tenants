@@ -1,5 +1,5 @@
 .no-header-spacing {
-	
+
 	header {
 		border: none;
 	}
@@ -11,12 +11,12 @@
 
 .tutorial-intro {
 	.page-header{
-		h1 {    
+		h1 {
 			margin-top: 30px;
     	margin-bottom: 30px;
 			color: $darkgray-dark;
 			line-height: 1.5em;
-			
+
 			&.no-margin-bottom {
 				margin-bottom: 0px;
 			}
@@ -39,7 +39,7 @@
 			font-size: 16px;
 		}
 	}
-	
+
 	// Intro styles
 	.logo {
 		text-align: center;
@@ -57,6 +57,7 @@
 		opacity: 1;
 		padding: 0 15px;
 		color: $justfix-blue;
+		text-shadow: none;
 
 		&.left,
 		&.right {
@@ -109,7 +110,7 @@
 	}
 
 	.carousel {
-		h1 { 
+		h1 {
 			color: $white;
 		}
 

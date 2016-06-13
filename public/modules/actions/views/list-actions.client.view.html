@@ -5,32 +5,38 @@
         <p>Here are some actions you can take to build out your case.</p>
     </div>
     <div ng-if="onceActions.length">
-      <div class="section-header" ng-click="onceActionsCollapsed = !onceActionsCollapsed">
+      <div class="section-header">
+      <!-- <div class="section-header" ng-click="onceActionsCollapsed = !onceActionsCollapsed"> -->
         <h2>Things To Do
-          <span class="pull-right glyphicon" ng-class="onceActionsCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span>
+          <!-- <span class="pull-right glyphicon" ng-class="onceActionsCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span> -->
         </h2>
       </div>
-      <div class="actions-container" collapse="onceActionsCollapsed">
+      <!-- <div class="actions-container" collapse="onceActionsCollapsed"> -->
+      <div class="actions-container">
         <to-do-item data-ng-repeat="action in onceActions"></to-do-item>
       </div>
     </div>
     <div ng-if="recurringActions.length">
-      <div class="section-header" ng-click="recurringActionsCollapsed = !recurringActionsCollapsed">
+      <!-- <div class="section-header" ng-click="recurringActionsCollapsed = !recurringActionsCollapsed"> -->
+      <div class="section-header">
         <h2>Outreach
-          <span class="pull-right glyphicon" ng-class="recurringActionsCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span>
+          <!-- <span class="pull-right glyphicon" ng-class="recurringActionsCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span> -->
         </h2>
       </div>
-      <div class="actions-container" collapse="recurringActionsCollapsed">
+      <!-- <div class="actions-container" collapse="recurringActionsCollapsed"> -->
+      <div class="actions-container">
         <to-do-item data-ng-repeat="action in recurringActions"></to-do-item>
       </div>
     </div>
     <div ng-if="legalActions.length">
-      <div class="section-header bg-danger" ng-click="legalActionsCollapsed = !legalActionsCollapsed">
+      <!-- <div class="section-header bg-danger" ng-click="legalActionsCollapsed = !legalActionsCollapsed"> -->
+      <div class="section-header bg-danger">
         <h2>Legal Actions
-          <span class="pull-right glyphicon" ng-class="legalActionsCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span>
+          <!-- <span class="pull-right glyphicon" ng-class="legalActionsCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span> -->
         </h2>
       </div>
-      <div class="actions-container" collapse="legalActionsCollapsed">
+      <!-- <div class="actions-container" collapse="legalActionsCollapsed"> -->
+      <div class="actions-container">
         <to-do-item data-ng-repeat="action in legalActions"></to-do-item>
       </div>
     </div>
