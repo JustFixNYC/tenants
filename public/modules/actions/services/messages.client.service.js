@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('actions').factory('Messages', ['$http', '$q', '$filter', 'Authentication',
-  function Issues($http, $q, $filter, Authentication) {
+angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$location', 'Authentication',
+  function Issues($http, $q, $filter, $location, Authentication) {
 
     var user = Authentication.user;
     var request = function(url) {
@@ -17,15 +17,14 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', 'Authen
       return deferred.promise;
     };
 
-    var getSMSMessage = function(type) {
+    var getShareMessage = function(type) {
 
-      console.log(user);
       var message;
       switch(type) {
         case 'share':
         message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
            ' I\'m experiencing issues with my apartment and would like to get them resolved.' +
-           ' A link to my Case History can be found at http://justfix.nyc/share/' + user.sharing.key + '. Thank you!';
+           ' A link to my Case History can be found at http://' + $location.host() + '/share/' + user.sharing.key + '. Thank you!';
         break;
         default:
           message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
@@ -111,7 +110,7 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', 'Authen
     }
 
     return {
-      getSMSMessage: getSMSMessage,
+      getShareMessage: getShareMessage,
       getRentalHistoryMessage: getRentalHistoryMessage,
       getLandlordEmailMessage: getLandlordEmailMessage,
       getLandlordEmailSubject: getLandlordEmailSubject

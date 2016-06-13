@@ -46,19 +46,11 @@
       {{ ::authentication.user.referral.email }}
     </b></p>
     <div class="row share-controls">
-      <div class="col-xs-6">
-        <a  class="btn btn-success btn-block pull-left">
-            Email
-        </a>
-      </div>
-      <div class="col-xs-6">
-        <a class="btn btn-success btn-block pull-right" ng-href="tel:{{authentication.user.referral.phone}}">
-            Call
-        </a>
-      </div>
+      <a class="btn btn-success btn-block" ng-href="tel:{{authentication.user.referral.phone}}">
+          Call {{ ::authentication.user.referral.name }}
+      </a>
     </div>
   </div>
-  <br />
   <br />
   <div class="row">
     <a class="btn btn-block btn-primary" href="/auth/signout">Sign Out</a>
