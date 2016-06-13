@@ -41,7 +41,7 @@ var ActivitySchema = new Schema({
       value: { type: String }
     }],
     relatedProblems: [{
-			type: Schema.Types.ObjectId,
+			type: String,
 			ref: 'Problem'
 		}],
     problems: {

@@ -30,7 +30,7 @@ angular.module('actions')
           date: '',
           title: 'Status Update',
           key: 'statusUpdate',
-          problems: [],
+          relatedProblems: [],
           photos: []
         };
 
@@ -49,16 +49,16 @@ angular.module('actions')
         scope.selectProblem = function(problem) {
 
           if(!this.isSelectedProblem(problem)) {
-            scope.newActivity.problems.push(problem);
+            scope.newActivity.relatedProblems.push(problem);
           } else {
-            var i = scope.newActivity.problems.indexOf(problem);
-            scope.newActivity.problems.splice(i, 1);
+            var i = scope.newActivity.relatedProblems.indexOf(problem);
+            scope.newActivity.relatedProblems.splice(i, 1);
             // $scope.checklist[area].numChecked--;
           }
         };
         scope.isSelectedProblem = function(problem) {
           // if(!$scope.newIssue.issues[area]) return false;
-          return scope.newActivity.problems.indexOf(problem) !== -1;
+          return scope.newActivity.relatedProblems.indexOf(problem) !== -1;
         };
 
         scope.addPhoto = function(file) {
@@ -99,12 +99,13 @@ angular.module('actions')
 
               $rootScope.loading = false;
               scope.status.completed = true;
+              scope.status.formSubmitted = false;
               scope.status.expanded = false;
               scope.newActivity = {
                 date: '',
                 title: 'Status Update',
                 key: 'statusUpdate',
-                problems: [],
+                relatedProblems: [],
                 photos: []
               };
 
