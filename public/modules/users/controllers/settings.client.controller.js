@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('users').controller('SettingsController', ['$scope', '$http', '$location', '$filter', 'Users', 'Authentication',
-  function($scope, $http, $location, $filter, Users, Authentication) {
+angular.module('users').controller('SettingsController', ['$scope', '$http', '$location', '$filter', 'Users', 'Authentication', '$rootScope',
+  function($scope, $http, $location, $filter, Users, Authentication, $rootScope) {
     $scope.user = Authentication.user;
     $scope.passwordVerified = false;
     
@@ -54,28 +54,28 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
         $scope.success = $scope.error = null;
         var user = new Users($scope.user);
 
-        console.log('user', user);
-        // This is a horrendus patch and needs to be fixed in onboarding
-        user.firstName = user.fullName.split(' ')[0];
-        user.lastName = user.fullName.split(' ')[1];
+        if(isValid) {
 
-        user.$update(function(response) {
-        	console.log(response);
-          $scope.success = true;
-          Authentication.user = response;
-        }, function(response) {
-        	console.log(response);
-          $scope.error = response.data.message.message;
-          // TODO: run the stack up to why this error is so nested
-          if(response.data.message.errors)  {
-          	if(response.data.message.errors.phone) {
-          		$scope.errorPhone = response.data.message.errors.phone.message;
-          	}
-          }
-        });
-      } else {
-        $scope.submitted = true;
-      }
+				$scope.userError = false;
+				$rootScope.loading = true;
+
+				user.$update(function(response) {
+
+					// If successful we assign the response to the global user model
+					$rootScope.loading = false;
+					Authentication.user = response;
+					$location.path('/settings/profile');
+
+				}, function(err) {
+					$rootScope.loading = false;
+					console.log(err);
+        	$scope.error = err;
+				});
+
+				} else {
+					$scope.userError = true;
+				}
+			}
     };
 
     // Change user password
@@ -86,9 +86,11 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
         // If successful show success message and clear form
         $scope.success = true;
         $scope.passwordDetails = null;
+				$location.path('/settings/profile');
       }).error(function(response) {
         $scope.error = response.message;
       });
+      return
     };
 
     $scope.verifyPassword = function(password) {

@@ -55,6 +55,8 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
     	var user = Authentication.user;
 
       var assembledObject = assemble(landlord.name, landlord.address);
+      // Hmm, handle this differently? pass into assembled object, maybe?
+      assembledObject.accessDates = accessDates;
 
       $http({
 	  		method: 'POST',

@@ -48,20 +48,24 @@ var createProblemActivities = function(user, added, removed) {
 
   var newActivities = [];
 
+ 	if(!added && !removed) {
+ 		return;
+ 	}
+
   if(added.length) {
     user.activity.push({
       key: 'checklist',
       title: 'Added issues to checklist',
       problems: added
     });
-  }
+  }/* TODO: this is causing it to break, think added/removed are switched
   if(removed.length) {
     user.activity.push({
       key: 'checklist',
       title: 'Removed issues from checklist',
       problems: removed
     });
-  }
+  }*/
 
 };
 

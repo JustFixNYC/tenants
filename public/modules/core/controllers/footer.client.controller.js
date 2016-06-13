@@ -45,6 +45,9 @@ angular.module('core').controller('FooterController', ['$scope', '$window', 'Aut
         case 'kyr':
           $scope.footerLinks = [ links.actions, links.help ];
           break;
+        case 'kyrDetail':
+        	$scope.footerLinks = [ links.actions, links.help ];
+        	break;
         case 'findHelp': case 'listActions':
           $scope.footerLinks = [ links.activity, links.kyr ];
           break;
@@ -56,6 +59,7 @@ angular.module('core').controller('FooterController', ['$scope', '$window', 'Aut
           break;
         default:
           $scope.footerLinks = [];
+          console.log(toState.name);
           break;
       };
 
