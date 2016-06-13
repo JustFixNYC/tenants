@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('actions').controller('ComplaintLetterController', ['$rootScope', '$scope', '$sce', '$modalInstance', 'newActivity', 'Pdf', 'Authentication', '$window',
-	function ($rootScope, $scope, $sce, $modalInstance, newActivity, Pdf, Authentication, $window) {
+angular.module('actions').controller('ComplaintLetterController', ['$rootScope', '$scope', '$sce', '$timeout', '$modalInstance', 'newActivity', 'Pdf', 'Authentication', '$window',
+	function ($rootScope, $scope, $sce, $timeout, $modalInstance, newActivity, Pdf, Authentication, $window) {
 
 	  $scope.newActivity = newActivity;
 		$scope.newActivity.fields = [];
@@ -24,6 +24,17 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 
 
 	  // var user = Authentication.user;
+		var timerCountdown = 30;
+		var setCreationTimer = function() {
+			$timeout(function () {
+				if(!$scope.status.created) {
+					$scope.status.loading = false;
+					$scope.status.error = true;
+	  			$scope.errorCode = 'Request for the letter took too long to respond';
+				}
+			}, timerCountdown * 1000);
+		};
+
 
 	  $scope.createLetter = function () {
 
@@ -31,6 +42,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 
 	  	Pdf.createComplaint($scope.landlord, $scope.accessDates).then(
 	  		function success(data) {
+					setCreationTimer();
 					$scope.status.loading = false;
 					$scope.status.created = true;
 					$scope.letterUrl = data;
@@ -42,9 +54,6 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 	  			$scope.errorCode = error;
 	  		}
 	  	);
-
-
-
 
 	    // $modalInstance.close($scope.newActivity);
 	  };
