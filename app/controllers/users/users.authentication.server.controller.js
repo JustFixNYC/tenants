@@ -68,6 +68,16 @@ exports.signup = function(req, res) {
     });
   }
 
+  // make sure this comes before the 'added to checklist card'
+  var acctCreatedDate = new Date();
+  acctCreatedDate.setSeconds(acctCreatedDate.getSeconds() - 60);
+
+  user.activity.push({
+    key: 'createAcount',
+    title: 'Created an account on JustFix.nyc',
+    startDate: acctCreatedDate
+  });
+
   // check some address stuff
   addressHandler.requestGeoclient(user.borough, user.address)
     .then(function (geo) {
