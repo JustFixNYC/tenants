@@ -35,7 +35,6 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 					$scope.status.created = true;
 					$scope.letterUrl = data;
 					$scope.newActivity.fields.push({ title: 'letterURL', value: data });
-	  			console.log(data);
 	  		},
 	  		function failure(error) {
 					$scope.status.loading = false;

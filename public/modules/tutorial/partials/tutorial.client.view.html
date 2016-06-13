@@ -1,0 +1,13 @@
+<div class="main">
+  <carousel active="active" interval="false" no-wrap="noWrapSlides" ng-class="" template-url="bootstrap-templates/carousel/carousel.html">
+    <slide ng-repeat="slide in slides track by $index" index="$index">
+    	<div class="image-wrap">
+        <h1>{{slide.title}}</h1>
+    		<img ng-src="{{slide.image}}" alt="{{slide.title}}">
+    	</div>
+      <div class="text">
+        <p ng-bind-html="slide.text"></p>
+      </div>
+    </slide>
+  </carousel>
+</div>
