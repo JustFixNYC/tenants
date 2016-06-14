@@ -72,10 +72,8 @@
                     <!-- <textarea name="field" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="3" maxlength="500" placeholder="Briefly describe what happened."></textarea> -->
                 </div>
                 <div class="controls" data-ng-if="field.type === 'binary'">
-                    <div class="btn-group">
-                        <label class="btn btn-default" name="{{ 'field' + $index }}" data-ng-model="newActivity.fields[$index].value" btn-radio="'yes'" required>Yes</label>
-                        <label class="btn btn-default" name="{{ 'field' + $index }}" data-ng-model="newActivity.fields[$index].value" btn-radio="'no'" required>No</label>
-                    </div>
+                  <label class="btn btn-default" name="{{ 'field' + $index }}" data-ng-model="newActivity.fields[$index].value" btn-radio="'yes'" required>Yes</label>
+                  <label class="btn btn-default" name="{{ 'field' + $index }}" data-ng-model="newActivity.fields[$index].value" btn-radio="'no'" required>No</label>
                 </div>
               </div>
             </div>

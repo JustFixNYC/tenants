@@ -22,17 +22,6 @@ $grey: #E0E0E0;
 	margin: auto;
 	max-width: $screen-sm-min;
 
-
-	.controls .btn {
-		margin: 3px;
-
-		&:focus, &:active, &.active {
-			background-color: $justfix-blue;
-			border-color: $justfix-blue !important;
-			color: #fff;
-		}
-	}
-
 	.apt-field {
 		width: 30%;
 	}

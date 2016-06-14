@@ -62,11 +62,12 @@ exports.signup = function(req, res) {
   user.fullName = user.firstName + ' ' + user.lastName;
 
   // new user enabled sharing, so create a key
-  if(user.sharing.enabled) {
+  // **actually, just create a key regardless**
+  // if(user.sharing.enabled) {
     profileHandler.createPublicView().then(function(newUrl) {
       user.sharing.key = newUrl;
     });
-  }
+  // }
 
   // make sure this comes before the 'added to checklist card'
   var acctCreatedDate = new Date();

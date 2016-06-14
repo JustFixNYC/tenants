@@ -1,12 +1,37 @@
-[
-  {
-    "organization": "MetCouncil Hotline",
-    "contact_information": "2129790611",
-    "services": "Lorem Ipsum"
-  },
-  {
-    "organization": "MetCouncil Hotline",
-    "contact_information": "2129790611",
-    "services": "Lorem Ipsum"
-  }
-]
+[{
+	"organization": "MetCouncil on Housing",
+	"contact_information": "2129790611",
+	"services": "The Metropolitan Council on Housing's tenants' rights telephone hotline is free and open to any tenant living in New York City. Mondays and Wednesdays from 1:30 - 8:00pm; Fridays from 1:30pm to 5pm"
+}, {
+	"organization": "Housing Court Answers",
+	"contact_information": "2129624795",
+	"services": "Provides information about Court procedures, landlord/tenant rules and regulations, enforcement of housing code violations, referrals for free legal help, and referrals to community organizations that help with housing problems. Open from 9 am to 5 pm, Monday through Thursday"
+}, {
+	"organization": "City Bar Justice Center",
+	"contact_information": "2126267383",
+	"services": "Free legal advice hotline for low-income tenants on a range of civil issues, including landlord-tenant law. Monday through Thursday from 9:00 am to 5:00 pm; Friday from 9:00 a.m. to 1:00 pm"
+}, {
+	"organization": "MFY Legal Service Inc.",
+	"contact_information": "2124173700",
+	"services": "Mobilizing for justice. Eviction Prevention; Illegal Lockouts; Housing Conditions; Tenants’ Rights"
+}, {
+	"organization": "Legal Services NYC",
+	"contact_information": "917-661-4500",
+	"services": "Our Legal Assistance Hotline is open Monday through Friday from 10am to 4pm. Call to speak to an intake officer in any language."
+}, {
+	"organization": "HDFC Hotline",
+	"contact_information": "8053914332",
+	"services": "The NYC HDFC Advocacy Hotline provides callers with detailed responses to their queries. During each call, we explain options and suggest solutions and best practices. We share referrals with our callers to professionals and officials in governmental departments and agencies, service providers, mission-driven businesses, and affordable housing attorneys."
+}, {
+	"organization": "Legal Aid Society",
+	"contact_information": "2125773300",
+	"services": "Offers free legal services regarding housing to low-income individuals and families."
+}, {
+	"organization": "Public Advocate Hotline",
+	"contact_information": "2126697250",
+	"services": "The Office of the Public Advocate assists with complaints and inquiries involving government-related services and regulations. From resolving housing complaints to combating abuse by agencies, the Office helps thousands of New Yorkers annually by improving transparency and accountability of City government."
+}, {
+	"organization": "New York State Homes and Community Renewal (HCR)",
+	"contact_information": "7187396400",
+	"services": "HCR enforces the housing laws regarding rent-controlled or rent-stabilized apartments."
+}]

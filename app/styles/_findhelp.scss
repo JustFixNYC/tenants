@@ -4,6 +4,12 @@
     width: 100%;
     height: 35vh;
     margin: 15px auto 30px auto;
+
+    @media (min-width: $screen-md-min) {
+      height: 50vh;
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 
 
@@ -12,8 +18,8 @@
 
     li {
       width: 33.33%;
-      display: table-cell;
-      float: none;
+      // display: table-cell;
+      // float: none;
       text-align: center;
       text-transform: uppercase;
       font-size: 11px;
@@ -39,6 +45,14 @@
 
     & > .resources {
       padding: 15px;
+    }
+
+    @media (min-width: $screen-md-min) {
+      margin: 0 auto;
+
+      & > .resources {
+        padding-top: 0;
+      }
     }
   }
 

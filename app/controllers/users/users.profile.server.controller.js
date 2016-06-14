@@ -98,6 +98,8 @@ exports.togglePublicView = function(req, res, next) {
 
 		var _sharing = user.sharing;
 
+
+		// because the key is made on signup, this first case should never happen
 		if(!_sharing.enabled && !_sharing.key) {			// key doesn't exist
 			_sharing.enabled = true;
 			makeNewURL().then(function (newUrl) {

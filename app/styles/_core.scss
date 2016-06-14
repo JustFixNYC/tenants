@@ -63,6 +63,7 @@ h4 {
 
   flex: 1;
   margin-bottom: 50px;
+  z-index: 10;
 
   // @media (min-width: $screen-xs-min) {
   //   margin-top: 130px;
@@ -70,7 +71,7 @@ h4 {
 
   section.container {
     min-height: 300px;
-    max-width: 768px;
+    max-width: 640px;
   }
   body.landing & section.container {
     max-width: 970px;
@@ -90,6 +91,15 @@ h4 {
 }
 label.control-label em {
   font-weight: normal;
+}
+.controls .btn {
+  margin: 3px;
+
+  &:focus, &:active, &.active {
+    background-color: $justfix-blue;
+    border-color: $justfix-blue !important;
+    color: #fff;
+  }
 }
 
 .page-header {
@@ -153,7 +163,7 @@ label.control-label em {
   @media (min-width: $screen-md-min) {
     top: $desktop-header-height;
   }
-  
+
   .success-check {
     margin-right: 5px;
     padding: 5px;
