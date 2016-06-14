@@ -54,7 +54,7 @@ var create = function(req, res, next) {
   var user = req.user;
   var activity = req.body;
 
-  //console.log(req.body, req.files);
+  // console.log(req.body, req.files);
   // don't forget to delete all req.files when done
 
   // if we're coming from users.requiresLogin, is this still necessary?
@@ -103,6 +103,7 @@ var create = function(req, res, next) {
 
       // add activity object
       user.activity.push(activity);
+      req.body = {};
 
       next();
 

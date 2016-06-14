@@ -8,6 +8,15 @@ angular.module('actions').controller('AddDetailsController', ['$scope', '$filter
 
   $scope.issues = Problems.getUserIssuesByKey($scope.newActivity.key);
 
+  $scope.newActivity.problems = [{ issues: JSON.parse(JSON.stringify( $scope.issues, function( key, value ) {
+        if( key === "$$hashKey" || key === "_id" ) {
+            return undefined;
+        }
+
+        return value;
+    }))
+  }];
+
   $scope.formSubmitted = false;
 
   // $scope.areas = Issues.getUserAreas().map(function (a) { return $filter('areaTitle')(a) });

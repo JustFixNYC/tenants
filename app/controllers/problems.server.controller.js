@@ -55,17 +55,17 @@ var createProblemActivities = function(user, added, removed) {
   if(added.length) {
     user.activity.push({
       key: 'checklist',
-      title: 'Added issues to checklist',
+      title: 'Added new issues to checklist',
       problems: added
     });
-  }/* TODO: this is causing it to break, think added/removed are switched
+  }
   if(removed.length) {
     user.activity.push({
       key: 'checklist',
       title: 'Removed issues from checklist',
       problems: removed
     });
-  }*/
+  }
 
 };
 
@@ -74,7 +74,7 @@ var createProblemActivities = function(user, added, removed) {
   * Do a "diff" comparing two sets of problems - variable `prime` is compared to the `base`
   *
   */
-var checkProblems = function(prblms, _prblms) {
+var checkProblems = function(user, prblms, _prblms) {
 
   var changed = [];
 
@@ -87,6 +87,11 @@ var checkProblems = function(prblms, _prblms) {
 
     // Current potential problem
     var _prblm = _prblms[i];
+
+    // If the user hasn't completed the `Add Details` step for this problem, don't count it
+    if(!_.contains(_.pluck(user.activity, 'key'), _prblm.key)) {
+      continue;
+    }
 
     // (3) if this problem is new, add it and all its issues
     if(!prblms.containsByKey(_prblm.key)) {
@@ -170,8 +175,8 @@ exports.updateActivitiesFromChecklist = function(req, res, next) {
 
     var prblms = req.user.problems;
 
-    var added = checkProblems(prblms, _prblms),
-        removed = checkProblems(_prblms, prblms);
+    var added = checkProblems(req.body, prblms, _prblms),
+        removed = checkProblems(req.body, _prblms, prblms);
 
     createProblemActivities(req.body, added, removed);
     // console.log(_user);
