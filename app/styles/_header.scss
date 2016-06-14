@@ -111,18 +111,18 @@ header {
     &.header-btn-main {
       height: auto;
 
-      vertical-align: middle;
+      // vertical-align: middle;
       border: 1px solid #fff;
       padding: 3px 10px;
       border-radius: 3px;
       top: -4px;
 
-      &:before {
-        content: "";
-        display: inline-block;
-        vertical-align: middle;
-        height: 100%;
-      }
+      // &:before {
+      //   content: "";
+      //   display: inline-block;
+      //   vertical-align: middle;
+      //   height: 100%;
+      // }
 
       &:hover {
         background-color: #fff;

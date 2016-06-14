@@ -14,7 +14,7 @@
       <input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Password">
     </div>
 	  <div class="form-group">
-	    <button class="btn btn-primary btn-block" ng-click="validateCode()" go-to-top>Sign In</button>
+	    <input type="submit" class="btn btn-primary btn-block" go-to-top value="Sign In" />
 	  </div>
 	</form>
 	<div class="error-text alert alert-danger" ng-show="error">{{ error }}. Please <a ui-sref="contact">Contact Us</a> if you need assistance or forgot your password.</div>

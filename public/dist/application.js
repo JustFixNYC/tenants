@@ -231,6 +231,15 @@ angular.module('actions').controller('AddDetailsController', ['$scope', '$filter
 
   $scope.issues = Problems.getUserIssuesByKey($scope.newActivity.key);
 
+  $scope.newActivity.problems = [{ issues: JSON.parse(JSON.stringify( $scope.issues, function( key, value ) {
+        if( key === "$$hashKey" || key === "_id" ) {
+            return undefined;
+        }
+
+        return value;
+    }))
+  }];
+
   $scope.formSubmitted = false;
 
   // $scope.areas = Issues.getUserAreas().map(function (a) { return $filter('areaTitle')(a) });
@@ -727,7 +736,7 @@ angular.module('actions')
 
             var activity = new Activity(scope.newActivity);
 
-            console.log('create activity post creation', scope.newActivity);
+            console.log('create activity post creation', activity);
 
             activity.$save(function(response) {
 
@@ -3106,24 +3115,24 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			*   DEBUG STUFF
 			*
 			*/
-		// $scope.newUser = {
-		// 	firstName: 'Dan',
-		// 	lastName: "Stevenson",
-		// 	password: "password",
-		// 	borough: 'Brooklyn',
-		// 	address: '654 Park Place',
-		// 	unit: '1RF',
-		// 	phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
-		// 	problems: [],
-		// 	sharing: {
-		// 		enabled: false
-		// 	}
-		// };
-		//
-		// $scope.accessCode = {
-		// 	value: 'test5',
-		// 	valid: false
-		// };
+		$scope.newUser = {
+			firstName: 'Dan',
+			lastName: "Stevenson",
+			password: "password",
+			borough: 'Brooklyn',
+			address: '654 Park Place',
+			unit: '1RF',
+			phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
+			problems: [],
+			sharing: {
+				enabled: false
+			}
+		};
+
+		$scope.accessCode = {
+			value: 'test5',
+			valid: false
+		};
 
 	  $scope.validateCode = function() {
 			// handles back button
