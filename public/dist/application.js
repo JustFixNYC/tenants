@@ -3100,24 +3100,30 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			valid: false
 		};
 
-		$scope.newUser = {
-			firstName: 'Dan',
-			lastName: "Stevenson",
-			password: "password",
-			borough: 'Brooklyn',
-			address: '654 Park Place',
-			unit: '1RF',
-			phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
-			problems: [],
-			sharing: {
-				enabled: false
-			}
-		};
 
-		$scope.accessCode = {
-			value: 'test5',
-			valid: false
-		};
+		/**
+			*
+			*   DEBUG STUFF
+			*
+			*/
+		// $scope.newUser = {
+		// 	firstName: 'Dan',
+		// 	lastName: "Stevenson",
+		// 	password: "password",
+		// 	borough: 'Brooklyn',
+		// 	address: '654 Park Place',
+		// 	unit: '1RF',
+		// 	phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
+		// 	problems: [],
+		// 	sharing: {
+		// 		enabled: false
+		// 	}
+		// };
+		//
+		// $scope.accessCode = {
+		// 	value: 'test5',
+		// 	valid: false
+		// };
 
 	  $scope.validateCode = function() {
 			// handles back button

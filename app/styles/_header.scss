@@ -107,6 +107,28 @@ header {
       letter-spacing: 1px;
       line-height: $desktop-header-height * 0.4;
     }
+
+    &.header-btn-main {
+      height: auto;
+
+      vertical-align: middle;
+      border: 1px solid #fff;
+      padding: 3px 10px;
+      border-radius: 3px;
+      top: -4px;
+
+      &:before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        height: 100%;
+      }
+
+      &:hover {
+        background-color: #fff;
+        color: $darkgray-dark;
+      }
+    }
   }
 }
 
