@@ -7,8 +7,8 @@ var users = require('../../app/controllers/users.server.controller'),
     actions = require('../../app/controllers/actions.server.controller');
 
 module.exports = function(app) {
-	app.route('/actions')
+	app.route('/api/actions')
 		.get(actions.list)
-    .post(users.requiresLogin, actions.followUp);   
+    .post(users.requiresLogin, actions.followUp);
 
 };

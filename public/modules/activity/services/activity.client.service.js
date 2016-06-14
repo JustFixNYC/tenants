@@ -56,7 +56,7 @@ angular.module('activity').factory('Activity', ['$resource',
     };
 
 
-    return $resource('activity', {}, {
+    return $resource('api/activity', {}, {
       save: {
           method: 'POST',
           transformRequest: formDataTransform,
@@ -66,7 +66,7 @@ angular.module('activity').factory('Activity', ['$resource',
       },
       public: {
         method: 'GET',
-        url: '/activity/public'
+        url: 'api/activity/public'
       }
     });
   }

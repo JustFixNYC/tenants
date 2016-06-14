@@ -92,6 +92,8 @@ exports.createPublicView = function() {
  */
 exports.togglePublicView = function(req, res, next) {
 
+	console.log('HI DAN THIS IS DAN');
+
 	var user = req.user;
 
 	if(user) {

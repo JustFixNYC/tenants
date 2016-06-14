@@ -49,6 +49,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
   // Setting HTML5 Location Mode
   .config(['$locationProvider', function($locationProvider) {
 		$locationProvider.hashPrefix('!');
+    $locationProvider.html5Mode(true);
   }])
   // whitelisting URLs
   .config(['$compileProvider', function ($compileProvider) {
@@ -1504,7 +1505,6 @@ angular.module('core').controller('HomeController', ['$rootScope', '$scope', 'Au
 		$scope.authentication = Authentication;
     $scope.device = deviceDetector;
 
-
 		$rootScope.closeDashboardAlert = false;
 
 	}
@@ -1978,6 +1978,14 @@ angular.module('core').directive('windowHeight', ['$window', 'deviceDetector', f
 
     };
 }]);
+
+'use strict';
+
+angular.module('core').filter('firstname', function() {
+    return function (input) {
+      return input.split(' ')[0];
+    }
+});
 
 'use strict';
 
@@ -3074,15 +3082,26 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
 
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', 'Authentication', 'Referrals', '$http', '$modal',
-	function($rootScope, $scope, $location, Authentication, Referrals, $http, $modal) {
+angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$filter', 'Authentication', 'Referrals', '$http', '$modal',
+	function($rootScope, $scope, $location, $filter, Authentication, Referrals, $http, $modal) {
 
 		$scope.authentication = Authentication;
 		$scope.newUser = {};
 		// create newUser.problems only once (handles next/prev)
 		$scope.newUser.problems = [];
+		$scope.newUser.sharing = {
+			enabled: false
+		};
 
-
+		$scope.newUser = {
+			firstName: 'Dan',
+			lastName: "Stevenson",
+			password: "password",
+			borough: 'Brooklyn',
+			address: '654 Park Place',
+			unit: '1RF',
+			phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString()
+		};
 
 		$scope.newUser = {
 			firstName: 'Dan',
@@ -3160,6 +3179,10 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			console.log('create account pre save', $scope.newUser);
 
 			if(isValid) {
+
+				$scope.newUser.firstName = $filter('titlecase')($scope.newUser.firstName);
+				$scope.newUser.lastName = $filter('titlecase')($scope.newUser.lastName);
+				$scope.newUser.address = $filter('titlecase')($scope.newUser.address);
 
 				$scope.userError = false;
 				$rootScope.loading = true;

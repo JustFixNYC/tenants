@@ -3,7 +3,7 @@
 //Issues service used to communicate Issues REST endpoints
 angular.module('actions').factory('Actions', ['$resource',
   function($resource) {
-    return $resource('actions', {}, {
+    return $resource('api/actions', {}, {
       followUp: {
         method: 'POST',
       }
@@ -11,7 +11,7 @@ angular.module('actions').factory('Actions', ['$resource',
       // removeFollowUp: {
       //   method: 'POST',
       //   url: 'actions/removeFollowUp'
-      // },     
+      // },
     });
   }
 ]);

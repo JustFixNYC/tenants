@@ -11,14 +11,8 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			enabled: false
 		};
 
-		$scope.newUser = {
-			firstName: 'Dan',
-			lastName: "Stevenson",
-			password: "password",
-			borough: 'Brooklyn',
-			address: '654 Park Place',
-			unit: '1RF',
-			phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString()
+		$scope.accessCode = {
+			valid: false
 		};
 
 		$scope.newUser = {
@@ -35,7 +29,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			}
 		};
 
-	  $scope.accessCode = {
+		$scope.accessCode = {
 			value: 'test5',
 			valid: false
 		};
@@ -105,7 +99,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 				$scope.userError = false;
 				$rootScope.loading = true;
 
-				$http.post('/auth/signup', $scope.newUser).success(function(response) {
+				$http.post('/api/auth/signup', $scope.newUser).success(function(response) {
 
 					// If successful we assign the response to the global user model
 					$rootScope.loading = false;

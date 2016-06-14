@@ -15,12 +15,12 @@ var users = require('../../app/controllers/users.server.controller'),
 
 module.exports = function(app) {
 	// Article Routes
-	app.route('/activity')
+	app.route('/api/activity')
 		.get(activity.list)
     //.post(users.requiresLogin, upload.array('photos'), activity.create);
     .post(users.requiresLogin, multipartMiddleware, activity.create, users.update);
 
-	app.route('/activity/public').get(users.hasPublicView, function(req, res) {
+	app.route('/api/activity/public').get(users.hasPublicView, function(req, res) {
 		res.json(req.tempUser);
 	});
 };

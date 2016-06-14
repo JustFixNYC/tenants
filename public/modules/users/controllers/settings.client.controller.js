@@ -1,14 +1,18 @@
 'use strict';
 
-angular.module('users').controller('SettingsController', ['$scope', '$http', '$location', '$filter', 'Users', 'Authentication', '$rootScope',
-  function($scope, $http, $location, $filter, Users, Authentication, $rootScope) {
-    $scope.user = Authentication.user;
-    $scope.passwordVerified = false;
-    
-    // If user is not signed in then redirect back home
-    if (!$scope.user) $location.path('/');
+angular.module('users').controller('SettingsController', ['$scope', '$http', '$location', '$state', '$filter', 'Users', 'Authentication', '$rootScope',
+  function($scope, $http, $location, $state, $filter, Users, Authentication, $rootScope) {
 
-    // Check if there are additional accounts 
+    $scope.passwordVerified = false;
+
+    $scope.$on('$stateChangeSuccess', function() {
+      $scope.user = Authentication.user;
+    });
+
+    // If user is not signed in then redirect back home
+    // if (!$scope.user) $location.path('/');
+
+    // Check if there are additional accounts
     $scope.hasConnectedAdditionalSocialAccounts = function(provider) {
       for (var i in $scope.user.additionalProvidersData) {
         return true;
@@ -26,7 +30,7 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
     $scope.removeUserSocialAccount = function(provider) {
       $scope.success = $scope.error = null;
 
-      $http.delete('/users/accounts', {
+      $http.delete('api/users/accounts', {
         params: {
           provider: provider
         }
@@ -40,9 +44,9 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
     };
 
     $scope.signOut = function() {
-    	$http.get('/auth/signout')
+    	$http.get('api/auth/signout')
     		.then(function(success) {
-    			$location.path('/');
+    			// $location.path('/');
     		}, function(err) {
     			console.log(err);
     		});
@@ -59,12 +63,19 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 				$scope.userError = false;
 				$rootScope.loading = true;
 
+        console.log('update user pre', user);
+
 				user.$update(function(response) {
 
 					// If successful we assign the response to the global user model
+
+          console.log('update user post', response);
+
 					$rootScope.loading = false;
-					Authentication.user = response;
-					$location.path('/settings/profile');
+					$scope.user = Authentication.user = response;
+
+					$state.go('settings.profile');
+          // $location.path('/settings/profile');
 
 				}, function(err) {
 					$rootScope.loading = false;
@@ -82,11 +93,11 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
     $scope.changeUserPassword = function() {
       $scope.success = $scope.error = null;
 
-      $http.post('/users/password', $scope.passwordDetails).success(function(response) {
+      $http.post('api/users/password', $scope.passwordDetails).success(function(response) {
         // If successful show success message and clear form
         $scope.success = true;
         $scope.passwordDetails = null;
-				$location.path('/settings/profile');
+				$state.go('settings.profile');
       }).error(function(response) {
         $scope.error = response.message;
       });
@@ -95,11 +106,11 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 
     $scope.verifyPassword = function(password) {
 
-    	$http.post('/users/verify-password', {"password": password}).success(function(response){
+    	$http.post('api/users/verify-password', {"password": password}).success(function(response){
     		$scope.passwordVerified = true;
     	}).error(function(err) {
     		$scope.passwordError = true;
-    		$scope.errorMessage = err.message; 
+    		$scope.errorMessage = err.message;
     	});
     }
   }

@@ -3,13 +3,13 @@
 // Users service used for communicating with the users REST endpoint
 angular.module('admin').factory('Referrals', ['$resource',
 	function($resource) {
-		return $resource('referrals', {}, {
+		return $resource('api/referrals', {}, {
 			update: {
 				method: 'PUT'
 			},
 			validate: {
 				method: 'GET',
-				url: '/referrals/validate'
+				url: '/api/referrals/validate'
 			}
       // ,
       // getIssues: {

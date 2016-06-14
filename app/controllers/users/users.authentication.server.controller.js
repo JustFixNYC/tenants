@@ -59,7 +59,6 @@ exports.signup = function(req, res) {
   // Add missing user fields
   user.provider = 'local';
   user.actionFlags.push('initial');
-  user.fullName = user.firstName + ' ' + user.lastName;
 
   // new user enabled sharing, so create a key
   // **actually, just create a key regardless**
@@ -129,6 +128,7 @@ exports.signin = function(req, res, next) {
  * Signout
  */
 exports.signout = function(req, res) {
+  console.log('SIGN OUT');
   req.logout();
   res.redirect('/');
 };
