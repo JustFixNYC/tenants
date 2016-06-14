@@ -15,7 +15,14 @@
   }
 
   section {
-    margin-top: 75px;
+
+
+    margin-top: 50px;
+    @media (min-width: $screen-sm-min) {
+      margin-top: 75px;
+    }
+
+
     padding: 15px 0;
 
     h1 {
@@ -26,7 +33,6 @@
         margin-bottom: 45px;
         font-size: 35px;
         line-height: 1.2;
-        text-shadow: 0px 2px 4px rgba(0,0,0,0.50);
 
         @media (min-width: $screen-xs-min) {
           font-size: 45px;
@@ -66,6 +72,10 @@
         //   width: 100%;
         // }
 
+        h1 {
+          text-shadow: 0px 2px 4px rgba(0,0,0,0.50);
+        }
+
         .btn-link {
           color: #fff;
           font-size: 16px;
@@ -100,6 +110,10 @@
 
       text-align: center;
 
+      h1.big-text {
+        margin-bottom: 25px;
+      }
+
       .desc-item {
         margin-bottom: 60px;
 
@@ -118,7 +132,13 @@
         // }
 
         img {
-          margin-bottom: 15px;
+          margin-bottom: 20px;
+          width: 75px;
+          height: 75px;
+
+          @media (min-width: $screen-sm-min) {
+
+          }
         }
       }
 

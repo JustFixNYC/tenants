@@ -92,12 +92,16 @@ exports.createPublicView = function() {
  */
 exports.togglePublicView = function(req, res, next) {
 
+	console.log('HI DAN THIS IS DAN');
+
 	var user = req.user;
 
 	if(user) {
 
 		var _sharing = user.sharing;
 
+
+		// because the key is made on signup, this first case should never happen
 		if(!_sharing.enabled && !_sharing.key) {			// key doesn't exist
 			_sharing.enabled = true;
 			makeNewURL().then(function (newUrl) {

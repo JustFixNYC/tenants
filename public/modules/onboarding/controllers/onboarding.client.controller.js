@@ -1,14 +1,19 @@
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', 'Authentication', 'Referrals', '$http', '$modal',
-	function($rootScope, $scope, $location, Authentication, Referrals, $http, $modal) {
+angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$filter', 'Authentication', 'Referrals', '$http', '$modal',
+	function($rootScope, $scope, $location, $filter, Authentication, Referrals, $http, $modal) {
 
 		$scope.authentication = Authentication;
 		$scope.newUser = {};
 		// create newUser.problems only once (handles next/prev)
 		$scope.newUser.problems = [];
+		$scope.newUser.sharing = {
+			enabled: false
+		};
 
-
+		$scope.accessCode = {
+			valid: false
+		};
 
 		$scope.newUser = {
 			firstName: 'Dan',
@@ -24,7 +29,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			}
 		};
 
-	  $scope.accessCode = {
+		$scope.accessCode = {
 			value: 'test5',
 			valid: false
 		};
@@ -87,10 +92,14 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 
 			if(isValid) {
 
+				$scope.newUser.firstName = $filter('titlecase')($scope.newUser.firstName);
+				$scope.newUser.lastName = $filter('titlecase')($scope.newUser.lastName);
+				$scope.newUser.address = $filter('titlecase')($scope.newUser.address);
+
 				$scope.userError = false;
 				$rootScope.loading = true;
 
-				$http.post('/auth/signup', $scope.newUser).success(function(response) {
+				$http.post('/api/auth/signup', $scope.newUser).success(function(response) {
 
 					// If successful we assign the response to the global user model
 					$rootScope.loading = false;

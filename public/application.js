@@ -8,6 +8,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
   // Setting HTML5 Location Mode
   .config(['$locationProvider', function($locationProvider) {
 		$locationProvider.hashPrefix('!');
+    $locationProvider.html5Mode(true);
   }])
   // whitelisting URLs
   .config(['$compileProvider', function ($compileProvider) {

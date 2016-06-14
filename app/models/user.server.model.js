@@ -146,6 +146,9 @@ var UserSchema = new Schema({
  */
 UserSchema.pre('save', function(next) {
 
+
+  this.fullName = this.firstName + ' ' + this.lastName;
+
   if (this.password && this.password.length > 6) {
     this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
     this.password = this.hashPassword(this.password);
@@ -186,6 +189,23 @@ UserSchema.pre('save', function(next) {
 
   // check NYCHA housing
   // if(user.nycha === 'yes') user.actionFlags.push('isNYCHA');
+
+  // check some address stuff
+  // addressHandler.requestGeoclient(user.borough, user.address)
+  //   .then(function (geo) {
+  //     user.geo = geo;
+  //     // check for tenant harassment hotline
+  //     if(addressHandler.harassmentHelp(user.geo.zip)) user.actionFlags.push('isHarassmentElligible');
+  //     return addressHandler.requestRentStabilized(geo.bbl, geo.lat, geo.lon);
+  //   })
+  //   .then(function (rs) {
+  //     if(rs) user.actionFlags.push('isRentStabilized');
+  //     save();
+  //   })
+  //   .fail(function (e) {
+  //     console.log('[GEO]', e);
+  //     save();
+  //   });
 
   next();
 });
