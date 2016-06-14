@@ -7,7 +7,6 @@ angular.module('core').controller('HomeController', ['$rootScope', '$scope', 'Au
 		$scope.authentication = Authentication;
     $scope.device = deviceDetector;
 
-
 		$rootScope.closeDashboardAlert = false;
 
 	}

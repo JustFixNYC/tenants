@@ -1,14 +1,25 @@
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', 'Authentication', 'Referrals', '$http', '$modal',
-	function($rootScope, $scope, $location, Authentication, Referrals, $http, $modal) {
+angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$filter', 'Authentication', 'Referrals', '$http', '$modal',
+	function($rootScope, $scope, $location, $filter, Authentication, Referrals, $http, $modal) {
 
 		$scope.authentication = Authentication;
 		$scope.newUser = {};
 		// create newUser.problems only once (handles next/prev)
 		$scope.newUser.problems = [];
+		$scope.newUser.sharing = {
+			enabled: false
+		};
 
-
+		$scope.newUser = {
+			firstName: 'Dan',
+			lastName: "Stevenson",
+			password: "password",
+			borough: 'Brooklyn',
+			address: '654 Park Place',
+			unit: '1RF',
+			phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString()
+		};
 
 		$scope.newUser = {
 			firstName: 'Dan',
@@ -86,6 +97,10 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			console.log('create account pre save', $scope.newUser);
 
 			if(isValid) {
+
+				$scope.newUser.firstName = $filter('titlecase')($scope.newUser.firstName);
+				$scope.newUser.lastName = $filter('titlecase')($scope.newUser.lastName);
+				$scope.newUser.address = $filter('titlecase')($scope.newUser.address);
 
 				$scope.userError = false;
 				$rootScope.loading = true;

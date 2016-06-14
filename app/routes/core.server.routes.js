@@ -12,7 +12,7 @@ var serialize = function(obj) {
 module.exports = function(app) {
 	// Root routing
 	var core = require('../../app/controllers/core.server.controller');
-	app.route('/').get(core.index);
+	app.route('/*').get(core.index);
 
   app.route('/demo').get(function (req, res) {
 

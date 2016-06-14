@@ -41,15 +41,15 @@
   </div>
   <!-- <div class="share-section" collapse="shareCollapsed"> -->
   <div class="share-section">
-    <p class="lead"><b>
+    <h2>
       {{ ::authentication.user.referral.name }}<br />
       {{ ::authentication.user.referral.organization }}<br />
       {{ ::authentication.user.referral.phone | tel }}<br />
       {{ ::authentication.user.referral.email }}
-    </b></p>
+    </h2>
     <div class="row share-controls">
       <a class="btn btn-success btn-block" ng-href="tel:{{authentication.user.referral.phone}}">
-          Call {{ ::authentication.user.referral.name }}
+          Call {{ ::authentication.user.referral.name | firstname }}
       </a>
     </div>
   </div>

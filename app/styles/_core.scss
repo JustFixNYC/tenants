@@ -59,6 +59,7 @@ h4 {
   text-transform: uppercase;
   font-size: 14px;
   line-height: 1.4;
+  margin-top: 30px;
 }
 
 .content {
@@ -108,6 +109,9 @@ label.control-label em {
   margin-top: 0;
   margin-bottom: 15px;
   border-bottom: none;
+  padding-left: 15px;
+  padding-right: 15px;
+
   small {
   	display: block;
   	text-align: center;
@@ -149,6 +153,9 @@ label.control-label em {
 
 }
 
+.alert-danger {
+  font-weight: 600;
+}
 .alert-success {
   background-color: $grass-dark;
 }
@@ -181,6 +188,13 @@ label.control-label em {
     margin-top: $desktop-header-height;
   }
 
+}
+.alert-dismissable .close, .alert-dismissible .close {
+  top: -10px;
+  right: -24px;
+  font-size: 30px;
+  opacity: 0.6;
+  text-shadow: none;
 }
 
 
@@ -236,6 +250,9 @@ input[type="date"].date-mobile:focus:before {
   content: '' !important;
 }
 
+.btn {
+  font-size: 16px;
+}
 .btn-block {
   max-width: 180px;
   margin: 0 auto;

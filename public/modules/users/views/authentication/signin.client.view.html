@@ -18,7 +18,10 @@
     </a>
   </div>
   <h3 class="col-md-12 text-center">Or with your account</h3> -->
-  <h3 class="col-md-12 text-center">Sign in to start using JustFix.nyc!</h3>
+  <div class="page-header">
+    <img src="/modules/core/img/brand/icon_only.svg" alt="JustFix.nyc" />
+    <h1>Sign in to start using JustFix.nyc!</h1>
+  </div>
   <div class="row col-xs-10 col-xs-offset-1 col-md-offset-5 col-md-2">
     <form data-ng-submit="signin()" class="signin form-horizontal" autocomplete="off">
       <fieldset>
@@ -31,13 +34,13 @@
           <input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Password">
         </div>
         <div class="text-center form-group">
-          <button type="submit" class="btn btn-primary">Sign in</button>
+          <button type="submit" class="btn btn-block btn-primary">Sign in</button>
           <!-- &nbsp; or&nbsp; -->
           <!-- <a ui-sref="createIssue.checklist">Get started</a> -->
         </div>
-        <div class="forgot-password">
+        <!-- <div class="forgot-password text-center">
           <a href="/#!/password/forgot">Forgot your password?</a>
-        </div>
+        </div> -->
         <div data-ng-show="error" class="text-center text-danger">
           <strong data-ng-bind="error"></strong>
         </div>
