@@ -148,6 +148,8 @@ header {
 
     .header-brand {
       position: static;
+      display: inline-block;
+      float: left;
       @include transform(none);
     }
   }
