@@ -4,17 +4,19 @@
         <h1>Case History</h1>
         <p>This is a record of all the actions you’ve taken in resolving your housing issues.</p>
     </div>
-    <div class="section-header share-section-header" ng-click="shareCollapsed = !shareCollapsed" ng-class="{ 'open': shareCollapsed == false}">
+    <!-- <div class="section-header share-section-header" ng-click="shareCollapsed = !shareCollapsed" ng-class="{ 'open': shareCollapsed == false}"> -->
+    <div class="section-header share-section-header" ng-class="{ 'open': shareCollapsed == false}">
       <h2>Share My Case
-        <span class="pull-right glyphicon" ng-class="shareCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span>
+        <!-- <span class="pull-right glyphicon" ng-class="shareCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span> -->
       </h2>
     </div>
-    <div class="share-section" collapse="shareCollapsed">
+    <!-- <div class="share-section" collapse="shareCollapsed"> -->
+    <div class="share-section">
       <!-- <div class="container"> -->
 
         <div class="row share-controls">
           <div class="col-xs-6">
-            <a  class="btn btn-success btn-block pull-left" ng-class="{ 'disabled' : !authentication.user.sharing.enabled }">
+            <a  class="btn btn-success btn-block pull-left" ng-class="{ 'disabled' : !authentication.user.sharing.enabled }" target="_blank" email-message>
                 Email
             </a>
           </div>
@@ -55,12 +57,14 @@
 
 
 
-    <div class="section-header bg-success" ng-click="activityCollapsed = !activityCollapsed">
+    <!-- <div class="section-header bg-success" ng-click="activityCollapsed = !activityCollapsed"> -->
+    <div class="section-header bg-success">
       <h2>Case History
-        <span class="pull-right glyphicon" ng-class="activityCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span>
+        <!-- <span class="pull-right glyphicon" ng-class="activityCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span> -->
       </h2>
     </div>
-    <div collapse="activityCollapsed">
+    <!-- <div collapse="activityCollapsed"> -->
+    <div>
       <div data-ng-if="activities.length">
           <div data-ng-repeat="activity in activities | orderBy:'startDate':true" class="panel activity-panel">
               <div class="panel-heading">

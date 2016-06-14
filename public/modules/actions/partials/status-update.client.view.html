@@ -1,6 +1,15 @@
 <div class="status-update" ng-class="{ 'expanded' : status.expanded }">
   <button type="button" class="close" aria-label="Close" ng-show="status.expanded" data-ng-click="status.expanded = false" ng-cloak><span aria-hidden="true">&times;</span></button>
-  <span class="pull-right glyphicon glyphicon-edit" ng-if="!status.expanded"></span>
+  <!-- <span class="status-update-closed-icon glyphicon glyphicon-edit" ng-if="!status.expanded"></span> -->
+  <span class="status-update-closed-icon glyphicon glyphicon-camera" ng-if="!status.expanded"></span>
+  <!-- <div  ngf-select="addPhoto($file)"
+        ngf-select-disabled="newActivity.photos.length >= 3"
+        ngf-capture="'camera'" accept="image/*"
+        name="photos"
+        ng-if="!status.expanded"
+        class="">
+        <span class="status-update-closed-icon glyphicon glyphicon-camera"></span>
+  </div> -->
   <div class="status-update-open">
     <form name="statusUpdate" class="update-activity-form" novalidate>
       <textarea name="description"
