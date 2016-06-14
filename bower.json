@@ -16,7 +16,6 @@
     "ng-file-upload-shim": "~6.1.2",
     "angular-bootstrap-lightbox": "~0.8.0",
     "angular-touch": "1.4.7",
-    "angular-modal-service": "~0.6.7",
     "fastclick": "~1.0.6",
     "angular-lazy-img": "~1.1.0",
     "angular-scroll": "~0.7.2",
@@ -26,10 +25,20 @@
     "angular-translate-handler-log": "~2.7.1",
     "angular-dynamic-locale": "~0.1.27",
     "angular-i18n": "1.4.7",
-    "ui-select": "angular-ui-select#~0.13.2"
+    "ui-select": "angular-ui-select#~0.13.2",
+    "bourbon": "~4.2.7",
+    "cartodb.js": "~3.15.9"
   },
   "resolutions": {
     "angular-bootstrap": "^0.13.3",
     "angular": "1.4.7"
+  },
+  "overrides": {
+    "bootstrap-sass-official": {
+      "main": []
+    },
+    "Bootflat": {
+      "main": []
+    }
   }
 }

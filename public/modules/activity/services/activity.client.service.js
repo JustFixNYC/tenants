@@ -63,6 +63,10 @@ angular.module('activity').factory('Activity', ['$resource',
           headers: {
             'Content-Type': undefined
           }
+      },
+      public: {
+        method: 'GET',
+        url: '/activity/public'
       }
     });
   }

@@ -54,8 +54,19 @@
 	<!-- Fav Icon -->
 	<link href="/modules/core/img/brand/favicon.ico" rel="shortcut icon" type="image/x-icon">
 
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic' rel='stylesheet' type='text/css'>
+
 	<!--Application CSS Files-->
 	{% for cssFile in cssFiles %}<link rel="stylesheet" href="{{cssFile}}">{% endfor %}
+
+	<link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.14.3/mapbox-gl.css" rel='stylesheet' />
+
+	<!-- <script>
+		function initGoogle() { console.log('geocoder init'); window.Geocoder = new google.maps.Geocoder(); };
+	</script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAU7vbWOHS6wd2eJxgY3WBQw-GwHaAWqng&signed_in=true&callback=initGoogle"></script> -->
+
+	<script src="http://platform.twitter.com/widgets.js"></script>
 
 	<!-- HTML5 Shim -->
 	<!--[if lt IE 9]>
@@ -63,17 +74,17 @@
 	<![endif]-->
 </head>
 
-<body class="ng-cloak">
+<body class="ng-cloak" ng-class="$root.globalStyles">
 
-	<header class="navbar">
+	<header>
 		<div data-ng-include="'/modules/core/views/header.client.view.html'"></div>
 	</header>
 	<section class="content">
 		<section class="container">
 			{% block content %}{% endblock %}
 		</section>
-		<footer class="container" data-ng-include="'/modules/core/views/footer.client.view.html'"></footer>
 	</section>
+	<footer data-ng-include="'/modules/core/views/footer.client.view.html'"></footer>
 	<loading ng-if="$root.loading"></loading>
 
 	<!--Embedding The User Object-->

@@ -1,56 +1,91 @@
-<section data-ng-controller="ActivityController" data-ng-init="list()">
+<section class="activities-container" data-ng-controller="ActivityController" data-ng-init="list()">
     <div class="page-header">
-        <h1>Your Case</h1>
-        <p><em>Share your case with case workers, attorneys, and judges as a way to tell your story. Your case can be found anytime you need it by going to <b style="text-decoration:underline;">JustFix.nyc/{{ authentication.user.phone }}</b> (thats your phone number!)</em></p>
-        <br />
-        <div class="row">
+        <img src="/modules/core/img/sections/history.svg" alt="Case History" />
+        <h1>Case History</h1>
+        <p>This is a record of all the actions you’ve taken in resolving your housing issues.</p>
+    </div>
+    <!-- <div class="section-header share-section-header" ng-click="shareCollapsed = !shareCollapsed" ng-class="{ 'open': shareCollapsed == false}"> -->
+    <div class="section-header share-section-header" ng-class="{ 'open': shareCollapsed == false}">
+      <h2>Share My Case
+        <!-- <span class="pull-right glyphicon" ng-class="shareCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span> -->
+      </h2>
+    </div>
+    <!-- <div class="share-section" collapse="shareCollapsed"> -->
+    <div class="share-section">
+      <!-- <div class="container"> -->
+
+        <div class="row share-controls">
           <div class="col-xs-6">
-            <a  class="btn btn-primary disabled btn-block pull-left">
-                Export PDF
+            <a  class="btn btn-success btn-block pull-left" ng-class="{ 'disabled' : !authentication.user.sharing.enabled }" target="_blank" email-message>
+                Email
             </a>
           </div>
           <div class="col-xs-6">
-            <button class="btn btn-primary disabled btn-block pull-right">
-                <!-- <span class="glyphicon glyphicon-ok pull-left" style="padding-top:1px"></span> -->
-                Share Case
-            </button>
+            <a class="btn btn-success btn-block pull-right" ng-class="{ 'disabled' : !authentication.user.sharing.enabled }" sms-message type="share">
+                Text
+            </a>
           </div>
         </div>
-    </div>
-    <div data-ng-if="activities.length" class="activities-container">
-        <div data-ng-repeat="activity in activities | orderBy:'date':true" class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">{{ activity.date | date:'longDate' }}</h3>
-            </div>
-            <div class="panel-body">
 
-                <!-- <p><b>{{ activity.key | areaTitle }} {{ activity.title === 'Text/Photos' ? 'Details' : activity.title }}</b></p> -->
-                <p><b>{{ activity.title }}</b></p>
+        <h2>
+          <span ng-if="!authentication.user.sharing.enabled">Enable Share URL:</span>
+          <span ng-if="authentication.user.sharing.enabled">Share URL (on):</span>
+          <label class="toggle pull-right" toggle-sharing>
+            <input type="checkbox">
+            <span class="handle"></span>
+          </label>
+        </h2>
 
-                <div data-ng-if="activity.fields.length">
-                  <p data-ng-repeat="field in activity.fields"><b>{{field.title}}</b> {{field.value}}</p>
-                </div>
-
-                {{ activity.description }}
-
-                <div class="row thumb-list">
-
-
-                    <div data-ng-repeat="photo in activity.photos" class="col-xs-4">
-
-                <!-- $parent.$index -->
-                        <a ng-click="openLightboxModal(activity.photos, $index)">
-                            <img ng-src="{{ activity.photos[$index].thumb }}" alt="{{ activity.key | areaTitle }}" class="img-thumbnail" />
-                        </a>
-                    </div>
-
-                </div>
-
-
-            </div>
+        <div class="alert alert-warning" ng-if="!authentication.user.sharing.enabled">
+          This will allow you to share your Case History with advocates. It does not give access to the rest of your account.
         </div>
+
+        <div class="share-link" ng-if="authentication.user.sharing.enabled">
+          <label>Link to share this page: </label>
+          <h2><a ng-href="/share/{{authentication.user.sharing.key}}" target="_blank">http://{{location}}/share/{{authentication.user.sharing.key}}</a></h2>
+        </div>
+
+        <button class="btn btn-primary btn-block" print-button>
+            Print
+        </button>
+
+
+
+    <!--  </div>   .container -->
+
+    </div>  <!-- .share-section -->
+
+
+
+    <!-- <div class="section-header bg-success" ng-click="activityCollapsed = !activityCollapsed"> -->
+    <div class="section-header bg-success">
+      <h2>Case History
+        <!-- <span class="pull-right glyphicon" ng-class="activityCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span> -->
+      </h2>
     </div>
-    <div class="alert alert-warning text-center" data-ng-if="!activities.length">
-    	Nothing has been added to your case yet! <a ui-sref="listActions">Click here</a> to see some things to do.
+    <!-- <div collapse="activityCollapsed"> -->
+    <div>
+      <div data-ng-if="activities.length">
+          <div data-ng-repeat="activity in activities | orderBy:'startDate':true" class="panel activity-panel">
+              <div class="panel-heading">
+                  <p>{{ ::activity.startDate | date:'longDate' }}</p>
+                  <h3>{{ ::activity.title }}</h3>
+              </div>
+              <div class="panel-body">
+
+                <div ng-include="activityTemplate(activity.key)"></div>
+
+                  <!-- <p><b>{{ activity.key | areaTitle }} {{ activity.title === 'Text/Photos' ? 'Details' : activity.title }}</b></p> -->
+
+
+
+                <span class="pull-right activity-logged-date"><i>Logged on {{ ::activity.createdDate | date:'short' }}</i></span>
+              </div>
+          </div>
+      </div>
+      <div class="alert alert-warning text-center" data-ng-if="!activities.length">
+      	Nothing has been added to your case yet! <a ui-sref="listActions">Click here</a> to see some things to do.
+      </div>
     </div>
+
 </section>

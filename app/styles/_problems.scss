@@ -1,0 +1,200 @@
+.problems-container {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.problem {
+  height: 125px; width: 125px;
+	margin: 0em auto 1.5em auto;
+	border-radius: 4px;
+  box-shadow: 0px 1px 5px 0px #999999;
+	background: #fff;
+
+	&.active {
+		background: $justfix-blue;
+    box-shadow: none;
+		color: #fff;
+		.problem-icon {
+			.glyphicon-addl {
+
+				&.bedrooms {
+	      	background-image: url('/modules/problems/img/whiteicons_Bedroom.svg');
+	      }
+
+	      &.kitchen {
+	      	background-image: url('/modules/problems/img/whiteicons_Kitchen.svg');
+	      }
+
+	      &.livingRoom {
+	      	background-image: url('/modules/problems/img/whiteicons_Living_Room.svg');
+	      }
+
+	      &.bathroom {
+	      	background-image: url('/modules/problems/img/whiteicons_Bathroom.svg');
+	      }
+
+	      &.publicAreas {
+	      	background-image: url('/modules/problems/img/whiteicons_Public_Areas.svg');
+	      }
+
+	      &.entireHome {
+	      	background-image: url('/modules/problems/img/whiteicons_Entire_Home.svg');
+	      }
+
+	      &.landlordIssues {
+	      	background-image: url('/modules/problems/img/whiteicons_Landlord.svg');
+	      }
+
+			}
+		}
+	}
+}
+
+.glyphicon-addl {
+	display: inline-block;
+  // margin: 0px 10px;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  height: 1.25em;
+  width: 1.5em;
+
+  &:before {
+  	content: 'empty';
+  	opacity: 0;
+  }
+
+  &.bedrooms {
+  	background-image: url('/modules/problems/img/icons_Bedroom.svg');
+  }
+
+  &.kitchen {
+  	background-image: url('/modules/problems/img/icons_Kitchen.svg');
+  }
+
+  &.livingRoom {
+  	background-image: url('/modules/problems/img/icons_Living_Room.svg');
+
+  }
+
+  &.bathroom {
+  	background-image: url('/modules/problems/img/icons_Bathroom.svg');
+  }
+
+  &.publicAreas {
+  	background-image: url('/modules/problems/img/icons_Public_Areas.svg');
+
+  }
+
+  &.entireHome {
+  	background-image: url('/modules/problems/img/icons_Entire_Home.svg');
+  }
+
+  &.landlordIssues {
+  	background-image: url('/modules/problems/img/icons_Landlord.svg');
+  }
+}
+
+.problem-icon {
+  @include vertical-align();
+  max-width: 90px;
+  margin: 0 auto;
+  text-align: center;
+
+  .glyphicon-addl {
+  	font-size: 1.65em;
+  	margin-bottom: 10px;
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+}
+
+.problem-num {
+	min-height: 1em;
+  font-size: 85%;
+}
+
+.issues-modal {
+	// padding: 20px;
+
+	.close-modal {
+		position: absolute;
+		right: -13px;
+		top: -11px;
+		border-radius: 50%;
+		background-color: $mediumgray-light;
+		padding: 8px 0;
+		height: 30px;
+		width: 30px;
+		text-align: center;
+		cursor: pointer;
+	}
+
+	.modal-header {
+		.modal-title {
+			border-bottom: none;
+			padding-bottom: 0;
+
+			.glyphicon-addl {
+				font-size: 18px;
+				margin-right: 5px;
+			}
+
+      .issues-modal-title {
+        position: relative;
+        top: 2px;
+      }
+
+			.badge {
+				position: relative;
+				top: 4px;
+			}
+		}
+	}
+
+	.modal-body {
+
+		.selecter-options {
+
+			// talk to ashley about this
+			// max-height: none;
+			border: 1px solid $lightgray-dark;
+      max-height: 55vh;
+
+			.selecter-item {
+				padding: 12px 10px;
+
+				.input-group .btn.glyphicon {
+					top: 0;
+				}
+
+				&.item-other:hover {
+					background-color: #fff;
+				}
+			}
+
+
+		}
+	}
+
+	.selection-module {
+		margin: 0px 10px 10px 10px;
+		border: 1px solid $mediumgray-light;
+		border-radius: 3px;
+		height: 70vh;
+		overflow: auto;
+	}
+
+	.selector-plus {
+		position: relative;
+		top: -8px;
+		width: 150px;
+		height: 1.5em;
+		font-size: 1.5em;
+		line-height: 0.5em;
+	}
+
+
+}

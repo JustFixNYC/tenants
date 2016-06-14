@@ -9,6 +9,7 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
 
 		// Submit forgotten password account id
 		$scope.askForPasswordReset = function() {
+			console.log($scope.credentials);
 			$scope.success = $scope.error = null;
 
 			$http.post('/auth/forgot', $scope.credentials).success(function(response) {
@@ -26,6 +27,8 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
 		// Change user password
 		$scope.resetUserPassword = function() {
 			$scope.success = $scope.error = null;
+
+			console.log($stateParams);
 
 			$http.post('/auth/reset/' + $stateParams.token, $scope.passwordDetails).success(function(response) {
 				// If successful show success message and clear form

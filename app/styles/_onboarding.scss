@@ -1,0 +1,112 @@
+// Vars that should be globo but yolo!
+// lol
+$grey: #E0E0E0;
+
+.onboarding-code-entry {
+
+	label {
+		text-align: left;
+	}
+
+
+	.referral {
+		p {
+			margin: 0px;
+			font-weight: 700;
+		}
+	}
+}
+
+
+.create-user-form {
+	margin: auto;
+	max-width: $screen-sm-min;
+
+
+	.controls .btn {
+		margin: 3px;
+
+		&:focus, &:active, &.active {
+			background-color: $justfix-blue;
+			border-color: $justfix-blue !important;
+			color: #fff;
+		}
+	}
+
+	.apt-field {
+		width: 30%;
+	}
+
+	.pw-check-field {
+		margin-bottom: 30px;
+	}
+
+	form {
+		margin: 10px auto;
+		max-width: 500px;
+
+		.form-group {
+			text-align: left;
+
+			&.apt {
+				width: 50%;
+			}
+		}
+	}
+}
+
+// .borough,
+// .nycha {
+// 	margin: 0.25em;
+// 	width: auto;
+//
+// 	@include transition(0.2s all);
+//
+// 	&.selected,
+// 	&.active {
+// 		background: $justfix-blue;
+// 		color: #fff;
+// 	}
+// }
+
+.onboarding-tutorial {
+	// This is full of lies.
+	@include make-row();
+
+	// WTF
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#6db3f2+0,0096d7+0,0e6594+100 */
+	background: #6db3f2; /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPHJhZGlhbEdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjUwJSIgY3k9IjUwJSIgcj0iNzUlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM2ZGIzZjIiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwOTZkNyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwZTY1OTQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvcmFkaWFsR3JhZGllbnQ+CiAgPHJlY3QgeD0iLTUwIiB5PSItNTAiIHdpZHRoPSIxMDEiIGhlaWdodD0iMTAxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+	background: -moz-radial-gradient(center, ellipse cover, #6db3f2 0%, #0096d7 0%, #0e6594 100%); /* FF3.6-15 */
+	background: -webkit-radial-gradient(center, ellipse cover, #6db3f2 0%,#0096d7 0%,#0e6594 100%); /* Chrome10-25,Safari5.1-6 */
+	background: radial-gradient(ellipse at center, #6db3f2 0%,#0096d7 0%,#0e6594 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', endColorstr='#0e6594',GradientType=1 ); /* IE6-8 fallback on horizontal gradient */
+
+	color: $white;
+	text-align: center;
+
+	.body-wrap {
+		margin: 0 20px;
+	}
+
+	.header {
+		margin-bottom: 2em;
+	}
+
+	.icon {
+		font-size: 2em;
+		color: $justfix-blue-dark;
+	}
+
+	.walkthrough {
+		h4 {
+			margin-top: 0px;
+		}
+	}
+
+	.btn {
+		margin: 3em 0;
+		min-width: 100px;
+	}
+}

@@ -12,7 +12,7 @@ angular.module('issues').controller('IssuesChecklistController', ['$scope', 'Iss
     if($scope.updateView === undefined) $scope.updateView = false;
 
     Issues.getChecklist().then(function (data) {
-      
+
       var i = 0;
       for(var area in data[0]) {
         var issues = data[0][area].issues;
@@ -30,7 +30,7 @@ angular.module('issues').controller('IssuesChecklistController', ['$scope', 'Iss
         issues.forEach(function (issue) {
 
           // ugly ugly ugly
-          if($scope.issues[area] && 
+          if($scope.issues[area] &&
             $scope.issues[area].map(function(i) { return i.title; }).indexOf(issue.title) !== -1) {
               $scope.select(area,issue);
           }
@@ -62,7 +62,7 @@ angular.module('issues').controller('IssuesChecklistController', ['$scope', 'Iss
       }
     };
     $scope.isSelected = function(area, issue) {
-      if(!$scope.newIssue.issues[area]) return false; 
+      if(!$scope.newIssue.issues[area]) return false;
       return $scope.newIssue.issues[area].indexOf(issue) !== -1;
     };
     // $scope.prevGroup = function(idx) {

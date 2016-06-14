@@ -1,0 +1,111 @@
+<div class="page-header">
+	<h3>(Step 2 of 2)</h3>
+	<h1>Create Your Account</h1>
+	<p>Your account will store your evidence and case details for you. <b><em>This information will never be shared without asking for your permission first.</em></b></p>
+</div>
+<form name="createUserForm" class="create-user-form" ng-submit="createAndNext(createUserForm.$valid)" novalidate>
+	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.firstName.$invalid }">
+		<label class="control-label" for="firstName">First Name</label>
+		<input class="form-control" type="text" placeholder="First Name" name="firstName" ng-model="newUser.firstName" required>
+		<div ng-show="createUserForm.$submitted || createUserForm.firstName.$touched">
+			<p ng-show="createUserForm.firstName.$error.required" class="text-danger">Please enter a first name.</p>
+		</div>
+	</div>
+
+	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.lastName.$invalid }">
+		<label class="control-label" for="lastName">Last Name</label>
+		<input class="form-control" type="text" placeholder="Last Name" name="lastName" ng-model="newUser.lastName" required>
+		<div ng-show="createUserForm.$submitted || createUserForm.lastName.$touched">
+			<p ng-show="createUserForm.lastName.$error.required" class="text-danger">Please enter a last name.</p>
+		</div>
+	</div>
+
+	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.borough.$invalid }">
+		<label class="control-label" for="borough">Borough</label>
+		<div class="controls">
+			<label class="btn btn-default" ng-model="newUser.borough" btn-radio="'Brooklyn'" name="borough" required>Brooklyn</label>
+			<label class="btn btn-default" ng-model="newUser.borough" btn-radio="'Queens'" name="borough" required>Queens</label>
+			<label class="btn btn-default" ng-model="newUser.borough" btn-radio="'Bronx'" name="borough" required>Bronx</label>
+			<label class="btn btn-default" ng-model="newUser.borough" btn-radio="'Manhattan'" name="borough" required>Manhattan</label>
+			<label class="btn btn-default" ng-model="newUser.borough" btn-radio="'Staten Island'" name="borough" required>Staten Island</label>
+		</div>
+		<div ng-show="createUserForm.$submitted || createUserForm.borough.$touched">
+			<p ng-show="createUserForm.borough.$error.required" class="text-danger">Please enter your borough.</p>
+		</div>
+	</div>
+
+	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.address.$invalid }">
+		<label class="control-label" for="address">Street Address <em><a ng-click="additionalInfo()">(why do you need this?)</a></em></label>
+		<input class="form-control" type="text" placeholder="Street Address" name="address" ng-model="newUser.address" required>
+		<div ng-show="createUserForm.$submitted || createUserForm.address.$touched">
+			<p ng-show="createUserForm.address.$error.required" class="text-danger">Please enter your street address.</p>
+		</div>
+	</div>
+
+	<div class="form-group apt-field" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.unit.$invalid }">
+		<label class="control-label" for="unit">Apartment #</label>
+		<input class="form-control" type="text" placeholder="Apt #" name="unit" ng-model="newUser.unit" required>
+		<div ng-show="createUserForm.$submitted || createUserForm.unit.$touched">
+			<p ng-show="createUserForm.unit.$error.required" class="text-danger">Please enter your apartment number.</p>
+		</div>
+	</div>
+
+	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.phone.$invalid }">
+		<label class="control-label" for="phone">Phone Number <em>(you will use this to sign in)</em></label>
+		<input class="form-control" type="tel" placeholder="Phone Number" name="phone" ng-model="newUser.phone" name="phone" required phone-input>
+		<div ng-show="createUserForm.$submitted || createUserForm.phone.$touched">
+			<p ng-show="createUserForm.phone.$error.required" class="text-danger">Please enter your phone number.</p>
+		</div>
+	</div>
+
+	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.pw.$invalid }">
+		<label class="control-label" for="pw">Create a password for your account <em>(must be at least 6 characters)</em></label>
+		<input class="form-control" type="password" placeholder="Create Password" id="pw1" name="pw" ng-model="newUser.password" ng-minlength="6" required>
+		<div ng-show="createUserForm.$submitted || createUserForm.pw.$touched">
+			<p ng-show="createUserForm.pw.$error.required" class="text-danger">Please create a password.</p>
+			<p ng-show="createUserForm.pw.$error.minlength" class="text-danger">Password should be at least 6 characters.</p>
+		</div>
+	</div>
+
+	<div class="form-group pw-check-field" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.pw2.$invalid }">
+		<label class="control-label" for="pw2">Re-enter your new password</label>
+		<input class="form-control" ng-model="pw2" type="password" placeholder="Confirm Password" name="pw2" pw-check="pw1" ng-minlength="6" required>
+		<div ng-show="createUserForm.$submitted || createUserForm.pw2.$touched">
+			<p ng-show="createUserForm.pw2.$error.required" class="text-danger">Please enter your password again.</p>
+			<p ng-show="createUserForm.pw2.$error.pwmatch" class="text-danger">These passwords don't match!</p>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<fieldset>
+				<div data-ng-show="error.errors" class="alert alert-danger">
+						<strong data-ng-repeat="err in error.errors">
+							<p data-ng-bind="err.message"></p>
+							Please <a ui-sref="contact" target="_blank">Contact Us</a> if you need assistance.
+						</strong>
+				</div>
+				<div data-ng-show="error && !error.errors" class="alert alert-danger">
+						<strong>
+							<p data-ng-bind="error"></p>
+							Please <a ui-sref="contact" target="_blank">Contact Us</a> if you need assistance.
+						</strong>
+				</div>
+				<div data-ng-show="userError" class="alert alert-danger">
+						<strong>
+							Please complete the above fields in order to create your account!
+						</strong>
+				</div>
+		</fieldset>
+
+    <div class="row">
+      <div class="col-xs-4">
+        <a ui-sref="onboarding.problems" class="btn btn-block btn-default">
+          Back
+        </a>
+      </div>
+      <div class="col-xs-8">
+        <input type="submit"  class="btn btn-primary btn-block pull-right" value="Create Account">
+      </div>
+    </div>
+	</div>
+</form>

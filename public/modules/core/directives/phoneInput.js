@@ -8,6 +8,13 @@ angular.module('core').directive('phoneInput', function($filter, $browser) {
       var listener = function() {
         var value = $element.val().replace(/[^0-9]/g, '');
         $element.val($filter('tel')(value, false));
+        
+        // Not sure if this is the best solution...
+        if(value.length < 10 || value.search(/[^a-z]/g)) {
+        	ngModelCtrl.$setValidity('', false); 
+        } else {
+        	ngModelCtrl.$setValidity('', true); 
+        }
       };
 
       // This runs when we update the text field

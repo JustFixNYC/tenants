@@ -35,6 +35,7 @@ exports.requiresLogin = function(req, res, next) {
 	next();
 };
 
+
 /**
  * User authorizations routing middleware
  */
@@ -46,10 +47,43 @@ exports.hasAuthorization = function(roles) {
 			if (_.intersection(req.user.roles, roles).length) {
 				return next();
 			} else {
+				// [TODO] reset this.
 				return res.status(403).send({
 					message: 'User is not authorized'
-				});
+				});/*
+				return next();*/
 			}
 		});
 	};
+};
+
+
+/**
+ * User public view routing middleware
+ */
+exports.hasPublicView = function(req, res, next) {
+
+	// allow for either /:key or ?key=
+	var key = req.params.key || req.query.key;
+
+	User.findOne({
+		'sharing.key' : key
+	}).exec(function(err, user) {
+		if (err) {
+			return res.status(500).send({ message: 'Error in checking authorization' });
+		}
+		else if(!user || !user.sharing.enabled) {
+			// [TODO] make this an adequate response page
+			return res.status(403).send({ message: 'Unauthorized request.' });
+		}
+		else {
+			req.tempUser = {
+				fullName: user.fullName,
+				phone: user.phone,
+				activity: user.activity
+			};
+			next();
+		}
+	});
+
 };

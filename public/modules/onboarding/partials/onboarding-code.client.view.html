@@ -1,0 +1,20 @@
+<!-- <div class="col-md-6 col-md-offset-3"> -->
+	<div class="page-header">
+		<img src="/modules/core/img/brand/icon_only.svg" alt="JustFix.nyc" />
+		<h1>Welcome to<br/>JustFix.nyc!</h1>
+	</div>
+	<p>Please enter the access code provided by your advocate so you can gain access to the website.</p>
+	<div class="error-text alert alert-danger" ng-show="majorError">Whoa, looks like we're having some trouble on our end. Please refresh this page and try again.</div>
+	<form>
+	  <div class="form-group" ng-class="{ 'has-error': codeWrong }">
+	    <label class="control-label">Access Code</label>
+	    <input class="form-control" type="text" placeholder="Starts with..." ng-model="accessCode.value">
+	  </div>
+	  <div class="form-group">
+	    <input class="btn btn-primary btn-block" value="Continue" ng-click="validateCode()" go-to-top>
+	    <a class="btn btn-link btn-block" ui-sref="contact">I don't have an access code!</a>
+	  </div>
+	</form>
+	<div class="error-text alert alert-danger" ng-if="!codeErrorMessage.length" ng-show="codeError">There was an error submitting this code. Please <a ui-sref="contact">Contact Us</a> if you need assistance.</div>
+	<div class="error-text alert alert-warning" ng-if="codeErrorMessage.length" ng-show="codeError">{{ codeErrorMessage }} Please <a ui-sref="contact">Contact Us</a> if you need assistance.</div>
+	<div class="error-text alert alert-warning" ng-show="codeWrong">Sorry! This access code does not match anything in our database - please double check that you entered the correct code. Please <a ui-sref="contact">Contact Us</a> if you need assistance.</div>

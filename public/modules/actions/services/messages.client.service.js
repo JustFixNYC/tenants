@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('actions').factory('Messages', ['$http', '$q', '$filter', 'Authentication',
-  function Issues($http, $q, $filter, Authentication) {
+angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$location', 'Authentication',
+  function Issues($http, $q, $filter, $location, Authentication) {
 
     var user = Authentication.user;
     var request = function(url) {
@@ -13,14 +13,25 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', 'Authen
         }, function(err) {
           deferred.reject();
         });
-        
-      return deferred.promise;          
+
+      return deferred.promise;
     };
 
-    var getSMSMessage = function() {
-      var message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
-            ' I\'m experiencing issues with my apartment and would like to get them resolved.' +
-            ' Please contact me as soon as possible at this phone number. Thank you!';
+    var getShareMessage = function(type) {
+
+      var message;
+      switch(type) {
+        case 'share':
+        message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
+           ' I\'m experiencing issues with my apartment and would like to get them resolved.' +
+           ' A link to my Case History can be found at http://' + $location.host() + '/share/' + user.sharing.key + '. Thank you!';
+        break;
+        default:
+          message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
+             ' I\'m experiencing issues with my apartment and would like to get them resolved.' +
+             ' Please contact me as soon as possible at this phone number. Thank you!';
+          break;
+      };
 
       return message;
     };
@@ -30,7 +41,7 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', 'Authen
             'am currently residing at ' + user.address + ',' +
             ' Apt. ' + user.unit + ' in ' + user.borough + ', NY ' +
             ' and would like to request the rental history for this apartment. Any information you can provide me would be greatly appreciated.\n\n' +
-            'Thank you, \n\n' + user.fullName; 
+            'Thank you, \n\n' + user.fullName;
       return message;
     };
 
@@ -59,35 +70,35 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', 'Authen
 
           issuesContent += '\n   First Appeared: ';
           if(activity) {
-            issuesContent += $filter('date')(activity.date, 'longDate');             
-            issuesContent += '\n   Additional Information:';            
+            issuesContent += $filter('date')(activity.date, 'longDate');
+            issuesContent += '\n   Additional Information:';
             issuesContent += '\n   ' + activity.description;
-            issuesContent += '\n';  
-            activity = undefined;                    
+            issuesContent += '\n';
+            activity = undefined;
           } else {
-            issuesContent += '\n   Additional Information:';            
+            issuesContent += '\n   Additional Information:';
           }
 
           issuesContent += '\n';
         }
       }
-      
+
       message += issuesContent + '\n\n';
 
       var superContactIdx = user.activity.map(function(i) { return i.key; }).indexOf('contactSuper');
       if(superContactIdx !== -1) {
         message += 'I have already contacted the person responsible for making repairs on ';
-        message += $filter('date')(user.activity[superContactIdx].date, 'longDate'); 
+        message += $filter('date')(user.activity[superContactIdx].date, 'longDate');
         message += ', but the issue has not been resolved. ';
-      } 
+      }
 
       message += 'In the meantime, I have recorded photo and written evidence of the violations. ' +
                  'Please contact me as soon as possible to arrange a time to have these repairs made by replying directly to this email or calling the phone number provided below.';
 
       message += '\n\n\nRegards,\n' +
                   user.fullName + '\n' +
-                  user.address + '\n' +                
-                  'Apt. ' + user.unit + '\n' +                
+                  user.address + '\n' +
+                  'Apt. ' + user.unit + '\n' +
                   user.borough + ', NY ' + '\n' +
                   $filter('tel')(user.phone);
 
@@ -99,7 +110,7 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', 'Authen
     }
 
     return {
-      getSMSMessage: getSMSMessage,
+      getShareMessage: getShareMessage,
       getRentalHistoryMessage: getRentalHistoryMessage,
       getLandlordEmailMessage: getLandlordEmailMessage,
       getLandlordEmailSubject: getLandlordEmailSubject

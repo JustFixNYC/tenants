@@ -1,8 +1,8 @@
 'use strict';
 
 // Issues controller
-angular.module('issues').controller('IssuesController', ['$scope', '$location', '$http', 'Authentication', 'Users',
-  function($scope, $location, $http, Authentication, Users) {
+angular.module('issues').controller('IssuesController', ['$scope', '$location', '$http', 'Authentication', 'Users', 'Referrals',
+  function($scope, $location, $http, Authentication, Users, Referrals) {
     $scope.authentication = Authentication;
 
     if($scope.authentication.user) {
@@ -46,6 +46,35 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
       // console.log($scope.currentStep);
     });
 
+
+
+
+
+
+    // Validate Access Code
+    $scope.newUser = {};
+    $scope.newUser.accessCode = 'test';
+
+
+    $scope.validateCode = function() {
+
+      var referral = new Referrals();
+      referral.$validate({ code: $scope.newUser.accessCode },
+        function(success) {
+          if(success.referral) {
+            alert('valid');
+            console.log(success.referral);
+          } else {
+            alert('invalid');
+          }
+        }, function(error) {
+          // error
+        });
+
+    };
+
+
+
     // Create new Issue
     $scope.create = function() {
 
@@ -53,14 +82,18 @@ angular.module('issues').controller('IssuesController', ['$scope', '$location', 
 
       var newUser = {
         fullName:     $scope.newIssue.name,
-        phone:        $scope.newIssue.phone,
+        firstName:    'Dan',
+        lastName:     'Kass',
+        phone:        '0000000000',
         borough:      $scope.newIssue.borough,
         address:      $scope.newIssue.address,
         unit:         $scope.newIssue.unit,
         nycha:        $scope.newIssue.nycha,
         issues:       $scope.newIssue.issues,
-        password:     $scope.newIssue.password
+        password:     'password'
       };
+
+      console.log(newUser);
 
       $http.post('/auth/signup', newUser).success(function(response) {
         // If successful we assign the response to the global user model

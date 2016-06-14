@@ -6,6 +6,14 @@ angular.module('users').factory('Users', ['$resource',
 		return $resource('users', {}, {
 			update: {
 				method: 'PUT'
+			},
+			toggleSharing: {
+				method: 'GET',
+				url: '/users/public'
+			},
+			updateChecklist: {
+				method: 'PUT',
+				url: '/users/checklist'
 			}
       // ,
       // getIssues: {

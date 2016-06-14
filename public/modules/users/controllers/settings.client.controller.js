@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('users').controller('SettingsController', ['$scope', '$http', '$location', '$filter', 'Users', 'Authentication',
-  function($scope, $http, $location, $filter, Users, Authentication) {
+angular.module('users').controller('SettingsController', ['$scope', '$http', '$location', '$filter', 'Users', 'Authentication', '$rootScope',
+  function($scope, $http, $location, $filter, Users, Authentication, $rootScope) {
     $scope.user = Authentication.user;
-
+    $scope.passwordVerified = false;
+    
     // If user is not signed in then redirect back home
     if (!$scope.user) $location.path('/');
 
@@ -38,23 +39,43 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
       });
     };
 
+    $scope.signOut = function() {
+    	$http.get('/auth/signout')
+    		.then(function(success) {
+    			$location.path('/');
+    		}, function(err) {
+    			console.log(err);
+    		});
+    }
+
     // Update a user profile
     $scope.updateUserProfile = function(isValid) {
       if (isValid) {
         $scope.success = $scope.error = null;
         var user = new Users($scope.user);
 
-        //console.log('user', user);
+        if(isValid) {
 
-        user.$update(function(response) {
-          $scope.success = true;
-          Authentication.user = response;
-        }, function(response) {
-          $scope.error = response.data.message;
-        });
-      } else {
-        $scope.submitted = true;
-      }
+				$scope.userError = false;
+				$rootScope.loading = true;
+
+				user.$update(function(response) {
+
+					// If successful we assign the response to the global user model
+					$rootScope.loading = false;
+					Authentication.user = response;
+					$location.path('/settings/profile');
+
+				}, function(err) {
+					$rootScope.loading = false;
+					console.log(err);
+        	$scope.error = err;
+				});
+
+				} else {
+					$scope.userError = true;
+				}
+			}
     };
 
     // Change user password
@@ -65,9 +86,21 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
         // If successful show success message and clear form
         $scope.success = true;
         $scope.passwordDetails = null;
+				$location.path('/settings/profile');
       }).error(function(response) {
         $scope.error = response.message;
       });
+      return
     };
+
+    $scope.verifyPassword = function(password) {
+
+    	$http.post('/users/verify-password', {"password": password}).success(function(response){
+    		$scope.passwordVerified = true;
+    	}).error(function(err) {
+    		$scope.passwordError = true;
+    		$scope.errorMessage = err.message; 
+    	});
+    }
   }
 ]);

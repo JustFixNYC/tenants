@@ -5,15 +5,14 @@ var _ = require('lodash'),
     errorHandler = require('./errors.server.controller'),
     s3Handler = require('../services/s3.server.service'),
     mongoose = require('mongoose'),
+    problemsHandler = require('./problems.server.controller.js'),
     User = mongoose.model('User');
-
-var aptSpaces = ['generalApt', 'entryHallway', 'kitchen', 'bathroom', 'diningRoom', 'livingRoom', 'bedrooms', 'publicAreas', 'otherContent'];
 
 var list = function(req, res) {
   if(req.user) {
     res.json(req.user.activity);
   } else {
-    res.status(400).send({
+    res.status(401).send({
       message: 'User is not signed in'
     });
   }
@@ -30,6 +29,9 @@ var s3upload = function(file) {
 
   if(!file) uploaded.reject('no file?');
 
+  // console.log('file', file);
+  // console.log('origname', file.originalFilename);
+
   var type = file.originalFilename.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[0];
 
   s3Handler.uploadFile(file.path, type)
@@ -40,7 +42,7 @@ var s3upload = function(file) {
 
       uploaded.resolve({ url: data.Location, thumb: resizedUrl });
     }).fail(function (err) {
-      console.log(err);
+      console.log('error', err);
       uploaded.reject(err);
     });
 
@@ -48,10 +50,9 @@ var s3upload = function(file) {
 
 };
 
-var create = function(req, res) {
+var create = function(req, res, next) {
   var user = req.user;
   var activity = req.body;
-  //var files = req.files;
 
   //console.log(req.body, req.files);
   // don't forget to delete all req.files when done
@@ -60,42 +61,21 @@ var create = function(req, res) {
   if(user) {
 
     // remove from follow up flags
-    var idx = user.followUpFlags.indexOf(activity.key);
-    //  if(idx < 0) return res.status(500).send({ message: 'Follow up key not found, this is bad' });
+    var idx = _.findIndex(user.followUpFlags, { key: activity.key});
+    // if(idx < 0) return res.status(500).send({ message: 'Follow up key not found, this is bad' });
     if(idx !== -1) user.followUpFlags.splice(idx, 1);
 
+
     // add to action flags
-    if(activity.key !== 'statusUpdate') user.actionFlags.push(activity.key);
+    if(!_.contains(user.actionFlags, activity.key)) user.actionFlags.push(activity.key);
 
-    // check date
-    //console.log('date', activity.date);
-    if(!activity.date) activity.date = Date.now();
-    //console.log('new date', activity.date);
-
-    // check to see if allInitial should be set
-    if(_.contains(aptSpaces, activity.key)) {
-      var allInitial = true;
-      // for every area in issues
-      for(var area in user.issues) {
-        // if the area has issues...
-        if(user.issues[area].length) {
-          // if the area content hasn't been done yet
-          if(user.actionFlags.indexOf(area) === -1) allInitial = false;
-        }
-      }
-      if(allInitial && user.actionFlags.indexOf('allInitial') === -1) user.actionFlags.push('allInitial');
-      // [TODO] account for the case where a user has allInitial set, then updates the issues checklist
-      //        with a new area.
-      // else {
-      //   var idx = user.actionFlags.indexOf('allInitial');
-      //   if(idx !== -1) user.actionFlags.splice(idx, 1);
-      // }
-    }
 
     // init photos array
     activity.photos = [];
 
-    var files = req.files;
+    var files = req.files['photos'];
+
+    // console.log('files', files);
 
     // init photos queue
     var uploadQueue = [];
@@ -113,19 +93,18 @@ var create = function(req, res) {
         });
       });
 
+      // add ref to problems
+      if(_.contains(problemsHandler.getProblemKeys(), activity.key)) {
+        var prob = user.problems.getByKey(activity.key);
+        prob.startDate = activity.startDate;
+        prob.description = activity.description;
+        prob.photos = activity.photos;
+      }
+
       // add activity object
       user.activity.push(activity);
 
-      // add activity to db
-      user.save(function(err) {
-        if(err) {
-          return res.status(400).send({
-            message: errorHandler.getErrorMessage(err)
-          });
-        } else {
-          res.jsonp(user);
-        }
-      });
+      next();
 
     });  // end of Q.allSettled
 

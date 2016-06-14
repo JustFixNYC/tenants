@@ -15,7 +15,7 @@ angular.module('core').directive('jumpTo', ['$document', function($document) {
 
         $element.bind('click', function(e) {
           $document.scrollToElement(someElement, offset, duration, easing);
-        });    
+        });
     }
   };
 }]);

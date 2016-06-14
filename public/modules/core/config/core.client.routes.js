@@ -18,14 +18,43 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 		$urlRouterProvider.otherwise('/');
 
 		// Home state routing
-		$stateProvider.
-		state('home', {
+		$stateProvider
+		.state('landing', {
 			url: '/',
-			templateUrl: 'modules/core/views/home.client.view.html'
+			templateUrl: 'modules/core/views/landing.client.view.html',
+			data: {
+				disableBack: true
+			},
+			globalStyles: 'landing white-bg'
+		})
+		.state('not-found', {
+			url: '/not-found',
+			templateUrl: 'modules/core/views/404.client.view.html',
+			data: {
+				disableBack: true
+			}
 		})
 		.state('manifesto', {
 			url: '/manifesto',
-			templateUrl: 'modules/core/views/manifesto.client.view.html'
-		});
+			templateUrl: 'modules/core/views/manifesto.client.view.html',
+			data: {
+				disableBack: true
+			}
+		})
+		.state('home', {
+			url: '/home',
+			templateUrl: 'modules/core/views/home.client.view.html',
+			data: {
+				protected: true,
+				disableBack: true
+			}
+		})
+		.state('contact', {
+			url: '/contact',
+			templateUrl: 'modules/core/views/contact.client.view.html',
+			data: {
+			},
+			globalStyles: 'white-bg'
+		})
 	}
 ]);

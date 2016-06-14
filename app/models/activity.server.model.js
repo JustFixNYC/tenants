@@ -11,11 +11,11 @@ var mongoose = require('mongoose'),
  */
 var ActivitySchema = new Schema({
 
-    date: {
+    startDate: {
       type: Date,
       default: Date.now
     },
-    created: {
+    createdDate: {
       type: Date,
       default: Date.now
     },
@@ -39,7 +39,15 @@ var ActivitySchema = new Schema({
     fields: [{
       title: { type: String },
       value: { type: String }
-    }]
+    }],
+    relatedProblems: [{
+			type: String,
+			ref: 'Problem'
+		}],
+    problems: {
+      type: Schema.Types.Mixed,
+      default: {}
+    }
 });
 
 module.exports = ActivitySchema;

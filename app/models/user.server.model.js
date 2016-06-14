@@ -3,10 +3,12 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
+var _ = require('lodash'),
+    mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     crypto = require('crypto'),
-    ActivitySchema = require('./activity.server.model.js');
+    ActivitySchema = require('./activity.server.model.js'),
+    ProblemSchema = require('./problem.server.model.js');
 
 /**
  * A Validation function for local strategy properties
@@ -26,11 +28,22 @@ var validateLocalStrategyPassword = function(password) {
  * User Schema
  */
 var UserSchema = new Schema({
-  fullName: {
+  firstName: {
     type: String,
     trim: true,
     default: '',
-    validate: [validateLocalStrategyProperty, 'Please fill in your full name']
+    validate: [validateLocalStrategyProperty, 'Please fill in your first name']
+  },
+  lastName: {
+    type: String,
+    trim: true,
+    default: '',
+    validate: [validateLocalStrategyProperty, 'Please fill in your last name']
+  },
+  fullName: {
+    type: String,
+    trim: true,
+    default: ''
   },
   borough: {
     type: String,
@@ -44,14 +57,6 @@ var UserSchema = new Schema({
     type: String,
     default: ''
   },
-  nycha: {
-    type: String,
-    default: ''
-  },
-  issues: {
-    type: Schema.Types.Mixed,
-    default: {}
-  },
   geo: {
     type: Schema.Types.Mixed,
     default: {}
@@ -61,9 +66,20 @@ var UserSchema = new Schema({
     default: []
   }],
   followUpFlags: [{
-    type: String,
-    default: []
+    key: {
+      type: String,
+      default: []
+    },
+    startDate: {
+      type: Date,
+      default: Date.now
+    }
   }],
+  problems: [ProblemSchema],
+  // issues: {
+  //   type: Schema.Types.Mixed,
+  //   default: {}
+  // },
   activity: [ActivitySchema],
   phone: {
     type: String,
@@ -101,10 +117,19 @@ var UserSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  // Saving the user's Letter of Complaint PDF
-  complaintUrl: {
-  	type: String,
-  	default: ''
+  sharing: {
+    enabled: {
+      type: Boolean,
+      default: false
+    },
+    key : {
+      type : String,
+      default: ''
+    }
+  },
+  referral: {
+    type: Schema.Types.Mixed,
+    default: {}
   },
   /* For reset password */
   resetPasswordToken: {
@@ -116,13 +141,52 @@ var UserSchema = new Schema({
 });
 
 /**
- * Hook a pre save method to hash the password
+ * Hook a pre save method to hash the password, and do user updating things
+ * This is pretty nice to have in one spot!
  */
 UserSchema.pre('save', function(next) {
+
   if (this.password && this.password.length > 6) {
     this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
     this.password = this.hashPassword(this.password);
   }
+
+  var userProblems = [];
+  // go through all issues and problems
+  // check to see if the user has:
+  // - selected emergency issues, or not
+  // - completed details for all issues, or not
+  // - if the user hasn't selected any issues
+
+  if(this.problems.length == 0) {
+    _.pull(this.actionFlags, 'hasProblems');
+  } else if(!_.contains(this.actionFlags, 'hasProblems')) {
+    this.actionFlags.push('hasProblems');
+  }
+
+  for(var i = 0; i < this.problems.length; i++) {
+    var problem = this.problems[i];
+    userProblems.push(problem.key);
+    // userIssues[problem.key] = problem.issues;
+
+    for(var j = 0; j < problem.issues.length; j++) {
+
+      if(problem.issues[j].emergency && !_.contains(this.actionFlags, 'hasEmergencyIssues')) {
+        this.actionFlags.push('hasEmergencyIssues');
+      }
+    }
+  }
+
+  // check is everything in userProblems is in actionFlags
+  if(_.intersection(userProblems, this.actionFlags).length == userProblems.length) {
+    if(!_.contains(this.actionFlags, 'allInitial')) this.actionFlags.push('allInitial');
+  } else {
+    _.pull(this.actionFlags, 'allInitial');
+  }
+
+  // check NYCHA housing
+  // if(user.nycha === 'yes') user.actionFlags.push('isNYCHA');
+
   next();
 });
 

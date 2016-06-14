@@ -8,9 +8,11 @@ module.exports = {
   assets: {
     lib: {
       css: [
-        'public/dist/bootstrap.min.css',
-        'public/dist/bootflat.min.css',
-        'public/lib/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.css'
+        'lib/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.css',
+				'public/lib/ui-select/dist/select.min.css',
+				'public/lib/cartodb.js/themes/css/cartodb.css',
+				'https://api.tiles.mapbox.com/mapbox-gl-js/v0.14.3/mapbox-gl.css',
+        'public/dist/vendor.min.css'
       ],
       js: [
         'public/dist/vendor.min.js'

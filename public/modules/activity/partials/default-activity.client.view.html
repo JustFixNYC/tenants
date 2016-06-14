@@ -1,0 +1,24 @@
+<div class="activity-panel-default">
+
+  <!-- <div data-ng-if="compareDates(activity.startDate, activity.createdDate)">
+    <p><b>Date of Action:</b> {{ activity.startDate | date:'longDate' }}</p>
+  </div> -->
+
+  <div data-ng-if="activity.fields.length">
+    <p data-ng-repeat="field in activity.fields"><b>{{field.title}}</b> {{field.value}}</p>
+  </div>
+
+  <div data-ng-if="activity.relatedProblems.length">
+    <p><b>Areas:</b> <span data-ng-repeat="problem in activity.relatedProblems">{{::problem}}<span ng-if="!$last">, </span></span></p>
+  </div>
+
+  <p ng-if="activity.description">{{ ::activity.description }}</p>
+
+  <div class="row thumb-list">
+      <div data-ng-repeat="photo in activity.photos" class="col-xs-4">
+          <a ng-click="openLightboxModal(activity.photos, $index)">
+              <img ng-src="{{ activity.photos[$index].thumb }}" alt="{{ activity.key }}" class="img-thumbnail" />
+          </a>
+      </div>
+  </div>
+</div>

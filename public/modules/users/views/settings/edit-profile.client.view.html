@@ -1,61 +1,89 @@
 <!-- <section class="row" data-ng-controller="SettingsController"> -->
 <section data-ng-controller="SettingsController">
-  <h3 class="col-md-12 text-center">Edit your profile</h3>
-  <div class="col-md-12">
+  <div class="page-header">
+  	<h1>Edit your profile</h1>
+  </div>
+  <div class="row">
   <!-- <div class="col-xs-offset-2 col-xs-8 col-md-offset-5 col-md-12"> -->
-    <form name="userForm" data-ng-submit="updateUserProfile(userForm.$valid)" class="signin form-horizontal edit-profile-form" autocomplete="off">
-      <fieldset>
-        <div class="form-group">
-          <label for="firstName">Full Name</label>
-          <input type="text" id="fullName" name="fullName" class="form-control" data-ng-model="user.fullName" placeholder="Full Name">
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="phone">Phone Number</label>
-            <div class="controls">
-                <input type="tel" data-ng-model="user.phone" id="phone" class="form-control" placeholder="Please enter your phone number." phone-input>
-            </div>
-        </div>       
-        <div class="form-group">
-            <label class="control-label" for="borough">Borough</label>
-            <div class="controls">
-                <label class="btn btn-default" data-ng-model="user.borough" btn-radio="'Brooklyn'">Brooklyn</label>
-                <label class="btn btn-default" data-ng-model="user.borough" btn-radio="'Queens'">Queens</label>
-                <label class="btn btn-default" data-ng-model="user.borough" btn-radio="'Manhattan'">Manhattan</label>
-                <label class="btn btn-default" data-ng-model="user.borough" btn-radio="'Bronx'">Bronx</label>
-                <label class="btn btn-default" data-ng-model="user.borough" btn-radio="'Staten Island'">Staten Island</label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="address">Street Address</label>
-            <div class="controls">
-                <input type="text" data-ng-model="user.address" id="address" class="form-control" placeholder="Example: 456 23rd St or 45-51 Myrtle Ave">
-            </div>
-        </div>     
-        <div class="form-group">
-            <label class="control-label" for="unit">Apartment #</label>
-            <div class="controls">
-                <input type="text" data-ng-model="user.unit" id="unit" class="form-control" placeholder="Example: A or C4">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="nycha">NYCHA housing</label>
-            <div class="controls">
-                <div class="btn-group">
-                    <label class="btn btn-default" data-ng-model="user.nycha" btn-radio="'yes'">Yes</label>
-                    <label class="btn btn-default" data-ng-model="user.nycha" btn-radio="'no'">No</label>            
-                </div>
-            </div>
-        </div>
-        <div class="text-center form-group">
-          <button type="submit" class="btn btn-large btn-primary">Save Profile</button>
-        </div>
-        <div data-ng-show="success" class="text-center text-success">
-          <strong>Profile Saved Successfully</strong>
-        </div>
-        <div data-ng-show="error" class="text-center text-danger">
-          <strong data-ng-bind="error"></strong>
-        </div>
-      </fieldset>
+    <form name="userForm" data-ng-submit="updateUserProfile(userForm.$valid)" class="signin form-horizontal edit-profile-form col-xs-12 col-md-12" autocomplete="off">
+      <div class="form-group" ng-class="{ 'has-error' : userForm.$submitted && userForm.firstName.$invalid }">
+				<label class="control-label" for="firstName">First Name</label>
+				<input class="form-control" type="text" placeholder="First Name" name="firstName" ng-model="user.firstName" required>
+				<div ng-show="userForm.$submitted || userForm.firstName.$touched">
+					<p ng-show="userForm.firstName.$error.required" class="text-danger">Please enter a first name.</p>
+				</div>
+			</div>
+
+			<div class="form-group" ng-class="{ 'has-error' : userForm.$submitted && userForm.lastName.$invalid }">
+				<label class="control-label" for="lastName">Last Name</label>
+				<input class="form-control" type="text" placeholder="Last Name" name="lastName" ng-model="user.lastName" required>
+				<div ng-show="userForm.$submitted || userForm.lastName.$touched">
+					<p ng-show="userForm.lastName.$error.required" class="text-danger">Please enter a last name.</p>
+				</div>
+			</div>
+
+			<div class="form-group" ng-class="{ 'has-error' : userForm.$submitted && userForm.borough.$invalid }">
+				<label class="control-label" for="borough">Borough</label>
+				<div class="controls">
+					<label class="btn btn-default" ng-model="user.borough" btn-radio="'Brooklyn'" name="borough" required>Brooklyn</label>
+					<label class="btn btn-default" ng-model="user.borough" btn-radio="'Queens'" name="borough" required>Queens</label>
+					<label class="btn btn-default" ng-model="user.borough" btn-radio="'Bronx'" name="borough" required>Bronx</label>
+					<label class="btn btn-default" ng-model="user.borough" btn-radio="'Manhattan'" name="borough" required>Manhattan</label>
+					<label class="btn btn-default" ng-model="user.borough" btn-radio="'Staten Island'" name="borough" required>Staten Island</label>
+				</div>
+				<div ng-show="userForm.$submitted || userForm.borough.$touched">
+					<p ng-show="userForm.borough.$error.required" class="text-danger">Please enter your borough.</p>
+				</div>
+			</div>
+
+			<div class="form-group" ng-class="{ 'has-error' : userForm.$submitted && userForm.address.$invalid }">
+				<label class="control-label" for="address">Street Address</label>
+				<input class="form-control" type="text" placeholder="Street Address" name="address" ng-model="user.address" required>
+				<div ng-show="userForm.$submitted || userForm.address.$touched">
+					<p ng-show="userForm.address.$error.required" class="text-danger">Please enter your street address.</p>
+				</div>
+			</div>
+
+			<div class="form-group apt-field" ng-class="{ 'has-error' : userForm.$submitted && userForm.unit.$invalid }">
+				<label class="control-label" for="unit">Apartment #</label>
+				<input class="form-control" type="text" placeholder="Apt #" name="unit" ng-model="user.unit" required>
+				<div ng-show="userForm.$submitted || userForm.unit.$touched">
+					<p ng-show="userForm.unit.$error.required" class="text-danger">Please enter your apartment number.</p>
+				</div>
+			</div>
+
+      <div class="form-group">
+				<fieldset>
+						<div data-ng-show="error.errors" class="alert alert-danger">
+								<strong data-ng-repeat="err in error.errors">
+									<p data-ng-bind="err.message"></p>
+									Please <a ui-sref="contact" target="_blank">Contact Us</a> if you need assistance.
+								</strong>
+						</div>
+						<div data-ng-show="error && !error.errors" class="alert alert-danger">
+								<strong>
+									<p data-ng-bind="error"></p>
+									Please <a ui-sref="contact" target="_blank">Contact Us</a> if you need assistance.
+								</strong>
+						</div>
+						<div data-ng-show="userError" class="alert alert-danger">
+								<strong>
+									Please complete the above fields in order to update your account!
+								</strong>
+						</div>
+				</fieldset>
+
+		    <div class="row">
+		      <div class="col-xs-4">
+		        <a ui-sref="onboarding.problems" class="btn btn-block btn-default">
+		          Back
+		        </a>
+		      </div>
+		      <div class="col-xs-8">
+		        <input type="submit"  class="btn btn-primary btn-block pull-right" value="Update Account">
+		      </div>
+		    </div>
+			</div>
     </form>
   </div>
 </section>

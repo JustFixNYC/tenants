@@ -1,0 +1,28 @@
+<div class="kyr-detail">
+	<h1>{{kyr.title}}</h1>
+	<p><i>{{kyr.excerpt}}</i></p>
+	<div class="section" ng-class="{hidden: section.readMore && expand == false}">
+		<div data-ng-bind-html="content" compile-template></div>
+	</div>
+	<div class="learn-more-block" ng-class="{hidden: canExpand == true && expand == false}">
+		<p><b>Want to learn more?</b></p>
+		<a class="learn-more-kyr text-link" ng-repeat="block in kyr.learnMore track by $index" target="_blank" ng-href="{{block.link}}">{{$index + 1}}. {{block.title}}</a>
+	</div>
+	<div ng-hide="expand || !canExpand">
+		<button class="btn btn-default col-xs-12" ng-click="expand = !expand">
+			<span ng-show="!expand"><strong>READ MORE</strong></span>
+		</button>
+	</div>
+	<div class="clearfix"></div>
+
+
+	<div class="prev-next-wrapper">
+		<a class="prev pull-left" ng-show="kyr.prev" ng-href="#!/kyr/{{kyr.prev}}">
+			<span class="glyphicon glyphicon-menu-left"></span> Previous
+		</a>
+		<a class="next pull-right" ng-show="kyr.next" ng-href="#!/kyr/{{kyr.next}}">
+			Next <span class="glyphicon glyphicon-menu-right"></span>
+		</a>
+		<div class="clearfix"></div>
+	</div>
+</div>

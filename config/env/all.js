@@ -15,8 +15,9 @@ module.exports = {
 		  css: [
 		    'lib/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.css',
 				'public/lib/ui-select/dist/select.min.css',
-		    'public/styles/bootstrap.css',
-		    'public/styles/bootflat.css'
+				'public/lib/cartodb.js/themes/css/cartodb.css',
+				'https://api.tiles.mapbox.com/mapbox-gl-js/v0.14.3/mapbox-gl.css',
+		    'public/styles/vendor.css'
 		  ],
 		  js: [
 		    'public/lib/angular/angular.js',
@@ -41,7 +42,11 @@ module.exports = {
 				'public/lib/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
 				'public/lib/angular-translate-storage-local/angular-translate-storage-local.js',
 				'public/lib/angular-translate-handler-log/angular-translate-handler-log.js',
-				'public/lib/angular-dynamic-locale/src/tmhDynamicLocale.js'
+				'public/lib/angular-dynamic-locale/src/tmhDynamicLocale.js',
+				'public/lib/cartodb.js/cartodb.js',
+				'public/external/mapbox-gl.js',
+				'public/external/leaflet-mapbox-gl.js',
+				'public/lib/deep-diff/releases/deep-diff-0.3.3.min.js'
 		  ]
 	  },
 	  css: [
