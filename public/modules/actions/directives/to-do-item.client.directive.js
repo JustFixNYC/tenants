@@ -130,7 +130,7 @@ angular.module('actions')
 
             var activity = new Activity(scope.newActivity);
 
-            console.log('create activity post creation', scope.newActivity);
+            console.log('create activity post creation', activity);
 
             activity.$save(function(response) {
 
