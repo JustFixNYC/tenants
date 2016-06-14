@@ -156,6 +156,11 @@ ApplicationConfiguration.registerModule('onboarding');
 ApplicationConfiguration.registerModule('problems');
 'use strict';
 
+// Use application configuration module to register a new module
+ApplicationConfiguration.registerModule('tutorial');
+
+'use strict';
+
 // Use Applicaion configuration module to register a new module
 ApplicationConfiguration.registerModule('users');
 'use strict';
@@ -251,8 +256,8 @@ angular.module('actions').controller('AddDetailsController', ['$scope', '$filter
 
 'use strict';
 
-angular.module('actions').controller('ComplaintLetterController', ['$rootScope', '$scope', '$sce', '$modalInstance', 'newActivity', 'Pdf', 'Authentication', '$window',
-	function ($rootScope, $scope, $sce, $modalInstance, newActivity, Pdf, Authentication, $window) {
+angular.module('actions').controller('ComplaintLetterController', ['$rootScope', '$scope', '$sce', '$timeout', '$modalInstance', 'newActivity', 'Pdf', 'Authentication', '$window',
+	function ($rootScope, $scope, $sce, $timeout, $modalInstance, newActivity, Pdf, Authentication, $window) {
 
 	  $scope.newActivity = newActivity;
 		$scope.newActivity.fields = [];
@@ -275,6 +280,17 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 
 
 	  // var user = Authentication.user;
+		var timerCountdown = 30;
+		var setCreationTimer = function() {
+			$timeout(function () {
+				if(!$scope.status.created) {
+					$scope.status.loading = false;
+					$scope.status.error = true;
+	  			$scope.errorCode = 'Request for the letter took too long to respond';
+				}
+			}, timerCountdown * 1000);
+		};
+
 
 	  $scope.createLetter = function () {
 
@@ -282,11 +298,11 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 
 	  	Pdf.createComplaint($scope.landlord, $scope.accessDates).then(
 	  		function success(data) {
+					setCreationTimer();
 					$scope.status.loading = false;
 					$scope.status.created = true;
 					$scope.letterUrl = data;
 					$scope.newActivity.fields.push({ title: 'letterURL', value: data });
-	  			console.log(data);
 	  		},
 	  		function failure(error) {
 					$scope.status.loading = false;
@@ -294,9 +310,6 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 	  			$scope.errorCode = error;
 	  		}
 	  	);
-
-
-
 
 	    // $modalInstance.close($scope.newActivity);
 	  };
@@ -488,7 +501,7 @@ angular.module('actions')
           date: '',
           title: 'Status Update',
           key: 'statusUpdate',
-          problems: [],
+          relatedProblems: [],
           photos: []
         };
 
@@ -507,16 +520,16 @@ angular.module('actions')
         scope.selectProblem = function(problem) {
 
           if(!this.isSelectedProblem(problem)) {
-            scope.newActivity.problems.push(problem);
+            scope.newActivity.relatedProblems.push(problem);
           } else {
-            var i = scope.newActivity.problems.indexOf(problem);
-            scope.newActivity.problems.splice(i, 1);
+            var i = scope.newActivity.relatedProblems.indexOf(problem);
+            scope.newActivity.relatedProblems.splice(i, 1);
             // $scope.checklist[area].numChecked--;
           }
         };
         scope.isSelectedProblem = function(problem) {
           // if(!$scope.newIssue.issues[area]) return false;
-          return scope.newActivity.problems.indexOf(problem) !== -1;
+          return scope.newActivity.relatedProblems.indexOf(problem) !== -1;
         };
 
         scope.addPhoto = function(file) {
@@ -557,12 +570,13 @@ angular.module('actions')
 
               $rootScope.loading = false;
               scope.status.completed = true;
+              scope.status.formSubmitted = false;
               scope.status.expanded = false;
               scope.newActivity = {
                 date: '',
                 title: 'Status Update',
                 key: 'statusUpdate',
-                problems: [],
+                relatedProblems: [],
                 photos: []
               };
 
@@ -605,7 +619,6 @@ angular.module('actions')
         if(!scope.action.completed) scope.action.completed = false;
 
         scope.newActivity = {
-          startDate: '',
           title: scope.action.activityTitle,
           key: scope.action.key
         };
@@ -771,8 +784,8 @@ angular.module('actions').factory('Actions', ['$resource',
 ]);
 'use strict';
 
-angular.module('actions').factory('Messages', ['$http', '$q', '$filter', 'Authentication',
-  function Issues($http, $q, $filter, Authentication) {
+angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$location', 'Authentication',
+  function Issues($http, $q, $filter, $location, Authentication) {
 
     var user = Authentication.user;
     var request = function(url) {
@@ -788,15 +801,14 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', 'Authen
       return deferred.promise;
     };
 
-    var getSMSMessage = function(type) {
+    var getShareMessage = function(type) {
 
-      console.log(user);
       var message;
       switch(type) {
         case 'share':
         message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
            ' I\'m experiencing issues with my apartment and would like to get them resolved.' +
-           ' A link to my Case History can be found at http://justfix.nyc/share/' + user.sharing.key + '. Thank you!';
+           ' A link to my Case History can be found at http://' + $location.host() + '/share/' + user.sharing.key + '. Thank you!';
         break;
         default:
           message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
@@ -882,7 +894,7 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', 'Authen
     }
 
     return {
-      getSMSMessage: getSMSMessage,
+      getShareMessage: getShareMessage,
       getRentalHistoryMessage: getRentalHistoryMessage,
       getLandlordEmailMessage: getLandlordEmailMessage,
       getLandlordEmailSubject: getLandlordEmailSubject
@@ -894,6 +906,8 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', 'Authen
 
 angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$filter',
   function Pdf($http, $q, Authentication, $filter) {
+
+    var user = Authentication.user;
 
   	var assemble = function(landlordName, landlordAddr) {
 
@@ -944,9 +958,10 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
     var createComplaint = function(landlord, accessDates) {
 
       var deferred = $q.defer();
-    	var user = Authentication.user;
 
       var assembledObject = assemble(landlord.name, landlord.address);
+      // Hmm, handle this differently? pass into assembled object, maybe?
+      assembledObject.accessDates = accessDates;
 
       $http({
 	  		method: 'POST',
@@ -1051,7 +1066,6 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
 
     $scope.authentication = Authentication;
     $scope.location = $location.host();
-    console.log($scope.location);
 
     $scope.shareCollapsed = false;
 
@@ -1284,8 +1298,16 @@ angular.module('admin').factory('Referrals', ['$resource',
 angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
   function($rootScope, $state, $window, Authentication) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+
+      if(toState.globalStyles) {
+        $rootScope.globalStyles = toState.globalStyles;
+      } else {
+        $rootScope.globalStyles = '';
+      }
+
       if(Authentication.user && toState.name === 'landing') {
         event.preventDefault();
+        $rootScope.globalStyles = '';
         $state.go('home');
       }
       if(!Authentication.user && toState.data && toState.data.protected) {
@@ -1293,11 +1315,6 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
         $state.go('signin');
       }
 
-      if(toState.globalStyles) {
-        $rootScope.globalStyles = toState.globalStyles;
-      } else {
-        $rootScope.globalStyles = '';
-      }
     });
 
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
@@ -1414,6 +1431,9 @@ angular.module('core').controller('FooterController', ['$scope', '$window', 'Aut
         case 'kyr':
           $scope.footerLinks = [ links.actions, links.help ];
           break;
+        case 'kyrDetail':
+        	$scope.footerLinks = [ links.actions, links.help ];
+        	break;
         case 'findHelp': case 'listActions':
           $scope.footerLinks = [ links.activity, links.kyr ];
           break;
@@ -1518,6 +1538,25 @@ angular.module('core').directive('bottomOnClick', ['$document', '$timeout', func
     }]
   };
 }]);
+
+'use strict';
+
+angular.module('core')
+  .directive('emailMessage', ['deviceDetector', 'Authentication', 'Messages',
+  function (deviceDetector, Authentication, Messages) {
+    return {
+      restrict: 'A',
+      scope: false,
+      link: function (scope, element, attrs) {
+
+        var msg = Messages.getShareMessage("share");
+        var href = 'mailto:' + encodeURI('?subject=' + Authentication.user.fullName + ' - JustFix.nyc Case History&body=' + msg);
+        attrs.$set('href', href);
+
+      }
+    };
+
+  }]);
 
 'use strict';
 
@@ -1772,6 +1811,33 @@ angular.module('core').directive('phoneInput', ["$filter", "$browser", function(
 }]);
 'use strict';
 
+angular.module('core')
+  .directive('printButton', ['deviceDetector', '$window',
+  function (deviceDetector, $window) {
+    return {
+      restrict: 'A',
+      scope: false,
+      link: function (scope, element, attrs) {
+
+        if(!deviceDetector.isDesktop()) {
+          element.css("display", "none");
+        } else {
+          element.addClass("print-button");
+        }
+
+
+        element.on('click', function (event) {
+          $window.print();
+        });
+
+
+      }
+    };
+
+  }]);
+
+'use strict';
+
 angular.module('core').directive('propagateEvent', function () {
     return {
       restrict: 'A',
@@ -1805,9 +1871,9 @@ angular.module('core')
 
         var href = 'sms:';
         var type = attrs.type;
-        var msg = Messages.getSMSMessage(type);
+        var msg = Messages.getShareMessage(type);
 
-        href += Authentication.user.referral.phone;
+        // href += Authentication.user.referral.phone;
 
         if(deviceDetector.os === 'ios') {
           if(isIOS8()) href += '&';
@@ -1819,26 +1885,11 @@ angular.module('core')
           href = href + '?body=' + msg;
           attrs.$set('href', href);
         } else {
+          href = href + '?body=' + msg;
           console.log(href);
           console.log('If you were using a phone, the message would be: \n\n' + msg);
         }
 
-
-
-        element.on('click', function (event) {
-
-          // var href = '';
-          // if(type === 'sms') href = generateURL();
-
-          //if(href.length) window.location.href = href;
-        });
-        // scope.$watch(scope.superphone, function() {
-        //
-        //   console.log('y');
-        //   generateURL();
-        // });
-
-       // element.bind('click', function (event) { console.log('generate'); smsHref = generateURL();  });
 
       }
     };
@@ -2380,7 +2431,7 @@ angular.module('findhelp').directive('cartoMap', ['$rootScope', 'CartoDB', funct
           var query, cartocss;
 
           if(type == 'legal' || type == 'community') {
-            query = "SELECT *, row_number() OVER (ORDER BY dist) as rownum FROM ( SELECT loc.cartodb_id, loc.the_geom, loc.the_geom_webmercator, round( (ST_Distance( ST_GeomFromText('Point(" + lng + " " + lat + ")', 4326)::geography, loc.the_geom::geography ) / 1609)::numeric, 1 ) AS dist FROM nyc_cbos_locations AS loc, nyc_cbos_service_areas AS sa WHERE ST_Intersects( ST_GeomFromText( 'Point(" + lng + " " + lat + ")', 4326 ), sa.the_geom ) AND loc.organization = sa.organization AND loc.org_type IN ('" + type + "') ORDER BY dist ASC ) T LIMIT 10";
+            query = "SELECT *, row_number() OVER (ORDER BY dist) as rownum FROM ( SELECT loc.cartodb_id, loc.the_geom, loc.the_geom_webmercator, round( (ST_Distance( ST_GeomFromText('Point(" + lng + " " + lat + ")', 4326)::geography, loc.the_geom::geography ) / 1609)::numeric, 1 ) AS dist FROM nyc_cbos_locations AS loc, nyc_cbos_service_areas AS sa WHERE ST_Intersects( ST_GeomFromText( 'Point(" + lng + " " + lat + ")', 4326 ), sa.the_geom ) AND loc.organization = sa.organization AND loc.org_type IN ('" + type + "') ORDER BY dist ASC ) T LIMIT 5";
             cartocss = "#nyc_cbos_locations{marker-fill-opacity:.9;marker-line-color:#FFF;marker-line-width:1;marker-line-opacity:1;marker-placement:point;marker-type:ellipse;marker-width:10;marker-fill:#F60;marker-allow-overlap:true}#nyc_cbos_locations::labels{text-name:[rownum];text-face-name:'DejaVu Sans Book';text-size:20;text-label-position-tolerance:10;text-fill:#000;text-halo-fill:#FFF;text-halo-radius:2;text-dy:-10;text-allow-overlap:true;text-placement:point;text-placement-type:simple}";
           } else {
             query = "SELECT * FROM nyc_cbos_locations";
@@ -2441,7 +2492,7 @@ angular.module('findhelp')
     return {
       queryByLatLng: function(lat, lng, type) {
         // var query = "SELECT *, row_number() OVER (ORDER BY dist) as rownum FROM ( SELECT bcl.organization, bcl.contact_information, bcl.address, bcl.services, round( (ST_Distance( ST_GeomFromText('Point(" + lng + " " + lat + ")', 4326)::geography, bcl.the_geom::geography ) / 1609)::numeric, 1 ) AS dist FROM brooklyn_cbos_locations AS bcl, brooklyn_cbos AS bc WHERE ST_Intersects( ST_GeomFromText( 'Point(" + lng + " " + lat + ")', 4326 ), bc.the_geom ) AND bc.cartodb_id = bcl.cartodb_id AND bc.service_area_type " + boroughString + " IN ('borough') ORDER BY dist ASC ) T";
-        var query = "SELECT *, row_number() OVER (ORDER BY dist) as rownum FROM ( SELECT loc.organization, loc.contact_information, loc.address, loc.services, round( (ST_Distance( ST_GeomFromText('Point(" + lng + " " + lat + ")', 4326)::geography, loc.the_geom::geography ) / 1609)::numeric, 1 ) AS dist FROM nyc_cbos_locations AS loc, nyc_cbos_service_areas AS sa WHERE ST_Intersects( ST_GeomFromText( 'Point(" + lng + " " + lat + ")', 4326 ), sa.the_geom ) AND loc.organization = sa.organization AND loc.org_type IN ('" + type + "') ORDER BY dist ASC ) T LIMIT 10";
+        var query = "SELECT *, row_number() OVER (ORDER BY dist) as rownum FROM ( SELECT loc.organization, loc.contact_information, loc.address, loc.services, round( (ST_Distance( ST_GeomFromText('Point(" + lng + " " + lat + ")', 4326)::geography, loc.the_geom::geography ) / 1609)::numeric, 1 ) AS dist FROM nyc_cbos_locations AS loc, nyc_cbos_service_areas AS sa WHERE ST_Intersects( ST_GeomFromText( 'Point(" + lng + " " + lat + ")', 4326 ), sa.the_geom ) AND loc.organization = sa.organization AND loc.org_type IN ('" + type + "') ORDER BY dist ASC ) T LIMIT 5";
         //console.log(query);
         return cartoSQL.execute(query);
       },
@@ -3017,11 +3068,6 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
         url: '/personal',
         templateUrl: 'modules/onboarding/partials/onboarding-details.client.view.html',
         onboarding: true
-      })
-      .state('onboarding.tutorial', {
-        url: '/tutorial',
-        templateUrl: 'modules/onboarding/partials/onboarding-tutorial.client.view.html',
-        onboarding: true
       });
 
 }]);
@@ -3124,7 +3170,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 					$rootScope.loading = false;
 					$scope.authentication.user = response;
 					console.log('create account post save', response);
-					$location.path('/onboarding/tutorial');
+					$location.path('/tutorial');
 
 				}).error(function(err) {
 					$rootScope.loading = false;
@@ -3342,15 +3388,11 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 
 						var newProb = {};
 
-						newProb.startDate = new Date();
-				    newProb.createdDate = new Date();
 				   	newProb.key = problem.key;
 				    newProb.title = problem.title;
 				    newProb.icon = problem.icon;
-				    newProb.description = '';
 				    newProb.issues = [];
 				    newProb.photos = [];
-				    newProb.relatedActivities = [];
 
 				    return newProb;
 					};
@@ -3639,6 +3681,67 @@ angular.module('onboarding').factory('Problems', ['$http', '$q', 'Authentication
 
 'use strict';
 
+//Setting up route
+angular.module('tutorial').config(['$stateProvider', '$urlRouterProvider',
+	function($stateProvider, $urlRouterProvider) {
+		// Tutorial state routing
+
+		$urlRouterProvider.when('/tutorial', '/tutorial/intro');
+
+
+
+		$stateProvider
+		.state('tutorial', {
+      url: '/tutorial',
+			templateUrl: 'modules/tutorial/views/tutorial.client.view.html',
+      abstract: true,
+      data: {
+        disableBack: true
+      }
+    })
+		.state('tutorial.intro', {
+			url: '/intro',
+			templateUrl: 'modules/tutorial/partials/intro.client.view.html'
+		})
+		.state('tutorial.main', {
+			url: '/main',
+			templateUrl: 'modules/tutorial/partials/tutorial.client.view.html',
+			globalStyles: 'no-header-spacing'
+		});
+	}
+]);
+'use strict';
+
+angular.module('tutorial').controller('TutorialController', ['$scope', '$sce',
+	function($scope, $sce) {
+
+		// Just an easier way to handle this
+		$scope.slides = [
+			{
+	      image: 'modules/tutorial/img/1_Gatherevidence_crop.png',
+	      text: $sce.trustAsHtml('The more evidence you upload, the stronger your case will be. Start with the <strong>Take Action</strong> section to add photos, file 311 complaints and send notices to your landlord.'),
+	      title: 'Gather Evidence'
+      },
+			{
+	      image: 'modules/tutorial/img/2_Statusupdate_crop.png',
+	      text: $sce.trustAsHtml('Add a <strong>Status Update</strong> at any time from the dashboard. This will help you keep a log of any updates or communication with your landlord.'),
+	      title: 'Add Status Updates'
+      },
+			{
+	      image: 'modules/tutorial/img/3_Casehistory_crop.png',
+	      text: $sce.trustAsHtml('Everything you do is saved in your <strong>Case History</strong>. You can print it for housing court or share it with neighbors and advocates by using the Share URL.'),
+	      title: 'Share Your Case History'
+      },
+			{
+	      image: 'modules/tutorial/img/4_Knowyourrights_crop.png',
+	      text: $sce.trustAsHtml('It\'s important to stay informed about your rights as a tenant. Go to <strong>Know Your Rights</strong> for articles and links to get more information.'),
+	      title: 'Know Your Rights'
+      }
+		];
+	}
+]);
+'use strict';
+
 // Config HTTP Error Handling
 angular.module('users').config(['$httpProvider',
 	function($httpProvider) {
@@ -3818,8 +3921,8 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
 ]);
 'use strict';
 
-angular.module('users').controller('SettingsController', ['$scope', '$http', '$location', '$filter', 'Users', 'Authentication',
-  function($scope, $http, $location, $filter, Users, Authentication) {
+angular.module('users').controller('SettingsController', ['$scope', '$http', '$location', '$filter', 'Users', 'Authentication', '$rootScope',
+  function($scope, $http, $location, $filter, Users, Authentication, $rootScope) {
     $scope.user = Authentication.user;
     $scope.passwordVerified = false;
     
@@ -3872,28 +3975,28 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
         $scope.success = $scope.error = null;
         var user = new Users($scope.user);
 
-        console.log('user', user);
-        // This is a horrendus patch and needs to be fixed in onboarding
-        user.firstName = user.fullName.split(' ')[0];
-        user.lastName = user.fullName.split(' ')[1];
+        if(isValid) {
 
-        user.$update(function(response) {
-        	console.log(response);
-          $scope.success = true;
-          Authentication.user = response;
-        }, function(response) {
-        	console.log(response);
-          $scope.error = response.data.message.message;
-          // TODO: run the stack up to why this error is so nested
-          if(response.data.message.errors)  {
-          	if(response.data.message.errors.phone) {
-          		$scope.errorPhone = response.data.message.errors.phone.message;
-          	}
-          }
-        });
-      } else {
-        $scope.submitted = true;
-      }
+				$scope.userError = false;
+				$rootScope.loading = true;
+
+				user.$update(function(response) {
+
+					// If successful we assign the response to the global user model
+					$rootScope.loading = false;
+					Authentication.user = response;
+					$location.path('/settings/profile');
+
+				}, function(err) {
+					$rootScope.loading = false;
+					console.log(err);
+        	$scope.error = err;
+				});
+
+				} else {
+					$scope.userError = true;
+				}
+			}
     };
 
     // Change user password
@@ -3904,9 +4007,11 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
         // If successful show success message and clear form
         $scope.success = true;
         $scope.passwordDetails = null;
+				$location.path('/settings/profile');
       }).error(function(response) {
         $scope.error = response.message;
       });
+      return
     };
 
     $scope.verifyPassword = function(password) {
