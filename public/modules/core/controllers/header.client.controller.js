@@ -1,33 +1,54 @@
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', '$window', 'Authentication',
-  function($scope, $window, Authentication) {
+angular.module('core').controller('HeaderController', ['$rootScope', '$scope', '$window', 'Authentication',
+  function($rootScope, $scope, $window, Authentication) {
 
       $scope.authentication = Authentication;
       $scope.window = $window;
 
       // Collapsing the menu after navigation
-      $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-        $scope.state = toState.name;
-        $scope.left = false;
-        $scope.lightBG = false;
+      $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         switch(toState.name) {
           case 'landing':
-            $scope.left = true;
+            $rootScope.headerLeft = true;
+            $rootScope.headerLightBG = false;
             break;
           case 'manifesto':
-            $scope.left = true;
-            $scope.lightBG = true;
+            $rootScope.headerLeft = true;
+            $rootScope.headerLightBG = true;
             break;
           default:
+            $rootScope.headerLeft = false;
+            $rootScope.headerLightBG = false;
             break;
         };
 
-        $scope.showBack = true;
-        if(toState.data && toState.data.disableBack) $scope.showBack = false;
-
-
+        $rootScope.showBack = true;
+        if(toState.data && toState.data.disableBack) $rootScope.showBack = false;
       });
+
+      // $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+      //   console.log(toState.name);
+      //   $scope.state = toState.name;
+      //   $scope.left = false;
+      //   $scope.lightBG = false;
+      //   switch(toState.name) {
+      //     case 'landing':
+      //       $scope.left = true;
+      //       break;
+      //     case 'manifesto':
+      //       $scope.left = true;
+      //       $scope.lightBG = true;
+      //       break;
+      //     default:
+      //       break;
+      //   };
+
+      //   $scope.showBack = true;
+      //   if(toState.data && toState.data.disableBack) $scope.showBack = false;
+      //
+      //
+      // });
 
 
 

@@ -7,12 +7,11 @@
 // });
 
 
-angular.module('activity').controller('ActivityPublicController', ['$scope', '$location', '$http', '$filter', 'Activity', 'Lightbox',
-  function($scope, $location, $http, $filter, Activity, Lightbox) {
+angular.module('activity').controller('ActivityPublicController', ['$scope', '$stateParams', '$state', '$http', '$filter', 'Activity', 'Lightbox',
+  function($scope, $stateParams, $state, $http, $filter, Activity, Lightbox) {
 
-
-    var query = $location.search();
-    if(!query.key) $location.go('/');
+    var query = $stateParams;
+    if(!query.key) $state.go('/');
 
     $scope.list = function() {
       Activity.public({ key: query.key }, function(user) {
