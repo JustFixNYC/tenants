@@ -27,6 +27,8 @@
 .tutorial {
 
 	.main {
+		margin-bottom: 50px;
+
 		@include make-row();
 
 		h1 {
@@ -48,23 +50,19 @@
 	img {
 		margin: auto;
 		text-align: center;
+		max-width: 50%;
 	}
 
 	// style overwrites for the carousel
 	.carousel-control {
-		top: auto;
-		bottom: -20px;
 		opacity: 1;
+		margin: 0 auto;
 		padding: 0 15px;
-		color: $justfix-blue;
+		background-image: none;
+		height: 80%;
+		color: $mediumgray-light;
 		text-shadow: none;
-
-		&.left,
-		&.right {
-			background-image: none;
-			margin: auto;
-			cursor: pointer;
-		}
+		cursor: pointer;
 
 		&.left {
 			left: 20px;
@@ -84,7 +82,9 @@
 	}
 
 	.carousel-indicators {
-		bottom: -29px;
+		position: relative;
+		bottom: 0px;
+    padding: 11px; // fit size w/ button elem for last slide
 		margin-bottom: 0px;
 
 		li {
@@ -117,14 +117,15 @@
 		.text {
 			margin: 0 15px;
 			padding: 2em 30px;
+			min-height: 8.75em; // Container changes size depending on content... totally not a fan of this 
+
+			@media (max-width: $screen-xs-max) {
+				min-height: 12.5em;
+			}
 		}
 	}
 
 	.btn {
-		position: absolute;
-		left: 50%;
-
-		@include transform(translateX(-50%));
 	}
 
 }

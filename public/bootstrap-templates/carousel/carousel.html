@@ -3,7 +3,9 @@
   <a 
   	class="left carousel-control" 
   	ng-click="prev()" 
-  	ng-show="slides.length > 1"> <!-- ng-hide="isActive(slides[slides.length -1])" -->
+  	ng-show="slides.length > 1" 
+		ng-hide="isActive(slides[0])"
+  	> <!--  -->
   	<span class="glyphicon glyphicon-chevron-left"></span>
   </a>
   <ol 
@@ -19,7 +21,8 @@
   	class="right carousel-control" 
   	ng-click="next()" 
   	ng-show="slides.length > 1" 
-  	><!-- ng-hide="isActive(slides[slides.length -1])" -->
+  	ng-hide="isActive(slides[slides.length -1])"
+  	>
   	<span class="glyphicon glyphicon-chevron-right"></span>
   </a>
   <a 
