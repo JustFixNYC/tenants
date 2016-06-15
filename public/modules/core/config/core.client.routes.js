@@ -15,7 +15,8 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 
 
 		// Redirect to home view when route not found
-		$urlRouterProvider.otherwise('/');
+		// $urlRouterProvider.otherwise('/');
+		$urlRouterProvider.otherwise('/not-found');
 
 		// Home state routing
 		$stateProvider

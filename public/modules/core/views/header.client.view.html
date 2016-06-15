@@ -19,6 +19,9 @@
 				<a class="header-btn pull-right glyphicon glyphicon-cog"
 					 ui-sref="admin"
 					 ng-if="authentication.user && authentication.user.roles.indexOf('admin') !== -1"></a>
+			 <a class="header-btn pull-right header-btn-text"
+					 ui-sref="signin"
+					 ng-if="!authentication.user && state == 'landing'">Sign In</a>
 				<a class="header-btn header-home pull-right glyphicon glyphicon-th"
 					 ui-sref="home"
 					 ng-if="authentication.user && state != 'home'"></a>

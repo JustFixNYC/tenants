@@ -7,53 +7,55 @@
 
 
   <div class="grid">
-    <a class="col-xs-6 col-sm-4" ui-sref="listActions">
+    <a class="col-xs-6 col-sm-3" ui-sref="listActions">
       <img src="/modules/core/img/sections/action.svg" alt="Take Action" />
       Take Action
     </a>
-    <a class="col-xs-6 col-sm-4" ui-sref="listActivity">
+    <a class="col-xs-6 col-sm-3" ui-sref="listActivity">
       <img src="/modules/core/img/sections/history.svg" alt="Case History" />
       Case History
     </a>
-    <a class="col-xs-6 col-sm-4" ui-sref="updateProblems">
+    <a class="col-xs-6 col-sm-3" ui-sref="updateProblems">
       <img src="/modules/core/img/sections/issues.svg" alt="Issue Checklist" />
       Issue Checklist
     </a>
-    <a class="col-xs-6 col-sm-4" ui-sref="settings.profile">
+    <a class="col-xs-6 col-sm-3" ui-sref="settings.profile">
       <img src="/modules/core/img/sections/profile.svg" alt="Profile" />
       Profile
     </a>
-    <a class="col-xs-6 col-sm-4" ui-sref="findHelp">
+    <a class="col-xs-6 col-sm-3" ui-sref="findHelp">
       <img src="/modules/core/img/sections/help.svg" alt="Find Help" />
       Find Help
     </a>
-    <a class="col-xs-6 col-sm-4" ui-sref="kyr">
+    <a class="col-xs-6 col-sm-3" ui-sref="kyr">
       <img src="/modules/core/img/sections/kyr.svg" alt="Know Your Rights" />
       Know Your Rights
     </a>
   </div>
 
-  <div class="section-header" ng-click="shareCollapsed = !shareCollapsed">
+  <!-- <div class="section-header" ng-click="shareCollapsed = !shareCollapsed"> -->
+  <div class="section-header">
     <h2>Advocate Information
-      <span class="pull-right glyphicon" ng-class="shareCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span>
+      <!-- <span class="pull-right glyphicon" ng-class="shareCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span> -->
     </h2>
   </div>
-  <div class="share-section" collapse="shareCollapsed">
-    <p class="lead"><b>
+  <!-- <div class="share-section" collapse="shareCollapsed"> -->
+  <div class="share-section">
+    <h2>
       {{ ::authentication.user.referral.name }}<br />
       {{ ::authentication.user.referral.organization }}<br />
       {{ ::authentication.user.referral.phone | tel }}<br />
       {{ ::authentication.user.referral.email }}
-    </b></p>
+    </h2>
     <div class="row share-controls">
       <a class="btn btn-success btn-block" ng-href="tel:{{authentication.user.referral.phone}}">
-          Call {{ ::authentication.user.referral.name }}
+          Call {{ ::authentication.user.referral.name | firstname }}
       </a>
     </div>
   </div>
   <br />
   <div class="row">
-    <a class="btn btn-block btn-primary" href="/auth/signout">Sign Out</a>
+    <a class="btn btn-block btn-primary" href="/api/auth/signout" target="_self">Sign Out</a>
   </div>
 
 

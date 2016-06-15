@@ -17,6 +17,7 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
         $state.go('home');
       }
       if(!Authentication.user && toState.data && toState.data.protected) {
+      // if(toState.data && toState.data.protected) {
         event.preventDefault();
         $state.go('signin');
       }

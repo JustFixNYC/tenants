@@ -40,22 +40,6 @@ angular.module('core')
         }
 
 
-
-        element.on('click', function (event) {
-
-          // var href = '';
-          // if(type === 'sms') href = generateURL();
-
-          //if(href.length) window.location.href = href;
-        });
-        // scope.$watch(scope.superphone, function() {
-        //
-        //   console.log('y');
-        //   generateURL();
-        // });
-
-       // element.bind('click', function (event) { console.log('generate'); smsHref = generateURL();  });
-
       }
     };
 
