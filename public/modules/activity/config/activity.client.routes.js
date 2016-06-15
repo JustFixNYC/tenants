@@ -15,7 +15,7 @@ angular.module('activity').config(['$stateProvider', '$urlRouterProvider',
 				data: { protected: true }
 			})
 			.state('showPublic', {
-				url: '/share',
+				url: '/share/:key',
 				templateUrl: 'modules/activity/views/list-activity-public.client.view.html',
 				data: { disableBack: true }
 			});

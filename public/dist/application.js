@@ -1015,7 +1015,7 @@ angular.module('activity').config(['$stateProvider', '$urlRouterProvider',
 				data: { protected: true }
 			})
 			.state('showPublic', {
-				url: '/share',
+				url: '/share/:key',
 				templateUrl: 'modules/activity/views/list-activity-public.client.view.html',
 				data: { disableBack: true }
 			});
@@ -1032,12 +1032,11 @@ angular.module('activity').config(['$stateProvider', '$urlRouterProvider',
 // });
 
 
-angular.module('activity').controller('ActivityPublicController', ['$scope', '$location', '$http', '$filter', 'Activity', 'Lightbox',
-  function($scope, $location, $http, $filter, Activity, Lightbox) {
+angular.module('activity').controller('ActivityPublicController', ['$scope', '$stateParams', '$state', '$http', '$filter', 'Activity', 'Lightbox',
+  function($scope, $stateParams, $state, $http, $filter, Activity, Lightbox) {
 
-
-    var query = $location.search();
-    if(!query.key) $location.go('/');
+    var query = $stateParams;
+    if(!query.key) $state.go('/');
 
     $scope.list = function() {
       Activity.public({ key: query.key }, function(user) {
@@ -1310,6 +1309,8 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
   function($rootScope, $state, $window, Authentication) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
+      $rootScope.state = toState.name;
+
       if(toState.globalStyles) {
         $rootScope.globalStyles = toState.globalStyles;
       } else {
@@ -1467,34 +1468,55 @@ angular.module('core').controller('FooterController', ['$scope', '$window', 'Aut
 
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', '$window', 'Authentication',
-  function($scope, $window, Authentication) {
+angular.module('core').controller('HeaderController', ['$rootScope', '$scope', '$window', 'Authentication',
+  function($rootScope, $scope, $window, Authentication) {
 
       $scope.authentication = Authentication;
       $scope.window = $window;
 
       // Collapsing the menu after navigation
-      $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-        $scope.state = toState.name;
-        $scope.left = false;
-        $scope.lightBG = false;
+      $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         switch(toState.name) {
           case 'landing':
-            $scope.left = true;
+            $rootScope.headerLeft = true;
+            $rootScope.headerLightBG = false;
             break;
           case 'manifesto':
-            $scope.left = true;
-            $scope.lightBG = true;
+            $rootScope.headerLeft = true;
+            $rootScope.headerLightBG = true;
             break;
           default:
+            $rootScope.headerLeft = false;
+            $rootScope.headerLightBG = false;
             break;
         };
 
-        $scope.showBack = true;
-        if(toState.data && toState.data.disableBack) $scope.showBack = false;
-
-
+        $rootScope.showBack = true;
+        if(toState.data && toState.data.disableBack) $rootScope.showBack = false;
       });
+
+      // $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+      //   console.log(toState.name);
+      //   $scope.state = toState.name;
+      //   $scope.left = false;
+      //   $scope.lightBG = false;
+      //   switch(toState.name) {
+      //     case 'landing':
+      //       $scope.left = true;
+      //       break;
+      //     case 'manifesto':
+      //       $scope.left = true;
+      //       $scope.lightBG = true;
+      //       break;
+      //     default:
+      //       break;
+      //   };
+
+      //   $scope.showBack = true;
+      //   if(toState.data && toState.data.disableBack) $scope.showBack = false;
+      //
+      //
+      // });
 
 
 

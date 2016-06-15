@@ -20,9 +20,9 @@ module.exports = function(app) {
 
 	// Public URLs
 	app.route('/api/users/public').get(users.togglePublicView, users.update);
-	app.route('/share/:key').get(function(req, res) {
-    res.redirect('/#!/share?key=' + encodeURIComponent(req.params.key));
-	});
+	// app.route('/share/:key').get(function(req, res) {
+  //   res.redirect('/#!/share?key=' + encodeURIComponent(req.params.key));
+	// });
 
 
 	// Setting up the users password api
