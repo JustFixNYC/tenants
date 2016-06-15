@@ -27,7 +27,7 @@
 .tutorial {
 
 	.main {
-		margin-bottom: 50px;
+		margin-bottom: 25px;
 
 		@include make-row();
 
@@ -66,10 +66,27 @@
 
 		&.left {
 			left: 20px;
+
+			@media (max-width: $screen-xs-max) {
+				left: 0px;
+			}
 		}
 
 		&.right {
 			right: 20px;
+
+			@media (max-width: $screen-xs-max) {
+				right: 0px;
+			}
+		}
+
+		.glyphicon-chevron-left,
+		.glyphicon-chevron-right {
+			font-size: 40px;
+
+			@media (max-width: $screen-xs-max) {
+				font-size: 30px;
+			}
 		}
 
 		.glyphicon-chevron-left:before {
@@ -83,7 +100,7 @@
 
 	.carousel-indicators {
 		position: relative;
-		bottom: 0px;
+		bottom: 10px;
     padding: 11px; // fit size w/ button elem for last slide
 		margin-bottom: 0px;
 
@@ -107,25 +124,43 @@
 	// Custom styling
 	.image-wrap {
 		background-color: $justfix-blue-dark;
+		overflow: hidden;
+		height: 65vh;
+
+		@media (max-width: $screen-xs-max) {
+			height: 80vh;
+		}
 	}
 
 	.carousel {
 		h1 {
+			font-size: 30px;
 			color: $white;
+
+			@media (max-width: $screen-xs-max) {
+				font-size: 24px;
+			}
 		}
 
 		.text {
+			bottom: 0;
 			margin: 0 15px;
-			padding: 2em 30px;
-			min-height: 8.75em; // Container changes size depending on content... totally not a fan of this 
+			background: $white;
+			padding: 2em 30px 1em;
+			min-height: 7.75em;
 
 			@media (max-width: $screen-xs-max) {
-				min-height: 12.5em;
+				@include make-row();
+				position: absolute;
+				bottom: 0;
+				min-height: auto;
 			}
 		}
 	}
 
 	.btn {
+		position: relative;
+		bottom: 10px;
 	}
 
 }
