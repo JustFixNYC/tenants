@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('actions')
-  .directive('toDoItem', ['$rootScope', '$modal', '$sce', '$compile', '$timeout', 'Authentication', 'Activity', 'Actions',
-    function ($rootScope, $modal, $sce, $compile, $timeout, Authentication, Activity, Actions) {
+  .directive('toDoItem', ['$rootScope', '$modal', '$sce', '$compile', '$filter', '$timeout', 'Authentication', 'Activity', 'Actions',
+    function ($rootScope, $modal, $sce, $compile, $filter, $timeout, Authentication, Activity, Actions) {
     return {
       restrict: 'E',
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
@@ -34,9 +34,9 @@ angular.module('actions')
           }
         }
 
+        scope.newActivity.fields = [];
         // if action has custom fields, initialize those in the newActivity object
         if(scope.action.followUp && scope.action.followUp.fields) {
-          scope.newActivity.fields = [];
           angular.forEach(scope.action.followUp.fields, function(field, idx) {
             scope.newActivity.fields.push({ title: field.title });
           });
@@ -85,9 +85,11 @@ angular.module('actions')
             scope.newActivity = result.newActivity;
 
             // this should check for isFollowUp (or should is be hasFollowUp)
-            if(scope.action.hasFollowUp) scope.triggerFollowUp(true);
+            if(scope.action.hasFollowUp) {
+              scope.triggerFollowUp(true);
+            }
             // if(scope.action.isFollowUp && scope.action.isFollowUp) scope.triggerFollowUp();
-            else if(!result.modalError) scope.createActivity(true);
+            else if(!result.modalError) scope.createActivity(true, false);
 
           }, function () {
             // modal cancelled
@@ -116,13 +118,24 @@ angular.module('actions')
           section.splice(scope.$index,1);
         };
 
-        scope.createActivity = function(isValid) {
+        var compareDates = function(start, created) {
+          var startDate = new Date(start).setHours(0,0,0,0);
+          var createdDate = new Date(created).setHours(0,0,0,0);
+          return startDate !== createdDate;
+        }
+
+        scope.createActivity = function(isValid, addDOA) {
 
           if(scope.action.hasFollowUp) {
             scope.followUpSubmitted = true;
           }
 
           if(isValid) {
+
+            // if(addDOA && compareDates(scope.newActivity.startDate, new Date())) {
+            if(addDOA) {
+              scope.newActivity.fields.unshift({ title: 'This occurred on:', value: $filter('date')(scope.newActivity.startDate, 'longDate') });
+            }
 
             $rootScope.loading = true;
 

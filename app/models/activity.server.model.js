@@ -38,7 +38,7 @@ var ActivitySchema = new Schema({
     }],
     fields: [{
       title: { type: String },
-      value: { type: String }
+      value: { type: Schema.Types.Mixed }
     }],
     relatedProblems: [{
 			type: String,

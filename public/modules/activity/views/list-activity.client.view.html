@@ -67,9 +67,9 @@
     <!-- <div collapse="activityCollapsed"> -->
     <div>
       <div data-ng-if="activities.length">
-          <div data-ng-repeat="activity in activities | orderBy:'startDate':true" class="panel activity-panel">
+          <div data-ng-repeat="activity in activities | orderBy:'createdDate':true" class="panel activity-panel">
               <div class="panel-heading">
-                  <p>{{ ::activity.startDate | date:'longDate' }}</p>
+                  
                   <h3>{{ ::activity.title }}</h3>
               </div>
               <div class="panel-body">
