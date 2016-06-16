@@ -31,8 +31,8 @@
         </div>
 
         <h2>
-          <span ng-if="!authentication.user.sharing.enabled">Enable Share URL:</span>
-          <span ng-if="authentication.user.sharing.enabled">Share URL (on):</span>
+          <span ng-if="!authentication.user.sharing.enabled">Enable Share Link:</span>
+          <span ng-if="authentication.user.sharing.enabled">Share Link (on):</span>
           <label class="toggle pull-right" toggle-sharing>
             <input type="checkbox">
             <span class="handle"></span>
@@ -44,7 +44,7 @@
         </div>
 
         <div class="share-link" ng-if="authentication.user.sharing.enabled">
-          <label>Link to share this page: </label>
+          <label>Copy and paste this link to share your Case History: </label>
           <h2><a ng-href="/share/{{authentication.user.sharing.key}}" target="_blank">http://{{location}}/share/{{authentication.user.sharing.key}}</a></h2>
         </div>
 
@@ -69,7 +69,7 @@
       <div data-ng-if="activities.length">
           <div data-ng-repeat="activity in activities | orderBy:'createdDate':true" class="panel activity-panel">
               <div class="panel-heading">
-                  
+
                   <h3>{{ ::activity.title }}</h3>
               </div>
               <div class="panel-body">

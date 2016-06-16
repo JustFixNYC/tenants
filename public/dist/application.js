@@ -3812,7 +3812,7 @@ angular.module('tutorial').controller('TutorialController', ['$scope', '$sce',
       },
 			{
 	      image: 'modules/tutorial/img/3_CaseHistory_fullphone.png',
-	      text: $sce.trustAsHtml('Everything you do is saved in your <strong>Case History</strong>. You can print it for housing court or share it with neighbors and advocates by using the Share URL.'),
+	      text: $sce.trustAsHtml('Everything you do is saved in your <strong>Case History</strong>. You can print it for housing court or share it with neighbors and advocates by using the Share Link.'),
 	      title: 'Share Your Case History'
       },
 			{
@@ -3823,6 +3823,7 @@ angular.module('tutorial').controller('TutorialController', ['$scope', '$sce',
 		];
 	}
 ]);
+
 'use strict';
 
 // Config HTTP Error Handling
