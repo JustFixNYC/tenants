@@ -7,13 +7,15 @@
 // });
 
 
-angular.module('activity').controller('ActivityController', ['$scope', '$location', '$http', '$filter', 'Authentication', 'Users', 'Activity', 'Lightbox',
-  function($scope, $location, $http, $filter, Authentication, Users, Activity, Lightbox) {
+angular.module('activity').controller('ActivityController', ['$scope', '$location', '$http', '$filter', 'deviceDetector', 'Authentication', 'Users', 'Activity', 'Lightbox',
+  function($scope, $location, $http, $filter, deviceDetector, Authentication, Users, Activity, Lightbox) {
 
     $scope.authentication = Authentication;
     $scope.location = $location.host();
 
     $scope.shareCollapsed = false;
+
+    $scope.isDesktop = deviceDetector.isDesktop();
 
     $scope.list = function() {
 

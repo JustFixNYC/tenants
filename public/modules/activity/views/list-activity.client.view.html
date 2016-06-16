@@ -21,9 +21,12 @@
             </a>
           </div>
           <div class="col-xs-6">
-            <a class="btn btn-success btn-block pull-right" ng-class="{ 'disabled' : !authentication.user.sharing.enabled }" sms-message type="share">
+            <a class="btn btn-success btn-block pull-right" ng-if="!isDesktop" ng-class="{ 'disabled' : !authentication.user.sharing.enabled }" sms-message type="share">
                 Text
             </a>
+            <button class="btn btn-success btn-block pull-right" ng-if="isDesktop" print-button>
+                Print
+            </button>
           </div>
         </div>
 
@@ -37,7 +40,7 @@
         </h2>
 
         <div class="alert alert-warning" ng-if="!authentication.user.sharing.enabled">
-          This will allow you to share your Case History with advocates. It does not give access to the rest of your account.
+          This allows you to share your Case History with advocates. <b>It does not give access to the rest of your account.</b>
         </div>
 
         <div class="share-link" ng-if="authentication.user.sharing.enabled">
@@ -45,9 +48,7 @@
           <h2><a ng-href="/share/{{authentication.user.sharing.key}}" target="_blank">http://{{location}}/share/{{authentication.user.sharing.key}}</a></h2>
         </div>
 
-        <button class="btn btn-primary btn-block" print-button>
-            Print
-        </button>
+
 
 
 

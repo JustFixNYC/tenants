@@ -109,8 +109,8 @@ label.control-label em {
   margin-top: 0;
   margin-bottom: 15px;
   border-bottom: none;
-  padding-left: 15px;
-  padding-right: 15px;
+  // padding-left: 15px;
+  // padding-right: 15px;
 
   small {
   	display: block;
@@ -139,7 +139,7 @@ label.control-label em {
   }
 
   &.left {
-    h1 {
+    h1, p {
       text-align: left;
     }
   }
@@ -153,6 +153,10 @@ label.control-label em {
 
 }
 
+
+.alert-fade {
+  @include transition(background-color 500ms ease);
+}
 .alert-danger {
   font-weight: 600;
 }
@@ -265,6 +269,7 @@ input[type="date"].date-mobile:focus:before {
     float: none !important;
   }
 }
+
 
 .btn .glyphicon {
   padding-top: 2px;
