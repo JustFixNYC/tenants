@@ -62,6 +62,31 @@ angular.module(ApplicationConfiguration.applicationModuleName)
       for (i = l-1; i >= 0; i--) if (this[i].key == key) this.splice(i,1);
       return;
     };
+  })
+  .run(function($rootScope) {
+
+    // ensure that this happens on pageload
+    // https://github.com/angular-ui/ui-router/issues/1307
+    var setHeaderState = function(name) {
+      switch(name) {
+        case 'landing':
+          $rootScope.headerInner = false;
+          $rootScope.headerLightBG = false;
+          break;
+        case 'manifesto':
+          $rootScope.headerInner = false;
+          $rootScope.headerLightBG = true;
+          break;
+        default:
+          $rootScope.headerInner = true;
+          $rootScope.headerLightBG = false;
+          break;
+      };
+    };
+
+    $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+      setHeaderState(toState.name);
+    });
   });
 
 
