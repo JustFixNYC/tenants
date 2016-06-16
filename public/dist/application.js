@@ -103,7 +103,32 @@ angular.module(ApplicationConfiguration.applicationModuleName)
       for (i = l-1; i >= 0; i--) if (this[i].key == key) this.splice(i,1);
       return;
     };
-  });
+  })
+  .run(["$rootScope", function($rootScope) {
+
+    // ensure that this happens on pageload
+    // https://github.com/angular-ui/ui-router/issues/1307
+    var setHeaderState = function(name) {
+      switch(name) {
+        case 'landing':
+          $rootScope.headerInner = false;
+          $rootScope.headerLightBG = false;
+          break;
+        case 'manifesto':
+          $rootScope.headerInner = false;
+          $rootScope.headerLightBG = true;
+          break;
+        default:
+          $rootScope.headerInner = true;
+          $rootScope.headerLightBG = false;
+          break;
+      };
+    };
+
+    $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+      setHeaderState(toState.name);
+    });
+  }]);
 
 
 //Then define the init function for starting up the application
@@ -240,6 +265,7 @@ angular.module('actions').controller('AddDetailsController', ['$scope', '$filter
     }))
   }];
 
+
   $scope.formSubmitted = false;
 
   // $scope.areas = Issues.getUserAreas().map(function (a) { return $filter('areaTitle')(a) });
@@ -255,6 +281,7 @@ angular.module('actions').controller('AddDetailsController', ['$scope', '$filter
     $scope.formSubmitted = true;
 
     if(isValid) {
+      $scope.newActivity.fields.push({ title: 'First experienced on:', value: $filter('date')($scope.newActivity.startDate, 'longDate') });
       $modalInstance.close({ newActivity: $scope.newActivity });
     }
   };
@@ -607,8 +634,8 @@ angular.module('actions')
 'use strict';
 
 angular.module('actions')
-  .directive('toDoItem', ['$rootScope', '$modal', '$sce', '$compile', '$timeout', 'Authentication', 'Activity', 'Actions',
-    function ($rootScope, $modal, $sce, $compile, $timeout, Authentication, Activity, Actions) {
+  .directive('toDoItem', ['$rootScope', '$modal', '$sce', '$compile', '$filter', '$timeout', 'Authentication', 'Activity', 'Actions',
+    function ($rootScope, $modal, $sce, $compile, $filter, $timeout, Authentication, Activity, Actions) {
     return {
       restrict: 'E',
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
@@ -640,9 +667,9 @@ angular.module('actions')
           }
         }
 
+        scope.newActivity.fields = [];
         // if action has custom fields, initialize those in the newActivity object
         if(scope.action.followUp && scope.action.followUp.fields) {
-          scope.newActivity.fields = [];
           angular.forEach(scope.action.followUp.fields, function(field, idx) {
             scope.newActivity.fields.push({ title: field.title });
           });
@@ -691,9 +718,11 @@ angular.module('actions')
             scope.newActivity = result.newActivity;
 
             // this should check for isFollowUp (or should is be hasFollowUp)
-            if(scope.action.hasFollowUp) scope.triggerFollowUp(true);
+            if(scope.action.hasFollowUp) {
+              scope.triggerFollowUp(true);
+            }
             // if(scope.action.isFollowUp && scope.action.isFollowUp) scope.triggerFollowUp();
-            else if(!result.modalError) scope.createActivity(true);
+            else if(!result.modalError) scope.createActivity(true, false);
 
           }, function () {
             // modal cancelled
@@ -722,13 +751,24 @@ angular.module('actions')
           section.splice(scope.$index,1);
         };
 
-        scope.createActivity = function(isValid) {
+        var compareDates = function(start, created) {
+          var startDate = new Date(start).setHours(0,0,0,0);
+          var createdDate = new Date(created).setHours(0,0,0,0);
+          return startDate !== createdDate;
+        }
+
+        scope.createActivity = function(isValid, addDOA) {
 
           if(scope.action.hasFollowUp) {
             scope.followUpSubmitted = true;
           }
 
           if(isValid) {
+
+            // if(addDOA && compareDates(scope.newActivity.startDate, new Date())) {
+            if(addDOA) {
+              scope.newActivity.fields.unshift({ title: 'This occurred on:', value: $filter('date')(scope.newActivity.startDate, 'longDate') });
+            }
 
             $rootScope.loading = true;
 
@@ -1071,13 +1111,15 @@ angular.module('activity').controller('ActivityPublicController', ['$scope', '$s
 // });
 
 
-angular.module('activity').controller('ActivityController', ['$scope', '$location', '$http', '$filter', 'Authentication', 'Users', 'Activity', 'Lightbox',
-  function($scope, $location, $http, $filter, Authentication, Users, Activity, Lightbox) {
+angular.module('activity').controller('ActivityController', ['$scope', '$location', '$http', '$filter', 'deviceDetector', 'Authentication', 'Users', 'Activity', 'Lightbox',
+  function($scope, $location, $http, $filter, deviceDetector, Authentication, Users, Activity, Lightbox) {
 
     $scope.authentication = Authentication;
     $scope.location = $location.host();
 
     $scope.shareCollapsed = false;
+
+    $scope.isDesktop = deviceDetector.isDesktop();
 
     $scope.list = function() {
 
@@ -1089,11 +1131,11 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
       return $filter('activityTemplate')(key);
     };
 
-    $scope.compareDates = function(start, created) {
-      var startDate = new Date(start).setHours(0,0,0,0);
-      var createdDate = new Date(created).setHours(0,0,0,0);
-      return startDate !== createdDate;
-    }
+    // $scope.compareDates = function(start, created) {
+    //   var startDate = new Date(start).setHours(0,0,0,0);
+    //   var createdDate = new Date(created).setHours(0,0,0,0);
+    //   return startDate !== createdDate;
+    // }
 
     $scope.openLightboxModal = function (photos, index) {
       Lightbox.openModal(photos, index);
@@ -1468,64 +1510,43 @@ angular.module('core').controller('FooterController', ['$scope', '$window', 'Aut
 
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$rootScope', '$scope', '$window', 'Authentication',
-  function($rootScope, $scope, $window, Authentication) {
+angular.module('core').controller('HeaderController', ['$rootScope', '$state', '$scope', '$window', 'Authentication',
+  function($rootScope, $state, $scope, $window, Authentication) {
 
       $scope.authentication = Authentication;
       $scope.window = $window;
 
       // Collapsing the menu after navigation
-      $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-        switch(toState.name) {
-          case 'landing':
-            $rootScope.headerLeft = true;
-            $rootScope.headerLightBG = false;
-            break;
-          case 'manifesto':
-            $rootScope.headerLeft = true;
-            $rootScope.headerLightBG = true;
-            break;
-          default:
-            $rootScope.headerLeft = false;
-            $rootScope.headerLightBG = false;
-            break;
-        };
+      $rootScope.$on('$stateChangeSucess', function(event, toState, toParams, fromState, fromParams) {
+
+        // moved to application.js to ensure it runs on pageload...
+        // setHeaderState(toState.name);
 
         $rootScope.showBack = true;
         if(toState.data && toState.data.disableBack) $rootScope.showBack = false;
       });
 
-      // $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-      //   console.log(toState.name);
-      //   $scope.state = toState.name;
-      //   $scope.left = false;
-      //   $scope.lightBG = false;
-      //   switch(toState.name) {
+      // console.log('state current name is:', $state.current.name);
+      //
+      // var setHeaderState = function(name) {
+      //   switch(name) {
       //     case 'landing':
-      //       $scope.left = true;
+      //       console.log('case landing');
+      //       $rootScope.headerLeft = true;
+      //       $rootScope.headerLightBG = false;
       //       break;
       //     case 'manifesto':
-      //       $scope.left = true;
-      //       $scope.lightBG = true;
+      //       console.log('case manifesto');
+      //       $rootScope.headerLeft = true;
+      //       $rootScope.headerLightBG = true;
       //       break;
       //     default:
+      //       console.log('case duh');
+      //       $rootScope.headerLeft = false;
+      //       $rootScope.headerLightBG = false;
       //       break;
       //   };
-
-      //   $scope.showBack = true;
-      //   if(toState.data && toState.data.disableBack) $scope.showBack = false;
-      //
-      //
-      // });
-
-
-
-      // var wrapper = $document[0].getElementById('header-wrapper');
-      // scope.$watch(Authentication, function () {
-      //   console.log('auth');
-      //   if(!Authentication.user) angular.element(wrapper).css('margin-bottom', '0');
-      //   else angular.element(wrapper).css('margin-bottom', '15px');
-      // });
+      // };
 
   }
 ]);
@@ -3137,24 +3158,24 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			*   DEBUG STUFF
 			*
 			*/
-		// $scope.newUser = {
-		// 	firstName: 'Dan',
-		// 	lastName: "Stevenson",
-		// 	password: "password",
-		// 	borough: 'Brooklyn',
-		// 	address: '654 Park Place',
-		// 	unit: '1RF',
-		// 	phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
-		// 	problems: [],
-		// 	sharing: {
-		// 		enabled: false
-		// 	}
-		// };
-		//
-		// $scope.accessCode = {
-		// 	value: 'test5',
-		// 	valid: false
-		// };
+		$scope.newUser = {
+			firstName: 'Dan',
+			lastName: "Stevenson",
+			password: "password",
+			borough: 'Brooklyn',
+			address: '654 Park Place',
+			unit: '1RF',
+			phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
+			problems: [],
+			sharing: {
+				enabled: false
+			}
+		};
+
+		$scope.accessCode = {
+			value: 'test5',
+			valid: false
+		};
 
 	  $scope.validateCode = function() {
 			// handles back button
@@ -3775,22 +3796,22 @@ angular.module('tutorial').controller('TutorialController', ['$scope', '$sce',
 		// Just an easier way to handle this
 		$scope.slides = [
 			{
-	      image: 'modules/tutorial/img/1_TakeAction.png',
+	      image: 'modules/tutorial/img/1_TakeAction_fullphone.png',
 	      text: $sce.trustAsHtml('The more evidence you upload, the stronger your case will be. Start with the <strong>Take Action</strong> section to add photos, file 311 complaints and send notices to your landlord.'),
 	      title: 'Gather Evidence'
       },
 			{
-	      image: 'modules/tutorial/img/2_StatusUpdate.png',
+	      image: 'modules/tutorial/img/2_StatusUpdate_fullphone.png',
 	      text: $sce.trustAsHtml('Add a <strong>Status Update</strong> at any time from the dashboard. This will help you keep a log of any updates or communication with your landlord.'),
 	      title: 'Add Status Updates'
       },
 			{
-	      image: 'modules/tutorial/img/3_CaseHistory.png',
+	      image: 'modules/tutorial/img/3_CaseHistory_fullphone.png',
 	      text: $sce.trustAsHtml('Everything you do is saved in your <strong>Case History</strong>. You can print it for housing court or share it with neighbors and advocates by using the Share URL.'),
 	      title: 'Share Your Case History'
       },
 			{
-	      image: 'modules/tutorial/img/4_KYR.png',
+	      image: 'modules/tutorial/img/4_KYR_fullphone.png',
 	      text: $sce.trustAsHtml('It\'s important to stay informed about your rights as a tenant. Go to <strong>Know Your Rights</strong> for articles and links to get more information.'),
 	      title: 'Know Your Rights'
       }
