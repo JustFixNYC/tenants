@@ -2,6 +2,7 @@
 
 // Config HTTP Error Handling
 angular.module('users').config(['$httpProvider',
+	// TODO: uhhh wut diz
 	function($httpProvider) {
 		// Set the httpProvider "not authorized" interceptor
 		$httpProvider.interceptors.push(['$rootScope', '$q', '$location', 'Authentication',

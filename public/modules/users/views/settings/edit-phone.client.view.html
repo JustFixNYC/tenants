@@ -17,7 +17,7 @@
 		<div class="form-group" ng-class="{ 'has-error' : passwordConfirmation.$submitted && passwordConfirmation.phone.$invalid }">
 			<label class="control-label" for="phone">Phone Number <em>(you will use this to sign in)</em></label>
 			<input class="form-control" type="tel" name="phone" ng-model="user.phone" name="phone" required phone-input>
-			<div ng-show="passwordConfirmation.$submitted || passwordConfirmation.phone.$invalid">
+			<div ng-show="passwordConfirmation.$submitted || (passwordConfirmation.phone.$invalid && passwordConfirmation.phone.$touched)">
 				<p ng-show="passwordConfirmation.phone.$invalid" class="text-danger">Please enter a valid phone number.</p>
 				<p ng-show="passwordConfirmation.phone.$error.required" class="text-danger">Please enter your phone number.</p>
 			</div>
