@@ -21,15 +21,18 @@
             </a>
           </div>
           <div class="col-xs-6">
-            <a class="btn btn-success btn-block pull-right" ng-class="{ 'disabled' : !authentication.user.sharing.enabled }" sms-message type="share">
+            <a class="btn btn-success btn-block pull-right" ng-if="!isDesktop" ng-class="{ 'disabled' : !authentication.user.sharing.enabled }" sms-message type="share">
                 Text
             </a>
+            <button class="btn btn-success btn-block pull-right" ng-if="isDesktop" print-button>
+                Print
+            </button>
           </div>
         </div>
 
         <h2>
-          <span ng-if="!authentication.user.sharing.enabled">Enable Share URL:</span>
-          <span ng-if="authentication.user.sharing.enabled">Share URL (on):</span>
+          <span ng-if="!authentication.user.sharing.enabled">Enable Share Link:</span>
+          <span ng-if="authentication.user.sharing.enabled">Share Link (on):</span>
           <label class="toggle pull-right" toggle-sharing>
             <input type="checkbox">
             <span class="handle"></span>
@@ -37,17 +40,15 @@
         </h2>
 
         <div class="alert alert-warning" ng-if="!authentication.user.sharing.enabled">
-          This will allow you to share your Case History with advocates. It does not give access to the rest of your account.
+          This allows you to share your Case History with advocates. <b>It does not give access to the rest of your account.</b>
         </div>
 
         <div class="share-link" ng-if="authentication.user.sharing.enabled">
-          <label>Link to share this page: </label>
+          <label>Copy and paste this link to share your Case History: </label>
           <h2><a ng-href="/share/{{authentication.user.sharing.key}}" target="_blank">http://{{location}}/share/{{authentication.user.sharing.key}}</a></h2>
         </div>
 
-        <button class="btn btn-primary btn-block" print-button>
-            Print
-        </button>
+
 
 
 
@@ -66,9 +67,9 @@
     <!-- <div collapse="activityCollapsed"> -->
     <div>
       <div data-ng-if="activities.length">
-          <div data-ng-repeat="activity in activities | orderBy:'startDate':true" class="panel activity-panel">
+          <div data-ng-repeat="activity in activities | orderBy:'createdDate':true" class="panel activity-panel">
               <div class="panel-heading">
-                  <p>{{ ::activity.startDate | date:'longDate' }}</p>
+
                   <h3>{{ ::activity.title }}</h3>
               </div>
               <div class="panel-body">

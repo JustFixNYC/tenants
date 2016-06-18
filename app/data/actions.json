@@ -13,7 +13,7 @@
       "controller": "RentalHistoryController"
     },
     "followUp": {
-      "title": "Did you get your DHCR letter yet?",
+      "title": "Do you have any additional concerns about your DHCR letter?",
       "fields": [{
         "prompt": "Are you rent stabilized?",
         "title":  "Rent stabilized:",

@@ -72,7 +72,7 @@ var getAreaActions = function(user) {
     if(!_.contains(user.actionFlags, p.key)) {
       areaActions.push({
         title: 'Add ' + p.title + ' Details',
-        activityTitle: p.title + ' issues began',
+        activityTitle: 'Added details about ' + p.title + ' issues',
         content: 'Upload photos and information about your <b>' + p.title + '</b> issues. The more documentation you have, the stronger your case will be!',
         key: p.key,
         addIf: ['initial'],

@@ -2,7 +2,7 @@
 
   <status-update></status-update>
 
-  <alert data-ng-show="$root.dashboardSuccess" type="success" close="$root.dashboardSuccess = false"><strong>Well done!</strong> Your issue checklist has been updated. Check your <a ui-sref="listActivity">Case History</a> to see the changes.</alert>
+  <alert data-ng-show="$root.dashboardSuccess" type="success" close="$root.dashboardSuccess = false"><strong>Well done!</strong> Your issue checklist has been updated. Check your <a ui-sref="listActivity" ng-click="close($event)">Case History</a> to see the changes.</alert>
   <alert data-ng-show="$root.dashboardError" type="danger" close="$root.dashboardError = false">We're sorry, something went wrong with updating your checklist. Please <a ui-sref="contact">Contact Us</a> to report this issue.</alert>
 
 

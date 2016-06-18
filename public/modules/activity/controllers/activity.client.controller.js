@@ -7,13 +7,15 @@
 // });
 
 
-angular.module('activity').controller('ActivityController', ['$scope', '$location', '$http', '$filter', 'Authentication', 'Users', 'Activity', 'Lightbox',
-  function($scope, $location, $http, $filter, Authentication, Users, Activity, Lightbox) {
+angular.module('activity').controller('ActivityController', ['$scope', '$location', '$http', '$filter', 'deviceDetector', 'Authentication', 'Users', 'Activity', 'Lightbox',
+  function($scope, $location, $http, $filter, deviceDetector, Authentication, Users, Activity, Lightbox) {
 
     $scope.authentication = Authentication;
     $scope.location = $location.host();
 
     $scope.shareCollapsed = false;
+
+    $scope.isDesktop = deviceDetector.isDesktop();
 
     $scope.list = function() {
 
@@ -25,11 +27,11 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
       return $filter('activityTemplate')(key);
     };
 
-    $scope.compareDates = function(start, created) {
-      var startDate = new Date(start).setHours(0,0,0,0);
-      var createdDate = new Date(created).setHours(0,0,0,0);
-      return startDate !== createdDate;
-    }
+    // $scope.compareDates = function(start, created) {
+    //   var startDate = new Date(start).setHours(0,0,0,0);
+    //   var createdDate = new Date(created).setHours(0,0,0,0);
+    //   return startDate !== createdDate;
+    // }
 
     $scope.openLightboxModal = function (photos, index) {
       Lightbox.openModal(photos, index);

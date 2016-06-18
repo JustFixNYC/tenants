@@ -5,59 +5,32 @@ header {
   border: 1px solid transparent;
 }
 
+
 #header-wrapper {
-  height: $mobile-header-height;
-  @media (min-width: $screen-md-min) {
-    height: $desktop-header-height;
-  }
+
+  height: $desktop-header-height;
   margin-bottom: $header-bottom-margin;
 }
 
 #header {
-  height: $mobile-header-height;
-  @media (min-width: $screen-md-min) {
-    height: $desktop-header-height;
-  }
 
-  background-color: $justfix-blue;
+  height: $desktop-header-height;
 
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 1030;
-
+  background-color: transparent;
 
   & > .container {
     position: relative;
     height: 40%;
     top: 50%;
     @include transform(translateY(-50%));
-    // text-align: center;
   }
 
   .header-brand {
-    // display: inline-block;
-    position: absolute;
-    left: 50%;
-    @include transform(translateX(-50%));
+
+    display: inline-block;
     color: #454545;
     height: 100%;
 
-
-    // & > .logo {
-    //   position: relative;
-    // 	padding-bottom: 10%;
-    // 	height: 0;
-    //
-    //   & svg {
-    //     width: 100%;
-    //     height: 100%;
-    //     position: absolute;
-    //     top: 0;
-    //     left: 0;
-    //   }
-    // }
 
     // & > .logo, & > .logo > svg {
     & > .logo {
@@ -132,26 +105,36 @@ header {
   }
 }
 
-#header-wrapper.left {
-
-  height: $desktop-header-height;
+#header-wrapper.inner {
+  height: $mobile-header-height;
+  @media (min-width: $screen-md-min) {
+    height: $desktop-header-height;
+  }
 
   #header {
+    height: $mobile-header-height;
+    @media (min-width: $screen-md-min) {
+      height: $desktop-header-height;
+    }
 
-    height: $desktop-header-height;
-    background-color: transparent;
-    position: static;
+    background-color: $justfix-blue;
+
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
 
     & > .container {
-      text-align: left;
+      text-align: center;
     }
 
     .header-brand {
-      position: static;
-      display: inline-block;
-      float: left;
-      @include transform(none);
+      position: absolute;
+      left: 50%;
+      @include transform(translateX(-50%));
     }
+
   }
 }
 

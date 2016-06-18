@@ -89,9 +89,9 @@ var checkProblems = function(user, prblms, _prblms) {
     var _prblm = _prblms[i];
 
     // If the user hasn't completed the `Add Details` step for this problem, don't count it
-    if(!_.contains(_.pluck(user.activity, 'key'), _prblm.key)) {
-      continue;
-    }
+    // if(!_.contains(_.pluck(user.activity, 'key'), _prblm.key)) {
+    //   continue;
+    // }
 
     // (3) if this problem is new, add it and all its issues
     if(!prblms.containsByKey(_prblm.key)) {

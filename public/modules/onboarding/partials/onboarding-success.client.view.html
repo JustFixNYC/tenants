@@ -4,8 +4,8 @@
 	</div>
 	<div class="page-header left">
 		<h1>Your Building Advocate</h1>
+		<p>We've connected you to the advocate working with your building! Their contact information will be stored in your account, so you can connect with them at any time.</p>
 	</div>
-	<p>We've connected you to the advocate working with your building! Their contact information will be stored in your account, so you can connect with them at any time.</p>
 	<h2 class="text-center">
 		{{ ::newUser.referral.name }}<br />
 		{{ ::newUser.referral.organization }}<br />
@@ -22,7 +22,7 @@
 			</label>
 		</h2>
 
-		<div class="alert alert-warning" ng-if="!newUser.sharing.enabled">
+		<div class="alert alert-fade" ng-class="newUser.sharing.enabled ? 'alert-success' : 'alert-warning'">
 			This allows your advocate to view the evidence you upload to the site; it does not give access to the rest of your account. You can opt in later or disable at any time.
 		</div>
 	</div>
