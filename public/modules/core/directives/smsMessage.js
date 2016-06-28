@@ -22,7 +22,7 @@ angular.module('core')
         var type = attrs.type;
         var msg = Messages.getShareMessage(type);
 
-        // href += Authentication.user.referral.phone;
+        href += Authentication.user.referral.phone;
 
         if(deviceDetector.os === 'ios') {
           if(isIOS8()) href += '&';
