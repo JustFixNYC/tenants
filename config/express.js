@@ -10,6 +10,7 @@ var fs = require('fs'),
 	morgan = require('morgan'),
 	bodyParser = require('body-parser'),
 	session = require('express-session'),
+	expressSessionPassportCleanup = require('express-session-passport-cleanup'),
 	compress = require('compression'),
 	methodOverride = require('method-override'),
 	cookieParser = require('cookie-parser'),
@@ -96,6 +97,10 @@ module.exports = function(db) {
 			collection: config.sessionCollection
 		})
 	}));
+
+	// this is pretty rediculous
+	// https://github.com/wesleytodd/express-session-passport-cleanup
+	app.use(expressSessionPassportCleanup);
 
 	// use passport session
 	app.use(passport.initialize());
