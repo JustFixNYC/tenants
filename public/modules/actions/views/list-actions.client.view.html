@@ -1,8 +1,8 @@
 <section data-ng-controller="ActionsController" data-ng-init="list()">
     <div class="page-header">
         <img src="/modules/core/img/sections/action.svg" alt="Take Action" />
-        <h1>Take Action</h1>
-        <p>Here are some actions you can take to build out your case.</p>
+        <h1>{{ 'modules.actions.views.listActions.title' | translate }}</h1>
+        <p>{{'modules.actions.views.listActions.headerDescription' | translate}}</p>
     </div>
     <div ng-if="onceActions.length">
       <div class="section-header">

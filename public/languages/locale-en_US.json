@@ -1,3 +1,13 @@
 {
-  "directives.language-select.Language": "Language"
+  "directives.language-select.Language": "Language",
+  "modules": {
+  	"actions": {
+  		"views": {
+  			"listActions": {
+  				"title": "Take Action",
+  				"headerDescription": "Here are some actions you can take to build out your case."
+  			}
+  		}
+  	}
+  }
 }
