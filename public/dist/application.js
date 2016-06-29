@@ -1605,7 +1605,7 @@ angular.module('core')
       link: function (scope, element, attrs) {
 
         var msg = Messages.getShareMessage("share");
-        var href = 'mailto:' + encodeURI('?subject=' + Authentication.user.fullName + ' - JustFix.nyc Case History&body=' + msg);
+        var href = 'mailto:' + encodeURI(Authentication.user.referral.email + '?subject=' + Authentication.user.fullName + ' - JustFix.nyc Case History&body=' + msg);
         attrs.$set('href', href);
 
       }
@@ -1928,7 +1928,7 @@ angular.module('core')
         var type = attrs.type;
         var msg = Messages.getShareMessage(type);
 
-        // href += Authentication.user.referral.phone;
+        href += Authentication.user.referral.phone;
 
         if(deviceDetector.os === 'ios') {
           if(isIOS8()) href += '&';
