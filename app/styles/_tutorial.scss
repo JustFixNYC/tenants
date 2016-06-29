@@ -125,10 +125,10 @@
 	.image-wrap {
 		background-color: $justfix-blue-dark;
 		overflow: hidden;
-		height: 65vh;
+		height: 80vh;
 
-		@media (max-width: $screen-xs-max) {
-			height: 80vh;
+		@media (min-width: $screen-md-max) {
+			height: 570px;
 		}
 	}
 
