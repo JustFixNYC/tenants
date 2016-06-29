@@ -100,7 +100,7 @@ module.exports = function(db) {
 
 	// this is pretty rediculous
 	// https://github.com/wesleytodd/express-session-passport-cleanup
-	// app.use(expressSessionPassportCleanup);
+	app.use(expressSessionPassportCleanup);
 
 	// use passport session
 	app.use(passport.initialize());
