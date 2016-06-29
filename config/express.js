@@ -89,7 +89,7 @@ module.exports = function(db) {
 	// [TODO] this is still causing issues (see https://github.com/meanjs/mean/issues/224)
 	// this is inconsistent, be wary of it...
 	app.use(session({
-		saveUninitialized: true,
+		saveUninitialized: false,
 		resave: true,
 		secret: config.sessionSecret,
 		store: new mongoStore({
@@ -100,7 +100,7 @@ module.exports = function(db) {
 
 	// this is pretty rediculous
 	// https://github.com/wesleytodd/express-session-passport-cleanup
-	app.use(expressSessionPassportCleanup);
+	// app.use(expressSessionPassportCleanup);
 
 	// use passport session
 	app.use(passport.initialize());
