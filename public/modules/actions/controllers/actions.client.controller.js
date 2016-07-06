@@ -1,8 +1,8 @@
 'use strict';
 
 // Issues controller
-angular.module('actions').controller('ActionsController', ['$scope', '$filter', 'Authentication', 'Actions', 'Activity',
-  function($scope, $filter, Authentication, Actions, Activity) {
+angular.module('actions').controller('ActionsController', ['$scope', '$filter', 'Authentication', 'Actions', 'Activity', '$translate', '$sce',
+  function($scope, $filter, Authentication, Actions, Activity, $translate, $sce) {
     //$scope.authentication = Authentication;
     $scope.user = Authentication.user;
 
@@ -15,6 +15,12 @@ angular.module('actions').controller('ActionsController', ['$scope', '$filter', 
     //
     //   return prog;
     // };
+
+    var translatedText = $translate('modules.actions.views.listActions.empty').then(function(text){
+    	console.log(text);
+    	$scope.trustedTranslation = $sce.trustAsHtml(text);
+    });
+    console.log(translatedText);
 
     $scope.userCompletedDetails = function() {
       if($scope.user.actionFlags) {

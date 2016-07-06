@@ -46,7 +46,8 @@ module.exports = {
 				'public/lib/cartodb.js/cartodb.js',
 				'public/external/mapbox-gl.js',
 				'public/external/leaflet-mapbox-gl.js',
-				'public/lib/deep-diff/releases/deep-diff-0.3.3.min.js'
+				'public/lib/deep-diff/releases/deep-diff-0.3.3.min.js'/*,
+		    'public/lib/angular-sanitize/angular-sanitize.min.js'*/
 		  ]
 	  },
 	  css: [

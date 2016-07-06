@@ -19,8 +19,9 @@ angular.module('actions')
 
         scope.followUpSubmitted = false;
 
-        //scope.completed = false;
-        if(!scope.action.completed) scope.action.completed = false;
+        // scope.completed = false;
+        scope.action.completed = false;
+        // if(!scope.action.completed) scope.action.completed = false;
 
         scope.newActivity = {
           title: scope.action.activityTitle,

@@ -27,7 +27,8 @@
     "angular-i18n": "1.4.7",
     "ui-select": "angular-ui-select#~0.13.2",
     "bourbon": "~4.2.7",
-    "cartodb.js": "~3.15.9"
+    "cartodb.js": "~3.15.9",
+    "angular-sanitize": "^1.5.7"
   },
   "resolutions": {
     "angular-bootstrap": "^0.13.3",

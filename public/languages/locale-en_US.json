@@ -1,11 +1,58 @@
 {
   "directives.language-select.Language": "Language",
+  "repeating": {
+  	"cancel": "Cancel",
+  	"add": "Add To Your Case",
+  	"success": "Success",
+  	"error": "Error"
+  },
   "modules": {
   	"actions": {
+  		"partials" : {
+  			"modals" : {
+  				"addDetails": {
+  					"title": "Details",
+  					"body": "Please add some details for the following issues:",
+  					"startDate": "When did these issues start to happen?",
+  					"errorStartDate": "Please add a date.",
+  					"addPhotos": "Add some photos",
+  					"photoWord": "Photo",
+  					"description": "Description",
+  					"descriptionPlaceholder": "Please add a brief description.",
+  					"cancel": "@:repeating.cancel",
+  					"add": "@:repeating.add"
+  				},
+  				"checkIn": {
+  					"title": "Status Update",
+  					"when": "When did this happen?",
+  					"what": "What is this update about?",
+  					"cancel": "@:repeating.cancel",
+  					"add": "@:repeating.add"
+  				},
+  				"complaintLetter": {
+  					"title": "Mail an Official Letter of Complaint",
+  					"success": "@:repeating.success",
+  					"error": "@:repeating.error",
+  					"bodyText": "This Letter of Complaint uses the repair issues from the checklist and the details you've added.",
+  					"bodyTextBold": "Make sure to send this letter as certified mail so you can prove that your landlord has received it!",
+  					"landlordName": "Landlord Name",
+  					"accessDateTitle": "Provide a few apartment access dates for when repairs can be made.",
+  					"accessDateAdd": "+ Add Access Date",
+  					"loaderText": "Generating your letter...",
+  					"successTitle": "Your Letter of Complaint has been created and can be viewed here:",
+  					"successLinkText": "Letter of Complaint PDF",
+  					"successBody": "This PDF will always available on your <a ui-sref=\"listActivity\" ng-click=\"done()\">Case History</a> page, so you can come back to it later on. <b>Don’t forget to send it via certified mail!</b>"
+  				}
+  			}
+  		},
   		"views": {
   			"listActions": {
   				"title": "Take Action",
-  				"headerDescription": "Here are some actions you can take to build out your case."
+  				"headerDescription": "Here are some actions you can take to build out your case.",
+  				"toDoHeader": "Things To Do",
+  				"outreachHeader": "Outreach",
+  				"legalHeader": "Legal Actions",
+  				"empty": "There's nothing to do at the moment, apologies. Check out what is on <a ui-sref=\"listActivity\">Your Case</a>?"
   			}
   		}
   	}

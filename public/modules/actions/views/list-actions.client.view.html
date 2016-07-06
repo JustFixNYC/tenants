@@ -7,7 +7,7 @@
     <div ng-if="onceActions.length">
       <div class="section-header">
       <!-- <div class="section-header" ng-click="onceActionsCollapsed = !onceActionsCollapsed"> -->
-        <h2>Things To Do
+        <h2>{{'modules.actions.views.listActions.toDoHeader' | translate}}
           <!-- <span class="pull-right glyphicon" ng-class="onceActionsCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span> -->
         </h2>
       </div>
@@ -19,7 +19,7 @@
     <div ng-if="recurringActions.length">
       <!-- <div class="section-header" ng-click="recurringActionsCollapsed = !recurringActionsCollapsed"> -->
       <div class="section-header">
-        <h2>Outreach
+        <h2>{{'modules.actions.views.listActions.outreachHeader' | translate}}
           <!-- <span class="pull-right glyphicon" ng-class="recurringActionsCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span> -->
         </h2>
       </div>
@@ -31,7 +31,7 @@
     <div ng-if="legalActions.length">
       <!-- <div class="section-header bg-danger" ng-click="legalActionsCollapsed = !legalActionsCollapsed"> -->
       <div class="section-header bg-danger">
-        <h2>Legal Actions
+        <h2>{{'modules.actions.views.listActions.legalHeader' | translate}}
           <!-- <span class="pull-right glyphicon" ng-class="legalActionsCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span> -->
         </h2>
       </div>
@@ -40,11 +40,7 @@
         <to-do-item data-ng-repeat="action in legalActions"></to-do-item>
       </div>
     </div>
-
-
-
-
-    <div class="alert alert-warning text-center" data-ng-show="onceActions.length === 0">
-      There's nothing to do at the moment, apologies. Check out what is on <a ui-sref="listActivity">Your Case</a>?
+    <div class="alert alert-warning text-center" ng-bind-html="::'modules.actions.views.listActions.empty' | translate" compile-template> <!-- ng-bind-html="'modules.actions.views.listActions.empty' | translate"  data-ng-show="onceActions.length === 0" -->
     </div>
-</section>
+	    {{::'modules.actions.views.listActions.empty' | translate}}
+</section>  

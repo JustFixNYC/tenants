@@ -18,7 +18,8 @@ var ApplicationConfiguration = (function() {
 		'angularLazyImg',
 		'duScroll',
 		'pascalprecht.translate',	// angular-translate
- 		'tmh.dynamicLocale'// angular-dynamic-locale
+ 		'tmh.dynamicLocale'//, // angular-dynamic-locale
+ 		// 'ngSanitize' // Santize translations
 	];
 // 'ngAnimate',  'ngTouch', , 'bootstrapLightbox' , 'angularModalService'
 

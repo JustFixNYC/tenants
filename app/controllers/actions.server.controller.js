@@ -127,8 +127,12 @@ var generateActions = function(user) {
       }
       else action.isFollowUp = false;
 
-      actions.push(action);
+      // WARNING: This is for lang debugging, need to see all actions. Enable before commit
+      // actions.push(action);
     }
+
+    // WARNING: Remove this before commit
+    actions.push(action);
 
   });
 
