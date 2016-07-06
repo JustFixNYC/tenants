@@ -18,7 +18,8 @@ var ApplicationConfiguration = (function() {
 		'angularLazyImg',
 		'duScroll',
 		'pascalprecht.translate',	// angular-translate
- 		'tmh.dynamicLocale'// angular-dynamic-locale
+ 		'tmh.dynamicLocale'//, // angular-dynamic-locale
+ 		// 'ngSanitize' // Santize translations
 	];
 // 'ngAnimate',  'ngTouch', , 'bootstrapLightbox' , 'angularModalService'
 
@@ -65,18 +66,34 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     },
     'preferredLocale': 'en_US'
   })
+  // TODO: Build all translation stuff together
   // enable logging for missing IDs
   .config(["$translateProvider", function ($translateProvider) {
     $translateProvider.useMissingTranslationHandlerLog();
   }])
   // async loading for templates
-  .config(["$translateProvider", function ($translateProvider) {
+  .config(["$translateProvider", "$translateSanitizationProvider", "$sceProvider", function ($translateProvider, $translateSanitizationProvider, $sceProvider) {
     $translateProvider.useStaticFilesLoader({
         prefix: 'languages/locale-',// path to translations files
         suffix: '.json'// suffix, currently- extension of the translations
     });
+
+    // HAAAAAACK
+    $translateSanitizationProvider.addStrategy('trust', function(value, mode) {
+
+    	var justTrustMe = function(unescapedVal) {
+    		return unescapedVal;
+    	}
+
+    	return justTrustMe(value);
+
+    });
+
     $translateProvider.preferredLanguage('en_US');// is applied on first load
     $translateProvider.useLocalStorage();// saves selected language to localStorage
+    // NOTE: This shit causes all sorts of issues with our UI-SREF attribute. Not recognized in any sanitizer module, and causes it to break
+    $translateProvider.useSanitizeValueStrategy('escape'); // Prevent XSS
+    // TODO: Remove ngSanitize?
   }])
   // location of the locale settings
   .config(["tmhDynamicLocaleProvider", function (tmhDynamicLocaleProvider) {
@@ -212,8 +229,8 @@ angular.module('actions').config(['$stateProvider', '$urlRouterProvider',
 'use strict';
 
 // Issues controller
-angular.module('actions').controller('ActionsController', ['$scope', '$filter', 'Authentication', 'Actions', 'Activity',
-  function($scope, $filter, Authentication, Actions, Activity) {
+angular.module('actions').controller('ActionsController', ['$scope', '$filter', 'Authentication', 'Actions', 'Activity', '$translate', '$sce',
+  function($scope, $filter, Authentication, Actions, Activity, $translate, $sce) {
     //$scope.authentication = Authentication;
     $scope.user = Authentication.user;
 
@@ -226,6 +243,13 @@ angular.module('actions').controller('ActionsController', ['$scope', '$filter', 
     //
     //   return prog;
     // };
+
+    var translatedText = $translate('modules.actions.views.listActions.empty').then(function(text){
+    	// console.log(text);
+    	console.log(text);
+    	$scope.trustedTranslation = $sce.trustAsHtml(text);
+    });
+    console.log(translatedText);
 
     $scope.userCompletedDetails = function() {
       if($scope.user.actionFlags) {
@@ -492,19 +516,20 @@ angular.module('actions').controller('RentalHistoryController', ['$scope','$moda
 // allow contents of tak action cards to include directives, functions, etc
 // see http://stackoverflow.com/questions/20297638/call-function-inside-sce-trustashtml-string-in-angular-js
 
-angular.module('actions').directive('compileTemplate', ["$compile", "$parse", function($compile, $parse){
+angular.module('actions').directive('compileTemplate', ['$compile', '$parse', '$sce',
+	function($compile, $parse, $sce){
     return {
         link: function(scope, element, attr){
             var parsed = $parse(attr.ngBindHtml);
             var getStringValue = function() { return (parsed(scope) || '').toString(); }
-
             //Recompile if the template changes
             scope.$watch(getStringValue, function() {
-                $compile(element, null, -9999)(scope);  //The -9999 makes it skip directives so that we do not recompile ourselves
+              $compile(element, null, -9999)(scope);  //The -9999 makes it skip directives so that we do not recompile ourselves
             });
         }
     }
-}]);
+	}
+]);
 
 'use strict';
 
@@ -652,8 +677,9 @@ angular.module('actions')
 
         scope.followUpSubmitted = false;
 
-        //scope.completed = false;
-        if(!scope.action.completed) scope.action.completed = false;
+        // scope.completed = false;
+        scope.action.completed = false;
+        // if(!scope.action.completed) scope.action.completed = false;
 
         scope.newActivity = {
           title: scope.action.activityTitle,
@@ -2038,7 +2064,12 @@ angular.module('core').directive('windowHeight', ['$window', 'deviceDetector', f
 
 angular.module('core').filter('firstname', function() {
     return function (input) {
-      return input.split(' ')[0];
+    	if(input) {
+	      return input.split(' ')[0];    		
+    	}
+    	else {
+    		return input;
+    	}
     }
 });
 
@@ -3079,6 +3110,7 @@ angular.module('kyr').factory('kyrService', ['$resource', '$http', '$q',
 
 'use strict';
 
+// TODO: discuss putting all 'run' methods together 
 angular.module('onboarding').run(['$rootScope', '$state', 'Authentication', '$window', function($rootScope, $state, Authentication, $window) {
 
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
@@ -3801,22 +3833,22 @@ angular.module('tutorial').controller('TutorialController', ['$scope', '$sce',
 		// Just an easier way to handle this
 		$scope.slides = [
 			{
-	      image: 'modules/tutorial/img/1_TakeAction_fullphone.png',
+	      image: 'modules/tutorial/img/1TakeAction.png',
 	      text: $sce.trustAsHtml('The more evidence you upload, the stronger your case will be. Start with the <strong>Take Action</strong> section to add photos, file 311 complaints and send notices to your landlord.'),
 	      title: 'Gather Evidence'
       },
 			{
-	      image: 'modules/tutorial/img/2_StatusUpdate_fullphone.png',
+	      image: 'modules/tutorial/img/2StatusUpdate.png',
 	      text: $sce.trustAsHtml('Add a <strong>Status Update</strong> at any time from the dashboard. This will help you keep a log of any updates or communication with your landlord.'),
 	      title: 'Add Status Updates'
       },
 			{
-	      image: 'modules/tutorial/img/3_CaseHistory_fullphone.png',
+	      image: 'modules/tutorial/img/3CaseHistory.png',
 	      text: $sce.trustAsHtml('Everything you do is saved in your <strong>Case History</strong>. You can print it for housing court or share it with neighbors and advocates by using the Share Link.'),
 	      title: 'Share Your Case History'
       },
 			{
-	      image: 'modules/tutorial/img/4_KYR_fullphone.png',
+	      image: 'modules/tutorial/img/4KYR.png',
 	      text: $sce.trustAsHtml('It\'s important to stay informed about your rights as a tenant. Go to <strong>Know Your Rights</strong> for articles and links to get more information.'),
 	      title: 'Know Your Rights'
       }
@@ -3828,6 +3860,7 @@ angular.module('tutorial').controller('TutorialController', ['$scope', '$sce',
 
 // Config HTTP Error Handling
 angular.module('users').config(['$httpProvider',
+	// TODO: uhhh wut diz
 	function($httpProvider) {
 		// Set the httpProvider "not authorized" interceptor
 		$httpProvider.interceptors.push(['$rootScope', '$q', '$location', 'Authentication',
@@ -4010,9 +4043,13 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
   function($scope, $http, $location, $state, $filter, Users, Authentication, $rootScope) {
 
     $scope.passwordVerified = false;
+    $scope.successfulUpdate = false;
 
-    $scope.$on('$stateChangeSuccess', function() {
+    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
       $scope.user = Authentication.user;
+      if(fromState.name === 'settings.profile') {
+      	$scope.successfulUpdate = false;
+      }
     });
 
     // If user is not signed in then redirect back home
@@ -4069,19 +4106,17 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 				$scope.userError = false;
 				$rootScope.loading = true;
 
-        console.log('update user pre', user);
-
 				user.$update(function(response) {
 
 					// If successful we assign the response to the global user model
-
-          console.log('update user post', response);
 
 					$rootScope.loading = false;
 					$scope.user = Authentication.user = response;
 
 					$state.go('settings.profile');
-          // $location.path('/settings/profile');
+	    		$scope.passwordVerified = false;
+	    		$scope.successfulUpdate = true;
+
 
 				}, function(err) {
 					$rootScope.loading = false;
@@ -4110,10 +4145,13 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
       return
     };
 
+    // Maaaaaybe change this name -- gets kinda confusing w/ totally separate yet similarly named function above
     $scope.verifyPassword = function(password) {
 
     	$http.post('api/users/verify-password', {"password": password}).success(function(response){
     		$scope.passwordVerified = true;
+    		// TODO: Verify this is ONLY for phone reset
+    		$scope.user.phone = '';
     	}).error(function(err) {
     		$scope.passwordError = true;
     		$scope.errorMessage = err.message;

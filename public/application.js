@@ -24,27 +24,22 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     },
     'preferredLocale': 'en_US'
   })
+  // TODO: Build all translation stuff together
   // enable logging for missing IDs
   .config(function ($translateProvider) {
     $translateProvider.useMissingTranslationHandlerLog();
   })
   // async loading for templates
-  .config(function ($translateProvider, $translateSanitizationProvider) {
+  .config(function ($translateProvider, $translateSanitizationProvider, $sanitizeProvider) {
     $translateProvider.useStaticFilesLoader({
         prefix: 'languages/locale-',// path to translations files
         suffix: '.json'// suffix, currently- extension of the translations
     });
 
-    // HAAAAAACK
-    $translateSanitizationProvider.addStrategy('trust', function(value, mode) {
-    	console.log(value);
-    	return value;
-    });
-
     $translateProvider.preferredLanguage('en_US');// is applied on first load
     $translateProvider.useLocalStorage();// saves selected language to localStorage
     // NOTE: This shit causes all sorts of issues with our UI-SREF attribute. Not recognized in any sanitizer module, and causes it to break
-    $translateProvider.useSanitizeValueStrategy('trust'); // Prevent XSS
+    $translateProvider.useSanitizeValueStrategy('sanitize'); // Prevent XSS
     // TODO: Remove ngSanitize?
   })
   // location of the locale settings
