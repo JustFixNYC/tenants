@@ -18,8 +18,8 @@ var ApplicationConfiguration = (function() {
 		'angularLazyImg',
 		'duScroll',
 		'pascalprecht.translate',	// angular-translate
- 		'tmh.dynamicLocale'//, // angular-dynamic-locale
- 		// 'ngSanitize' // Santize translations
+ 		'tmh.dynamicLocale'/*, // angular-dynamic-locale
+ 		'ngSanitize' */// Santize translations -> /application.js at line ~40
 	];
 // 'ngAnimate',  'ngTouch', , 'bootstrapLightbox' , 'angularModalService'
 
@@ -45,6 +45,24 @@ var ApplicationConfiguration = (function() {
 //Start by defining the main module and adding the module dependencies
 angular.module(ApplicationConfiguration.applicationModuleName, ApplicationConfiguration.applicationModuleVendorDependencies);
 
+// Extend $santize to accomidate for ui-sref
+// NEEDED: this has to be in the angular-translate module
+// https://github.com/angular/angular.js/pull/6252/files
+
+/*var $sanitizeExtFactory = function() {
+  return {
+
+    addSafeElements: function(elements) {
+      var map = makeMap(elements);
+      angular.extend(blockElements, map);
+      angular.extend(validElements, map);
+    },
+
+    addSafeAttributes: function(attrs) {
+      angular.extend(validAttrs, makeMap(attrs));
+    }
+  };
+};*/
 
 angular.module(ApplicationConfiguration.applicationModuleName)
   // Setting HTML5 Location Mode
@@ -72,27 +90,16 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     $translateProvider.useMissingTranslationHandlerLog();
   }])
   // async loading for templates
-  .config(["$translateProvider", "$translateSanitizationProvider", "$sceProvider", function ($translateProvider, $translateSanitizationProvider, $sceProvider) {
+  .config(["$translateProvider", "$translateSanitizationProvider", function ($translateProvider, $translateSanitizationProvider) {
     $translateProvider.useStaticFilesLoader({
         prefix: 'languages/locale-',// path to translations files
         suffix: '.json'// suffix, currently- extension of the translations
     });
 
-    // HAAAAAACK
-    $translateSanitizationProvider.addStrategy('trust', function(value, mode) {
-
-    	var justTrustMe = function(unescapedVal) {
-    		return unescapedVal;
-    	}
-
-    	return justTrustMe(value);
-
-    });
-
     $translateProvider.preferredLanguage('en_US');// is applied on first load
     $translateProvider.useLocalStorage();// saves selected language to localStorage
     // NOTE: This shit causes all sorts of issues with our UI-SREF attribute. Not recognized in any sanitizer module, and causes it to break
-    $translateProvider.useSanitizeValueStrategy('escape'); // Prevent XSS
+    $translateProvider.useSanitizeValueStrategy(null); // Prevent XSS
     // TODO: Remove ngSanitize?
   }])
   // location of the locale settings
@@ -229,8 +236,8 @@ angular.module('actions').config(['$stateProvider', '$urlRouterProvider',
 'use strict';
 
 // Issues controller
-angular.module('actions').controller('ActionsController', ['$scope', '$filter', 'Authentication', 'Actions', 'Activity', '$translate', '$sce',
-  function($scope, $filter, Authentication, Actions, Activity, $translate, $sce) {
+angular.module('actions').controller('ActionsController', ['$scope', '$filter', 'Authentication', 'Actions', 'Activity',
+  function($scope, $filter, Authentication, Actions, Activity) {
     //$scope.authentication = Authentication;
     $scope.user = Authentication.user;
 
@@ -244,12 +251,6 @@ angular.module('actions').controller('ActionsController', ['$scope', '$filter', 
     //   return prog;
     // };
 
-    var translatedText = $translate('modules.actions.views.listActions.empty').then(function(text){
-    	// console.log(text);
-    	console.log(text);
-    	$scope.trustedTranslation = $sce.trustAsHtml(text);
-    });
-    console.log(translatedText);
 
     $scope.userCompletedDetails = function() {
       if($scope.user.actionFlags) {
@@ -522,8 +523,10 @@ angular.module('actions').directive('compileTemplate', ['$compile', '$parse', '$
         link: function(scope, element, attr){
             var parsed = $parse(attr.ngBindHtml);
             var getStringValue = function() { return (parsed(scope) || '').toString(); }
+            console.log(getStringValue());
+            // console.log($sce.trustAsHtml(getStringValue()));
             //Recompile if the template changes
-            scope.$watch(getStringValue, function() {
+            scope.$watch(getStringValue, function(val) {
               $compile(element, null, -9999)(scope);  //The -9999 makes it skip directives so that we do not recompile ourselves
             });
         }
@@ -2134,6 +2137,15 @@ angular.module('core').filter('titlecase', function() {
         });
     }
 });
+
+'use strict';
+
+angular.module('core').filter('firstname', ['$sce',
+	function($sce) {
+    return function (val) {
+    	return $sce.trustAsHtml(val);
+    }
+}]);
 
 'use strict';
 

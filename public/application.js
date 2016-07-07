@@ -3,6 +3,24 @@
 //Start by defining the main module and adding the module dependencies
 angular.module(ApplicationConfiguration.applicationModuleName, ApplicationConfiguration.applicationModuleVendorDependencies);
 
+// Extend $santize to accomidate for ui-sref
+// NEEDED: this has to be in the angular-translate module
+// https://github.com/angular/angular.js/pull/6252/files
+
+/*var $sanitizeExtFactory = function() {
+  return {
+
+    addSafeElements: function(elements) {
+      var map = makeMap(elements);
+      angular.extend(blockElements, map);
+      angular.extend(validElements, map);
+    },
+
+    addSafeAttributes: function(attrs) {
+      angular.extend(validAttrs, makeMap(attrs));
+    }
+  };
+};*/
 
 angular.module(ApplicationConfiguration.applicationModuleName)
   // Setting HTML5 Location Mode
@@ -30,7 +48,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     $translateProvider.useMissingTranslationHandlerLog();
   })
   // async loading for templates
-  .config(function ($translateProvider, $translateSanitizationProvider, $sanitizeProvider) {
+  .config(function ($translateProvider, $translateSanitizationProvider) {
     $translateProvider.useStaticFilesLoader({
         prefix: 'languages/locale-',// path to translations files
         suffix: '.json'// suffix, currently- extension of the translations
@@ -39,7 +57,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     $translateProvider.preferredLanguage('en_US');// is applied on first load
     $translateProvider.useLocalStorage();// saves selected language to localStorage
     // NOTE: This shit causes all sorts of issues with our UI-SREF attribute. Not recognized in any sanitizer module, and causes it to break
-    $translateProvider.useSanitizeValueStrategy('sanitize'); // Prevent XSS
+    $translateProvider.useSanitizeValueStrategy(null); // Prevent XSS
     // TODO: Remove ngSanitize?
   })
   // location of the locale settings

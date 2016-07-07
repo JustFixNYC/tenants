@@ -40,7 +40,8 @@
         <to-do-item data-ng-repeat="action in legalActions"></to-do-item>
       </div>
     </div>
-    <div class="alert alert-warning text-center" ng-bind-html="'modules.actions.views.listActions.empty' | translate" compile-template> <!-- ng-bind-html="'modules.actions.views.listActions.empty' | translate"  data-ng-show="onceActions.length === 0" -->
+    <div class="alert alert-warning text-center" 
+    	data-ng-bind-html="::'modules.actions.views.listActions.empty' | trust" 
+    	compile-template> <!-- ng-bind-html="'modules.actions.views.listActions.empty' | translate"  data-ng-show="onceActions.length === 0" -->
     </div>
-	    {{::'modules.actions.views.listActions.empty' | translate}}
 </section>  
