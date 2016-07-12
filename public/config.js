@@ -19,7 +19,7 @@ var ApplicationConfiguration = (function() {
 		'duScroll',
 		'pascalprecht.translate',	// angular-translate
  		'tmh.dynamicLocale'/*, // angular-dynamic-locale
- 		'ngSanitize' */// Santize translations -> /application.js at line ~40
+ 		'ngSanitize'*/ // Santize translations -> /application.js at line ~40
 	];
 // 'ngAnimate',  'ngTouch', , 'bootstrapLightbox' , 'angularModalService'
 

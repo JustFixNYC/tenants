@@ -1,19 +1,19 @@
 <div class="modal-header">
-  <h3 class="modal-title">Message Landlord</h3>
+  <h3 class="modal-title">{{::'modules.actions.partials.modals.messageLandlord.title' | translate}}</h3>
 </div>
 <div class="modal-body" stop-event="touchend">
-  <p>If your super is unresponsive, email or call your landlord to notify them of your issues and your attempts to contact the super.</p>
+  <p>{{::'modules.actions.partials.modals.messageLandlord.body' | translate}}</p>
   <form novalidate>
     <div class="form-group" data-ng-submit="done()">
-        <label class="control-label" for="description">Here's what we'll send:</label>
+        <label class="control-label" for="description">{{::'modules.actions.partials.modals.messageLandlord.sendText' | translate}}</label>
         <div class="controls">
-            <textarea name="description" data-ng-model="email.content" id="description" class="form-control" cols="30" rows="5" maxlength="500" placeholder="What to send to your landlord"></textarea>
+            <textarea name="description" data-ng-model="email.content" id="description" class="form-control" cols="30" rows="5" maxlength="500" placeholder="{{::'modules.actions.partials.modals.messageLandlord.emailPlaceholder' | translate}}"></textarea>
         </div>
     </div> 
     <div class="form-group">
-          <label class="control-label" for="landlord">An email that your landlord can be reached at (look on leases or other notices):</label>
+          <label class="control-label" for="landlord">{{::'modules.actions.partials.modals.messageLandlord.emailDescription' | translate}}</label>
           <div class="controls">
-            <input type="email" class="form-control" id="landlord" data-ng-model="email.landlord" placeholder="ex: alphamanagement@gmail.com" required>
+            <input type="email" class="form-control" id="landlord" data-ng-model="email.landlord" placeholder="{{::'modules.actions.partials.modals.messageLandlord.addressPlaceholder' | translate}}" required>
           </div>
     </div>  
   </div>
@@ -21,9 +21,9 @@
 
 
 <div class="modal-footer">
-  <button class="btn btn-default pull-left" ng-click="cancel()">Cancel</button>
+  <button class="btn btn-default pull-left" ng-click="cancel()">{{::'modules.actions.partials.modals.messageLandlord.cancel' | translate}}</button>
   <a data-ng-href="{{ emailHref }}" target="_blank" class="btn btn-success pull-right" data-ng-click="done()">
     <span class="glyphicon glyphicon-envelope pull-left"></span>
-    Send Email
+    {{::'modules.actions.partials.modals.messageLandlord.sendEmail' | translate}}
   </a>
 </div>

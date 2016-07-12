@@ -1,10 +1,10 @@
 <div class="modal-header">
-  <h3 class="modal-title">Decreased Services</h3>
+  <h3 class="modal-title">{{::'modules.actions.partials.modals.decreasedServices.title' | translate}}</h3>
 </div>
 <div class="modal-body"  stop-event="touchend">
   <form class="update-activity-form" novalidate>
     <div class="form-group">
-        <label class="control-label" for="description">Description</label>
+        <label class="control-label" for="description">{{::'modules.actions.partials.modals.decreasedServices.description' | translate}}</label>
         <div class="controls">
             <textarea name="description" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="5" maxlength="500" placeholder="What's going on?"></textarea>
         </div>
@@ -12,6 +12,6 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-  <button class="btn btn-primary" ng-click="done()">Submit</button>
+  <button class="btn btn-default" ng-click="cancel()">{{::'modules.actions.partials.modals.decreasedServices.cancel' | translate}}</button>
+  <button class="btn btn-primary" ng-click="done()">{{::'modules.actions.partials.modals.decreasedServices.submit' | translate}}</button>
 </div>

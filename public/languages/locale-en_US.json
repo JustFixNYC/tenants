@@ -4,7 +4,10 @@
   	"cancel": "Cancel",
   	"add": "Add To Your Case",
   	"success": "Success",
-  	"error": "Error"
+  	"error": "Error",
+  	"gotIt": "Got it!",
+  	"submit": "Submit",
+		"description": "Description"
   },
   "modules": {
   	"actions": {
@@ -17,7 +20,7 @@
   					"errorStartDate": "Please add a date.",
   					"addPhotos": "Add some photos",
   					"photoWord": "Photo",
-  					"description": "Description",
+  					"description": "@:repeating.description",
   					"descriptionPlaceholder": "Please add a brief description.",
   					"cancel": "@:repeating.cancel",
   					"add": "@:repeating.add"
@@ -41,8 +44,61 @@
   					"loaderText": "Generating your letter...",
   					"successTitle": "Your Letter of Complaint has been created and can be viewed here:",
   					"successLinkText": "Letter of Complaint PDF",
-  					"successBody": "This PDF will always available on your <a ui-sref=\"listActivity\" ng-click=\"done()\">Case History</a> page, so you can come back to it later on. <b>Don’t forget to send it via certified mail!</b>"
+  					"successBody": "This PDF will always available on your <a ui-sref=\"listActivity\" ng-click=\"done()\">Case History</a> page, so you can come back to it later on. <b>Don’t forget to send it via certified mail!</b>",
+  					"errorBody": "Oops! We're sorry, the letter creation service is down at the moment - please try again later.",
+  					"cancel": "@:repeating.cancel",
+  					"submit": "@:repeating.submit",
+  					"gotIt": "@:repeating.gotIt"
+  				},
+  				"contactSuper": {
+  					"title": "Conctact Your Super",
+  					"body": "We recommend your first step should be to contact the superintendent for your building -- the person directly responsible for making repairs in your home.  Call or text your super at least two times before contacting your landlord.",
+  					"askPhone": "What is your super's phone pumber? (can sometimes be found in the lobby of your building):",
+  					"cancel": "@:repeating.cancel",
+  					"call": "Call"
+  				},
+  				"decreasedServices": {
+  					"title": "Decreased Services",
+  					"description": "@:repeating.description",
+  					"cancel": "@:repeating.cancel",
+  					"submit": "@:repeating.submit"
+
+  				},
+  				"hpAction": {
+  					"title": "HP Action",
+  					"description": "@:repeating.description",
+  					"cancel": "@:repeating.cancel",
+  					"submit": "@:repeating.submit"
+  				},
+  				"messageLandlord": {
+  					"title": "Message Landlord",
+  					"body": "If your super is unresponsive, email or call your landlord to notify them of your issues and your attempts to contact the super.",
+  					"sendText": "Here's what we'll send:",
+  					"emailDescription": "An email that your landlord can be reached at (look on leases or other notices):",
+  					"emailPlaceholder": "What to send to your landlord",
+  					"addressPlaceholder": "ex: alphamanagement@gmail.com",
+  					"cancel": "@:repeating.cancel",
+  					"sendEmail": "Send Email"
+  				},
+  				"photoPreview": {
+  					"title": "Review",
+  					"addTag": "Add tag to this photo:",
+  					"cancel": "@:repeating.cancel",
+  					"addCase": "@:repeating.add"
+  				},
+  				"rentalHistory": {
+  					"title": "Request your Rental History",
+  					"body": "Requesting this document from DHCR will help you determine if you are rent stabilized or not. If you are rent stabilized, you may have additional rights as a tenant. Save the letter for your records by uploading it to your <b>Case History!</b>",
+  					"description": "Here's what we'll send:",
+  					"placeholder": "What to send to DHCR",
+  					"cancel": "@:repeating.cancel",
+  					"send": "Send Email"
   				}
+  			},
+  			"statusUpdate": {
+  				"description": "Please add a brief description.",
+  				"tagTitle": "Tag Issue",
+  				"addCase": "@:repeating.add"
   			}
   		},
   		"views": {

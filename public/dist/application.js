@@ -523,10 +523,9 @@ angular.module('actions').directive('compileTemplate', ['$compile', '$parse', '$
         link: function(scope, element, attr){
             var parsed = $parse(attr.ngBindHtml);
             var getStringValue = function() { return (parsed(scope) || '').toString(); }
-            console.log(getStringValue());
-            // console.log($sce.trustAsHtml(getStringValue()));
             //Recompile if the template changes
             scope.$watch(getStringValue, function(val) {
+            	console.log(val);
               $compile(element, null, -9999)(scope);  //The -9999 makes it skip directives so that we do not recompile ourselves
             });
         }
@@ -2140,10 +2139,11 @@ angular.module('core').filter('titlecase', function() {
 
 'use strict';
 
-angular.module('core').filter('firstname', ['$sce',
-	function($sce) {
+angular.module('core').filter('trustTranslate', ['$sce', '$filter',
+	function($sce, $filter) {
+		var translatedText = $filter('translate');
     return function (val) {
-    	return $sce.trustAsHtml(val);
+    	return $sce.trustAsHtml(translatedText(val));
     }
 }]);
 
