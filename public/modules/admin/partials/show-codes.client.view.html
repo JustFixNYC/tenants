@@ -1,11 +1,11 @@
 <div class="modal-header">
-  <h3 class="modal-title">Access Codes</h3>
+  <h3 class="modal-title">{{::'modules.admin.partials.showCodes.title' | translate}}</h3>
 </div>
 <div class="modal-body admin-access-codes" stop-event="touchend">
   <p ng-repeat="c in codes track by $index" ng-bind="c"></p>
 </div>
 <div class="modal-footer">
   <button class="btn btn-info" data-dismiss="modal" data-ng-click="close()">
-      Done
+      {{::'modules.admin.showCodes.done' | translate}}
   </button>
 </div>

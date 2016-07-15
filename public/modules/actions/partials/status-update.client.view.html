@@ -63,6 +63,15 @@
   </div>
 </div>
 
-<alert data-ng-if="status.completed" data-ng-show="!status.closeAlert" type="success" close="closeAlert()" ng-bind-html="::'modules.actions.partials.statusUpdate.addCase' | trustTranslate"></alert>
-<alert data-ng-show="!status.closeErrorAlert" type="danger" close="status.closeErrorAlert = true">We're sorry, something went wrong! Please <a ui-sref="contact">Contact Us</a> to report this issue.</alert>
+<alert 
+			data-ng-if="status.completed" 
+			data-ng-show="!status.closeAlert" 
+			type="success" 
+			close="closeAlert()"
+			ng-bind-html="::'modules.actions.partials.statusUpdate.success' | trustTranslate"></alert>
+<alert 
+			data-ng-show="!status.closeErrorAlert" 
+			type="danger" 
+			close="status.closeErrorAlert = true"
+			ng-bind-html="::'modules.actions.partials.statusUpdate.error' | trustTranslate"></alert>
 <!-- <alert data-ng-if="error.length" data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert> -->

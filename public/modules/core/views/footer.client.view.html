@@ -11,11 +11,11 @@
   <div class="footer-main container">
     <ul class="list-inline">
       <li><a twitter-follow class="twitter-link"></a></li>
-      <li><a ui-sref="home">Home</a></li>
-      <li><a ui-sref="contact">Contact</a></li>
-      <li><a ui-sref="manifesto">Manifesto</a></li>
+      <li><a ui-sref="home">{{::'modules.core.views.footer.home' | translate}}</a></li>
+      <li><a ui-sref="contact">{{::'modules.core.views.footer.contact' | translate}}</a></a></li>
+      <li><a ui-sref="manifesto">{{::'modules.core.views.footer.manifesto' | translate}}</a></a></li>
       <!-- <li><div language-select></div></li> -->
     </ul>
-    <p><small><b>Disclaimer:</b> The information contained in JustFix.nyc does not constitute legal advice and must not be used as a substitute for the advice of a lawyer qualified to give advice on legal issues pertaining to housing. We can help direct you to free and/or low-cost legal services as necessary.</small></p>
+    <p ng-bind-html="::'modules.core.views.footer.description' | trustTranslate" compile-template></p>
   </div>
 </div>

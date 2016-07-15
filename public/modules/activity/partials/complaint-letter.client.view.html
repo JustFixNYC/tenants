@@ -1,19 +1,19 @@
 <div class="activity-panel-letter" ng-init="instructionsCollapsed = true">
-  <p>Link for printing:</p>
-  <p><span class="glyphicon glyphicon-file text-success"></span><a class="text-link" ng-href="{{ activity.fields[0].value }}" target="_blank">Letter of Complaint PDF</a></p>
+  <p>{{::'modules.activity.partials.complaintLetter.printLink' | translate}}</p>
+  <p><span class="glyphicon glyphicon-file text-success"></span><a class="text-link" ng-href="{{ activity.fields[0].value }}" target="_blank">{{::'modules.activity.partials.complaintLetter.letterOfComplaint' | translate}}</a></p>
   <a href="" class="instructions-toggle" ng-click="instructionsCollapsed = !instructionsCollapsed">
     <span ng-if="instructionsCollapsed">+</span>
     <span ng-if="!instructionsCollapsed">-</span>
-     Print Instructions
+    {{::'modules.activity.partials.complaintLetter.instructions' | translate}}
   </a>
   <div collapse="instructionsCollapsed">
     <p>
-    Don’t have a printer at home?
+    {{::'modules.activity.partials.complaintLetter.alternatives' | translate}}
     <ol>
-      <li>Log into the JustFix.nyc website at the library or other public computer</li>
-      <li>Click on the link above to open PDF</li>
-      <li>File > Print from browser</li>
-      <li>Make sure to sign out!</li>
+      <li>{{::'modules.activity.partials.complaintLetter.one' | translate}}</li>
+      <li>{{::'modules.activity.partials.complaintLetter.two' | translate}}</li>
+      <li>{{::'modules.activity.partials.complaintLetter.three' | translate}}</li>
+      <li>{{::'modules.activity.partials.complaintLetter.four' | translate}}</li>
     </ol>
     </p>
   </div>

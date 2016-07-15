@@ -9,12 +9,12 @@
   </div>
 
   <div data-ng-if="activity.relatedProblems.length">
-    <p><b>Areas:</b> <span data-ng-repeat="problem in activity.relatedProblems">{{::problem}}<span ng-if="!$last">, </span></span></p>
+    <p><b>{{::'modules.activity.partials.defaultActivity.areas' | translate}}</b> <span data-ng-repeat="problem in activity.relatedProblems">{{::problem}}<span ng-if="!$last">, </span></span></p>
   </div>
 
   <div ng-if="activity.problems">
     <div data-ng-repeat="problem in activity.problems">
-      <b>Reported issues:</b>
+      <b></b>
       <ul>
         <li data-ng-repeat="issue in problem.issues">{{ issue.key }}</li>
       </ul>

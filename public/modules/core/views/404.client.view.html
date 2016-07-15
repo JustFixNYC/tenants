@@ -1,7 +1,6 @@
 <div class="page-header">
 	<!-- <img src="/modules/core/img/brand/icon_only.svg" alt="JustFix.nyc" /> -->
-	<h1>Page Not Found</h1>
+	<h1>{{::'modules.core.views.404.title' | translate}}</h1>
 </div>
-<p>
-	Sorry! The page you are looking for does not exist, or you do not have permission to view it. <a ui-sref="contact">Contact Us</a> if you need assistance.
+<p ng-bind-html="::'modules.core.views.404.body' | trustTranslate" compile-template>
 </p>

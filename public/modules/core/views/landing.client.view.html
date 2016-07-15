@@ -3,57 +3,57 @@
   <section class="above-fold text-center">
 
     <div class="above-fold-content col-xs-10 col-xs-offset-1">
-      <h1 class="big-text">A digital paper trail for your housing issues.</h1>
-      <a ui-sref="onboarding.accessCode" class="btn btn-primary btn-block">Get Started!</a>
+      <h1 class="big-text">{{::'modules.core.views.landing.bigText' | translate}}</h1>
+      <a ui-sref="onboarding.accessCode" class="btn btn-primary btn-block">{{::'modules.core.views.landing.start' | translate}}</a>
       <!-- <a ui-sref="signin" class="btn btn-link btn-block">Sign In</a> -->
       <!-- <a href="mailto:hello@justfix.nyc?subject=Tell me more about JustFix.nyc!" target="_blank" class="btn btn-primary btn-block">Contact Us</a> -->
-      <a href="https://twitter.com/JustFixNYC" target="_blank" class="btn btn-link btn-block">Follow us on Twitter!</a>
+      <a href="https://twitter.com/JustFixNYC" target="_blank" class="btn btn-link btn-block">{{::'modules.core.views.landing.twitter' | translate}}</a>
     </div>
     <div class="learn-more" jump-to="main-idea">
-      how it works <br /><span class="glyphicon glyphicon-menu-down"></span>
+      {{::'modules.core.views.landing.how' | translate}} <br /><span class="glyphicon glyphicon-menu-down"></span>
     </div>
   </section>
 
 
   <section id="main-idea" class="product-desc">
     <div class="desc-item">
-      <h1 class="big-text">Build Your Case.</h1>
-      <p>Your case is your story. It provides a clear record of everything you have done to resolve your housing issues, like taking photos or notifying your landlord. If things get more serious, it can help avoid disputes or be used as a powerful tool in housing court. JustFix.nyc makes the process of building your case as easy as possible.</p>
+      <h1 class="big-text">{{::'modules.core.views.landing.build' | translate}}</h1>
+      <p>{{::'modules.core.views.landing.buildBody' | translate}}</p>
     </div>
     <div class="clearfix">
       <div class="desc-item col-md-6">
         <img src="/modules/core/img/landing/camera.svg" alt="Document" />
-        <h1>Step 1: Document</h1>
-        <p>Create an account by conducting a room-by-room inspection and describing your situation.</p>
+        <h1>{{::'modules.core.views.landing.one' | translate}}</h1>
+        <p>{{::'modules.core.views.landing.oneBody' | translate}}</p>
       </div>
       <div class="desc-item col-md-6">
         <img src="/modules/core/img/landing/checklist.svg" alt="Take Action" />
-        <h1>Step 2: Take Action</h1>
-        <p>We provide a personalized plan-of-attack for working with your landlord, notifying the right city agencies, and connecting with local organizations.</p>
+        <h1>{{::'modules.core.views.landing.two' | translate}}</h1>
+        <p>{{::'modules.core.views.landing.twoBody' | translate}}</p>
       </div>
       <div class="desc-item col-md-6">
         <img src="/modules/core/img/landing/action.svg" alt="Keep Records" />
-        <h1>Step 3: Keep Records</h1>
-        <p>As you take action, we store things like photos and tracking numbers. The more information you provide, the stronger your case will be.</p>
+        <h1>{{::'modules.core.views.landing.three' | translate}}</h1>
+        <p>{{::'modules.core.views.landing.threeBody' | translate}}</p>
       </div>
       <div class="desc-item col-md-6">
         <img src="/modules/core/img/landing/share.svg" alt="Share Your Story" />
-        <h1>Step 4: Share Your Story</h1>
-        <p>If you need to reach out to legal services and tenant advocates, we make it easy to share your <b>Case History</b> -  the record of all of your actions.</p>
+        <h1>{{::'modules.core.views.landing.four' | translate}}</h1>
+        <p ng-bind-html="::'modules.core.views.landing.fourBody' | trustTranslate" compile-template></p>
       </div>
     </div>
-    <a ui-sref="onboarding.accessCode" class="btn btn-primary btn-block">Get Started!</a>
+    <a ui-sref="onboarding.accessCode" class="btn btn-primary btn-block">{{::'modules.core.views.landing.start' | translate}}</a>
   </section>
   <section class="just-questions">
-    <h1>Need immediate assistance?</h1>
-    <p>If you’re searching for help, visit our Tenant Assistance Directory to find local community and legal resources.</p>
-    <a href="http://findhelp.justfix.nyc" class="btn btn-warning btn-block">Find Help</a>
+    <h1>{{::'modules.core.views.landing.immediate' | translate}}</h1>
+    <p>{{::'modules.core.views.landing.immediateBody' | translate}}</p>
+    <a href="http://findhelp.justfix.nyc" class="btn btn-warning btn-block">{{::'modules.core.views.landing.findHelp' | translate}}</a>
   </section>
 
   <section id="manifesto-idea" class="manifesto-idea text-center">
     <div class="features-content">
-      <h1>Want to know more?</h1>
-      <a ui-sref="manifesto" class="manifesto-link"><h1 class="big-text">Read our manifesto.</h1></a>
+      <h1>{{::'modules.core.views.landing.more' | translate}}</h1>
+      <a ui-sref="manifesto" class="manifesto-link"><h1 class="big-text">{{::'modules.core.views.landing.read' | translate}}</h1></a>
     </div>
   </section>
 

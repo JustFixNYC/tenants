@@ -2,14 +2,14 @@
     <div class="page-header">
         <img src="/modules/core/img/sections/history.svg" alt="Case History" />
         <h1>{{ user.fullName }}</h1>
-        <p class="text-center">Contact: {{ user.phone | tel }}</p>
-        <p class="text-danger text-center">This is a sharing view!</p>
+        <p class="text-center">{{::'modules.activity.views.listActivityPublic.contact' | translate}} {{ user.phone | tel }}</p>
+        <p class="text-danger text-center">{{::'modules.activity.views.listActivityPublic.alert' | translate}}</p>
     </div>
     <button class="btn btn-primary btn-block" print-button>
-        Print
+      {{::'modules.activity.views.listActivityPublic.print' | translate}}  
     </button>
     <div class="section-header">
-      <h2>Case History
+      <h2>{{::'modules.activity.views.listActivityPublic.caseHistory' | translate}}
       </h2>
     </div>
     <div data-ng-if="activities.length">
@@ -24,13 +24,13 @@
                 <!-- <p><b>{{ activity.key | areaTitle }} {{ activity.title === 'Text/Photos' ? 'Details' : activity.title }}</b></p> -->
 
 
-                <span class="pull-right activity-logged-date"><i>Logged on {{ ::activity.createdDate | date:'short' }}</i></span>
+                <span class="pull-right activity-logged-date"><i>{{::'modules.activity.views.listActivityPublic.loggedOn' | translate}} {{ ::activity.createdDate | date:'short' }}</i></span>
 
             </div>
         </div>
     </div>
     <div class="alert alert-warning text-center" data-ng-if="!activities.length">
-      {{ user.fullName }} hasn't added anything to their Case History yet. Check back later!
+      {{ user.fullName }} {{::'modules.activity.views.listActivityPublic.empty' | translate}}
     </div>
 
 </section>

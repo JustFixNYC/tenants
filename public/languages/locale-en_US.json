@@ -7,7 +7,17 @@
   	"error": "Error",
   	"gotIt": "Got it!",
   	"submit": "Submit",
-		"description": "Description"
+		"description": "Description",
+		"done": "Done",
+		"delete": "Delete",
+		"takeAction": "Take Action",
+		"caseHistory": "Case History",
+		"issueChecklist": "Issue Checklist",
+		"profile": "Profile",
+		"findHelp": "Find Help",
+		"kyr": "Know Your Rights",
+		"call": "Call",
+		"signOut": "Sign Out"
   },
   "modules": {
   	"actions": {
@@ -55,7 +65,7 @@
   					"body": "We recommend your first step should be to contact the superintendent for your building -- the person directly responsible for making repairs in your home.  Call or text your super at least two times before contacting your landlord.",
   					"askPhone": "What is your super's phone pumber? (can sometimes be found in the lobby of your building):",
   					"cancel": "@:repeating.cancel",
-  					"call": "Call"
+  					"call": "@:repeating.call"
   				},
   				"decreasedServices": {
   					"title": "Decreased Services",
@@ -98,7 +108,13 @@
   			"statusUpdate": {
   				"description": "Please add a brief description.",
   				"tagTitle": "Tag Issue",
-  				"addCase": "@:repeating.add"
+  				"addCase": "@:repeating.add",
+  				"success": "><strong>Well done!</strong> We've added <em>{{ newActivity.title }}</em> to your <a ui-sref=\"listActivity\">Case History</a>.",
+  				"error": "We're sorry, something went wrong! Please <a ui-sref=\"contact\">Contact Us</a> to report this issue."
+  			},
+  			"toDoItem": {
+  				"tried": "I've tried this",
+  				"dateOf": "Date of"
   			}
   		},
   		"views": {
@@ -109,6 +125,183 @@
   				"outreachHeader": "Outreach",
   				"legalHeader": "Legal Actions",
   				"empty": "There's nothing to do at the moment, apologies. Check out what is on <a ui-sref=\"listActivity\">Your Case</a>?"
+  			}
+  		}
+  	},
+  	"activity": {
+  		"partials": {
+  			"checklist": {
+
+  			},
+  			"complaintLetter": {
+  				"printLink": "Link for printing:",
+  				"letterOfComplaint": "Letter of Complaint PDF",
+  				"instructions": "Print Instructions",
+  				"alternatives": "Don’t have a printer at home?",
+  				"one": "Log into the JustFix.nyc website at the library or other public computer",
+  				"two": "Click on the link above to open PDF",
+  				"three": "File > Print from browser",
+  				"four": "Make sure to sign out!"
+  			},
+  			"defaultActivity": {
+  				"areas": "Areas:",
+  				"issues": "Reported issues:"
+  			}
+  		},
+	  	"views": {
+	  		"listActivityPublic": {
+	  			"contact": "Contact:",
+	  			"alert": "This is a sharing view!",
+	  			"print": "Print",
+	  			"caseHistory": "@:repeating.caseHistory",
+	  			"loggedOn": "Logged on",
+	  			"empty": "hasn't added anything to their Case History yet. Check back later!"
+	  		},
+	  		"listActivity": {
+	  			"title": "@:repeating.caseHistory",
+	  			"description": "This is a record of all the actions you’ve taken in resolving your housing issues.",
+	  			"share": "Share My Case",
+	  			"email": "Email",
+	  			"text": "Text",
+	  			"print": "Print",
+	  			"enable": "Enable Share Link:",
+	  			"shareLinkText": "Share Link (on):",
+	  			"alert": "This allows you to share your Case History with advocates. <b>It does not give access to the rest of your account.</b>",
+	  			"labelShare": "Copy and paste this link to share your Case History: ",
+	  			"empty": "Nothing has been added to your case yet! <a ui-sref=\"listActions\">Click here</a> to see some things to do."
+	  		}
+	  	}
+  	},
+  	"admin": {
+  		"partials": {
+  			"showCodes": {
+  				"title": "Access Codes",
+  				"done": "@:repeating.done"
+  			}
+  		},
+  		"views": {
+  			"title": "JustFix.nyc Admin Dashboard",
+  			"referrals": {
+  				"name": "Name",
+  				"organization": "Organization",
+  				"phone": "Phone",
+  				"email": "Email",
+  				"code": "Code",
+  				"remainingCodes": "Remaining Codes",
+  				"totalUsers": "Total Users",
+  				"delete": "@:repeating.delete",
+  				"numberCodes": "Number of Codes",
+  				"create": "Create Referral!"
+  			}
+  		}
+  	},
+  	"core": {
+  		"partials": {
+  			"loading": {
+  				"loading": "loading"
+  			}
+  		},
+  		"views": {
+  			"404": {
+  				"title": "Page Not Found",
+  				"body": "Sorry! The page you are looking for does not exist, or you do not have permission to view it. <a ui-sref=\"contact\">Contact Us</a> if you need assistance."
+  			},
+  			"contact": {
+  				"title": "Contact Us",
+  				"body": "If you need assistance or would like to sign up for an access code, please contact us below.",
+  				"phone": "(646) 820-0349",
+  				"email": "hello@justfix.nyc"
+  			},
+  			"footer": {
+  				"home": "Home",
+  				"contact": "Contact",
+  				"manifesto": "Manifesto",
+  				"description": "<small><b>Disclaimer:</b> The information contained in JustFix.nyc does not constitute legal advice and must not be used as a substitute for the advice of a lawyer qualified to give advice on legal issues pertaining to housing. We can help direct you to free and/or low-cost legal services as necessary.</small>"
+  			},
+  			"header": {
+  				"signIn": "Sign In"
+  			},
+  			"home": {
+  				"success": "<strong>Well done!</strong> Your issue checklist has been updated. Check your <a ui-sref=\"listActivity\" ng-click=\"close($event)\">Case History</a> to see the changes.",
+  				"error": "We're sorry, something went wrong with updating your checklist. Please <a ui-sref=\"contact\">Contact Us</a> to report this issue.",
+  				"takeAction": "@:repeating.takeAction",
+  				"caseHistory": "@:repeating.caseHistory",
+  				"issueChecklist": "@:repeating.issueChecklist",
+  				"profile": "@:repeating.profile",
+  				"findHelp": "@:repeating.findHelp",
+  				"kyr": "@:repeating.kyr",
+  				"advocate": "Advocate Information",
+  				"call": "@:repeating.call",
+  				"signOut": "@:repeating.signOut"
+  			},
+  			"landing": {
+  				"bigText": "A digital paper trail for your housing issues.",
+  				"start": "Get Started!",
+  				"twitter": "Follow us on Twitter!",
+  				"how": "how it works",
+  				"build": "Build Your Case",
+  				"buildBody": "Your case is your story. It provides a clear record of everything you have done to resolve your housing issues, like taking photos or notifying your landlord. If things get more serious, it can help avoid disputes or be used as a powerful tool in housing court. JustFix.nyc makes the process of building your case as easy as possible.",
+  				"one": "Step 1: Document",
+  				"oneBody": "Create an account by conducting a room-by-room inspection and describing your situation.",
+  				"two": "Step 2: Take Action",
+  				"twoBody": "We provide a personalized plan-of-attack for working with your landlord, notifying the right city agencies, and connecting with local organizations.",
+  				"three": "Step 3: Keep Records",
+  				"threeBody": "As you take action, we store things like photos and tracking numbers. The more information you provide, the stronger your case will be.",
+  				"four": "Step 4: Share Your Story",
+  				"fourBody": "If you need to reach out to legal services and tenant advocates, we make it easy to share your <b>Case History</b> -  the record of all of your actions.",
+  				"immediate": "Need immediate assistance?",
+  				"immediateBody": "If you’re searching for help, visit our Tenant Assistance Directory to find local community and legal resources.",
+  				"findHelp": "Find Help",
+  				"more": "Want to know more?",
+  				"read": "Read our manifesto."
+  			},
+  			"manifesto": {
+  				"title": "Manifesto",
+  				"lead": "Our intentions behind the project.",
+  				"mission": "Our Mission",
+  				"missionBody": "The mission of JustFix.nyc is to allow residents in exploitative and neglectful housing situations to better track, organize, and take action in order to ensure that their fundamental rights as tenants are being met. Our goal is <b>healthy and safe homes for all.</b> We define this as housing that has clear lines of communication between tenant and landlord, conditions that are not neglected, rights and responsibilities that are enforced, and repairs that are made within a reasonable timeline.",
+  				"problem": "The Problem We Are Addressing",
+  				"problemBodyOne": "Patterns of neglect and disrepair in housing have existed in New York for almost as long as the city itself. Landlords and building managers take advantage of a lack of awareness and feelings of degradation to perpetrate poorly kept living spaces. Renters in New York face a multitude of issues including maintenance deficiencies, delayed and insufficient responses, and in many cases complete neglect when it comes to the homes that they and their families rely on. We recognize that in the current state of housing policy in New York, this neglect is often incentivized in the interest of a quick profit over the need for healthy and safe homes.",
+  				"problemBodyTwo": "Our process of research and investigation has led us to every aspect of how housing works in New York - city agencies, legal services, housing courts, advocates and case managers, supers and landlords, and most importantly the tenants themselves. We feel that exploitation and neglect starts with the inequity of information and awareness in these different groups and results in the imbalance of power where repairs are not made, complaints are not addressed, and harassment goes unaddressed.",
+  				"people": "The People",
+  				"peopleBodyOne": "Housing is fundamentally important to a person's physical welfare as well as their sense of dignity and place in the community. It is critically important to the well being and health of children and families. It has massive financial implications: the costs associated with inadequate housing conditions are far-reaching and have a devastating effect. Poor neighborhood conditions are also often associated with a lack of personal safety and fragmenting of community, adding a major mental health component as well.",
+  				"peopleBodyTwo": "While this is an issue than can span across race, class, and other factors of socioeconomic status, New Yorkers living in low-income neighborhoods - typically from minority and immigrant communities - are disproportionately affected by these patterns and are at the most risk for facing other severe difficulties as a result of inadequate housing - poor health, harassment, evictions, homelessness, depression, and further levels of poverty.",
+  				"vision": "Our Vision",
+  				"visionBodyOne": "One thing that we have heard repeatedly among experts, especially in terms of legal proceedings, is the effectiveness of tenants who keep track of how their interactions with their landlord - things such as records of communications, receipts, and photo documentation - and present their case in a manner that is succinct, well documented and irrefutable. It was a great day when we heard a judge tell one of our user’s that she seemed to be more qualified than her landlord’s entire legal team put together!",
+  				"visionBodyTwo": "We hope to simplify the process for documenting and reporting issues, provide efficient methods of action in resolving these problems, and reduce the pressure on preexisting advocacy and case management outlets. We are here to <b>augment, not replace</b> by integrating with the invaluable person-to-person services already available to tenants in the city. We cannot replace advocacy, organizing, and policy work - methods that get at the root of how neglect is incentivized and targeted - but hope to add a new tactic that ensures that tenants on the ground level can actively exercise their right to healthy and safe housing.",
+  				"approach": "Our Approach",
+  				"approachBodyOne": "We have seen the many different actions and resources that tenants have at their disposal in order to combat inadequate living conditions - at the neighbor-to-neighbor level all the way up to legal proceedings - as well as the bottlenecks they face along the way. We seek to provide:",
+  				"approachBodyTwo": "<ul><li>A single place for tenants to document and record their maintenance issues and living conditions.</li><li>A personalized guide to the most effective methods of action in resolving these issues.</li><li>A format to easily view the timeline of events that the tenant has experienced and share it with advocates, organizers, lawyers, and judges as part of the resolution process.</li></ul>",
+  				"approachBodyThree": "We believe in using transparency and organization as a tactic in providing a clear, irrefutable story, backed by awareness of one’s rights, with the goal to ensure that  healthy and safe homes are guaranteed for all.",
+  				"about": "About Us",
+  				"aboutBodyOne": "For the past year, Dan has been actively involved with civic technologists and tenant organizers in approaching the task of further utilizing open datasets in the interest of more transparency in the housing process. Georges is a product manager and the founder of <a href=\"http://www.unifischolars.org/\" target=\"_blank\">UniFi Scholars</a>, a non-profit focused on teaching financial literacy skills to high school juniors and seniors in NYC. Ashley is a UX designer and researcher with a background in information design and data visualization. She recently got her master's degree in data visualization from Northeastern and was previously working at a design consultancy in Boston called Dockyard. Through the <a href=\"http://labs.robinhood.org\" target=\"_blank\">Blue Ridge Labs fellowship</a>, we began to conduct more in-depth user research (including interviews, focus groups, and case management) and sought expert advice (housing court judges, legal experts, and tenant organizers) to further validate our approach and discover problems that could be addressed in part by technology. The fellowship is a 12-week program for teams to build digital products aimed at addressing key issues faced by low-income New Yorkers, with an approach focused on human-centered design, testing, and outreach work.",
+  				"aboutBodyTwo": "<b>We are currently seeking partnerships and further collaboration with any groups dedicated to tenant’s rights in New York City, and are hoping to establish initial pilot programs in 2016-2017 to continue building, testing, and refining JustFix.nyc. Please <a href=\"mailto:hello@justfix.nyc?subject=Tell me more about JustFix.nyc!\" target=\"_blank\">contact us</a> if you are interested in discussing further or would like a demonstration.</b>"
+  			}
+  		}
+  	},
+  	"findHelp": {
+  		"views": {
+  			"findHelp": {
+  				"title": "Find Help",
+  				"address": "<b>Based on your address,</b> here are some resources you can connect with that can help you in resolving your housing issues.",
+  				"community": "Community Groups",
+  				"legal": "Legal Services",
+  				"hotlines": "Citywide Hotlines",
+  				"away": "away",
+  				"empty": "Nothing found! Please try a different address."
+  			}
+  		}
+  	},
+  	"issues": {
+  		"partials": {
+  			"accessCode": {
+  				"title": "Welcome to<br/>JustFix.nyc!",
+  				"body": "Please enter the access code provided by your advocate so you can gain access to the website",
+  				"majorError": "Whoa, looks like we're having some trouble on our end. Please refresh this page and try again.",
+  				"accessCode": "Access Code",
+  				"starts": "Starts with...",
+  				"start": "Get started!",
+  				"minorError": "Uh oh! There was an error with this code. Please double check the code entered is correct and try again."
   			}
   		}
   	}

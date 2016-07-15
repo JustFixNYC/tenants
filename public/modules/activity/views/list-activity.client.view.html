@@ -1,12 +1,12 @@
 <section class="activities-container" data-ng-controller="ActivityController" data-ng-init="list()">
     <div class="page-header">
         <img src="/modules/core/img/sections/history.svg" alt="Case History" />
-        <h1>Case History</h1>
-        <p>This is a record of all the actions you’ve taken in resolving your housing issues.</p>
+        <h1>{{::'modules.activity.views.listActivity.title' | translate}}</h1>
+        <p>{{::'modules.activity.views.listActivity.description' | translate}}</p>
     </div>
     <!-- <div class="section-header share-section-header" ng-click="shareCollapsed = !shareCollapsed" ng-class="{ 'open': shareCollapsed == false}"> -->
     <div class="section-header share-section-header" ng-class="{ 'open': shareCollapsed == false}">
-      <h2>Share My Case
+      <h2>{{::'modules.activity.views.listActivity.share' | translate}}
         <!-- <span class="pull-right glyphicon" ng-class="shareCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span> -->
       </h2>
     </div>
@@ -17,34 +17,34 @@
         <div class="row share-controls">
           <div class="col-xs-6">
             <a  class="btn btn-success btn-block pull-left" ng-class="{ 'disabled' : !authentication.user.sharing.enabled }" target="_blank" email-message>
-                Email
+                {{::'modules.activity.views.listActivity.email' | translate}}
             </a>
           </div>
           <div class="col-xs-6">
             <a class="btn btn-success btn-block pull-right" ng-if="!isDesktop" ng-class="{ 'disabled' : !authentication.user.sharing.enabled }" sms-message type="share">
-                Text
+                {{::'modules.activity.views.listActivity.text' | translate}}
             </a>
             <button class="btn btn-success btn-block pull-right" ng-if="isDesktop" print-button>
-                Print
+                {{::'modules.activity.views.listActivity.print' | translate}}
             </button>
           </div>
         </div>
 
         <h2>
-          <span ng-if="!authentication.user.sharing.enabled">Enable Share Link:</span>
-          <span ng-if="authentication.user.sharing.enabled">Share Link (on):</span>
+          <span ng-if="!authentication.user.sharing.enabled">{{::'modules.activity.views.listActivity.enable' | translate}}</span>
+          <span ng-if="authentication.user.sharing.enabled">{{::'modules.activity.views.listActivity.shareLinkText' | translate}}</span>
           <label class="toggle pull-right" toggle-sharing>
             <input type="checkbox">
             <span class="handle"></span>
           </label>
         </h2>
 
-        <div class="alert alert-warning" ng-if="!authentication.user.sharing.enabled">
-          This allows you to share your Case History with advocates. <b>It does not give access to the rest of your account.</b>
+        <div class="alert alert-warning" ng-if="!authentication.user.sharing.enabled" ng-bind-html="::'modules.activity.views.listActivity.alert' | trustTranslate">
+          
         </div>
 
         <div class="share-link" ng-if="authentication.user.sharing.enabled">
-          <label>Copy and paste this link to share your Case History: </label>
+          <label>{{::'modules.activity.views.listActivity.labelShare' | translate}}</label>
           <h2><a ng-href="/share/{{authentication.user.sharing.key}}" target="_blank">http://{{location}}/share/{{authentication.user.sharing.key}}</a></h2>
         </div>
 
@@ -60,7 +60,7 @@
 
     <!-- <div class="section-header bg-success" ng-click="activityCollapsed = !activityCollapsed"> -->
     <div class="section-header bg-success">
-      <h2>Case History
+      <h2>{{::'modules.activity.views.listActivity.title' | translate}}
         <!-- <span class="pull-right glyphicon" ng-class="activityCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span> -->
       </h2>
     </div>
@@ -80,12 +80,12 @@
 
 
 
-                <span class="pull-right activity-logged-date"><i>Logged on {{ ::activity.createdDate | date:'short' }}</i></span>
+                <span class="pull-right activity-logged-date"><i>{{::'modules.activity.views.listActivity.title' | translate}} {{ ::activity.createdDate | date:'short' }}</i></span>
               </div>
           </div>
       </div>
-      <div class="alert alert-warning text-center" data-ng-if="!activities.length">
-      	Nothing has been added to your case yet! <a ui-sref="listActions">Click here</a> to see some things to do.
+      <div class="alert alert-warning text-center" ng-bind-html="'modules.activity.views.listActivity.empty' | trustTranslate" compile-template>
+      	
       </div>
     </div>
 

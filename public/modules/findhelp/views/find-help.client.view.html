@@ -2,8 +2,8 @@
 
 	<div class="page-header">
 			<img src="/modules/core/img/sections/help.svg" alt="Find Help" />
-			<h1>Find Help</h1>
-			<p><b>Based on your address,</b> here are some resources you can connect with that can help you in resolving your housing issues.</p>
+			<h1>{{::'modules.findHelp.views.findHelp.title' | translate}}</h1>
+			<p ng-bind-html="::'modules.findHelp.views.findHelp.address' | trustTranslate" compile-template></p>
 	</div>
 
 	<carto-map></carto-map>
@@ -11,11 +11,11 @@
 	<div class="resources-container">
 
 		<tabset>
-	    <tab heading="Community Groups" ng-click="update('community')">
+	    <tab heading="{{::'modules.findHelp.views.findHelp.community' | translate}}" ng-click="update('community')">
 			</tab>
-			<tab heading="Legal Services" ng-click="update('legal')">
+			<tab heading="{{::'modules.findHelp.views.findHelp.legal' | translate}}" ng-click="update('legal')">
 			</tab>
-			<tab heading="Citywide Hotlines" ng-click="update('hotlines')">
+			<tab heading="{{::'modules.findHelp.views.findHelp.hotlines' | translate}}" ng-click="update('hotlines')">
 			</tab>
 		</tabset>
 
@@ -30,7 +30,7 @@
 				    </div>
 				    <div class="panel-body">
 				      <!-- <a ng-href="http://maps.google.com/?q={{ r.address }}"><p class="address">{{ r.address }} <em>({{ r.dist }}mi away)</em></p></a> -->
-				      <a ng-if="r.address" ng-href="http://maps.google.com/?saddr={{ user.address + ' ' + user.borough }}&daddr={{ r.address }}" target="_blank"><p class="address">{{ r.address }} <em>({{ r.dist }}mi away)</em></p></a>
+				      <a ng-if="r.address" ng-href="http://maps.google.com/?saddr={{ user.address + ' ' + user.borough }}&daddr={{ r.address }}" target="_blank"><p class="address">{{ r.address }} <em>({{ r.dist }}mi {{::'modules.findHelp.views.findHelp.away' | translate}})</em></p></a>
 				      <p class="services">{{ r.services }}</p>
 				      <a  class="btn btn-success btn-block"
 				          ng-href="tel:{{ r.contact_information }}">
@@ -44,7 +44,7 @@
 
 				<div ng-if="resources.length == 0">
 				  <p class="error-text lead">
-				    Nothing found! Please try a different address.
+				    {{::'modules.findHelp.views.findHelp.empty' | translate}}
 				  </p>
 				  <br /><br />
 				</div>
