@@ -17,7 +17,8 @@
 		"findHelp": "Find Help",
 		"kyr": "Know Your Rights",
 		"call": "Call",
-		"signOut": "Sign Out"
+		"signOut": "Sign Out",
+		"continue": "Continue"
   },
   "modules": {
   	"actions": {
@@ -314,6 +315,41 @@
   				"other": "Other"
   			}
   		}
-  	}
+  	},
+		"onboarding": {
+			"partials": {
+				"additionalInfo": {
+					"title": "Information about your privacy",
+					"body": "<p>Your privacy is very important to us. We use your address to find information about your building and landlord as well as to refer you to local organizations. We use data from the following New York City and State agencies: HPD, DHCR, DOF, DOB, and DCP.</p><p>All JustFix.nyc data is kept private and internal - we will never publish or sell your information to a third-party. JustFix.nyc is a registered 501(c)(3) non-profit organization and does not collect revenue from advertising or any other user-geneterated content.</p><p>If you have any further questions, please <a ui-sref=\"contact\" target=\"_blank\">Contact Us</a>.</p>",
+					"gotIt": "@:repeating.gotIt"
+				},
+				"onboardingCode": {
+					"title": "Welcome to<br/>JustFix.nyc!",
+					"enterText": "Please enter the access code provided by your advocate so you can gain access to the website.",
+					"accessCode": "Access Code",
+					"placeholder": "Starts with...",
+					"continue": "@:repeating.continue",
+					"getHelp": "I don't have an access code!",
+					"errorSubmit": "There was an error submitting this code. Please <a ui-sref=\"contact\">Contact Us</a> if you need assistance.",
+					"errorCode": "Sorry! This access code does not match anything in our database - please double check that you entered the correct code. Please <a ui-sref=\"contact\">Contact Us</a> if you need assistance."
+				},
+				"onboardingDetails": {
+					"header": "(Step 2 of 2)",
+					"title": "Create Your Account",
+					"headerDesc": "Your account will store your evidence and case details for you. <b><em>This information will never be shared without asking for your permission first.</em></b>",
+					"firstName": "First Name",
+					"firstNameError": "Please enter a first name.",
+					"lastName": "Last Name",
+					"lastNameError": "Please enter a last name.",
+					"borough": "Borough",
+					"brooklyn": "Brooklyn",
+					"queens": "Queens",
+					"bronx": "Bronx",
+					"manhattan": "Manhattan",
+					"statenIsland": "Staten Island",
+					"errorBorough": "Please enter your borough."
+				}
+			}
+		}
   }
 }
