@@ -1,6 +1,5 @@
 <div class="form-group" data-ng-controller="IssuesChecklistController">
-    <p>
-        Please go from room-to-room and select the issues you need fixed - we'll ask for details later. <em>You can come back to this checklist anytime.</em>
+    <p ng-bind-html="::'modules.issues.partials.createIssueChecklist.intro' | trustTranslate" compile-template>
     </p>
     <!-- <accordion close-others="oneAtATime" class="create-issue-checklist">
         <accordion-group data-ng-repeat="(area, obj) in checklist" is-open="open[$index]">
@@ -40,7 +39,7 @@
     <div class="row">
         <div class="col-xs-7 col-xs-offset-5">
             <button type="submit" class="btn btn btn-primary btn-step pull-right">
-                Submit <span class="glyphicon glyphicon-circle-arrow-right"></span>
+              {{::'modules.issues.partials.createIssueChecklist.intro' | translate}} <span class="glyphicon glyphicon-circle-arrow-right"></span>
             </button>
         </div>
     </div>

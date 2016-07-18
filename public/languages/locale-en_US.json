@@ -302,6 +302,16 @@
   				"starts": "Starts with...",
   				"start": "Get started!",
   				"minorError": "Uh oh! There was an error with this code. Please double check the code entered is correct and try again."
+  			},
+  			"createIssueChecklist": {
+  				"intro": "Please go from room-to-room and select the issues you need fixed - we'll ask for details later. <em>You can come back to this checklist anytime.</em>",
+  				"submit": "@:repeating.submit"
+  			},
+  			"createIssueContact": {
+  				"who": "Who should we contact?",
+  				"landlord": "Landlord",
+  				"super": "Super",
+  				"other": "Other"
   			}
   		}
   	}
