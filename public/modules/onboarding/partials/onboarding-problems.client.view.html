@@ -1,7 +1,7 @@
 <div class="page-header">
-  <h3>(Step 1 of 2)</h3>
-  <h1>Issue Checklist</h1>
-  <p>Please select all the issues that you are experiencing - we’ll ask you for more details later on. <b><em>You can update this list at any time.</em></b></p>
+  <h3>{{::'modules.onboarding.partials.onboardingProblems.header' | translate}}</h3>
+  <h1>{{::'modules.onboarding.partials.onboardingProblems.title' | translate}}</h1>
+  <p ng-bind-html="::'modules.onboarding.partials.onboardingProblems.headerSubtitle' | trustTranslate"></p>
 </div>
 <div class="problems-container">
   <problems-checklist></problems-checklist>
@@ -10,13 +10,15 @@
     <div class="row">
         <div class="col-xs-4">
             <a ui-sref="onboarding.success" class="btn btn-block btn-default">
-              Back
+              {{::'modules.onboarding.partials.onboardingProblems.back' | translate}}
             </a>
         </div>
         <div class="col-xs-8">
             <a ui-sref="onboarding.details" class="btn btn-primary btn-block pull-right">
-              <span ng-if="newUser.problems.length">Continue</span>
-              <span ng-if="!newUser.problems.length">Skip For Now</span>
+              <span ng-if="newUser.problems.length">
+              {{::'modules.onboarding.partials.onboardingProblems.continue' | translate}}</span>
+              <span ng-if="!newUser.problems.length">
+              {{::'modules.onboarding.partials.onboardingProblems.skip' | translate}}</span>
             </a>
         </div>
     </div>

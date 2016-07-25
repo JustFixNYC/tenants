@@ -365,6 +365,24 @@
 					"notComplete": "Please complete the above fields in order to create your account!",
 					"back": "@:repeating.back",
 					"createAcct": "Create Account"
+				},
+				"onboardingProblems": {
+					"header": "(Step 1 of 2)",
+					"title": "Issues Checklist",
+					"headerSubtitle": "Please select all the issues that you are experiencing - we’ll ask you for more details later on. <b><em>You can update this list at any time.</em></b>",
+					"back": "@:repeating.back",
+					"continue": "@:repeating.continue",
+					"skip": "Skip For Now"
+				},
+				"onboardingSuccess": {
+					"success": "@:repeating.success",
+					"advocate": "Your Building Advocate",
+					"subtitle": "We've connected you to the advocate working with your building! Their contact information will be stored in your account, so you can connect with them at any time.",
+					"share": "Share My Case:",
+					"shareEnabled": "Sharing (on):",
+					"shareDesc": "This allows your advocate to view the evidence you upload to the site; it does not give access to the rest of your account. You can opt in later or disable at any time.",
+					"back": "@:repeating.back",
+					"continue": "@:repeating.continue"
 				}
 			}
 		}
