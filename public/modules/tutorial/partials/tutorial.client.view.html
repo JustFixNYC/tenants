@@ -2,11 +2,11 @@
   <carousel active="active" interval="false" no-wrap="noWrapSlides" ng-class="" template-url="bootstrap-templates/carousel/carousel.html">
     <slide ng-repeat="slide in slides track by $index" index="$index">
     	<div class="image-wrap">
-        <h1>{{slide.title}}</h1>
+        <h1>{{::'modules.tutorial.partials.main.title' + ($index + 1) + '' | translate}}</h1>
     		<img ng-src="{{slide.image}}" alt="{{slide.title}}">
     	</div>
       <div class="text">
-        <p ng-bind-html="slide.text"></p>
+        <p ng-bind-html="::'modules.tutorial.partials.main.main' + ($index + 1) + '' | trustTranslate" compile-template></p>
       </div>
       <div class="clearfix"></div>
     </slide>

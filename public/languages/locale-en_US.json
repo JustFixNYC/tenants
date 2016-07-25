@@ -385,6 +385,262 @@
 					"continue": "@:repeating.continue"
 				}
 			}
+		},
+		"problems": {
+			"partials": {
+				"problemModal": {
+					"issue": "issue",
+					"other": "Add Other",
+					"cancel": "@:repeating.cancel",
+					"save": "Save"
+				}
+			},
+			"views": {
+				"updateProblems": {
+					"title": "Issue Checklist"
+				}
+			}
+		},
+		"tutorial": {
+			"partials": {
+				"intro": {
+					"banner": "ACCOUNT CREATED!",
+					"introOne": "Your JustFix.nyc account will help you gather evidence and take action toward resolving your housing issues.",
+					"introTwo": " Here's how it works...",
+					"button": "Take the Tour"
+				}, 
+				"main": {
+					"title1": "Gather Evidence",
+					"main1": "The more evidence you upload, the stronger your case will be. Start with the <strong>Take Action</strong> section to add photos, file 311 complaints and send notices to your landlord.",
+					"title2": "Add Status Updates",
+					"main2": "Add a <strong>Status Update</strong> at any time from the dashboard. This will help you keep a log of any updates or communication with your landlord.",
+					"title3": "Share Your Case History",
+					"main3": "Everything you do is saved in your <strong>Case History</strong>. You can print it for housing court or share it with neighbors and advocates by using the Share Link.",
+					"title4": "Know Your Rights",
+					"main4": "It's important to stay informed about your rights as a tenant. Go to <strong>Know Your Rights</strong> for articles and links to get more information."
+				}
+			}
+		},
+		"users": {
+			"views": {
+				"password": {
+					"forgot": {
+						"title": "Restore your password",
+						"enterUser": "Enter your account username.",
+						"submit": "@:repeating.submit"
+					},
+					"resetInvalid": {
+						"title": "Password reset is invalid",
+						"subtitle": "Ask for a new password reset"
+					},
+					"resetSuccess": {
+						"title": "Password successfully reset",
+						"continue": "Continue to home page" 
+					},
+					"reset": {
+						"title": "Reset your password",
+						"new": "New Password",
+						"verify": "Verify Password",
+						"update": "Update Password"
+					}
+				},
+				"settings": {
+					"changePassword": {
+						"title": "Change your password",
+						"current": "Current Passsword",
+						"new": "New Password",
+						"newExtend": "<em>(must be at least 6 characters)</em>",
+						"required": "Please create a password.",
+						"minlength": "Password should be at least 6 characters.",
+						"confirm": "Confirm Your Password",
+						"confirmEmpty": "Please enter your password again.",
+						"confirmWrong": "These passwords don't match!",
+						"success": "Password Changed Successfully",
+						"cancel": "@:repeating.cancel",
+						"save": "Save Password"
+					},
+					"editPhone": {
+						"title": "Change phone number",
+						"password": "Please verify your account by re-entering your password:",
+						"cancel": "@:repeating.cancel",
+						"phone": "Phone Number",
+						"phoneExt": "<em>(you will use this to sign in)</em>",
+						"invalid": "Please enter a valid phone number",
+						"empty": "Please enter your phone number.",
+						"cancel": "@:repeating.cancel",
+						"save": "@:repeating.save",
+						"success": "Phone changed successfully"
+					},
+					"editProfile": {
+						"title": "Edit your profile",
+						"address": "Street Address",
+						"error": "Please complete the above fields in order to update your account!",
+						"submit": "Update Account"
+					},
+					"landing": {
+						"updated": "ACCOUNT UPDATED",
+						"profile": "Profile",
+						"advocateInfo": "Advocate Information:",
+						"editProfile": "Edit my profile",
+						"changePhone": "Change phone number",
+						"changePassword": "Change password",
+						"signOut": "@:repeating.signOut"
+					}
+				}
+			}
 		}
+  },
+  "checklist": {
+  	"bedrooms": {
+      "paint": "Peeling Paint",
+      "cracked": "Cracked Walls",
+      "mold": "Mold on Walls",
+      "water": "Water Damage",
+      "loose": "Loose Floor",
+      "windowGlass": "Window Glass Broken",
+      "windowFrame": "Window Frame Defective",
+      "door": "Door Broken",
+      "radiators": "Radiators/Risers Defective",
+      "ceilingFall": "Ceiling Falling/Fell",
+      "ceilingLeaking": "Ceiling Leaking",
+      "electricity": "Electricity defective",
+      "electricExposed": "Electric wiring exposed",
+      "outlets": "Outlets defective"
+  	},
+  	"kitchen":{
+  		"paint": "@:checklist.bedrooms.paint",
+      "cracked": "@:checklist.bedrooms.cracked",
+      "mold": "@:checklist.bedrooms.mold", 
+      "water": "@:checklist.bedrooms.water", 
+      "loose": "@:checklist.bedrooms.loose", 
+      "baseboards": "Baseboards Defective",
+      "windowGlass": "@:checklist.bedrooms.windowGlass",
+      "windowFrame": "@:checklist.bedrooms.windowFrame",
+      "door": "@:checklist.bedrooms.door",
+      "radiators": "@:checklist.bedrooms.radiators",
+      "ceilingFall": "@:checklist.bedrooms.ceilingFall",
+      "ceilingLeaking": "@:checklist.bedrooms.ceilingLeaking",
+      "electricity": "@:checklist.bedrooms.electricity",
+      "electricExposed": "@:checklist.bedrooms.electricExposed",
+      "outlets": "@:checklist.bedrooms.outlets",
+      "sink": "Cracked Sink (Sink)",
+      "leakyFaucet": "Leaky Faucet (Sink)",
+      "noFaucet": "Faucets not installed (Sink)",
+      "brokenFaucet": "Faucets not working (Sink)",
+      "pipesLeaking": "Pipes Leaking (Sink)",
+      "drainBlock": "Drain Stoppage (Sink)",
+      "fridgeDefective": "Refrigerator Defective",
+      "fridgeBroken": "Refrigerator Broken",
+      "stoveDefective": "Stove Defective",
+      "stoveBroken": "Stove Broken"
+    },
+    "livingRoom": {
+  		"paint": "@:checklist.bedrooms.paint",
+      "cracked": "@:checklist.bedrooms.cracked",
+      "mold": "@:checklist.bedrooms.mold", 
+      "water": "@:checklist.bedrooms.water", 
+      "loose": "@:checklist.bedrooms.loose", 
+      "baseboards": "Baseboards Defective",
+      "windowGlass": "@:checklist.bedrooms.windowGlass",
+      "windowFrame": "@:checklist.bedrooms.windowFrame",
+      "door": "@:checklist.bedrooms.door",
+      "radiators": "@:checklist.bedrooms.radiators",
+      "ceilingFall": "@:checklist.bedrooms.ceilingFall",
+      "ceilingLeaking": "@:checklist.bedrooms.ceilingLeaking",
+      "electricity": "@:checklist.bedrooms.electricity",
+      "electricExposed": "@:checklist.bedrooms.electricExposed",
+      "outlets": "@:checklist.bedrooms.outlets"
+    },
+    "bathroom": {   
+  		"paint": "@:checklist.bedrooms.paint",
+      "cracked": "@:checklist.bedrooms.cracked",
+      "mold": "@:checklist.bedrooms.mold", 
+      "water": "@:checklist.bedrooms.water", 
+      "loose": "@:checklist.bedrooms.loose", 
+      "baseboards": "Baseboards Defective",
+      "windowGlass": "@:checklist.bedrooms.windowGlass",
+      "windowFrame": "@:checklist.bedrooms.windowFrame",
+      "door": "@:checklist.bedrooms.door",
+      "radiators": "@:checklist.bedrooms.radiators",
+      "ceilingFall": "@:checklist.bedrooms.ceilingFall",
+      "ceilingLeaking": "@:checklist.bedrooms.ceilingLeaking",
+      "electricity": "@:checklist.bedrooms.electricity",
+      "electricExposed": "@:checklist.bedrooms.electricExposed",
+      "outlets": "@:checklist.bedrooms.outlets",
+      "toiletBroken": "Toilet not working (Toilet)",
+      "toiletLeaking": "Toilet leaking (Toilet)", 
+      "waterPressureToilet": "Inadequate Water pressure (Toilet)",
+      "sink": "Cracked Sink (Sink)",
+      "leakyFaucet": "Leaky Faucet (Sink)",
+      "noFaucet": "Faucets not installed (Sink)",
+      "brokenFaucet": "Faucets not working (Sink)",
+      "pipesLeaking": "Pipes Leaking (Sink)",
+      "crackedTub": "Cracked Tub (Bathtub)",
+      "leakyFaucetB": "Leaky Faucet (Bathtub)",
+      "noFaucetB": "Faucets not installed (Bathtub)",
+      "faucetsNotWorkingB": "Faucets not working (Bathtub)",
+      "pipesLeakingB": "Pipes Leaking (Bathtub)",
+      "notWorkingShower": "Not working (Shower)",
+      "WaterPressureShower": "Inadequate Water pressure (Shower)",
+      "leakyShowerHead": "Leaky shower head (Shower)",
+      "wallTiles": "Wall tiles cracked (Shower)", 
+      "walltilesMissing": "Wall tiles missing (Shower)",
+      "drainStopppage": "Drain Stoppage (Shower)"
+    },
+    "entireHome": {
+      "mice": "Mice",
+      "rats": "Rats",
+      "cockroaches": "Cockroaches",
+      "hotWater": "Not Hot water",
+      "coldWater": "No Cold water",
+      "heat": "No heat",
+      "frontDoorDefective": "Front door defective",
+      "frontDoorBroken": "Front door broken",
+      "doorLockDefective": "Door lock defective",
+      "doorLockBroken": "Door lock broken",
+      "doorbellDefective": "Doorbell defective",
+      "doorbellBroken": "Doorbell broken",
+      "buzzerDefective": "Buzzer defective",
+      "buzzerBroken": "Buzzer broken",
+      "smoke": "No Smoke detector",
+      "smokeDefective": "Smoke detector defective",
+      "floorSags": "Floor sags",
+      "apartmentPainting": "Apartment needs painting"
+    },
+    "publicAreas": {
+      "paintOverdue": "Painting overdue (3 years)",
+      "peelingFlaking": "Peeling/flaking paint",
+      "heat": "@:checklist.entireHome.heat",
+      "hotWater": "@:checklist.bedrooms.hotWater",
+      "waterPressure": "Inadequate water pressure",
+      "rusty": "Rusty water",
+      "electricExposed": "@:checklist.bedrooms.electricExposed",
+      "electricWeak": "Weak electrical current (lights dim)",
+      "windowGuards": "Window guards missing",
+      "smokeCO2": "Missing/broken smoke/Co2 detector",
+      "fumesSmoke": "Fumes/smoke entering apartment",
+      "ratsMice": "Rats/Mice",
+      "bug": "Bug Infestation",
+      "illegalImpartments": "Illegal apartments in basement",
+      "noReceipts": "No rent receipts given",
+      "incompleteReceipts": "Rent receipts incomplete (no date/ NYC address for landlord, etc.)",
+      "inadequateSuper": "Inadequate / no super service"
+    },
+    "landlordIssues": {
+    	"noReceipts": "@:checklist.publicAreas.noReceipts",
+      "noLease": "No lease", 
+      "falseDocuments": "False documents",
+      "illegalConstruction": "Illegal construction",
+      "repeatedMci": "Repeated MCI",
+      "overcharging": "Overcharging",
+      "holdover": "Holdover cases",
+      "useForce": "Using force or threats of force",
+      "stopInterrupt": "Stopping or interrupting essential services",
+      "stealing": "Removing possessions from unit",
+      "changeLocks": "Changing locks without supplying a new key",
+      "retaliation": "Retaliation for seeking repairs",
+      "buyout": "Constant buyout demands",
+      "falseEviction": "Threatening eviction on false claims"
+    }
   }
 }

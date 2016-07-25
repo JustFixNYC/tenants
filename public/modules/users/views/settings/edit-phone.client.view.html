@@ -1,13 +1,13 @@
 <div class="page-header">
-	<h1>Change phone number</h1>
+	<h1>{{::'modules.users.views.settings.editPhone.title' | translate}}</h1>
 </div>
 <div class="verify-pw row col-md-12">
 	<form name="firstStep" class="form-group col-xs-12 col-md-12" ng-if="!passwordVerified">
-		<label class="">Please verify your account by re-entering your password:</label>
-		<input class="form-control" type="password" ng-model="password" placeholder="Current Password">
+		<label class="">{{::'modules.users.views.settings.editPhone.password' | translate}}</label>
+		<input class="form-control" type="password" ng-model="password" placeholder="{{::'modules.users.views.settings.changePassword.current' | translate}}">
 		<div style="margin-bottom: 0px; margin-top: 20px;" class="error alert alert-danger" ng-show="passwordError">{{errorMessage}}</div>
 		<br/>
-		<div class="btn btn-default col-xs-4" ui-sref="settings.profile">Cancel</div> 
+		<div class="btn btn-default col-xs-4" ui-sref="settings.profile">{{::'modules.users.views.settings.editPhone.cancel' | translate}}</div> 
 		<input type="submit" class="btn btn-primary col-xs-7 pull-right col-md-4" ng-click="verifyPassword(password)" value="Verify">
 		<div class="clearfix"></div>
 	</form>
@@ -15,21 +15,21 @@
 	<form name="passwordConfirmation" class="form group" ng-if="passwordVerified" data-ng-submit="updateUserProfile(passwordConfirmation.$valid)">
 
 		<div class="form-group" ng-class="{ 'has-error' : passwordConfirmation.$submitted && passwordConfirmation.phone.$invalid }">
-			<label class="control-label" for="phone">Phone Number <em>(you will use this to sign in)</em></label>
+			<label class="control-label" for="phone">{{::'modules.users.views.settings.editPhone.phone' | translate}} <span ng-bind-html="::'modules.users.views.settings.editPhone.phoneExt' | trustTranslate"></span></label>
 			<input class="form-control" type="tel" name="phone" ng-model="user.phone" name="phone" required phone-input>
 			<div ng-show="passwordConfirmation.$submitted || (passwordConfirmation.phone.$invalid && passwordConfirmation.phone.$touched)">
-				<p ng-show="passwordConfirmation.phone.$invalid" class="text-danger">Please enter a valid phone number.</p>
-				<p ng-show="passwordConfirmation.phone.$error.required" class="text-danger">Please enter your phone number.</p>
+				<p ng-show="passwordConfirmation.phone.$invalid" class="text-danger">{{::'modules.users.views.settings.editPhone.invalid' | translate}}</p>
+				<p ng-show="passwordConfirmation.phone.$error.required" class="text-danger">{{::'modules.users.views.settings.editPhone.empty' | translate}}</p>
 			</div>
 		</div>
 
-		<div class="btn btn-default col-xs-4" ui-sref="settings.profile">Cancel</div>
-		<input type="submit" class="btn btn-primary col-xs-7 col-md-4 pull-right" value="Save">
+		<div class="btn btn-default col-xs-4" ui-sref="settings.profile">{{::'modules.users.views.settings.editPhone.cancel' | translate}}</div>
+		<input type="submit" class="btn btn-primary col-xs-7 col-md-4 pull-right" value="{{::'modules.users.views.settings.editPhone.save' | translate}}">
 	</form>
 	<div class="clearfix"></div>
 	<br/>
 	<div class="message">
-		<div class="alert alert-success" ng-show="success">Phone changed successfully!</div>
+		<div class="alert alert-success" ng-show="success">{{::'modules.users.views.settings.editPhone.success' | translate}}</div>
 		<div class="alert alert-danger" ng-show="errorPhone">{{errorPhone}}</div>
 	</div>
 </div>
