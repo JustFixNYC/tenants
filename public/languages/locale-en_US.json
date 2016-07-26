@@ -111,7 +111,7 @@
   				"description": "Please add a brief description.",
   				"tagTitle": "Tag Issue",
   				"addCase": "@:repeating.add",
-  				"success": "><strong>Well done!</strong> We've added <em>{{ newActivity.title }}</em> to your <a ui-sref=\"listActivity\">Case History</a>.",
+  				"success": "<strong>Well done!</strong> We've added <em>{{ newActivity.title }}</em> to your <a ui-sref=\"listActivity\">Case History</a>.",
   				"error": "We're sorry, something went wrong! Please <a ui-sref=\"contact\">Contact Us</a> to report this issue."
   			},
   			"toDoItem": {
@@ -642,5 +642,121 @@
       "buyout": "Constant buyout demands",
       "falseEviction": "Threatening eviction on false claims"
     }
+  },
+  "actions": {
+  	"getRentalHistory": {
+  		"title": "Get Rental History",
+  		"activityTitle": "Requested Rental History",
+  		"cta": {
+  			"buttonTitle": "Contact DHCR"
+  		},
+  		"followUp": {
+	      "title": "Do you have any additional concerns about your DHCR letter?",
+	      "fields": [{
+	        "prompt": "Are you rent stabilized?",
+	        "title":  "Rent stabilized:"
+	      }]
+  		}
+  	},
+  	"contactHarassment": {
+  		"title": "Call Tenant Harassment Hotline",
+    	"activityTitle": "Called Tenant Harassment Hotline",
+    	"content": "It looks like you live in an area that experiences a <b>large amount of turnover and harassment</b> and are eligible to call the New York City Tenant Protection Hotline. Hours: Monday – Friday (10AM – 4PM)",
+    	"cta": {
+	      "buttonTitle": "Call",
+	      "phone": "9176614500"
+    	},
+    	"followUp": {
+      	"title": "What did the anti-harassment hotline say?"
+    	}
+  	},
+  	"contact311": {
+  		"title": "Call 311",
+    	"activityTitle": "Called 311",
+    	"content": "It seems like some of your issues might be serious. Calling 311 puts the landlord on notice and courts will take violations more seriously. Be careful of illegal retributions! <b>Please write down the tracking number they give you.</b>",
+    	"cta": {
+	      "buttonTitle": "Call",
+	      "phone": "311"
+	    },
+	    "followUp": {
+	      "title": "How did your 311 call go?",
+	      "fields": [{
+	        "prompt": "Enter your confirmation number:",
+	        "title": "Confirmation number:",
+	        "type": "text",
+	        "placeholder": "Begins with C1-1-, followed by 9 or 10 numbers." }]
+	    }
+  	},
+  	"contactNYCHA": {
+	    "title": "Call NYCHA Help Center",
+	    "activityTitle": "Called NYCHA Help Center",
+	    "content": "If your building manager is unresponsive, call the NYCHA Help Center (open 24/7) and describe your situation, including what you've already done. <b>Please write down the tracking number they give you.</b>",
+	    "cta": {
+	      "buttonTitle": "Call",
+	      "phone": "7187077771"
+	    },
+	    "followUp": {
+	      "title": "How did your call to NYCHA go?",
+	      "fields": [{
+	        "prompt": "Enter your tracking number:",
+	        "title": "Tracking number:",
+	        "placeholder": "The number you were given to track your Work Order."
+	      }]
+	    }	    
+  	},
+  	"contactLegalServices": {
+	    "title": "Call Housing Court Answers",
+	    "activityTitle": "Called Housing Court Answers",
+	    "content": "Housing Court Answers is a great resource to go for information about legal issues. Hours: Tuesday - Thursday (9AM - 5PM)",
+	    "cta": {
+	      "buttonTitle": "Call",
+	      "phone": "2129624795"
+	    },
+	    "followUp": {
+	      "title": "What did legal services say?"
+	    }
+  	},
+  	"callHotline": {
+	    "title": "Call the MetCouncil Hotline",
+	    "activityTitle": "Called the MetCouncil Hotline",
+	    "content": "The MetCouncil on Housing provides a free tenants' rights hotline that can answer questions about your rights as a tenant. Hours: Mondays & Wednesdays (1:30PM - 8PM), Friday (1:30PM - 5PM)",
+    	"cta": {
+	      "buttonTitle": "Call",
+	      "phone": "2129790611"
+	    },
+	    "followUp": {
+	      "title": "What did the hotline say?"
+	    }
+  	},
+  	"sendLetter": {
+	    "title": "Mail an Official Letter of Complaint",
+	    "activityTitle": "Created an Official Letter of Complaint",
+	    "content": "In order to have a formal record of your requests, you need to mail a letter to your landlord. <b>We've drafted a letter that you can send including the repair issues that you've selected.</b><span ng-if='!userCompletedDetails()'><br /><br />Make sure to <b>Add Details</b> (located above) first to provide the most detailed information!</span>",
+	    "cta": {
+	      "buttonTitle": "Create Letter"
+	    }
+  	},
+  	"decreasedServices": {
+	    "title": "DHCR Decreased Services App",
+	    "activityTitle": "DHCR Decreased Services App",
+	    "content": "In order to seek a rent reduction for your <b>rent-stabilized apartment</b>, you must submit a formal complaint to DHCR. Use your <b>Case History</b> to fill this form out!",
+	    "cta": {
+	      "buttonTitle": "View form"
+	    },
+	    "followUp": {
+	      "title": "Have you heard back from DHCR yet?"
+	    }
+  	},
+  	"HPAction": {
+	    "title": "HP Action",
+	    "activityTitle": "HP Action",
+	    "content": "HP Actions are housing court proceedings that offer quick and cheap resolution to repair issues, and legal recourse if your landlord doesn't comply. <b>You must go to the {{user.borough}} Housing Court to file the HP Action.</b>",
+	    "cta": {
+	      "buttonTitle": "Get info"
+	    },
+	    "followUp": {
+	      "title": "Did you go to court yet?"
+	    }
+  	}
   }
 }
