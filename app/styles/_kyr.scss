@@ -35,17 +35,13 @@
 
 		&:first-child {
 			border-top: 1px solid $gray-lighter;
-
-			.pull-right {
-				font-weight: 800;
-			}
 		}
 
 		.pull-right {
 			position: absolute;
 			top: 12px;
 			right: 15px;
-			margin-top: 2px;
+			margin-top: 7px;
 			color: lighten($gray-light, 20);
 		}
 	}
