@@ -4,9 +4,13 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
   function($scope, $http, $location, $state, $filter, Users, Authentication, $rootScope) {
 
     $scope.passwordVerified = false;
+    $scope.successfulUpdate = false;
 
-    $scope.$on('$stateChangeSuccess', function() {
+    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
       $scope.user = Authentication.user;
+      if(fromState.name === 'settings.profile') {
+      	$scope.successfulUpdate = false;
+      }
     });
 
     // If user is not signed in then redirect back home
@@ -63,19 +67,17 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 				$scope.userError = false;
 				$rootScope.loading = true;
 
-        console.log('update user pre', user);
-
 				user.$update(function(response) {
 
 					// If successful we assign the response to the global user model
-
-          console.log('update user post', response);
 
 					$rootScope.loading = false;
 					$scope.user = Authentication.user = response;
 
 					$state.go('settings.profile');
-          // $location.path('/settings/profile');
+	    		$scope.passwordVerified = false;
+	    		$scope.successfulUpdate = true;
+
 
 				}, function(err) {
 					$rootScope.loading = false;
@@ -104,10 +106,13 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
       return
     };
 
+    // Maaaaaybe change this name -- gets kinda confusing w/ totally separate yet similarly named function above
     $scope.verifyPassword = function(password) {
 
     	$http.post('api/users/verify-password', {"password": password}).success(function(response){
     		$scope.passwordVerified = true;
+    		// TODO: Verify this is ONLY for phone reset
+    		$scope.user.phone = '';
     	}).error(function(err) {
     		$scope.passwordError = true;
     		$scope.errorMessage = err.message;

@@ -1,3 +1,7 @@
+<div ng-show="successfulUpdate == true" class="alert alert-major alert-success">
+	<span class="success-check glyphicon glyphicon-ok"></span> ACCOUNT UPDATED
+</div>
+
 <div class="page-header">
 	<img src="/modules/core/img/sections/profile.svg" alt="Profile" />
 	<h1>Profile</h1>
@@ -12,8 +16,8 @@
 	<p ng-if="user.referral"><strong>Advocate Information:</strong></p>
 	<p>{{user.referral.name}}</p>
 	<p>{{user.referral.organization}}</p>
-	<p>{{user.referral.phone | tel}}</p>
-	<p>{{user.referral.email}}</p>
+	<p><a ng-href="tel:{{user.referral.phone}}" class="text-link">{{user.referral.phone | tel}}</a></p>
+	<p><a ng-href="mailto:{{user.referral.email}}" class="text-link">{{user.referral.email}}</a></p>
 	<br/>
 	<div class="user-container">
 		<a ui-sref="settings.edit">
