@@ -97,20 +97,16 @@
     }
   },
   {
-    "title": "Call the MetCouncil Hotline",
-    "activityTitle": "Called the MetCouncil Hotline",
-    "content": "The MetCouncil on Housing provides a free tenants' rights hotline that can answer questions about your rights as a tenant. Hours: Mondays & Wednesdays (1:30PM - 8PM), Friday (1:30PM - 5PM)",
-    "key": "callHotline",
+    "title": "Connect With an Advocate",
+    "content": "Find local community groups, legal services, and city hotlines to help with your housing issues.",
     "addIf": ["initial"],
     "type": "recurring",
     "cta": {
-      "type": "call",
-      "buttonTitle": "Call",
-      "phone": 2129790611
+      "type": "link-internal",
+      "buttonTitle": "Find Help",
+      "url": "findHelp"
     },
-    "followUp": {
-      "title": "What did the hotline say?"
-    }
+    "hasFollowUp": false
   },
   {
     "title": "Contact Your Super (Step 1 of 3)",
