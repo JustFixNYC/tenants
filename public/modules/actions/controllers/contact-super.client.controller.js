@@ -5,48 +5,20 @@ angular.module('actions').controller('ContactSuperController', ['$scope', '$moda
 
     $scope.newActivity = newActivity;
 
-    var isIOS8 = function() {
-      var deviceAgent = deviceDetector.raw.userAgent.toLowerCase();
-      return /(iphone|ipod|ipad).* os 8_/.test(deviceAgent);
-    };
 
-    var generateURL = function() {
+    $scope.formSubmitted = false;
 
-      // ios ;
-      // ios8 &
-      // android ?
+    $scope.done = function (isValid, event) {
 
-      var href = 'sms:';
-      var msg = Messages.getSMSMessage();
+      $scope.formSubmitted = true;
 
-      if($scope.superphone) href += $scope.superphone;
-
-      if(deviceDetector.os === 'ios') {
-        if(isIOS8()) href += '&';
-        else href += ';';
-        href = href + 'body=' + msg;
-      } else if(deviceDetector.os === 'android') {
-        href = href + '?body=' + msg;
-      } else {
-        // alert('If you were using a phone, the message would be: \n\n' + msg);
-        return;
+      if(isValid) {
+        $modalInstance.close({ newActivity: $scope.newActivity });
+        window.location.href = event.target.href;
       }
-
-      return href;
     };
 
-
-  $scope.done = function (type, event) {
-
-    var href = '';
-    if(type === 'sms') href = generateURL();
-    else if(type === 'tel' && $scope.superphone) href = 'tel:' + $scope.superphone;
-
-    $modalInstance.close({ newActivity: $scope.newActivity });
-    if(href.length) window.location.href = href;
-  };
-
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
 }]);

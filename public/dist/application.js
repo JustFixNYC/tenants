@@ -126,6 +126,9 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     };
 
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+
+      $rootScope.state = toState.name;
+      
       setHeaderState(toState.name);
     });
   }]);
@@ -367,50 +370,22 @@ angular.module('actions').controller('ContactSuperController', ['$scope', '$moda
 
     $scope.newActivity = newActivity;
 
-    var isIOS8 = function() {
-      var deviceAgent = deviceDetector.raw.userAgent.toLowerCase();
-      return /(iphone|ipod|ipad).* os 8_/.test(deviceAgent);
-    };
 
-    var generateURL = function() {
+    $scope.formSubmitted = false;
 
-      // ios ;
-      // ios8 &
-      // android ?
+    $scope.done = function (isValid, event) {
 
-      var href = 'sms:';
-      var msg = Messages.getSMSMessage();
+      $scope.formSubmitted = true;
 
-      if($scope.superphone) href += $scope.superphone;
-
-      if(deviceDetector.os === 'ios') {
-        if(isIOS8()) href += '&';
-        else href += ';';
-        href = href + 'body=' + msg;
-      } else if(deviceDetector.os === 'android') {
-        href = href + '?body=' + msg;
-      } else {
-        // alert('If you were using a phone, the message would be: \n\n' + msg);
-        return;
+      if(isValid) {
+        $modalInstance.close({ newActivity: $scope.newActivity });
+        window.location.href = event.target.href;
       }
-
-      return href;
     };
 
-
-  $scope.done = function (type, event) {
-
-    var href = '';
-    if(type === 'sms') href = generateURL();
-    else if(type === 'tel' && $scope.superphone) href = 'tel:' + $scope.superphone;
-
-    $modalInstance.close({ newActivity: $scope.newActivity });
-    if(href.length) window.location.href = href;
-  };
-
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
 }]);
 
 'use strict';
@@ -476,8 +451,6 @@ angular.module('actions').controller('RentalHistoryController', ['$scope','$moda
     $scope.emailHref = 'mailto:' + encodeURI('rentinfo@nyshcr.org?subject=Request For Rental History&body=' + $scope.emailContent);
 
     $scope.done = function () {
-
-
       $modalInstance.close({ newActivity: $scope.newActivity });
       window.location.href = $scope.emailHref;
     };
@@ -885,45 +858,60 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
       var message = 'To whom it may regard, \n\n' +
         'I am requesting the following repairs in my apartment referenced below [and/or] in the public areas of the building:\n\n';
 
-      var issuesContent = '';
-      for(var issue in user.issues) {
-        var key = issue,
-            title = $filter('areaTitle')(key),
-            vals = user.issues[issue];
+      var problemsContent = '';
 
-        if(vals.length) {
+      for(var i = 0; i < user.problems.length; i++) {
 
-          var activityIdx = user.activity.map(function(i) { return i.key; }).indexOf(key);
-          if(activityIdx !== -1) var activity = user.activity[activityIdx];
+        var prob = user.problems[i];
 
-          issuesContent += title + ':\n';
-          vals.forEach(function(v) {
-            issuesContent += ' - ' + v.title;
-            if(v.emergency) issuesContent += ' (FIX IMMEDIATELY)';
-            issuesContent += '\n';
-          });
-
-          issuesContent += '\n   First Appeared: ';
-          if(activity) {
-            issuesContent += $filter('date')(activity.date, 'longDate');
-            issuesContent += '\n   Additional Information:';
-            issuesContent += '\n   ' + activity.description;
-            issuesContent += '\n';
-            activity = undefined;
-          } else {
-            issuesContent += '\n   Additional Information:';
-          }
-
-          issuesContent += '\n';
+        problemsContent += prob.title + ':\n';
+        for(var j = 0; j < prob.issues.length; j++) {
+          problemsContent += ' - ' + prob.issues[j].key;
+          if(prob.issues[j].emergency) problemsContent += ' (FIX IMMEDIATELY)';
+          problemsContent += '\n';
         }
+        problemsContent += '\n';
+
       }
 
-      message += issuesContent + '\n\n';
+      // for(var issue in user.issues) {
+      //   var key = issue,
+      //       title = $filter('areaTitle')(key),
+      //       vals = user.issues[issue];
+      //
+      //   if(vals.length) {
+      //
+      //     var activityIdx = user.activity.map(function(i) { return i.key; }).indexOf(key);
+      //     if(activityIdx !== -1) var activity = user.activity[activityIdx];
+      //
+      //     issuesContent += title + ':\n';
+      //     vals.forEach(function(v) {
+      //       issuesContent += ' - ' + v.title;
+      //       if(v.emergency) issuesContent += ' (FIX IMMEDIATELY)';
+      //       issuesContent += '\n';
+      //     });
+      //
+      //     issuesContent += '\n   First Appeared: ';
+      //     if(activity) {
+      //       issuesContent += $filter('date')(activity.date, 'longDate');
+      //       issuesContent += '\n   Additional Information:';
+      //       issuesContent += '\n   ' + activity.description;
+      //       issuesContent += '\n';
+      //       activity = undefined;
+      //     } else {
+      //       issuesContent += '\n   Additional Information:';
+      //     }
+      //
+      //     issuesContent += '\n';
+      //   }
+      // }
+      //
+      message += problemsContent + '\n\n';
 
       var superContactIdx = user.activity.map(function(i) { return i.key; }).indexOf('contactSuper');
       if(superContactIdx !== -1) {
         message += 'I have already contacted the person responsible for making repairs on ';
-        message += $filter('date')(user.activity[superContactIdx].date, 'longDate');
+        message += $filter('date')(user.activity[superContactIdx].createdDate, 'longDate');
         message += ', but the issue has not been resolved. ';
       }
 
@@ -1350,8 +1338,6 @@ angular.module('admin').factory('Referrals', ['$resource',
 angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
   function($rootScope, $state, $window, Authentication) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-
-      $rootScope.state = toState.name;
 
       if(toState.globalStyles) {
         $rootScope.globalStyles = toState.globalStyles;
@@ -1924,27 +1910,32 @@ angular.module('core')
         // ios8 &
         // android ?
 
-        var href = 'sms:';
-        var type = attrs.type;
-        var msg = Messages.getShareMessage(type);
 
-        href += Authentication.user.referral.phone;
+        element.on('click', function (e) {
 
-        if(deviceDetector.os === 'ios') {
-          if(isIOS8()) href += '&';
-          else href += ';';
-          href = href + 'body=' + msg;
-          console.log('href', href);
-          attrs.$set('href', href);
-        } else if(deviceDetector.os === 'android') {
-          href = href + '?body=' + msg;
-          attrs.$set('href', href);
-        } else {
-          href = href + '?body=' + msg;
-          console.log(href);
-          console.log('If you were using a phone, the message would be: \n\n' + msg);
-        }
+          var href = 'sms:';
+          var type = attrs.type;
+          var msg = Messages.getShareMessage(type);
 
+          if(attrs.phone) {
+            href += attrs.phone;
+          }
+
+          if(deviceDetector.os === 'ios') {
+            if(isIOS8()) href += '&';
+            else href += ';';
+            href = href + 'body=' + msg;
+            console.log('href', href);
+            attrs.$set('href', href);
+          } else if(deviceDetector.os === 'android') {
+            href = href + '?body=' + msg;
+            attrs.$set('href', href);
+          } else {
+            href = href + '?body=' + msg;
+            console.log(href);
+            console.log('If you were using a phone, the message would be: \n\n' + msg);
+          }
+        });
 
       }
     };
@@ -3079,6 +3070,7 @@ angular.module('kyr').factory('kyrService', ['$resource', '$http', '$q',
 
 'use strict';
 
+// TODO: discuss putting all 'run' methods together 
 angular.module('onboarding').run(['$rootScope', '$state', 'Authentication', '$window', function($rootScope, $state, Authentication, $window) {
 
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
@@ -3801,22 +3793,22 @@ angular.module('tutorial').controller('TutorialController', ['$scope', '$sce',
 		// Just an easier way to handle this
 		$scope.slides = [
 			{
-	      image: 'modules/tutorial/img/1_TakeAction_fullphone.png',
+	      image: 'modules/tutorial/img/1TakeAction.png',
 	      text: $sce.trustAsHtml('The more evidence you upload, the stronger your case will be. Start with the <strong>Take Action</strong> section to add photos, file 311 complaints and send notices to your landlord.'),
 	      title: 'Gather Evidence'
       },
 			{
-	      image: 'modules/tutorial/img/2_StatusUpdate_fullphone.png',
+	      image: 'modules/tutorial/img/2StatusUpdate.png',
 	      text: $sce.trustAsHtml('Add a <strong>Status Update</strong> at any time from the dashboard. This will help you keep a log of any updates or communication with your landlord.'),
 	      title: 'Add Status Updates'
       },
 			{
-	      image: 'modules/tutorial/img/3_CaseHistory_fullphone.png',
+	      image: 'modules/tutorial/img/3CaseHistory.png',
 	      text: $sce.trustAsHtml('Everything you do is saved in your <strong>Case History</strong>. You can print it for housing court or share it with neighbors and advocates by using the Share Link.'),
 	      title: 'Share Your Case History'
       },
 			{
-	      image: 'modules/tutorial/img/4_KYR_fullphone.png',
+	      image: 'modules/tutorial/img/4KYR.png',
 	      text: $sce.trustAsHtml('It\'s important to stay informed about your rights as a tenant. Go to <strong>Know Your Rights</strong> for articles and links to get more information.'),
 	      title: 'Know Your Rights'
       }
@@ -3828,6 +3820,7 @@ angular.module('tutorial').controller('TutorialController', ['$scope', '$sce',
 
 // Config HTTP Error Handling
 angular.module('users').config(['$httpProvider',
+	// TODO: uhhh wut diz
 	function($httpProvider) {
 		// Set the httpProvider "not authorized" interceptor
 		$httpProvider.interceptors.push(['$rootScope', '$q', '$location', 'Authentication',
@@ -4010,9 +4003,13 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
   function($scope, $http, $location, $state, $filter, Users, Authentication, $rootScope) {
 
     $scope.passwordVerified = false;
+    $scope.successfulUpdate = false;
 
-    $scope.$on('$stateChangeSuccess', function() {
+    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
       $scope.user = Authentication.user;
+      if(fromState.name === 'settings.profile') {
+      	$scope.successfulUpdate = false;
+      }
     });
 
     // If user is not signed in then redirect back home
@@ -4069,19 +4066,17 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 				$scope.userError = false;
 				$rootScope.loading = true;
 
-        console.log('update user pre', user);
-
 				user.$update(function(response) {
 
 					// If successful we assign the response to the global user model
-
-          console.log('update user post', response);
 
 					$rootScope.loading = false;
 					$scope.user = Authentication.user = response;
 
 					$state.go('settings.profile');
-          // $location.path('/settings/profile');
+	    		$scope.passwordVerified = false;
+	    		$scope.successfulUpdate = true;
+
 
 				}, function(err) {
 					$rootScope.loading = false;
@@ -4110,10 +4105,13 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
       return
     };
 
+    // Maaaaaybe change this name -- gets kinda confusing w/ totally separate yet similarly named function above
     $scope.verifyPassword = function(password) {
 
     	$http.post('api/users/verify-password', {"password": password}).success(function(response){
     		$scope.passwordVerified = true;
+    		// TODO: Verify this is ONLY for phone reset
+    		$scope.user.phone = '';
     	}).error(function(err) {
     		$scope.passwordError = true;
     		$scope.errorMessage = err.message;

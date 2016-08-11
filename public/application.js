@@ -85,6 +85,9 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     };
 
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+
+      $rootScope.state = toState.name;
+      
       setHeaderState(toState.name);
     });
   });

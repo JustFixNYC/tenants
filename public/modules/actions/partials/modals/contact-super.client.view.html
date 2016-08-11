@@ -1,19 +1,27 @@
 <div class="modal-header">
   <h3 class="modal-title">Contact Your Super</h3>
 </div>
+<form name="contactSuperForm" novalidate>
 <div class="modal-body" stop-event="touchend">
-  <p>We recommend your first step should be to contact the superintendent for your building -- the person directly responsible for making repairs in your home.  Call or text your super at least two times before contacting your landlord.</p>
-  <label class="control-label" for="superphone">What is your super's phone pumber? (can sometimes be found in the lobby of your building):</label>
-  <input type="tel" class="form-control" id="superphone" data-ng-model="superphone" placeholder="ex: 1234567890" phone-input>
+  <p>Your first step should be to contact the super or management for your building -- the person directly responsible for making repairs in your home.  Call or text your super at least two times before contacting your landlord.</p>
+  <div class="form-group" ng-class="{ 'has-error' : formSubmitted && contactSuperForm.superphone.$invalid }">
+      <label class="control-label" for="superphone">What is your super's phone pumber? (can sometimes be found in the lobby of your building):</label>
+      <div class="controls">
+        <input type="tel" class="form-control" name="superphone" data-ng-model="superphone" placeholder="ex: 1234567890" phone-input required>
+      </div>
+      <span class="text-danger" ng-show="formSubmitted && contactSuperForm.superphone.$invalid">Please add a valid phone number.</span>
+  </div>
 </div>
-<div class="modal-footer">
+<div class="modal-footer" stop-event="touchend">
   <button class="btn btn-default pull-left" ng-click="cancel()">Cancel</button>
-  <a class="btn btn-success pull-right" data-ng-click="done('sms', $event)">
+  <a class="btn btn-success pull-right" sms-message phone="{{superphone}}" data-ng-click="done(contactSuperForm.$valid, $event)">
+  <!-- <a class="btn btn-success pull-right" sms-message phone="{{superphone}}"> -->
     <span class="glyphicon glyphicon-comment pull-left"></span>
     Text
   </a>
-  <a class="btn btn-success pull-right" data-ng-click="done('tel', $event)">
+  <a class="btn btn-success pull-right" ng-href="tel:{{superphone}}" data-ng-click="done(contactSuperForm.$valid, $event)">
     <span class="glyphicon glyphicon-earphone pull-left"></span>
     Call
   </a>
 </div>
+</form>

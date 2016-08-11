@@ -18,27 +18,32 @@ angular.module('core')
         // ios8 &
         // android ?
 
-        var href = 'sms:';
-        var type = attrs.type;
-        var msg = Messages.getShareMessage(type);
 
-        href += Authentication.user.referral.phone;
+        element.on('click', function (e) {
 
-        if(deviceDetector.os === 'ios') {
-          if(isIOS8()) href += '&';
-          else href += ';';
-          href = href + 'body=' + msg;
-          console.log('href', href);
-          attrs.$set('href', href);
-        } else if(deviceDetector.os === 'android') {
-          href = href + '?body=' + msg;
-          attrs.$set('href', href);
-        } else {
-          href = href + '?body=' + msg;
-          console.log(href);
-          console.log('If you were using a phone, the message would be: \n\n' + msg);
-        }
+          var href = 'sms:';
+          var type = attrs.type;
+          var msg = Messages.getShareMessage(type);
 
+          if(attrs.phone) {
+            href += attrs.phone;
+          }
+
+          if(deviceDetector.os === 'ios') {
+            if(isIOS8()) href += '&';
+            else href += ';';
+            href = href + 'body=' + msg;
+            console.log('href', href);
+            attrs.$set('href', href);
+          } else if(deviceDetector.os === 'android') {
+            href = href + '?body=' + msg;
+            attrs.$set('href', href);
+          } else {
+            href = href + '?body=' + msg;
+            console.log(href);
+            console.log('If you were using a phone, the message would be: \n\n' + msg);
+          }
+        });
 
       }
     };
