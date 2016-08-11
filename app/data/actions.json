@@ -113,7 +113,7 @@
     }
   },
   {
-    "title": "Contact Your Super",
+    "title": "Contact Your Super (Step 1 of 3)",
     "content": "Your first step should always be to contact the person directly responsible for making repairs in your home.",
     "key": "contactSuper",
     "addIf": ["hasProblems"],
@@ -129,7 +129,7 @@
     }
   },
   {
-    "title": "Email Landlord",
+    "title": "Email Landlord (Step 2 of 3)",
     "content": "If your super is unresponsive, its time to email your landlord. <b>We've drafted an email that you can send, including a list of the issues that need repair.</b>",
     "key": "emailLandlord",
     "addIf": ["contactSuper"],
@@ -145,7 +145,7 @@
     }
   },
   {
-    "title": "Mail an Official Letter of Complaint",
+    "title": "Mail an Official Letter of Complaint (Step 3 of 3)",
     "activityTitle": "Created an Official Letter of Complaint",
     "content": "In order to have a formal record of your requests, you need to mail a letter to your landlord. <b>We've drafted a letter that you can send including the repair issues that you've selected.</b><span ng-if='!userCompletedDetails()'><br /><br />Make sure to <b>Add Details</b> (located above) first to provide the most detailed information!</span>",
     "key": "sendLetter",

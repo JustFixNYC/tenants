@@ -142,9 +142,13 @@ var list = function(req, res) {
   // get actions to be added (and make sure they haven't been done yet)
   if(user && key) {
 
-    var actionKeys = _.pluck(generateActions(user), 'key');
+    // disabling this for the time being...
+    // seems like a chicken/egg problem where this call to generateActions already has the new cards
+    // var actionKeys = _.pluck(generateActions(user), 'key');
+
     var newActions = fullActions.filter(function (action) {
-      var valid = _.contains(action.addIf, key) && !_.contains(actionKeys, action.key);
+      // var valid = _.contains(action.addIf, key) && !_.contains(actionKeys, action.key);
+      var valid = _.contains(action.addIf, key);
       return valid;
     });
     res.json(newActions);
