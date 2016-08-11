@@ -1,6 +1,14 @@
 #dashboard {
 
 
+  .take-action-alert {
+    position: absolute;
+    color: $sunflower-dark;
+    font-size: 26px;
+    right: 27%;
+    top: 0.5em;
+  }
+
   .grid {
     @include make-row();
 

@@ -3243,6 +3243,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 
 					// If successful we assign the response to the global user model
 					$rootScope.loading = false;
+					$rootScope.takeActionAlert = true;
 					$scope.authentication.user = response;
 					console.log('create account post save', response);
 					$location.path('/tutorial');
