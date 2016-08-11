@@ -5,6 +5,10 @@ module.exports = {
   app: {
     title: 'JustFix.nyc'
   },
+  superuser: {
+    phone: process.env.SUPERUSERPHONE,
+    pwd: process.env.SUPERUSERPASS
+  },
   assets: {
     lib: {
       css: [
