@@ -7,6 +7,7 @@ var _ = require('lodash'),
     mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     crypto = require('crypto'),
+    addressHandler = require('../services/address.server.service'),
     ActivitySchema = require('./activity.server.model.js'),
     ProblemSchema = require('./problem.server.model.js');
 
@@ -25,6 +26,23 @@ var validateLocalStrategyPassword = function(password) {
 };
 
 /**
+ * A Validation function for address geolocation
+ */
+var validateGeoclientAddress = function(address, callback) {
+
+  addressHandler.requestGeoclient(this.borough, address)
+    .then(function (geo) {
+      return callback(true);
+    })
+    .fail(function (e) {
+      console.log('[Geoclient Validation]', e);
+
+      // this will prevent users from creating accounts if anything is broken...
+      return callback(false);
+    });
+};
+
+/**
  * User Schema
  */
 var UserSchema = new Schema({
@@ -32,13 +50,13 @@ var UserSchema = new Schema({
     type: String,
     trim: true,
     default: '',
-    validate: [validateLocalStrategyProperty, 'Please fill in your first name']
+    validate: [validateLocalStrategyProperty, 'Please fill in your first name.']
   },
   lastName: {
     type: String,
     trim: true,
     default: '',
-    validate: [validateLocalStrategyProperty, 'Please fill in your last name']
+    validate: [validateLocalStrategyProperty, 'Please fill in your last name.']
   },
   fullName: {
     type: String,
@@ -51,7 +69,9 @@ var UserSchema = new Schema({
   },
   address: {
     type: String,
-    default: ''
+    trim: true,
+    default: '',
+    validate: [validateGeoclientAddress, 'Your address was not found! Please try again.']
   },
   unit: {
     type: String,
@@ -191,23 +211,27 @@ UserSchema.pre('save', function(next) {
   // if(user.nycha === 'yes') user.actionFlags.push('isNYCHA');
 
   // check some address stuff
-  // addressHandler.requestGeoclient(user.borough, user.address)
-  //   .then(function (geo) {
-  //     user.geo = geo;
-  //     // check for tenant harassment hotline
-  //     if(addressHandler.harassmentHelp(user.geo.zip)) user.actionFlags.push('isHarassmentElligible');
-  //     return addressHandler.requestRentStabilized(geo.bbl, geo.lat, geo.lon);
-  //   })
-  //   .then(function (rs) {
-  //     if(rs) user.actionFlags.push('isRentStabilized');
-  //     save();
-  //   })
-  //   .fail(function (e) {
-  //     console.log('[GEO]', e);
-  //     save();
-  //   });
+  var user = this;
 
-  next();
+  addressHandler.requestGeoclient(this.borough, this.address)
+    .then(function (geo) {
+      user.geo = geo;
+      // check for tenant harassment hotline
+      if(addressHandler.harassmentHelp(user.geo.zip)) user.actionFlags.push('isHarassmentElligible');
+      return addressHandler.requestRentStabilized(geo.bbl, geo.lat, geo.lon);
+    })
+    .then(function (rs) {
+      if(rs) user.actionFlags.push('isRentStabilized');
+
+      console.log('user', user);
+      next();
+    })
+    .fail(function (e) {
+      console.log('[GEO]', e);
+      var err = new Error(e);
+      next(err);
+    });
+
 });
 
 /**

@@ -19,7 +19,6 @@ var saveUser = function(req, user) {
 
   user.save(function(err) {
     if (err) {
-      console.log('yee',errorHandler.getErrorMessage(err));
       saved.reject(errorHandler.getErrorMessage(err));
     } else {
       // Remove sensitive data before login
@@ -79,23 +78,24 @@ exports.signup = function(req, res) {
     startDate: acctCreatedDate
   });
 
-  // check some address stuff
-  addressHandler.requestGeoclient(user.borough, user.address)
-    .then(function (geo) {
-      user.geo = geo;
-      // check for tenant harassment hotline
-      if(addressHandler.harassmentHelp(user.geo.zip)) user.actionFlags.push('isHarassmentElligible');
-      return addressHandler.requestRentStabilized(geo.bbl, geo.lat, geo.lon);
-    })
-    .then(function (rs) {
-      if(rs) user.actionFlags.push('isRentStabilized');
-      save();
-    })
-    .fail(function (e) {
-      console.log('[GEO]', e);
-      save();
-    });
-
+  // // check some address stuff
+  // addressHandler.requestGeoclient(user.borough, user.address)
+  //   .then(function (geo) {
+  //     user.geo = geo;
+  //     // check for tenant harassment hotline
+  //     if(addressHandler.harassmentHelp(user.geo.zip)) user.actionFlags.push('isHarassmentElligible');
+  //     return addressHandler.requestRentStabilized(geo.bbl, geo.lat, geo.lon);
+  //   })
+  //   .then(function (rs) {
+  //     if(rs) user.actionFlags.push('isRentStabilized');
+  //     save();
+  //   })
+  //   .fail(function (e) {
+  //     console.log('[GEO]', e);
+  //     save();
+  //   });
+  
+  save();
 
 
 
