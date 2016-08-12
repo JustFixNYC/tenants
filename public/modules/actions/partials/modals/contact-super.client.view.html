@@ -16,11 +16,11 @@
   <button class="btn btn-default pull-left" ng-click="cancel()">Cancel</button>
   <a class="btn btn-success pull-right" sms-message phone="{{superphone}}" data-ng-click="done(contactSuperForm.$valid, $event)">
   <!-- <a class="btn btn-success pull-right" sms-message phone="{{superphone}}"> -->
-    <span class="glyphicon glyphicon-comment pull-left"></span>
+    <span class="glyphicon glyphicon-comment pull-left" style="pointer-events: none;"></span>
     Text
   </a>
   <a class="btn btn-success pull-right" ng-href="tel:{{superphone}}" data-ng-click="done(contactSuperForm.$valid, $event)">
-    <span class="glyphicon glyphicon-earphone pull-left"></span>
+    <span class="glyphicon glyphicon-earphone pull-left" style="pointer-events: none;"></span>
     Call
   </a>
 </div>
