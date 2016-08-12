@@ -379,6 +379,7 @@ angular.module('actions').controller('ContactSuperController', ['$scope', '$moda
 
       if(isValid) {
         $modalInstance.close({ newActivity: $scope.newActivity });
+        console.log(event.target.href);
         window.location.href = event.target.href;
       }
     };
@@ -762,6 +763,7 @@ angular.module('actions')
 
               // load new actions
               // var idx = scope.$index;
+              console.log('key', scope.newActivity.key);
               var newActions = Actions.query(
                 {key: scope.newActivity.key},
                 function() {
@@ -1917,7 +1919,7 @@ angular.module('core')
           var type = attrs.type;
           var msg = Messages.getShareMessage(type);
 
-          if(attrs.phone) {
+          if(attrs.phone && attrs.phone.length) {
             href += attrs.phone;
           }
 

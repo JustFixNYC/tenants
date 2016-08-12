@@ -25,7 +25,7 @@ angular.module('core')
           var type = attrs.type;
           var msg = Messages.getShareMessage(type);
 
-          if(attrs.phone) {
+          if(attrs.phone && attrs.phone.length) {
             href += attrs.phone;
           }
 

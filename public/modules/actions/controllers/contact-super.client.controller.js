@@ -14,6 +14,7 @@ angular.module('actions').controller('ContactSuperController', ['$scope', '$moda
 
       if(isValid) {
         $modalInstance.close({ newActivity: $scope.newActivity });
+        console.log(event.target.href);
         window.location.href = event.target.href;
       }
     };

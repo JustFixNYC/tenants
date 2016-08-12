@@ -110,6 +110,7 @@
   },
   {
     "title": "Contact Your Super (Step 1 of 3)",
+    "activityTitle": "Contacted Super/Management",
     "content": "Your first step should always be to contact the person directly responsible for making repairs in your home.",
     "key": "contactSuper",
     "addIf": ["hasProblems"],
@@ -126,6 +127,7 @@
   },
   {
     "title": "Email Landlord (Step 2 of 3)",
+    "activityTitle": "Emailed Repair Issues to Landlord",
     "content": "If your super is unresponsive, its time to email your landlord. <b>We've drafted an email that you can send, including a list of the issues that need repair.</b>",
     "key": "emailLandlord",
     "addIf": ["contactSuper"],
