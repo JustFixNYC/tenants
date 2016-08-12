@@ -52,7 +52,7 @@
     </div>
     <div class="letter-step letter-step-created" ng-if="status.created">
       <p>Your Letter of Complaint has been created and can be viewed here:</p>
-      <span class="glyphicon glyphicon-file text-success lead"></span><a class="text-link" ng-href="{{letterUrl}}" target="_blank">Letter of Complaint PDF</a>
+      <span class="glyphicon glyphicon-file text-success lead"></span><a class="text-link" ng-href="{{letterUrl}}" target="_blank">View Letter of Complaint (PDF)</a>
       <p>This PDF will always available on your <a ui-sref="listActivity" ng-click="done()">Case History</a> page, so you can come back to it later on. <b>Don’t forget to send it via certified mail!</b></p>
     </div>
     <div class="letter-step" ng-if="status.error">
@@ -67,6 +67,6 @@
     <button class="btn btn-primary" ng-click="createLetter()">Submit</button>
   </div>
   <div ng-if="!status.loading && (status.created || status.error)">
-    <button class="btn btn-primary btn-block" ng-click="done()">Got it!</button>
+    <button class="btn btn-primary btn-block" ng-click="done()">Close</button>
   </div>
 </div>

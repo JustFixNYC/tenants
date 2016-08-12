@@ -151,7 +151,7 @@
     "type": "once",
     "cta": {
       "type": "modal",
-      "buttonTitle": "Create Letter",
+      "buttonTitle": "Preview Letter",
       "template": "complaint-letter.client.view.html",
       "controller": "ComplaintLetterController"
     }

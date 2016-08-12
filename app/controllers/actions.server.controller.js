@@ -148,8 +148,14 @@ var list = function(req, res) {
 
     var newActions = fullActions.filter(function (action) {
       // var valid = _.contains(action.addIf, key) && !_.contains(actionKeys, action.key);
-      var valid = _.contains(action.addIf, key);
-      return valid;
+      // var valid = _.contains(action.addIf, key);
+      if(_.contains(action.addIf, key)) {
+        if(action.followUp) action.hasFollowUp = true;
+        else action.hasFollowUp = false;
+        return true;
+      } else {
+        return false;
+      }
     });
     res.json(newActions);
 
