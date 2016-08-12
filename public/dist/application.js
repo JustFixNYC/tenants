@@ -377,10 +377,11 @@ angular.module('actions').controller('ContactSuperController', ['$scope', '$moda
 
       $scope.formSubmitted = true;
 
-      if(isValid) {
+      if(isValid && event.target.href) {
         $modalInstance.close({ newActivity: $scope.newActivity });
-        console.log(event.target.href);
         window.location.href = event.target.href;
+      } else {
+        console.log('no href?');
       }
     };
 
