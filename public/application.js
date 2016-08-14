@@ -87,7 +87,12 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
 
       $rootScope.state = toState.name;
-      
+      if(toState.data && toState.data.disableBack) {
+        $rootScope.showBack = false;
+      } else {
+        $rootScope.showBack = true;
+      }
+
       setHeaderState(toState.name);
     });
   });
