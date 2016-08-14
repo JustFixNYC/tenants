@@ -65,13 +65,15 @@ var UserSchema = new Schema({
   },
   borough: {
     type: String,
-    default: ''
+    default: '',
+    required: true
   },
   address: {
     type: String,
     trim: true,
     default: '',
-    validate: [validateGeoclientAddress, 'Your address was not found! Please try again.']
+    validate: [validateGeoclientAddress, 'Your address was not found! Please try again.'],
+    required: true
   },
   unit: {
     type: String,
@@ -107,7 +109,8 @@ var UserSchema = new Schema({
     trim: true,
     default: '',
     validate: [validateLocalStrategyProperty, 'Please fill in your phone number'],
-    match: [/[0-9]{7}/, 'Please fill a valid phone number']
+    match: [/[0-9]{7}/, 'Please fill a valid phone number'],
+    required: true
   },
   password: {
     type: String,
@@ -160,6 +163,19 @@ var UserSchema = new Schema({
   }
 });
 
+
+/**
+ * Only query geoclient if its detected that address has changed
+ */
+UserSchema.path('address').set(function (newVal) {
+
+  if (this.address == '' || this.address != newVal) {
+    this._addressChanged = true;
+  }
+  return newVal;
+});
+
+
 /**
  * Hook a pre save method to hash the password, and do user updating things
  * This is pretty nice to have in one spot!
@@ -211,26 +227,35 @@ UserSchema.pre('save', function(next) {
   // if(user.nycha === 'yes') user.actionFlags.push('isNYCHA');
 
   // check some address stuff
-  var user = this;
+  if(!this._addressChanged) {
+    next();
+  } else {
 
-  addressHandler.requestGeoclient(this.borough, this.address)
-    .then(function (geo) {
-      user.geo = geo;
-      // check for tenant harassment hotline
-      if(addressHandler.harassmentHelp(user.geo.zip)) user.actionFlags.push('isHarassmentElligible');
-      return addressHandler.requestRentStabilized(geo.bbl, geo.lat, geo.lon);
-    })
-    .then(function (rs) {
-      if(rs) user.actionFlags.push('isRentStabilized');
+    console.log('ADDR CHANGED');
 
-      console.log('user', user);
-      next();
-    })
-    .fail(function (e) {
-      console.log('[GEO]', e);
-      var err = new Error(e);
-      next(err);
-    });
+    this._addressChanged = false;
+    var user = this;
+
+    addressHandler.requestGeoclient(this.borough, this.address)
+      .then(function (geo) {
+        user.geo = geo;
+        // check for tenant harassment hotline
+        if(addressHandler.harassmentHelp(user.geo.zip)) user.actionFlags.push('isHarassmentElligible');
+        return addressHandler.requestRentStabilized(geo.bbl, geo.lat, geo.lon);
+      })
+      .then(function (rs) {
+        if(rs) user.actionFlags.push('isRentStabilized');
+
+        console.log('user', user);
+        next();
+      })
+      .fail(function (e) {
+        console.log('[GEO]', e);
+        var err = new Error(e);
+        next(err);
+      });
+  }
+
 
 });
 
