@@ -128,7 +128,12 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
 
       $rootScope.state = toState.name;
-      
+      if(toState.data && toState.data.disableBack) {
+        $rootScope.showBack = false;
+      } else {
+        $rootScope.showBack = true;
+      }
+
       setHeaderState(toState.name);
     });
   }]);
@@ -365,29 +370,25 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 
 'use strict';
 
-angular.module('actions').controller('ContactSuperController', ['$scope', '$modalInstance', '$timeout', 'deviceDetector', 'Messages', 'newActivity',
-  function ($scope, $modalInstance, $timeout, deviceDetector, Messages, newActivity) {
+angular.module('actions').controller('ContactSuperController', ['$scope', '$modalInstance', 'deviceDetector', 'Messages', 'newActivity',
+  function ($scope, $modalInstance, deviceDetector, Messages, newActivity) {
 
     $scope.newActivity = newActivity;
-
 
     $scope.formSubmitted = false;
 
     $scope.done = function (isValid, event) {
 
-      //wait until after digest loop?
-      $timeout(function () {
-        $scope.formSubmitted = true;
+      $scope.formSubmitted = true;
 
-        console.log(event);
+      console.log(event);
 
-        if(isValid && event.target.href) {
-          $modalInstance.close({ newActivity: $scope.newActivity });
-          window.location.href = event.target.href;
-        } else {
-          console.log('no href?');
-        }
-      }, 0);
+      if(isValid && event.target.href) {
+        $modalInstance.close({ newActivity: $scope.newActivity });
+        window.location.href = event.target.href;
+      } else {
+        console.log('no href?');
+      }
     };
 
     $scope.cancel = function () {
@@ -1599,7 +1600,14 @@ angular.module('core')
       link: function (scope, element, attrs) {
 
         var msg = Messages.getShareMessage("share");
-        var href = 'mailto:' + encodeURI(Authentication.user.referral.email + '?subject=' + Authentication.user.fullName + ' - JustFix.nyc Case History&body=' + msg);
+
+        var href = 'mailto:';
+
+        if(attrs.email && attrs.email.length) {
+          href += attrs.email;
+        }
+
+        href = encodeURI(href + '?subject=' + Authentication.user.fullName + ' - JustFix.nyc Case History&body=' + msg);
         attrs.$set('href', href);
 
       }
@@ -3078,14 +3086,14 @@ angular.module('kyr').factory('kyrService', ['$resource', '$http', '$q',
 
 'use strict';
 
-// TODO: discuss putting all 'run' methods together 
+// TODO: discuss putting all 'run' methods together
 angular.module('onboarding').run(['$rootScope', '$state', 'Authentication', '$window', function($rootScope, $state, Authentication, $window) {
 
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-		if(!Authentication.user && toState.onboarding && !$rootScope.validated && toState.name !== 'onboarding.accessCode') {
-			event.preventDefault();
-			$state.go('onboarding.accessCode');
-		}
+		// if(!Authentication.user && toState.onboarding && !$rootScope.validated && toState.name !== 'onboarding.accessCode') {
+		// 	event.preventDefault();
+		// 	$state.go('onboarding.accessCode');
+		// }
 	});
 
 }]);
@@ -3097,7 +3105,10 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider){
 
     // Jump to first child state
-    $urlRouterProvider.when('/onboarding', '/onboarding/referral');
+    // $urlRouterProvider.when('/onboarding', '/onboarding/referral');
+
+    // Disabling access codes
+    $urlRouterProvider.when('/onboarding', '/onboarding/checklist');
 
   	// Onboarding state routing
     $stateProvider

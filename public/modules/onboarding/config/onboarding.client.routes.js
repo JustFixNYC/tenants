@@ -5,7 +5,10 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider){
 
     // Jump to first child state
-    $urlRouterProvider.when('/onboarding', '/onboarding/referral');
+    // $urlRouterProvider.when('/onboarding', '/onboarding/referral');
+
+    // Disabling access codes
+    $urlRouterProvider.when('/onboarding', '/onboarding/checklist');
 
   	// Onboarding state routing
     $stateProvider

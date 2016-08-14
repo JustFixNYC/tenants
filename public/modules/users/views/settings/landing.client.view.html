@@ -13,12 +13,14 @@
 	<p>{{user.unit}}</p>
 	<p>{{user.borough}}, NY  {{user.geo.zip}}</p>
 	<br/>
-	<p ng-if="user.referral"><strong>Advocate Information:</strong></p>
-	<p>{{user.referral.name}}</p>
-	<p>{{user.referral.organization}}</p>
-	<p><a ng-href="tel:{{user.referral.phone}}" class="text-link">{{user.referral.phone | tel}}</a></p>
-	<p><a ng-href="mailto:{{user.referral.email}}" class="text-link">{{user.referral.email}}</a></p>
-	<br/>
+	<div ng-if="authenication.user.referral">
+		<p><strong>Advocate Information:</strong></p>
+		<p>{{user.referral.name}}</p>
+		<p>{{user.referral.organization}}</p>
+		<p><a ng-href="tel:{{user.referral.phone}}" class="text-link">{{user.referral.phone | tel}}</a></p>
+		<p><a ng-href="mailto:{{user.referral.email}}" class="text-link">{{user.referral.email}}</a></p>
+		<br/>
+	</div>
 	<div class="user-container">
 		<a ui-sref="settings.edit">
 			<strong>Edit my profile<span class="glyphicon glyphicon-menu-right pull-right"></span></strong>

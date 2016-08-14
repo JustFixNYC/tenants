@@ -34,26 +34,29 @@
     </a>
   </div>
 
-  <!-- <div class="section-header" ng-click="shareCollapsed = !shareCollapsed"> -->
-  <div class="section-header">
-    <h2>Advocate Information
-      <!-- <span class="pull-right glyphicon" ng-class="shareCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span> -->
-    </h2>
-  </div>
-  <!-- <div class="share-section" collapse="shareCollapsed"> -->
-  <div class="share-section">
-    <h2>
-      {{ ::authentication.user.referral.name }}<br />
-      {{ ::authentication.user.referral.organization }}<br />
-      {{ ::authentication.user.referral.phone | tel }}<br />
-      {{ ::authentication.user.referral.email }}
-    </h2>
-    <div class="row share-controls">
-      <a class="btn btn-success btn-block" ng-href="tel:{{authentication.user.referral.phone}}">
-          Call {{ ::authentication.user.referral.name | firstname }}
-      </a>
+  <div ng-if="authenication.user.referral">
+    <!-- <div class="section-header" ng-click="shareCollapsed = !shareCollapsed"> -->
+    <div class="section-header">
+      <h2>Advocate Information
+        <!-- <span class="pull-right glyphicon" ng-class="shareCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span> -->
+      </h2>
     </div>
+    <!-- <div class="share-section" collapse="shareCollapsed"> -->
+    <div class="share-section">
+      <h2>
+        {{ ::authentication.user.referral.name }}<br />
+        {{ ::authentication.user.referral.organization }}<br />
+        {{ ::authentication.user.referral.phone | tel }}<br />
+        {{ ::authentication.user.referral.email }}
+      </h2>
+      <div class="row share-controls">
+        <a class="btn btn-success btn-block" ng-href="tel:{{authentication.user.referral.phone}}">
+            Call {{ ::authentication.user.referral.name | firstname }}
+        </a>
+      </div>
+    </div>    
   </div>
+
   <br />
   <div class="row">
     <a class="btn btn-block btn-primary" href="/api/auth/signout" target="_self">Sign Out</a>
