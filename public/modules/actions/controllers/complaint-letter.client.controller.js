@@ -30,6 +30,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 				if(!$scope.status.created) {
 					$scope.status.loading = false;
 					$scope.status.error = true;
+					Rollbar.warning("Request for the letter took too long to respond");
 	  			$scope.errorCode = 'Request for the letter took too long to respond';
 				}
 			}, timerCountdown * 1000);
@@ -51,6 +52,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 	  		function failure(error) {
 					$scope.status.loading = false;
 					$scope.status.error = true;
+					Rollbar.error("Error with letter generation");
 	  			$scope.errorCode = error;
 	  		}
 	  	);

@@ -73,7 +73,8 @@ module.exports = {
 		key: process.env.AWS_SECRET_ACCESS_KEY
 	},
 	rollbar: {
-		token: process.env.ROLLBAR_ACCESS_TOKEN,
+		servertoken: process.env.ROLLBAR_ACCESS_TOKEN,
+		clienttoken: process.env.ROLLBAR_ACCESS_TOKEN_CLIENT,
 		endpoint: process.env.ROLLBAR_ENDPOINT
 	}
 };

@@ -8,6 +8,7 @@ var _ = require('lodash'),
     Schema = mongoose.Schema,
     crypto = require('crypto'),
     addressHandler = require('../services/address.server.service'),
+    rollbar = require('rollbar'),
     ActivitySchema = require('./activity.server.model.js'),
     ProblemSchema = require('./problem.server.model.js');
 
@@ -36,7 +37,7 @@ var validateGeoclientAddress = function(address, callback) {
     })
     .fail(function (e) {
       console.log('[Geoclient Validation]', e);
-
+      rollbar.handleError(e);
       // this will prevent users from creating accounts if anything is broken...
       return callback(false);
     });
@@ -249,6 +250,7 @@ UserSchema.pre('save', function(next) {
       })
       .fail(function (e) {
         console.log('[GEO]', e);
+        rollbar.handleError(e);
         var err = new Error(e);
         next(err);
       });

@@ -46,6 +46,7 @@ angular.module('findhelp').controller('FindHelpController', ['$scope', '$window'
 
         }).error(function(errors) {
             // errors contains a list of errors
+						Rollbar.error("Carto List Error", errors);
             console.log("errors:" + errors);
         });
       };
