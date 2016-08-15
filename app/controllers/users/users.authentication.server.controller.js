@@ -57,8 +57,8 @@ exports.signup = function(req, res) {
         res.json(user);
       })
       .fail(function (err) {
-        rollbar.handleError(err, req);
-        res.status(400).send(err);
+        rollbar.handleError(errorHandler.getErrorMessage(err), req);
+        res.status(400).send(errorHandler.getErrorMessage(err));
       });
   };
 
@@ -112,7 +112,7 @@ exports.signup = function(req, res) {
 exports.signin = function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err || !user) {
-      rollbar.handleError(err, req);
+      rollbar.handleError(info, req);
       res.status(400).send(info);
     } else {
       // Remove sensitive data before login
