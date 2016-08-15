@@ -80,7 +80,8 @@ module.exports = function(db) {
 	app.use(rollbar.errorHandler(process.env.ROLLBAR_ACCESS_TOKEN, { environment: process.env.NODE_ENV }));
 
 	// handles uncaught exceptions and unhandled promises
-	rollbar.handleUncaughtExceptionsAndRejections(process.env.ROLLBAR_ACCESS_TOKEN);
+	// I dont think this makes sense here... RTFM
+	// rollbar.handleUncaughtExceptionsAndRejections(process.env.ROLLBAR_ACCESS_TOKEN);
 
 
 	// Request body parsing middleware should be above methodOverride
@@ -139,6 +140,10 @@ module.exports = function(db) {
 
 		// Log it
 		console.error(err.stack);
+
+		// Rollbar time!
+		rollbar.handleErrorWithPayloadData(err, {}, request);
+
 
 		// Error page
 
