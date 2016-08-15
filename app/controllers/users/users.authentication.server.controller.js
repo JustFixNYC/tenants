@@ -99,7 +99,7 @@ exports.signup = function(req, res) {
   //     save();
   //   });
 
-  res.status(400).send("Dummy Error Message");
+  throw new Error('Dummy Error');
   // save();
 
 
