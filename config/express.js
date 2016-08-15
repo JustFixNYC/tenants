@@ -142,7 +142,7 @@ module.exports = function(db) {
 		console.error(err.stack);
 
 		// Rollbar time!
-		rollbar.handleErrorWithPayloadData(err, {}, request);
+		rollbar.handleErrorWithPayloadData(err, {}, req);
 
 
 		// Error page
