@@ -52,7 +52,7 @@ exports.signup = function(req, res) {
   var save = function() {
     saveUser(req, user)
       .then(function (user) {
-        rollbar.reportMessage("New User Signup!", "info", request);
+        rollbar.reportMessage("New User Signup!", "info", req);
         res.json(user);
       })
       .fail(function (err) { res.status(400).send(err); });
