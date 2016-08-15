@@ -51,7 +51,10 @@ exports.signup = function(req, res) {
 
   var save = function() {
     saveUser(req, user)
-      .then(function (user) {   console.log('new user', user); res.json(user); })
+      .then(function (user) {
+        rollbar.reportMessage("New User Signup!", "info", request);
+        res.json(user);
+      })
       .fail(function (err) { res.status(400).send(err); });
   };
 
@@ -94,7 +97,7 @@ exports.signup = function(req, res) {
   //     console.log('[GEO]', e);
   //     save();
   //   });
-  
+
   save();
 
 

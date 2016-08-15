@@ -77,13 +77,10 @@ module.exports = function(db) {
 	}
 
 	// Use the rollbar error handler to send exceptions to your rollbar account
-	app.use(rollbar.errorHandler('9a9479e527004fa69a77ebf677c6ed49', { environment: process.env.NODE_ENV }));
+	app.use(rollbar.errorHandler(process.env.ROLLBAR_ACCESS_TOKEN, { environment: process.env.NODE_ENV }));
 
-	// testing
-	// record a generic message and send to rollbar
-	rollbar.reportMessage("Hello world!");
-
-	// rollbar.handleUncaughtExceptionsAndRejections("9a9479e527004fa69a77ebf677c6ed49");
+	// handles uncaught exceptions and unhandled promises
+	rollbar.handleUncaughtExceptionsAndRejections(process.env.ROLLBAR_ACCESS_TOKEN);
 
 
 	// Request body parsing middleware should be above methodOverride
