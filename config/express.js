@@ -79,6 +79,8 @@ module.exports = function(db) {
 	// Use the rollbar error handler to send exceptions to your rollbar account
 	app.use(rollbar.errorHandler('9a9479e527004fa69a77ebf677c6ed49', { environment: process.env.NODE_ENV }));
 
+	// testing
+
 	// rollbar.handleUncaughtExceptionsAndRejections("9a9479e527004fa69a77ebf677c6ed49");
 
 
