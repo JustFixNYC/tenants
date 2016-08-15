@@ -245,8 +245,6 @@ UserSchema.pre('save', function(next) {
       })
       .then(function (rs) {
         if(rs) user.actionFlags.push('isRentStabilized');
-
-        console.log('user', user);
         next();
       })
       .fail(function (e) {

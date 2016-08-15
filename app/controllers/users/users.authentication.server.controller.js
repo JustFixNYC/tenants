@@ -11,6 +11,7 @@ var _ = require('lodash'),
   profileHandler = require('./users.profile.server.controller'),
   mongoose = require('mongoose'),
   passport = require('passport'),
+  rollbar = require('rollbar'),
   User = mongoose.model('User');
 
 var saveUser = function(req, user) {
