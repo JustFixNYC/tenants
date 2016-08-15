@@ -22,7 +22,8 @@ var fs = require('fs'),
 	flash = require('connect-flash'),
 	config = require('./config'),
 	consolidate = require('consolidate'),
-	path = require('path');
+	path = require('path'),
+	rollbar = require('rollbar');
 
 module.exports = function(db) {
 	// Initialize express app
@@ -74,6 +75,12 @@ module.exports = function(db) {
 	} else if (process.env.NODE_ENV === 'production') {
 		app.locals.cache = 'memory';
 	}
+
+	// Use the rollbar error handler to send exceptions to your rollbar account
+	app.use(rollbar.errorHandler('9a9479e527004fa69a77ebf677c6ed49', { environment: process.env.NODE_ENV }));
+
+	// rollbar.handleUncaughtExceptionsAndRejections("9a9479e527004fa69a77ebf677c6ed49");
+
 
 	// Request body parsing middleware should be above methodOverride
 	app.use(bodyParser.urlencoded({
