@@ -331,6 +331,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 				if(!$scope.status.created) {
 					$scope.status.loading = false;
 					$scope.status.error = true;
+					Rollbar.warning("Request for the letter took too long to respond");
 	  			$scope.errorCode = 'Request for the letter took too long to respond';
 				}
 			}, timerCountdown * 1000);
@@ -352,6 +353,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 	  		function failure(error) {
 					$scope.status.loading = false;
 					$scope.status.error = true;
+					Rollbar.error("Error with letter generation");
 	  			$scope.errorCode = error;
 	  		}
 	  	);
@@ -1688,6 +1690,33 @@ angular.module('core').directive('fullBg', ["$window", function($window) {
 }]);
 'use strict';
 
+angular.module('core')
+  .directive('gaEvent', ['deviceDetector', '$window',
+  function (deviceDetector, $window) {
+    return {
+      restrict: 'A',
+      scope: false,
+      link: function (scope, element, attrs) {
+
+        var a = attrs.gaEvent.split(',');
+        var cat = a[0];
+        var action = a[1];
+
+        if(a.length == 3) var label = a[2];
+        else var label = "";
+
+        element.on('click', function (event) {
+          $window.ga('send', 'event', cat, action, label);
+        });
+
+
+      }
+    };
+
+  }]);
+
+'use strict';
+
 angular.module('core').directive('goToTop', ["$document", function($document) {
     return {
         restrict: 'A',
@@ -2407,6 +2436,7 @@ angular.module('findhelp').controller('FindHelpController', ['$scope', '$window'
 
         }).error(function(errors) {
             // errors contains a list of errors
+						Rollbar.error("Carto List Error", errors);
             console.log("errors:" + errors);
         });
       };
@@ -2493,6 +2523,7 @@ angular.module('findhelp').directive('cartoMap', ['$rootScope', 'CartoDB', funct
           })
           .error(function(err) {
             // report error
+            Rollbar.error("Carto Map Error", err);
             console.log("An error occurred: " + err);
           });
 
@@ -3247,7 +3278,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 
 		$scope.createAndNext = function (isValid) {
 
-			console.log('create account pre save', $scope.newUser);
+			if(typeof DEBUG !== 'undefined' && DEBUG == true) console.log('create account pre save', $scope.newUser);
 
 			if(isValid) {
 
@@ -3264,12 +3295,12 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 					$rootScope.loading = false;
 					$rootScope.takeActionAlert = true;
 					$scope.authentication.user = response;
-					console.log('create account post save', response);
+					if(typeof DEBUG !== 'undefined' && DEBUG == true) console.log('create account post save', response);
 					$location.path('/tutorial');
 
 				}).error(function(err) {
 					$rootScope.loading = false;
-					console.log(err);
+					// console.log(err);
         	$scope.error = err;
 				});
 

@@ -16,7 +16,6 @@ angular.module('core')
         else var label = "";
 
         element.on('click', function (event) {
-          // console.log(cat, action, label);
           $window.ga('send', 'event', cat, action, label);
         });
 
