@@ -5,6 +5,7 @@ var _ = require('lodash'),
     errorHandler = require('./errors.server.controller'),
     s3Handler = require('../services/s3.server.service'),
     mongoose = require('mongoose'),
+    rollbar = require('rollbar'),
     problemsHandler = require('./problems.server.controller.js'),
     User = mongoose.model('User');
 
@@ -42,7 +43,6 @@ var s3upload = function(file) {
 
       uploaded.resolve({ url: data.Location, thumb: resizedUrl });
     }).fail(function (err) {
-      console.log('error', err);
       uploaded.reject(err);
     });
 
@@ -85,7 +85,9 @@ var create = function(req, res, next) {
     Q.allSettled(uploadQueue).then(function (results) {
 
       results.forEach(function (r) {
-        if(r.state !== 'fulfilled') res.status(500).send({ message: err });
+        if(r.state !== 'fulfilled') {
+          res.status(500).send({ message: "Photo is not fulfilled" });
+        }
 
         activity.photos.push({
           url: r.value.url,
@@ -107,7 +109,11 @@ var create = function(req, res, next) {
 
       next();
 
-    });  // end of Q.allSettled
+    })  // end of Q.allSettled
+    .fail(function (err) {
+      // console.log('s3 error', err);
+      rollbar.handleError(err, req);
+    });
 
   } else {
     res.status(400).send({

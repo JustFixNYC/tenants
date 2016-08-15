@@ -56,7 +56,10 @@ exports.signup = function(req, res) {
         rollbar.reportMessage("New User Signup!", "info", req);
         res.json(user);
       })
-      .fail(function (err) { res.status(400).send(err); });
+      .fail(function (err) {
+        rollbar.handleError(err, req);
+        res.status(400).send(err);
+      });
   };
 
   // Add missing user fields
@@ -99,10 +102,7 @@ exports.signup = function(req, res) {
   //     save();
   //   });
 
-  throw new Error('Dummy Error');
-  // save();
-
-
+  save();
 
 };
 
@@ -110,9 +110,9 @@ exports.signup = function(req, res) {
  * Signin after passport authentication
  */
 exports.signin = function(req, res, next) {
-  console.log('signin', req.body);
   passport.authenticate('local', function(err, user, info) {
     if (err || !user) {
+      rollbar.handleError(err, req);
       res.status(400).send(info);
     } else {
       // Remove sensitive data before login
@@ -121,6 +121,7 @@ exports.signin = function(req, res, next) {
 
       req.login(user, function(err) {
         if (err) {
+          rollbar.handleError(err, req);
           res.status(400).send(err);
         } else {
           res.json(user);
@@ -134,7 +135,6 @@ exports.signin = function(req, res, next) {
  * Signout
  */
 exports.signout = function(req, res) {
-  console.log('SIGN OUT');
   req.logout();
   res.redirect('/');
 };

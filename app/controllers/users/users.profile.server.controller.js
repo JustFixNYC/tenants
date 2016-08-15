@@ -8,6 +8,7 @@ var _ = require('lodash'),
 	Q = require('q'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
+	rollbar = require('rollbar'),
 	User = mongoose.model('User');
 
 /**
@@ -28,12 +29,14 @@ exports.update = function(req, res) {
 
 		user.save(function(err) {
 			if (err) {
+				rollbar.handleError(errorHandler.getErrorMessage(err), req);
 				return res.status(400).send({
 					message: errorHandler.getErrorMessage(err)
 				});
 			} else {
 				req.login(user, function(err) {
 					if (err) {
+						rollbar.handleError(err, req);
 						res.status(400).send(err);
 					} else {
 						res.json(user);
@@ -91,8 +94,6 @@ exports.createPublicView = function() {
  * Toggle user public view
  */
 exports.togglePublicView = function(req, res, next) {
-
-	console.log('HI DAN THIS IS DAN');
 
 	var user = req.user;
 

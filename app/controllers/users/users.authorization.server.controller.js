@@ -5,6 +5,7 @@
  */
 var _ = require('lodash'),
 	mongoose = require('mongoose'),
+	rollbar = require('rollbar'),
 	User = mongoose.model('User');
 
 /**
@@ -48,6 +49,7 @@ exports.hasAuthorization = function(roles) {
 				return next();
 			} else {
 				// [TODO] reset this.
+				rollbar.handleError('User is not authorized', req);
 				return res.status(403).send({
 					message: 'User is not authorized'
 				});/*
@@ -74,6 +76,7 @@ exports.hasPublicView = function(req, res, next) {
 		}
 		else if(!user || !user.sharing.enabled) {
 			// [TODO] make this an adequate response page
+			rollbar.handleError('Unauthorized request', req);
 			return res.status(403).send({ message: 'Unauthorized request.' });
 		}
 		else {

@@ -77,7 +77,7 @@ module.exports = function(db) {
 	}
 
 	// Use the rollbar error handler to send exceptions to your rollbar account
-	app.use(rollbar.errorHandler(process.env.ROLLBAR_ACCESS_TOKEN, { environment: process.env.NODE_ENV }));
+	app.use(rollbar.errorHandler(config.rollbar.token, { environment: process.env.NODE_ENV }));
 
 	// handles uncaught exceptions and unhandled promises
 	// I dont think this makes sense here... RTFM
