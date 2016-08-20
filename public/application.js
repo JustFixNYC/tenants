@@ -38,7 +38,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
   .constant('LOCALES', {
     'locales': {
         'en_US': 'English',
-        'es': 'Español'
+        'es_mx': 'Español'
     },
     'preferredLocale': 'en_US'
   })
