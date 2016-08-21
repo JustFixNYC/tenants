@@ -647,6 +647,7 @@
   	"getRentalHistory": {
   		"title": "Obtener su Historial de Alquiler",
   		"activityTitle": "Historial de Alquiler solicitado",
+  		"content": "<b>It seems like you might live in a rent stabilized apartment.</b> Request your rental history to make sure.",
   		"cta": {
   			"buttonTitle": "Contactar a la División de Vivienda y Renovación de la Comunidad (DHCR)"
   		},
@@ -757,6 +758,18 @@
 	    "followUp": {
 	      "title": "¿Ya fue a la corte?"
 	    }
-  	}
+  	},
+  	"catchAction": {
+      "title": "Complete your Issue Checklist",
+      "content": "In order to create a letter of complaint, start by selecting the issues you are looking to resolve.",
+      "addIf": ["initial"],
+      "type": "once",
+      "cta": {
+        "type": "link-internal",
+        "buttonTitle": "Issue Checklist",
+        "url": "updateProblems"
+      },
+      "hasFollowUp": false
+    }
   }
 }

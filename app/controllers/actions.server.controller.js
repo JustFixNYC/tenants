@@ -50,13 +50,13 @@ var getAreaActions = function(user) {
 
   if(problems.length == 0) {
     areaActions.push({
-      title: 'Complete your Issue Checklist',
-      content: 'In order to create a letter of complaint, start by selecting the issues you are looking to resolve.',
+      title: 'actions.catchAction.title',
+      content: 'actions.catchAction.content',
       addIf: ['initial'],
       type: 'once',
       cta: {
         type: 'link-internal',
-        buttonTitle: 'Issue Checklist',
+        buttonTitle: 'actions.catchAction.cta.buttonTitle',
         url: 'updateProblems'
       },
       hasFollowUp: false

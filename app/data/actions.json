@@ -1,161 +1,161 @@
 [
   {
-    "title": "Get Rental History",
-    "activityTitle": "Requested Rental History",
-    "content": "<b>It seems like you might live in a rent stabilized apartment.</b> Request your rental history to make sure.",
+    "title": "actions.getRentalHistory.title",
+    "activityTitle": "actions.getRentalHistory.activityTitle",
+    "content": "actions.getRentalHistory.content",
     "key": "getRentalHistory",
     "addIf": ["isRentStabilized"],
     "type": "once",
     "cta": {
       "type": "modal",
-      "buttonTitle": "Contact DHCR",
+      "buttonTitle": "actions.getRentalHistory.cta.buttonTitle",
       "template": "rental-history.client.view.html",
       "controller": "RentalHistoryController"
     },
     "followUp": {
-      "title": "Do you have any additional concerns about your DHCR letter?",
+      "title": "actions.getRentalHistory.followUp.title",
       "fields": [{
-        "prompt": "Are you rent stabilized?",
-        "title":  "Rent stabilized:",
+        "prompt": "actions.getRentalHistory.followUp.fields.prompt",
+        "title":  "actions.getRentalHistory.followUp.fields.title",
         "type":   "binary"
       }]
     }
   },
   {
-    "title": "Call Tenant Harassment Hotline",
-    "activityTitle": "Called Tenant Harassment Hotline",
-    "content": "It looks like you live in an area that experiences a <b>large amount of turnover and harassment</b> and are eligible to call the New York City Tenant Protection Hotline. Hours: Monday – Friday (10AM – 4PM)",
+    "title": "actions.contactHarassment.title",
+    "activityTitle": "actions.contactHarassment.activityTitle",
+    "content": "actions.contactHarassment.content",
     "key": "contactHarassment",
     "addIf": ["isHarassmentElligible"],
     "type": "recurring",
     "cta": {
       "type": "call",
-      "buttonTitle": "Call",
+      "buttonTitle": "actions.contactHarassment.cta.buttonTitle",
       "phone": 9176614500
     },
     "followUp": {
-      "title": "What did the anti-harassment hotline say?"
+      "title": "actions.contactHarassment.cta.followUp.title"
     }
   },
   {
-    "title": "Call 311",
-    "activityTitle": "Called 311",
-    "content": "It seems like some of your issues might be serious. Calling 311 puts the landlord on notice and courts will take violations more seriously. Be careful of illegal retributions! <b>Please write down the tracking number they give you.</b>",
+    "title": "actions.contact311.title",
+    "activityTitle": "actions.contact311.activityTitle",
+    "content": "actions.contact311.content",
     "key": "contact311",
     "addIf": ["hasEmergencyIssues"],
     "type": "recurring",
     "cta": {
       "type": "call",
-      "buttonTitle": "Call",
+      "buttonTitle": "actions.contact311.cta.buttonTitle",
       "phone": 311
     },
     "followUp": {
-      "title": "How did your 311 call go?",
+      "title": "actions.contact311.followUp.title",
       "fields": [{
-        "prompt": "Enter your confirmation number:",
-        "title": "Confirmation number:",
+        "prompt": "actions.contact311.followUp.fields.prompt",
+        "title": "actions.contact311.followUp.fields.title",
         "type": "text",
-        "placeholder": "Begins with C1-1-, followed by 9 or 10 numbers." }]
+        "placeholder": "actions.contact311.followUp.fields.placeholder" }]
     }
   },
   {
-    "title": "Call NYCHA Help Center",
-    "activityTitle": "Called NYCHA Help Center",
-    "content": "If your building manager is unresponsive, call the NYCHA Help Center (open 24/7) and describe your situation, including what you've already done. <b>Please write down the tracking number they give you.</b>",
+    "title": "actions.contactNYCHA.title",
+    "activityTitle": "actions.contactNYCHA.activityTitle",
+    "content": "actions.contactNYCHA.content",
     "key": "contactNYCHA",
     "addIf": ["isNYCHA"],
     "type": "recurring",
     "cta": {
       "type": "call",
-      "buttonTitle": "Call",
+      "buttonTitle": "actions.contactNYCHA.cta.buttonTitle",
       "phone": 7187077771
     },
     "followUp": {
-      "title": "How did your call to NYCHA go?",
+      "title": "actions.contactNYCHA.followUp.title",
       "fields": [{
-        "prompt": "Enter your tracking number:",
-        "title": "Tracking number:",
+        "prompt": "actions.contactNYCHA.followUp.fields.prompt",
+        "title": "actions.contactNYCHA.followUp.fields.title",
         "type": "text",
-        "placeholder": "The number you were given to track your Work Order."
+        "placeholder": "actions.contactNYCHA.followUp.fields.placeholder"
       }]
     }
   },
   {
-    "title": "Call Housing Court Answers",
-    "activityTitle": "Called Housing Court Answers",
-    "content": "Housing Court Answers is a great resource to go for information about legal issues. Hours: Tuesday - Thursday (9AM - 5PM)",
+    "title": "actions.contactLegalServices.title",
+    "activityTitle": "actions.contactLegalServices.activityTitle",
+    "content": "actions.contactLegalServices.content",
     "key": "contactLegalServices",
     "addIf": ["sendLetter", "contact311"],
     "type": "legal",
     "cta": {
       "type": "call",
-      "buttonTitle": "Call",
+      "buttonTitle": "actions.contactLegalServices.cta.buttonTitle",
       "phone": 2129624795
     },
     "followUp": {
-      "title": "What did legal services say?"
+      "title": "actions.contactLegalServices.followUp.title"
     }
   },
   {
-    "title": "Call the MetCouncil Hotline",
-    "activityTitle": "Called the MetCouncil Hotline",
-    "content": "The MetCouncil on Housing provides a free tenants' rights hotline that can answer questions about your rights as a tenant. Hours: Mondays & Wednesdays (1:30PM - 8PM), Friday (1:30PM - 5PM)",
+    "title": "actions.callHotline.title",
+    "activityTitle": "actions.callHotline.activityTitle",
+    "content": "actions.callHotline.content",
     "key": "callHotline",
     "addIf": ["initial"],
     "type": "recurring",
     "cta": {
       "type": "call",
-      "buttonTitle": "Call",
+      "buttonTitle": "actions.callHotline.cta.buttonTitle",
       "phone": 2129790611
     },
     "followUp": {
-      "title": "What did the hotline say?"
+      "title": "actions.contactLegalServices.followUp.title"
     }
   },
   {
-    "title": "Mail an Official Letter of Complaint",
-    "activityTitle": "Created an Official Letter of Complaint",
-    "content": "In order to have a formal record of your requests, you need to mail a letter to your landlord. <b>We've drafted a letter that you can send including the repair issues that you've selected.</b><span ng-if='!userCompletedDetails()'><br /><br />Make sure to <b>Add Details</b> (located above) first to provide the most detailed information!</span>",
+    "title": "actions.sendLetter.title",
+    "activityTitle": "actions.sendLetter.activityTitle",
+    "content": "actions.sendLetter.content",
     "key": "sendLetter",
     "addIf": ["hasProblems"],
     "type": "once",
     "cta": {
       "type": "modal",
-      "buttonTitle": "Create Letter",
+      "buttonTitle": "actions.sendLetter.cta.buttonTitle",
       "template": "complaint-letter.client.view.html",
       "controller": "ComplaintLetterController"
     }
   },
   {
-    "title": "DHCR Decreased Services App",
-    "activityTitle": "DHCR Decreased Services App",
-    "content": "In order to seek a rent reduction for your <b>rent-stabilized apartment</b>, you must submit a formal complaint to DHCR. Use your <b>Case History</b> to fill this form out!",
+    "title": "actions.decreasedServices.title",
+    "activityTitle": "actions.decreasedServices.activityTitle",
+    "content": "actions.decreasedServices.content",
     "key": "decreasedServices",
     "addIf": ["getRentalHistory"],
     "type": "once",
     "cta": {
       "type": "link",
-      "buttonTitle": "View form",
+      "buttonTitle": "actions.decreasedServices.cta.buttonTitle",
       "url": "http://www.nyshcr.org/forms/rent/ra84.pdf"
     },
     "followUp": {
-      "title": "Have you heard back from DHCR yet?"
+      "title": "actions.decreasedServices.followUp.title"
     }
   },
   {
-    "title": "HP Action",
-    "activityTitle": "HP Action",
-    "content": "HP Actions are housing court proceedings that offer quick and cheap resolution to repair issues, and legal recourse if your landlord doesn't comply. <b>You must go to the {{user.borough}} Housing Court to file the HP Action.</b>",
+    "title": "actions.HPAction.title",
+    "activityTitle": "actions.HPAction.activityTitle",
+    "content": "actions.HPAction.content",
     "key": "HPAction",
     "addIf": ["sendLetter"],
     "type": "legal",
     "cta": {
       "type": "link",
-      "buttonTitle": "Get info",
+      "buttonTitle": "actions.HPAction.cta.buttonTitle",
       "url": "http://cwtfhc.org/hp-actions-for-repairs-and-services/"
     },
     "followUp": {
-      "title": "Did you go to court yet?"
+      "title": "actions.HPAction.followUp.title"
     }
   }
 ]

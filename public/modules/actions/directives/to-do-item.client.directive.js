@@ -1,15 +1,27 @@
 'use strict';
 
 angular.module('actions')
-  .directive('toDoItem', ['$rootScope', '$modal', '$sce', '$compile', '$filter', '$timeout', 'Authentication', 'Activity', 'Actions',
-    function ($rootScope, $modal, $sce, $compile, $filter, $timeout, Authentication, Activity, Actions) {
+  .directive('toDoItem', ['$rootScope', '$modal', '$sce', '$compile', '$filter', '$timeout', 'Authentication', 'Activity', 'Actions', '$translate',
+    function ($rootScope, $modal, $sce, $compile, $filter, $timeout, Authentication, Activity, Actions, $translate) {
     return {
       restrict: 'E',
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
       controller: function($scope, $element, $attrs) {
-        $scope.filterTitleHTML = function() { return $sce.trustAsHtml($scope.action.title); };
-        $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
-        $scope.filterButtonTitleHTML = function() { return $sce.trustAsHtml($scope.action.cta.buttonTitle); };
+      	console.log($scope.action)
+      	$translate($scope.action.title).then(function(title) {
+      		console.log(title);
+      		$scope.filterTitleHTML = function() { return $sce.trustAsHtml(title); };
+      	});
+        // $scope.filterTitleHTML = function() { return $sce.trustAsHtml($scope.action.title); };
+        $translate($scope.action.content).then(function(content) {
+        	// console.log(content)
+      		$scope.filterContentHTML = function() { return $sce.trustAsHtml(content); };
+      	});
+        // $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
+        $translate($scope.action.cta.buttonTitle).then(function(btn) {
+      		$scope.filterButtonTitleHTML = function() { return $sce.trustAsHtml(btn); };
+      	});
+        // $scope.filterButtonTitleHTML = function() { return $sce.trustAsHtml($scope.action.cta.buttonTitle); };
         $scope.closeErrorAlert = true;
       },
       link: function (scope, element, attrs) {
