@@ -3,7 +3,7 @@
     <div ng-repeat="link in footerLinks">
     	<a ui-sref="{{link.link}}">
         <img ng-src="{{link.icon}}" />
-  			{{ link.title }}
+  			{{ ::link.title | translate }}
   		</a>
     </div>
   </div>
@@ -16,6 +16,6 @@
       <li><a ui-sref="manifesto">{{'modules.core.views.footer.manifesto' | translate}}</a></a></li>
       <li><div language-select></div></li>
     </ul>
-    <p ng-bind-html="'modules.core.views.footer.description' | trustTranslate" compile-template></p>
+    <p ng-bind-html="modules.core.views.footer.description | trustTranslate" compile-template></p>
   </div>
 </div>

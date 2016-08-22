@@ -6,32 +6,32 @@ angular.module('core').controller('FooterController', ['$scope', '$window', 'Aut
     var links = {
       actions : {
         link: 'listActions',
-        title: 'Take Action',
+        title: 'repeating.listActions',
         icon: '/modules/core/img/sections/action.svg'
       },
       activity : {
         link: 'listActivity',
-        title: 'Case History',
+        title: 'repeating.caseHistory',
         icon: '/modules/core/img/sections/history.svg'
       },
       issues : {
         link: 'updateProblems',
-        title: 'Issue Checklist',
+        title: 'repeating.issueChecklist',
         icon: '/modules/core/img/sections/issues.svg'
       },
       profile : {
         link: 'settings.profile',
-        title: 'Profile',
+        title: 'repeating.profile',
         icon: '/modules/core/img/sections/profile.svg'
       },
       help : {
         link: 'findHelp',
-        title: 'Find Help',
+        title: 'repeating.findHelp',
         icon: '/modules/core/img/sections/help.svg'
       },
       kyr : {
         link: 'kyr',
-        title: 'Know Your Rights',
+        title: 'repeating.kyr',
         icon: '/modules/core/img/sections/kyr.svg'
       }
     };
