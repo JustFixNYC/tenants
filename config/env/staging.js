@@ -25,6 +25,9 @@ module.exports = {
     css: 'public/dist/style.min.css',
     js: 'public/dist/application.min.js'
   },
+  heap: {
+    token: process.env.HEAPTOKEN
+  },
   mailer: {
     from: process.env.MAILER_FROM || 'MAILER_FROM',
     options: {

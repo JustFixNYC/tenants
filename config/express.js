@@ -83,6 +83,8 @@ module.exports = function(db) {
 	app.locals.env = process.env.NODE_ENV;
 	app.locals.rollbar = config.rollbar.clienttoken;
 
+	app.locals.heap = config.heap.token;
+
 	// handles uncaught exceptions and unhandled promises
 	// I dont think this makes sense here... RTFM
 	// rollbar.handleUncaughtExceptionsAndRejections(process.env.ROLLBAR_ACCESS_TOKEN);
