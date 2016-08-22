@@ -2,20 +2,20 @@
     <div class="page-header">
         <img src="/modules/core/img/sections/history.svg" alt="Case History" />
         <h1>{{ user.fullName }}</h1>
-        <p class="text-center">{{::'modules.activity.views.listActivityPublic.contact' | translate}} {{ user.phone | tel }}</p>
-        <p class="text-danger text-center">{{::'modules.activity.views.listActivityPublic.alert' | translate}}</p>
+        <p class="text-center">{{'modules.activity.views.listActivityPublic.contact' | translate}} {{ user.phone | tel }}</p>
+        <p class="text-danger text-center">{{'modules.activity.views.listActivityPublic.alert' | translate}}</p>
     </div>
     <button class="btn btn-primary btn-block" print-button>
-      {{::'modules.activity.views.listActivityPublic.print' | translate}}  
+      {{'modules.activity.views.listActivityPublic.print' | translate}}  
     </button>
     <div class="section-header">
-      <h2>{{::'modules.activity.views.listActivityPublic.caseHistory' | translate}}
+      <h2>{{'modules.activity.views.listActivityPublic.caseHistory' | translate}}
       </h2>
     </div>
     <div data-ng-if="activities.length">
         <div data-ng-repeat="activity in activities | orderBy:'createdDate':true" class="panel activity-panel">
             <div class="panel-heading">
-                <h3>{{ ::activity.title }}</h3>
+                <h3>{{ activity.title }}</h3>
             </div>
             <div class="panel-body">
 
@@ -24,13 +24,13 @@
                 <!-- <p><b>{{ activity.key | areaTitle }} {{ activity.title === 'Text/Photos' ? 'Details' : activity.title }}</b></p> -->
 
 
-                <span class="pull-right activity-logged-date"><i>{{::'modules.activity.views.listActivityPublic.loggedOn' | translate}} {{ ::activity.createdDate | date:'short' }}</i></span>
+                <span class="pull-right activity-logged-date"><i>{{'modules.activity.views.listActivityPublic.loggedOn' | translate}} {{ activity.createdDate | date:'short' }}</i></span>
 
             </div>
         </div>
     </div>
     <div class="alert alert-warning text-center" data-ng-if="!activities.length">
-      {{ user.fullName }} {{::'modules.activity.views.listActivityPublic.empty' | translate}}
+      {{ user.fullName }} {{'modules.activity.views.listActivityPublic.empty' | translate}}
     </div>
 
 </section>

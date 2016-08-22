@@ -1,21 +1,21 @@
 
 	<div class="alert alert-major alert-success">
-		<span class="success-check glyphicon glyphicon-ok"></span> {{::'modules.onboarding.partials.onboardingSuccess.success' | translate}}!
+		<span class="success-check glyphicon glyphicon-ok"></span> {{'modules.onboarding.partials.onboardingSuccess.success' | translate}}!
 	</div>
 	<div class="page-header left">
-		<h1>{{::'modules.onboarding.partials.onboardingSuccess.advocate' | translate}}</h1>
-		<p>{{::'modules.onboarding.partials.onboardingSuccess.subtitle' | translate}}</p>
+		<h1>{{'modules.onboarding.partials.onboardingSuccess.advocate' | translate}}</h1>
+		<p>{{'modules.onboarding.partials.onboardingSuccess.subtitle' | translate}}</p>
 	</div>
 	<h2 class="text-center">
-		{{ ::newUser.referral.name }}<br />
-		{{ ::newUser.referral.organization }}<br />
-		{{ ::newUser.referral.phone | tel }}<br />
-		{{ ::newUser.referral.email }}
+		{{ newUser.referral.name }}<br />
+		{{ newUser.referral.organization }}<br />
+		{{ newUser.referral.phone | tel }}<br />
+		{{ newUser.referral.email }}
 	</h2>
 	<div class="share-section">
 		<h2>
-			<span ng-if="!newUser.sharing.enabled">{{::'modules.onboarding.partials.onboardingSuccess.share' | translate}}</span>
-			<span ng-if="newUser.sharing.enabled">{{::'modules.onboarding.partials.onboardingSuccess.shareEnabled' | translate}}</span>
+			<span ng-if="!newUser.sharing.enabled">{{'modules.onboarding.partials.onboardingSuccess.share' | translate}}</span>
+			<span ng-if="newUser.sharing.enabled">{{'modules.onboarding.partials.onboardingSuccess.shareEnabled' | translate}}</span>
 			<label class="toggle pull-right" toggle-sharing>
 				<input type="checkbox">
 				<span class="handle"></span>
@@ -23,19 +23,19 @@
 		</h2>
 
 		<div class="alert alert-fade" ng-class="newUser.sharing.enabled ? 'alert-success' : 'alert-warning'">
-			{{::'modules.onboarding.partials.onboardingSuccess.shareDesc' | translate}}
+			{{'modules.onboarding.partials.onboardingSuccess.shareDesc' | translate}}
 		</div>
 	</div>
 	<div class="form-group">
 			<div class="row">
 					<div class="col-xs-4">
 							<a ng-click="cancelAccessCode()" class="btn btn-block btn-default pull-left">
-								{{::'modules.onboarding.partials.onboardingSuccess.back' | translate}}
+								{{'modules.onboarding.partials.onboardingSuccess.back' | translate}}
 							</a>
 					</div>
 					<div class="col-xs-8">
 							<a ui-sref="onboarding.problems" class="btn btn-primary btn-block pull-right">
-								{{::'modules.onboarding.partials.onboardingSuccess.continue' | translate}}
+								{{'modules.onboarding.partials.onboardingSuccess.continue' | translate}}
 							</a>
 					</div>
 			</div>

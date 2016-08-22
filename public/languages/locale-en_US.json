@@ -11,6 +11,7 @@
 		"done": "Done",
 		"delete": "Delete",
 		"takeAction": "Take Action",
+		"listActions": "@:repeating.takeAction",
 		"caseHistory": "Case History",
 		"issueChecklist": "Issue Checklist",
 		"profile": "Profile",
@@ -425,7 +426,13 @@
 			"views": {
 				"authentication":{
 					"signIn": {
-						"title": "Sign in to access your JustFix.nyc account."
+						"title": "Sign in to access your JustFix.nyc account.",
+						"phone": "Phone Number",
+						"password": "password",
+						"forgot": "I forgot my password.",
+						"signUp": "Don’t have an account yet? Sign up now!",
+						"contactText": "Contact Us",
+						"contactUsFinal": " if you need assistance or forgot your password."
 					}
 				},
 				"password": {

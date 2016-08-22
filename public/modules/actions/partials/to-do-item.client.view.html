@@ -16,7 +16,7 @@
         <a  class="btn btn-default btn-block pull-left"
             data-ng-if="action.hasFollowUp"
             data-ng-click="triggerFollowUp(false)">
-            {{::'modules.actions.partials.toDoItem.tried' | translate}}
+            {{'modules.actions.partials.toDoItem.tried' | translate}}
         </a>
       </div>
       <div ng-class="!action.hasFollowUp ? 'col-xs-12' : 'col-xs-6'">
@@ -52,7 +52,7 @@
       <div class="panel-content">
         <!-- <p ng-bind-html="newActivity.successResponse"></p> -->
             <div class="form-group" ng-class="{ 'has-error': followUpSubmitted && followUpForm.startDate.$invalid }">
-                <label class="control-label" for="title">{{::'modules.actions.partials.toDoItem.dateOf' }} {{ action.cta.buttonTitle }}</label>
+                <label class="control-label" for="title">{{'modules.actions.partials.toDoItem.dateOf' | translate }} {{ action.cta.buttonTitle }}</label>
                 <div class="controls">
                     <!-- <p class="input-group"> -->
                       <!-- <input type="date" class="form-control" datepicker-popup ng-model="newActivity.date" is-open="openedDatepicker" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" /> -->

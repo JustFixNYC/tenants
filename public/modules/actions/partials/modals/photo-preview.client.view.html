@@ -1,11 +1,11 @@
 <div class="modal-header">
-  <h3 class="modal-title">{{::'modules.actions.partials.modals.photoPreview.title' | translate}}</h3>
+  <h3 class="modal-title">{{'modules.actions.partials.modals.photoPreview.title' | translate}}</h3>
 </div>
 <div class="modal-body" stop-event="touchend">
   <img ngf-thumbnail="newActivity.photo1">
   <form class="update-activity-form" novalidate>
     <div class="form-group">
-        <label class="control-label" for="area">{{::'modules.actions.partials.modals.photoPreview.addTag' | translate}}</label>
+        <label class="control-label" for="area">{{'modules.actions.partials.modals.photoPreview.addTag' | translate}}</label>
         <div class="controls">
 
           <label  data-ng-if="areas.length < 5"
@@ -32,9 +32,9 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-default pull-left" ng-click="cancel()">{{::'modules.actions.partials.modals.photoPreview.cancel' | translate}}</button>
+  <button class="btn btn-default pull-left" ng-click="cancel()">{{'modules.actions.partials.modals.photoPreview.cancel' | translate}}</button>
   <button class="btn btn-info" data-ng-click="done()">
       <span class="glyphicon glyphicon-ok pull-left" style="padding-top:1px"></span>
-      {{::'modules.actions.partials.modals.photoPreview.addCase' | translate}}
+      {{'modules.actions.partials.modals.photoPreview.addCase' | translate}}
   </button>
 </div>

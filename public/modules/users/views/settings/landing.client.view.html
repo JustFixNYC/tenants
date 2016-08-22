@@ -1,10 +1,10 @@
 <div ng-show="successfulUpdate == true" class="alert alert-major alert-success">
-	<span class="success-check glyphicon glyphicon-ok"></span> {{::'modules.users.views.settings.landing.updated' | translate}}
+	<span class="success-check glyphicon glyphicon-ok"></span> {{'modules.users.views.settings.landing.updated' | translate}}
 </div>
 
 <div class="page-header">
 	<img src="/modules/core/img/sections/profile.svg" alt="Profile" />
-	<h1>{{::'modules.users.views.settings.landing.profile' | translate}}</h1>
+	<h1>{{'modules.users.views.settings.landing.profile' | translate}}</h1>
 </div>
 <div class="user-profile">
 	<p>{{user.fullName}}</p>
@@ -13,7 +13,7 @@
 	<p>{{user.unit}}</p>
 	<p>{{user.borough}}, NY  {{user.geo.zip}}</p>
 	<br/>
-	<p ng-if="user.referral"><strong>{{::'modules.users.views.settings.landing.advocateInfo' | translate}}</strong></p>
+	<p ng-if="user.referral"><strong>{{'modules.users.views.settings.landing.advocateInfo' | translate}}</strong></p>
 	<p>{{user.referral.name}}</p>
 	<p>{{user.referral.organization}}</p>
 	<p><a ng-href="tel:{{user.referral.phone}}" class="text-link">{{user.referral.phone | tel}}</a></p>
@@ -21,17 +21,17 @@
 	<br/>
 	<div class="user-container">
 		<a ui-sref="settings.edit">
-			<strong>{{::'modules.users.views.settings.landing.editProfile' | translate}} <span class="glyphicon glyphicon-menu-right pull-right"></span></strong>
+			<strong>{{'modules.users.views.settings.landing.editProfile' | translate}} <span class="glyphicon glyphicon-menu-right pull-right"></span></strong>
 		</a>
 		<a ui-sref="settings.phone">
-			<strong>{{::'modules.users.views.settings.landing.changePhone' | translate}} <span class="glyphicon glyphicon-menu-right pull-right"></span></strong>
+			<strong>{{'modules.users.views.settings.landing.changePhone' | translate}} <span class="glyphicon glyphicon-menu-right pull-right"></span></strong>
 		</a>
 		<a ui-sref="settings.password">
-			<strong>{{::'modules.users.views.settings.landing.changePassword' | translate}} <span class="glyphicon glyphicon-menu-right pull-right"></span></strong>
+			<strong>{{'modules.users.views.settings.landing.changePassword' | translate}} <span class="glyphicon glyphicon-menu-right pull-right"></span></strong>
 		</a>
 	</div>
 	<br/>
 	<div class="btn-wrap">
-		<a class="btn btn-primary btn-block" href="/api/auth/signout" target="_self">{{::'modules.users.views.settings.landing.signOut' | translate}}</a>
+		<a class="btn btn-primary btn-block" href="/api/auth/signout" target="_self">{{'modules.users.views.settings.landing.signOut' | translate}}</a>
 	</div>
 </div>

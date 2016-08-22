@@ -9,7 +9,7 @@
   </div>
 
   <div data-ng-if="activity.relatedProblems.length">
-    <p><b>{{::'modules.activity.partials.defaultActivity.areas' | translate}}</b> <span data-ng-repeat="problem in activity.relatedProblems">{{::problem}}<span ng-if="!$last">, </span></span></p>
+    <p><b>{{'modules.activity.partials.defaultActivity.areas' | translate}}</b> <span data-ng-repeat="problem in activity.relatedProblems">{{problem}}<span ng-if="!$last">, </span></span></p>
   </div>
 
   <div ng-if="activity.problems">
@@ -21,7 +21,7 @@
     </div>
   </div>
 
-  <p ng-if="activity.description">{{ ::activity.description }}</p>
+  <p ng-if="activity.description">{{ activity.description }}</p>
 
   <div class="row thumb-list">
       <div data-ng-repeat="photo in activity.photos" class="col-xs-4">

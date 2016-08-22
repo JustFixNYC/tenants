@@ -11,6 +11,7 @@
 		"done": "Fin",
 		"delete": "Borrar",
 		"takeAction": "Tomar acción",
+		"listActions": "@:repeating.takeAction",
 		"caseHistory": "Historial del Caso",
 		"issueChecklist": "Lista de revisión de asuntos",
 		"profile": "Perfil",

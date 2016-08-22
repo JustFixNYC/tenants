@@ -1,16 +1,16 @@
 <div class="modal-header">
-  <h3 class="modal-title" ng-if="!status.created && !status.error">{{::'modules.actions.partials.modals.complaintLetter.title' | translate}}</h3>
-  <h3 class="modal-title" ng-if="status.created"><span class="glyphicon glyphicon-ok-sign"></span> {{::'modules.actions.partials.modals.complaintLetter.success' | translate}}!</h3>
-  <h3 class="modal-title text-danger" ng-if="status.error"><span class="glyphicon glyphicon-remove-sign"></span> {{::'modules.actions.partials.modals.complaintLetter.error' | translate}}</h3>
+  <h3 class="modal-title" ng-if="!status.created && !status.error">{{'modules.actions.partials.modals.complaintLetter.title' | translate}}</h3>
+  <h3 class="modal-title" ng-if="status.created"><span class="glyphicon glyphicon-ok-sign"></span> {{'modules.actions.partials.modals.complaintLetter.success' | translate}}!</h3>
+  <h3 class="modal-title text-danger" ng-if="status.error"><span class="glyphicon glyphicon-remove-sign"></span> {{'modules.actions.partials.modals.complaintLetter.error' | translate}}</h3>
 </div>
 <div class="modal-body" stop-event="touchend">
   <div id="letterSteps" class="letter-steps" inherit-height>
     <div class="letter-step ng-enter-active" ng-if="!status.loading && !status.created && !status.error" variable-height="letterSteps">
-      <p>{{::'modules.actions.partials.modals.complaintLetter.bodyText' | translate}} <b>{{'modules.actions.partials.modals.complaintLetter.bodyTextBold' | translate}}</b></p>
+      <p>{{'modules.actions.partials.modals.complaintLetter.bodyText' | translate}} <b>{{'modules.actions.partials.modals.complaintLetter.bodyTextBold' | translate}}</b></p>
       <!-- <p><em>This information is <u>optional</u> - look on leases and other notices.</em></p> -->
       <form class="update-activity-form" novalidate>
         <div class="form-group">
-            <label class="control-label" for="name">{{::'modules.actions.partials.modals.complaintLetter.landlordName' | translate}}</label>
+            <label class="control-label" for="name">{{'modules.actions.partials.modals.complaintLetter.landlordName' | translate}}</label>
             <div class="controls">
                 <input name="landlordName" type="text" data-ng-model="landlord.name" class="form-control" placeholder="Name or Management Company">
             </div>
@@ -22,10 +22,10 @@
             </div>
         </div> -->
         <div class="form-group">
-            <label class="control-label" for="accessDates">{{::'modules.actions.partials.modals.complaintLetter.accessDateTitle' | translate}}</label>
+            <label class="control-label" for="accessDates">{{'modules.actions.partials.modals.complaintLetter.accessDateTitle' | translate}}</label>
             <div class="controls">
               <input ng-repeat="a in accessDates track by $index" type="date" class="form-control" name="accessDate" ng-model="accessDates[$index]" mobile-date-placeholder required />
-              <a ng-if="accessDates.length < 4" ng-click="addAccessDate()">{{::'modules.actions.partials.modals.complaintLetter.accessDateAdd' | translate}}</a>
+              <a ng-if="accessDates.length < 4" ng-click="addAccessDate()">{{'modules.actions.partials.modals.complaintLetter.accessDateAdd' | translate}}</a>
             </div>
         </div>
       </form>
@@ -47,28 +47,28 @@
           <div class="sk-circle12 sk-circle"></div>
         </div>
         <br />
-        <p class="lead text-center">{{::'modules.actions.partials.modals.complaintLetter.loaderText' | translate}}</p>
+        <p class="lead text-center">{{'modules.actions.partials.modals.complaintLetter.loaderText' | translate}}</p>
       </div>
     </div>
     <div class="letter-step letter-step-created" ng-if="status.created">
-      <p>{{::'modules.actions.partials.modals.complaintLetter.successTitle' | translate}}</p>
-      <span class="glyphicon glyphicon-file text-success lead"></span><a class="text-link" ng-href="{{letterUrl}}" target="_blank">{{::'modules.actions.partials.modals.complaintLetter.successLinkText' | translate}}</a>
+      <p>{{'modules.actions.partials.modals.complaintLetter.successTitle' | translate}}</p>
+      <span class="glyphicon glyphicon-file text-success lead"></span><a class="text-link" ng-href="{{letterUrl}}" target="_blank">{{'modules.actions.partials.modals.complaintLetter.successLinkText' | translate}}</a>
       <p 
-      ng-bind-html="::'modules.actions.partials.modals.complaintLetter.successBody' | trustTranslate" 
+      ng-bind-html="'modules.actions.partials.modals.complaintLetter.successBody' | trustTranslate" 
       compile-template></p>
     </div>
     <div class="letter-step" ng-if="status.error">
-      <p class="text-danger">{{::'modules.actions.partials.modals.complaintLetter.errorBody' | translate}}</p>
+      <p class="text-danger">{{'modules.actions.partials.modals.complaintLetter.errorBody' | translate}}</p>
       <p ng-if="errorCode" class="text-danger">Error message: {{ errorCode }}</p>
     </div>
   </div>
 </div>
 <div class="modal-footer">
   <div ng-if="!status.loading && !status.created && !status.error">
-    <button class="btn btn-default pull-left" ng-click="cancel()">{{::'modules.actions.partials.modals.complaintLetter.cancel'| translate}}</button>
-    <button class="btn btn-primary" ng-click="createLetter()">{{::'modules.actions.partials.modals.complaintLetter.submit'| translate}}</button>
+    <button class="btn btn-default pull-left" ng-click="cancel()">{{'modules.actions.partials.modals.complaintLetter.cancel'| translate}}</button>
+    <button class="btn btn-primary" ng-click="createLetter()">{{'modules.actions.partials.modals.complaintLetter.submit'| translate}}</button>
   </div>
   <div ng-if="!status.loading && (status.created || status.error)">
-    <button class="btn btn-primary btn-block" ng-click="done()">{{::'modules.actions.partials.modals.complaintLetter.gotIt'| translate}}</button>
+    <button class="btn btn-primary btn-block" ng-click="done()">{{'modules.actions.partials.modals.complaintLetter.gotIt'| translate}}</button>
   </div>
 </div>
