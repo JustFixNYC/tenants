@@ -423,6 +423,17 @@
 		},
 		"users": {
 			"views": {
+				"authentication": {
+					"signIn": {
+						"title": "Sign in to access your JustFix.nyc account.",
+						"phone": "Phone Number",
+						"password": "password",
+						"forgot": "I forgot my password.",
+						"signUp": "Don’t have an account yet? Sign up now!",
+						"contactText": "Contact Us",
+						"contactUsFinal": " if you need assistance or forgot your password."
+					}
+				},
 				"password": {
 					"forgot": {
 						"title": "Restaurar su contraseña",

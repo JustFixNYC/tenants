@@ -2,22 +2,22 @@
 
 	<div class="page-header">
 		<img src="/modules/core/img/brand/icon_only.svg" alt="JustFix.nyc" />
-		<h1>Sign in to access your JustFix.nyc account.</h1>
+		<h1>{{::'modules.users.views.authentication.signIn.title' | translate}}</h1>
 	</div>
 	<form data-ng-submit="signin()" autocomplete="off" novalidate>
     <div class="form-group">
-      <label for="phone">Phone Number</label>
+      <label for="phone">{{::'modules.users.views.authentication.signIn.phone' | translate}}</label>
       <input type="tel" id="phone" name="phone" class="form-control" data-ng-model="credentials.phone" placeholder="Phone Number" phone-input>
     </div>
     <div class="form-group">
-      <label for="password">Password</label>
+      <label for="password">{{::'modules.users.views.authentication.signIn.password' | translate}}</label>
       <input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Password">
     </div>
 	  <div class="form-group">
 	    <input type="submit" class="btn btn-primary btn-block" go-to-top value="Sign In" />
-			<a class="btn btn-link btn-block" ui-sref="contact">I forgot my password.</a>
-			<a class="btn btn-link btn-block" ui-sref="onboarding.accessCode">Don’t have an account yet? Sign up now!</a>
+			<a class="btn btn-link btn-block" ui-sref="contact">{{::'modules.users.views.authentication.signIn.forgot' | translate}}</a>
+			<a class="btn btn-link btn-block" ui-sref="onboarding.accessCode">{{::'modules.users.views.authentication.signIn.signUp' | translate}}</a>
 	  </div>
 	</form>
-	<div class="error-text alert alert-danger" ng-show="error">{{ error }}. Please <a ui-sref="contact">Contact Us</a> if you need assistance or forgot your password.</div>
+	<div class="error-text alert alert-danger" ng-show="error">{{ error }}. Please <a ui-sref="contact">{{::'modules.users.views.authentication.signIn.contactText' | translate}}</a>{{::'modules.users.views.authentication.signIn.contactUsFinal' | translate}}</div>
 </section>
