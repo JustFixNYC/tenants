@@ -91,7 +91,8 @@ module.exports = function(grunt) {
 		uglify: {
 			production: {
 				options: {
-					mangle: false
+					mangle: false,
+					sourceMap: true
 				},
 				files: {
 					'public/dist/vendor.min.js': 'public/dist/vendor.js',
