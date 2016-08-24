@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('onboarding').directive('problemsChecklist', ['Authentication', 'Problems', '$modal',
-  function(Authentication, Problems, $modal) {
+  function(Authentication, Problems, $modal, $translate) {
     return {
       templateUrl: '/modules/problems/partials/problems-list.client.view.html',
       restrict: 'E',

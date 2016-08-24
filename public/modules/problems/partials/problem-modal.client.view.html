@@ -2,7 +2,7 @@
   <div class="modal-header">
       <h4 class="modal-title">
 				<span class="glyphicon-addl" ng-class="userProblem.key"></span>
-				<span class="issues-modal-title">{{userProblem.title}}</span>
+				<span class="issues-modal-title">{{userProblem.title | translate}}</span>
 				<span class="badge pull-right" data-ng-class="{ 'badge-primary' : userProblem.issues.length }">
 					{{ userProblem.issues.length }} {{'modules.problems.partials.problemModal.issue' | translate}}{{ userProblem.issues.length == 1 ? '' : 's' }}
 				</span>
@@ -15,7 +15,7 @@
 							data-ng-repeat="issue in issues"
 							data-ng-click="select(issue)"
 							data-ng-class="{ 'selected': isSelected(issue) }">
-							{{ issue.key }}
+							{{ issue.key | translate }}
 							<span data-ng-show="isSelected(issue)" class="selected-icon pull-right glyphicon glyphicon-ok" aria-hidden="true"></span>
 				</div>
 				<div 	problem-other-item

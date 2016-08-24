@@ -504,6 +504,7 @@
   },
   "checklist": {
   	"bedrooms": {
+  		"title": "Bedrooms",
       "paint": "Peeling Paint",
       "cracked": "Cracked Walls",
       "mold": "Mold on Walls",
@@ -520,6 +521,7 @@
       "outlets": "Outlets defective"
   	},
   	"kitchen":{
+  		"title": "Kitchen",
   		"paint": "@:checklist.bedrooms.paint",
       "cracked": "@:checklist.bedrooms.cracked",
       "mold": "@:checklist.bedrooms.mold", 
@@ -547,6 +549,7 @@
       "stoveBroken": "Stove Broken"
     },
     "livingRoom": {
+    	"title": "Living Room",
   		"paint": "@:checklist.bedrooms.paint",
       "cracked": "@:checklist.bedrooms.cracked",
       "mold": "@:checklist.bedrooms.mold", 
@@ -564,6 +567,7 @@
       "outlets": "@:checklist.bedrooms.outlets"
     },
     "bathroom": {   
+    	"title": "Bathroom",
   		"paint": "@:checklist.bedrooms.paint",
       "cracked": "@:checklist.bedrooms.cracked",
       "mold": "@:checklist.bedrooms.mold", 
@@ -600,6 +604,7 @@
       "drainStopppage": "Drain Stoppage (Shower)"
     },
     "entireHome": {
+    	"title": "Entire Home",
       "mice": "Mice",
       "rats": "Rats",
       "cockroaches": "Cockroaches",
@@ -620,6 +625,7 @@
       "apartmentPainting": "Apartment needs painting"
     },
     "publicAreas": {
+    	"title": "Public Areas",
       "paintOverdue": "Painting overdue (3 years)",
       "peelingFlaking": "Peeling/flaking paint",
       "heat": "@:checklist.entireHome.heat",
@@ -639,6 +645,7 @@
       "inadequateSuper": "Inadequate / no super service"
     },
     "landlordIssues": {
+    	"title": "Landlord Issues",
     	"noReceipts": "@:checklist.publicAreas.noReceipts",
       "noLease": "No lease", 
       "falseDocuments": "False documents",

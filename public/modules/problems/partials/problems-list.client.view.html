@@ -2,7 +2,7 @@
   <div class="problem" ng-click="open(problem)" ng-class="{'active': ourUser.problems.containsByKey(problem.key) }">
     <div class="problem-icon">
       <span class="glyphicon-addl" ng-class="problem.key"></span>
-      <p ng-bind="problem.title"></p>
+      <p>{{problem.title | translate}}</p>
       <span class="problem-num" ng-if="problem.numChecked && problem.numChecked > 0">
         <i>({{ problem.numChecked }} {{'modules.problems.partials.problemModal.issue' | translate}}{{ problem.numChecked == 1 ? '' : 's' }})</i>
       </span>

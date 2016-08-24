@@ -5,6 +5,7 @@ angular.module('problems').controller('ModalProblemController', ['$scope', 'Prob
 
 		$scope.issues = issues;
 		$scope.userProblem = userProblem;
+		console.log($scope.userProblem);
 
 		// only use this in case of "cancel"
 		var userIssuesClone = $scope.userProblem.issues.slice(0);

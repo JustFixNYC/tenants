@@ -504,6 +504,7 @@
   },
   "checklist": {
   	"bedrooms": {
+  		"title": "Dormitorios",
       "paint": "Pintura descascarada",
       "cracked": "Paredes agrietadas",
       "mold": "Moho en las paredes",
@@ -520,6 +521,7 @@
       "outlets": "Enchufes defectuosos"
   	},
   	"kitchen":{
+  		"title": "Cocina",
   		"paint": "@:checklist.bedrooms.paint",
       "cracked": "@:checklist.bedrooms.cracked",
       "mold": "@:checklist.bedrooms.mold", 
@@ -547,6 +549,7 @@
       "stoveBroken": "Estufa rota"
     },
     "livingRoom": {
+    	"title": "La Sala",
   		"paint": "@:checklist.bedrooms.paint",
       "cracked": "@:checklist.bedrooms.cracked",
       "mold": "@:checklist.bedrooms.mold", 
@@ -563,7 +566,8 @@
       "electricExposed": "@:checklist.bedrooms.electricExposed",
       "outlets": "@:checklist.bedrooms.outlets"
     },
-    "bathroom": {   
+    "bathroom": {
+    	"title": "Baño",  
   		"paint": "@:checklist.bedrooms.paint",
       "cracked": "@:checklist.bedrooms.cracked",
       "mold": "@:checklist.bedrooms.mold", 
@@ -600,6 +604,7 @@
       "drainStopppage": "Desagüe tapado (ducha)"
     },
     "entireHome": {
+    	"title": "Toda La Casa",
       "mice": "Ratones",
       "rats": "Ratas",
       "cockroaches": "Cucarachas",
@@ -620,6 +625,7 @@
       "apartmentPainting": "Apartamento necesita pintura"
     },
     "publicAreas": {
+    	"title": "Áreas Públicas",
       "paintOverdue": "Trabajo de pintura atrasado (3 años)",
       "peelingFlaking": "Pintura descascarada o pelada",
       "heat": "@:checklist.entireHome.heat",
@@ -639,6 +645,7 @@
       "inadequateSuper": "Servicios del conserje o súper inadecuados o inexistentes"
     },
     "landlordIssues": {
+    	"title": "Problemas Entre Propietarios",
     	"noReceipts": "@:checklist.publicAreas.noReceipts",
       "noLease": "No hay contrato de arrendamiento", 
       "falseDocuments": "Documentos falsos",
