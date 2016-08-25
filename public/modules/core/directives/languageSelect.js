@@ -13,9 +13,6 @@ angular.module('core').directive('languageSelect', function (LocaleService, $win
 
       $scope.changeLanguage = function (locale) {
         LocaleService.setLocaleByDisplayName(locale);
-        
-        // refresh window after selecting language (see abt better solution, locked w/ single bindings currently)
-        $window.location.href = $window.location.href;
       };
     }
   };
