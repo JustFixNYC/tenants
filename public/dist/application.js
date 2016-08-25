@@ -19,7 +19,7 @@ var ApplicationConfiguration = (function() {
 		'duScroll',
 		'pascalprecht.translate',	// angular-translate
  		'tmh.dynamicLocale'/*, // angular-dynamic-locale
- 		'ngSanitize' */// Santize translations -> /application.js at line ~40
+ 		'ngSanitize'*/ // Santize translations -> /application.js at line ~40
 	];
 // 'ngAnimate',  'ngTouch', , 'bootstrapLightbox' , 'angularModalService'
 
@@ -80,7 +80,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
   .constant('LOCALES', {
     'locales': {
         'en_US': 'English',
-        'es': 'Español'
+        'es_mx': 'Español'
     },
     'preferredLocale': 'en_US'
   })
@@ -493,16 +493,17 @@ angular.module('actions').controller('RentalHistoryController', ['$scope','$moda
 
 // allow contents of tak action cards to include directives, functions, etc
 // see http://stackoverflow.com/questions/20297638/call-function-inside-sce-trustashtml-string-in-angular-js
+// TODO: this is used all over the place, move it into /core module?
 
 angular.module('actions').directive('compileTemplate', ['$compile', '$parse', '$sce',
 	function($compile, $parse, $sce){
     return {
         link: function(scope, element, attr){
             var parsed = $parse(attr.ngBindHtml);
+            
             var getStringValue = function() { return (parsed(scope) || '').toString(); }
             //Recompile if the template changes
             scope.$watch(getStringValue, function(val) {
-            	console.log(val);
               $compile(element, null, -9999)(scope);  //The -9999 makes it skip directives so that we do not recompile ourselves
             });
         }
@@ -638,15 +639,27 @@ angular.module('actions')
 'use strict';
 
 angular.module('actions')
-  .directive('toDoItem', ['$rootScope', '$modal', '$sce', '$compile', '$filter', '$timeout', 'Authentication', 'Activity', 'Actions',
-    function ($rootScope, $modal, $sce, $compile, $filter, $timeout, Authentication, Activity, Actions) {
+  .directive('toDoItem', ['$rootScope', '$modal', '$sce', '$compile', '$filter', '$timeout', 'Authentication', 'Activity', 'Actions', '$translate',
+    function ($rootScope, $modal, $sce, $compile, $filter, $timeout, Authentication, Activity, Actions, $translate) {
     return {
       restrict: 'E',
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
       controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
-        $scope.filterTitleHTML = function() { return $sce.trustAsHtml($scope.action.title); };
-        $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
-        $scope.filterButtonTitleHTML = function() { return $sce.trustAsHtml($scope.action.cta.buttonTitle); };
+      	console.log($scope.action)
+      	$translate($scope.action.title).then(function(title) {
+      		console.log(title);
+      		$scope.filterTitleHTML = function() { return $sce.trustAsHtml(title); };
+      	});
+        // $scope.filterTitleHTML = function() { return $sce.trustAsHtml($scope.action.title); };
+        $translate($scope.action.content).then(function(content) {
+        	// console.log(content)
+      		$scope.filterContentHTML = function() { return $sce.trustAsHtml(content); };
+      	});
+        // $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
+        $translate($scope.action.cta.buttonTitle).then(function(btn) {
+      		$scope.filterButtonTitleHTML = function() { return $sce.trustAsHtml(btn); };
+      	});
+        // $scope.filterButtonTitleHTML = function() { return $sce.trustAsHtml($scope.action.cta.buttonTitle); };
         $scope.closeErrorAlert = true;
       }],
       link: function (scope, element, attrs) {
@@ -1467,32 +1480,32 @@ angular.module('core').controller('FooterController', ['$scope', '$window', 'Aut
     var links = {
       actions : {
         link: 'listActions',
-        title: 'Take Action',
+        title: 'repeating.listActions',
         icon: '/modules/core/img/sections/action.svg'
       },
       activity : {
         link: 'listActivity',
-        title: 'Case History',
+        title: 'repeating.caseHistory',
         icon: '/modules/core/img/sections/history.svg'
       },
       issues : {
         link: 'updateProblems',
-        title: 'Issue Checklist',
+        title: 'repeating.issueChecklist',
         icon: '/modules/core/img/sections/issues.svg'
       },
       profile : {
         link: 'settings.profile',
-        title: 'Profile',
+        title: 'repeating.profile',
         icon: '/modules/core/img/sections/profile.svg'
       },
       help : {
         link: 'findHelp',
-        title: 'Find Help',
+        title: 'repeating.findHelp',
         icon: '/modules/core/img/sections/help.svg'
       },
       kyr : {
         link: 'kyr',
-        title: 'Know Your Rights',
+        title: 'repeating.kyr',
         icon: '/modules/core/img/sections/kyr.svg'
       }
     };
@@ -1808,7 +1821,7 @@ angular.module('core').directive('jumpTo', ['$document', function($document) {
 }]);
 'use strict';
 
-angular.module('core').directive('languageSelect', ["LocaleService", function (LocaleService) { 'use strict';
+angular.module('core').directive('languageSelect', ["LocaleService", "$window", function (LocaleService, $window) { 'use strict';
   return {
     restrict: 'A',
     replace: true,
@@ -2173,7 +2186,9 @@ angular.module('core').filter('trustTranslate', ['$sce', '$filter',
 	function($sce, $filter) {
 		var translatedText = $filter('translate');
     return function (val) {
-    	return $sce.trustAsHtml(translatedText(val));
+    	var returnedTranslation = translatedText(val);
+    	console.log(returnedTranslation);
+    	return $sce.trustAsHtml(returnedTranslation);
     }
 }]);
 
@@ -2824,11 +2839,7 @@ angular.module('kyr').factory('kyrService', ['$resource', '$http', '$q',
 
 'use strict';
 
-<<<<<<< HEAD
-// TODO: discuss putting all 'run' methods together 
-=======
 // TODO: discuss putting all 'run' methods together
->>>>>>> refs/remotes/origin/master
 angular.module('onboarding').run(['$rootScope', '$state', 'Authentication', '$window', function($rootScope, $state, Authentication, $window) {
 
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
@@ -3133,6 +3144,7 @@ angular.module('problems').controller('ModalProblemController', ['$scope', 'Prob
 
 		$scope.issues = issues;
 		$scope.userProblem = userProblem;
+		console.log($scope.userProblem);
 
 		// only use this in case of "cancel"
 		var userIssuesClone = $scope.userProblem.issues.slice(0);
@@ -3213,7 +3225,7 @@ angular.module('problems').controller('ProblemsController', ['$rootScope', '$sco
 'use strict';
 
 angular.module('onboarding').directive('problemsChecklist', ['Authentication', 'Problems', '$modal',
-  function(Authentication, Problems, $modal) {
+  function(Authentication, Problems, $modal, $translate) {
     return {
       templateUrl: '/modules/problems/partials/problems-list.client.view.html',
       restrict: 'E',
