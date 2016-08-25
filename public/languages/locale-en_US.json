@@ -20,7 +20,8 @@
 		"call": "Call",
 		"signOut": "Sign Out",
 		"continue": "Continue",
-		"back": "Back"
+		"back": "Back",
+		"close": "Close"
   },
   "modules": {
   	"actions": {
@@ -34,7 +35,7 @@
   					"addPhotos": "Add some photos",
   					"photoWord": "Photo",
   					"description": "@:repeating.description",
-  					"descriptionPlaceholder": "Please add a brief description.",
+  					"descriptionHeaderPlaceholder": "Add a status update here!",
   					"cancel": "@:repeating.cancel",
   					"add": "@:repeating.add"
   				},
@@ -56,12 +57,12 @@
   					"accessDateAdd": "+ Add Access Date",
   					"loaderText": "Generating your letter...",
   					"successTitle": "Your Letter of Complaint has been created and can be viewed here:",
-  					"successLinkText": "Letter of Complaint PDF",
+  					"successLinkText": "View Letter of Complaint (PDF)",
   					"successBody": "This PDF will always available on your <a ui-sref=\"listActivity\" ng-click=\"done()\">Case History</a> page, so you can come back to it later on. <b>Don’t forget to send it via certified mail!</b>",
   					"errorBody": "Oops! We're sorry, the letter creation service is down at the moment - please try again later.",
   					"cancel": "@:repeating.cancel",
   					"submit": "@:repeating.submit",
-  					"gotIt": "@:repeating.gotIt"
+  					"gotIt": "@:repeating.close"
   				},
   				"contactSuper": {
   					"title": "Conctact Your Super",
@@ -211,7 +212,7 @@
   			},
   			"contact": {
   				"title": "Contact Us",
-  				"body": "If you need assistance or would like to sign up for an access code, please contact us below.",
+  				"body": "For help with the JustFix.nyc webapp or to report a bug, please contact us at:",
   				"phone": "(646) 820-0349",
   				"email": "hello@justfix.nyc",
   				"findhelp": "If you need <b>immediate assistance</b> or want to speak with someone about your housing situation, please visit the <b>Find Help</b> section of our website to connect with community resources and tenant hotlines:",
@@ -241,7 +242,7 @@
   			},
   			"landing": {
   				"bigText": "A digital paper trail for your housing issues.",
-  				"start": "Get Started!",
+  				"start": "Create an Account",
   				"twitter": "Follow us on Twitter!",
   				"how": "how it works",
   				"build": "Build Your Case",
@@ -739,25 +740,44 @@
 	    }
   	},
   	"callHotline": {
-	    "title": "Call the MetCouncil Hotline",
-	    "activityTitle": "Called the MetCouncil Hotline",
-	    "content": "The MetCouncil on Housing provides a free tenants' rights hotline that can answer questions about your rights as a tenant. Hours: Mondays & Wednesdays (1:30PM - 8PM), Friday (1:30PM - 5PM)",
+	    "title": "Connect With an Advocate",
+	    "content": "Find local community groups, legal services, and city hotlines to help with your housing issues.",
     	"cta": {
-	      "buttonTitle": "Call",
-	      "phone": "2129790611"
-	    },
-	    "followUp": {
-	      "title": "What did the hotline say?"
+    		"type": "link-internal",
+	      "buttonTitle": "Find Help",
+	      "url": "findHelp"
 	    }
   	},
-  	"sendLetter": {
-	    "title": "Mail an Official Letter of Complaint",
+  	"contactSuper": {
+	    "title": "Contact Your Super (Step 1 of 3)",
+	    "activityTitle": "Contacted Super/Management",
+	    "content": "Your first step should always be to contact the person directly responsible for making repairs in your home.",
+	    "cta": {
+	      "buttonTitle": "Contact"
+	    },
+	    "followUp": {
+	      "title": "What did your super say?"
+	    }
+	  },
+	  "emailLandlord": {
+	    "title": "Email Landlord (Step 2 of 3)",
+	    "activityTitle": "Emailed Repair Issues to Landlord",
+	    "content": "If your super is unresponsive, its time to email your landlord. <b>We've drafted an email that you can send, including a list of the issues that need repair.</b>",
+	    "cta": {
+	      "buttonTitle": "Contact"
+	    },
+	    "followUp": {
+	      "title": "What did your landlord say?"
+	    }
+	  },
+	  "mailLetter": {
+	    "title": "Mail an Official Letter of Complaint (Step 3 of 3)",
 	    "activityTitle": "Created an Official Letter of Complaint",
 	    "content": "In order to have a formal record of your requests, you need to mail a letter to your landlord. <b>We've drafted a letter that you can send including the repair issues that you've selected.</b><span ng-if='!userCompletedDetails()'><br /><br />Make sure to <b>Add Details</b> (located above) first to provide the most detailed information!</span>",
 	    "cta": {
-	      "buttonTitle": "Create Letter"
+	      "buttonTitle": "Preview Letter"
 	    }
-  	},
+	  },
   	"decreasedServices": {
 	    "title": "DHCR Decreased Services App",
 	    "activityTitle": "DHCR Decreased Services App",

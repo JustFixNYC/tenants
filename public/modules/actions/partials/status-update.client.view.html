@@ -19,7 +19,7 @@
                 class="form-control"
                 cols="30" rows="4"
                 maxlength="500"
-                placeholder="Add a status update here!"
+                placeholder="{{'modules.actions.partials.statusUpdate.descriptionHeaderPlaceholder' | translate}}"
                 required>
       </textarea>
       <span class="text-danger" ng-show="status.formSubmitted && statusUpdate.description.$invalid">{{'modules.actions.partials.statusUpdate.description' | translate}}</span>

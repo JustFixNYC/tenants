@@ -20,7 +20,8 @@
 		"call": "Llamar",
 		"signOut": "Cerrar sesión",
 		"continue": "Continuar",
-		"back": "Atrás"
+		"back": "Atrás",
+		"close": "close"
   },
   "modules": {
   	"actions": {
@@ -34,6 +35,7 @@
   					"addPhotos": "Añada algunas fotos",
   					"photoWord": "Foto",
   					"description": "@:repeating.description",
+  					"descriptionHeaderPlaceholder": "Add a status update here!",
   					"descriptionPlaceholder": "Añada una breve descripción.",
   					"cancel": "@:repeating.cancel",
   					"add": "@:repeating.add"
@@ -56,12 +58,12 @@
   					"accessDateAdd": "+ Añada una fecha de acceso",
   					"loaderText": "En proceso de generar su carta...",
   					"successTitle": "Ha creado su Carta de Queja y podrá verla aquí:",
-  					"successLinkText": "PDF de la Carta de Queja",
+  					"successLinkText": "View Letter of Complaint (PDF)",
   					"successBody": "El PDF siempre estará disponible en la página de su <a ui-sref=\"listActivity\" ng-click=\"done()\">Historial del Caso</a> para que pueda regresar a ella en otro momento. <b>¡No se olvide de enviarla por correo certificado!</b>",
   					"errorBody": "¡Ay! Lo sentimos, el servicio de creación de cartas no está funcionando por ahora – intente de nuevo en otro momento.",
   					"cancel": "@:repeating.cancel",
   					"submit": "@:repeating.submit",
-  					"gotIt": "@:repeating.gotIt"
+  					"gotIt": "@:repeating.close"
   				},
   				"contactSuper": {
   					"title": "Comuníquese con el conserje de su edificio",
@@ -211,7 +213,7 @@
   			},
   			"contact": {
   				"title": "Contáctenos",
-  				"body": "Si necesita asistencia o si le gustaría inscribirse para un código de acceso, contáctenos a",
+  				"body": "For help with the JustFix.nyc webapp or to report a bug, please contact us at:",
   				"phone": "(646) 820-0349",
   				"email": "hello@justfix.nyc",
   				"findhelp": "If you need <b>immediate assistance</b> or want to speak with someone about your housing situation, please visit the <b>Find Help</b> section of our website to connect with community resources and tenant hotlines:",
@@ -241,7 +243,7 @@
   			},
   			"landing": {
   				"bigText": "Un rastro digital de documentos para sus problemas de vivienda.",
-  				"start": "¡Comencemos!",
+  				"start": "Create an Account",
   				"twitter": "¡Síganos en Twitter!",
   				"how": "cómo funciona",
   				"build": "Fortalezca su caso",
@@ -739,25 +741,45 @@
 	    }
   	},
   	"callHotline": {
-	    "title": "Llame a la línea de asistencia de MetCouncil",
-	    "activityTitle": "Llamé a la línea de asistencia de MetCouncil",
-	    "content": "MetCouncil on Housing ofrece una línea de asistencia gratuita enfocada en los derechos de los inquilinos, que puede responder preguntas sobre sus derechos de inquilino. Horario: lunes y miércoles (1:30PM - 8PM), viernes (1:30PM - 5PM)",
+	    "title": "Connect With an Advocate",
+	    "content": "Find local community groups, legal services, and city hotlines to help with your housing issues.",
     	"cta": {
-	      "buttonTitle": "Llame",
-	      "phone": "2129790611"
+    		"type": "link-internal",
+	      "buttonTitle": "Find Help",
+	      "url": "findHelp"
+	    },
+	    "hasFollowUp": false
+  	},
+  	"contactSuper": {
+	    "title": "Contact Your Super (Step 1 of 3)",
+	    "activityTitle": "Contacted Super/Management",
+	    "content": "Your first step should always be to contact the person directly responsible for making repairs in your home.",
+	    "cta": {
+	      "buttonTitle": "Contact"
 	    },
 	    "followUp": {
-	      "title": "¿Qué dijeron en la línea de asistencia?"
+	      "title": "What did your super say?"
 	    }
-  	},
-  	"sendLetter": {
-	    "title": "Envíe por correo una Carta de Queja oficial",
-	    "activityTitle": "Creé una Carta de Queja oficial",
-	    "content": "Para tener un registro formal de sus peticiones, necesitará enviar una carta al casero. <b>Hemos escrito una carta que usted puede enviar, la cual incluye los problemas de reparaciones que indicó. </b><span ng-if='!userCompletedDetails()'><br /><br />Asegúrese primero de <b>Añadir Detalles </b> (arriba), ¡para proveer la información más detallada!</span>",
+	  },
+	  "emailLandlord": {
+	    "title": "Email Landlord (Step 2 of 3)",
+	    "activityTitle": "Emailed Repair Issues to Landlord",
+	    "content": "If your super is unresponsive, its time to email your landlord. <b>We've drafted an email that you can send, including a list of the issues that need repair.</b>",
 	    "cta": {
-	      "buttonTitle": "Crear la carta"
+	      "buttonTitle": "Contact"
+	    },
+	    "followUp": {
+	      "title": "What did your landlord say?"
 	    }
-  	},
+	  },
+	  "mailLetter": {
+	    "title": "Mail an Official Letter of Complaint (Step 3 of 3)",
+	    "activityTitle": "Created an Official Letter of Complaint",
+	    "content": "In order to have a formal record of your requests, you need to mail a letter to your landlord. <b>We've drafted a letter that you can send including the repair issues that you've selected.</b><span ng-if='!userCompletedDetails()'><br /><br />Make sure to <b>Add Details</b> (located above) first to provide the most detailed information!</span>",
+	    "cta": {
+	      "buttonTitle": "Preview Letter"
+	    }
+	  },
   	"decreasedServices": {
 	    "title": "Aplicación de la División de Vivienda y Renovación de la Comunidad (DHCR) por Disminución de Servicios",
 	    "activityTitle": "Aplicación de la División de Vivienda y Renovación de la Comunidad (DHCR) por Disminución de Servicios",

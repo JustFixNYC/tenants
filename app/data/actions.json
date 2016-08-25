@@ -113,64 +113,49 @@
     }
   },
   {
-    "title": "actions.sendLetter.title",
-    "activityTitle": "actions.sendLetter.activityTitle",
-    "content": "actions.sendLetter.content",
-    "title": "Connect With an Advocate",
-    "content": "Find local community groups, legal services, and city hotlines to help with your housing issues.",
-    "addIf": ["initial"],
-    "type": "recurring",
-    "cta": {
-      "type": "link-internal",
-      "buttonTitle": "Find Help",
-      "url": "findHelp"
-    },
-    "hasFollowUp": false
-  },
-  {
-    "title": "Contact Your Super (Step 1 of 3)",
-    "activityTitle": "Contacted Super/Management",
-    "content": "Your first step should always be to contact the person directly responsible for making repairs in your home.",
+    "title": "actions.contactSuper.title",
+    "activityTitle": "actions.contactSuper.activityTitle",
+    "content": "actions.contactSuper.content",
     "key": "contactSuper",
     "addIf": ["hasProblems"],
     "type": "once",
     "cta": {
       "type": "modal",
-      "buttonTitle": "Contact",
+      "buttonTitle": "actions.contactSuper.cta.title",
       "template": "contact-super.client.view.html",
       "controller": "ContactSuperController"
     },
     "followUp": {
-      "title": "What did your super say?"
+      "title": "actions.contactSuper.followUp.title"
     }
   },
   {
-    "title": "Email Landlord (Step 2 of 3)",
-    "activityTitle": "Emailed Repair Issues to Landlord",
-    "content": "If your super is unresponsive, its time to email your landlord. <b>We've drafted an email that you can send, including a list of the issues that need repair.</b>",
+    "title": "actions.emailLandlord.title",
+    "activityTitle": "actions.emailLandlord.activityTitle",
+    "content": "actions.emailLandlord.contact",
     "key": "emailLandlord",
     "addIf": ["contactSuper"],
     "type": "once",
     "cta": {
       "type": "modal",
-      "buttonTitle": "Contact",
+      "buttonTitle": "actions.emailLandlord.cta.title",
       "template": "message-landlord.client.view.html",
       "controller": "MessageLandlordController"
     },
     "followUp": {
-      "title": "What did your landlord say?"
+      "title": "actions.emailLandlord.followUp.title"
     }
   },
   {
-    "title": "Mail an Official Letter of Complaint (Step 3 of 3)",
-    "activityTitle": "Created an Official Letter of Complaint",
-    "content": "In order to have a formal record of your requests, you need to mail a letter to your landlord. <b>We've drafted a letter that you can send including the repair issues that you've selected.</b><span ng-if='!userCompletedDetails()'><br /><br />Make sure to <b>Add Details</b> (located above) first to provide the most detailed information!</span>",
+    "title": "actions.mailLetter.title",
+    "activityTitle": "actions.mailLetter.activityTitle",
+    "content": "actions.mailLetter.content",
     "key": "sendLetter",
     "addIf": ["emailLandlord"],
     "type": "once",
     "cta": {
       "type": "modal",
-      "buttonTitle": "Preview Letter",
+      "buttonTitle": "actions.mailLetter.cta.buttonTitle",
       "template": "complaint-letter.client.view.html",
       "controller": "ComplaintLetterController"
     }
