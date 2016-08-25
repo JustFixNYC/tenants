@@ -213,7 +213,9 @@
   				"title": "Contact Us",
   				"body": "If you need assistance or would like to sign up for an access code, please contact us below.",
   				"phone": "(646) 820-0349",
-  				"email": "hello@justfix.nyc"
+  				"email": "hello@justfix.nyc",
+  				"findhelp": "If you need <b>immediate assistance</b> or want to speak with someone about your housing situation, please visit the <b>Find Help</b> section of our website to connect with community resources and tenant hotlines:",
+  				"findhelpActual": "@:repeating.findHelp"
   			},
   			"footer": {
   				"home": "Home",
