@@ -50,45 +50,60 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
       var message = 'To whom it may regard, \n\n' +
         'I am requesting the following repairs in my apartment referenced below [and/or] in the public areas of the building:\n\n';
 
-      var issuesContent = '';
-      for(var issue in user.issues) {
-        var key = issue,
-            title = $filter('areaTitle')(key),
-            vals = user.issues[issue];
+      var problemsContent = '';
 
-        if(vals.length) {
+      for(var i = 0; i < user.problems.length; i++) {
 
-          var activityIdx = user.activity.map(function(i) { return i.key; }).indexOf(key);
-          if(activityIdx !== -1) var activity = user.activity[activityIdx];
+        var prob = user.problems[i];
 
-          issuesContent += title + ':\n';
-          vals.forEach(function(v) {
-            issuesContent += ' - ' + v.title;
-            if(v.emergency) issuesContent += ' (FIX IMMEDIATELY)';
-            issuesContent += '\n';
-          });
-
-          issuesContent += '\n   First Appeared: ';
-          if(activity) {
-            issuesContent += $filter('date')(activity.date, 'longDate');
-            issuesContent += '\n   Additional Information:';
-            issuesContent += '\n   ' + activity.description;
-            issuesContent += '\n';
-            activity = undefined;
-          } else {
-            issuesContent += '\n   Additional Information:';
-          }
-
-          issuesContent += '\n';
+        problemsContent += prob.title + ':\n';
+        for(var j = 0; j < prob.issues.length; j++) {
+          problemsContent += ' - ' + prob.issues[j].key;
+          if(prob.issues[j].emergency) problemsContent += ' (FIX IMMEDIATELY)';
+          problemsContent += '\n';
         }
+        problemsContent += '\n';
+
       }
 
-      message += issuesContent + '\n\n';
+      // for(var issue in user.issues) {
+      //   var key = issue,
+      //       title = $filter('areaTitle')(key),
+      //       vals = user.issues[issue];
+      //
+      //   if(vals.length) {
+      //
+      //     var activityIdx = user.activity.map(function(i) { return i.key; }).indexOf(key);
+      //     if(activityIdx !== -1) var activity = user.activity[activityIdx];
+      //
+      //     issuesContent += title + ':\n';
+      //     vals.forEach(function(v) {
+      //       issuesContent += ' - ' + v.title;
+      //       if(v.emergency) issuesContent += ' (FIX IMMEDIATELY)';
+      //       issuesContent += '\n';
+      //     });
+      //
+      //     issuesContent += '\n   First Appeared: ';
+      //     if(activity) {
+      //       issuesContent += $filter('date')(activity.date, 'longDate');
+      //       issuesContent += '\n   Additional Information:';
+      //       issuesContent += '\n   ' + activity.description;
+      //       issuesContent += '\n';
+      //       activity = undefined;
+      //     } else {
+      //       issuesContent += '\n   Additional Information:';
+      //     }
+      //
+      //     issuesContent += '\n';
+      //   }
+      // }
+      //
+      message += problemsContent + '\n\n';
 
       var superContactIdx = user.activity.map(function(i) { return i.key; }).indexOf('contactSuper');
       if(superContactIdx !== -1) {
         message += 'I have already contacted the person responsible for making repairs on ';
-        message += $filter('date')(user.activity[superContactIdx].date, 'longDate');
+        message += $filter('date')(user.activity[superContactIdx].createdDate, 'longDate');
         message += ', but the issue has not been resolved. ';
       }
 

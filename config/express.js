@@ -22,7 +22,8 @@ var fs = require('fs'),
 	flash = require('connect-flash'),
 	config = require('./config'),
 	consolidate = require('consolidate'),
-	path = require('path');
+	path = require('path'),
+	rollbar = require('rollbar');
 
 module.exports = function(db) {
 	// Initialize express app
@@ -74,6 +75,20 @@ module.exports = function(db) {
 	} else if (process.env.NODE_ENV === 'production') {
 		app.locals.cache = 'memory';
 	}
+
+	// Use the rollbar error handler to send exceptions to your rollbar account
+	app.use(rollbar.errorHandler(config.rollbar.servertoken, { environment: process.env.NODE_ENV }));
+
+	// Use for rollbar client-side errors
+	app.locals.env = process.env.NODE_ENV;
+	app.locals.rollbar = config.rollbar.clienttoken;
+
+	app.locals.heap = config.heap.token;
+
+	// handles uncaught exceptions and unhandled promises
+	// I dont think this makes sense here... RTFM
+	// rollbar.handleUncaughtExceptionsAndRejections(process.env.ROLLBAR_ACCESS_TOKEN);
+
 
 	// Request body parsing middleware should be above methodOverride
 	app.use(bodyParser.urlencoded({
@@ -131,6 +146,10 @@ module.exports = function(db) {
 
 		// Log it
 		console.error(err.stack);
+
+		// Rollbar time!
+		rollbar.handleErrorWithPayloadData(err, {}, req);
+
 
 		// Error page
 

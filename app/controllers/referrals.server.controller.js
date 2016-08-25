@@ -3,6 +3,7 @@
 var mongoose = require('mongoose'),
     errorHandler = require('./errors.server.controller'),
     Q = require('q'),
+    rollbar = require('rollbar'),
     Referral = mongoose.model('Referral');
 
 // var PARTS = 2;
@@ -136,6 +137,7 @@ exports.validate = function(req, res) {
           message: errorHandler.getErrorMessage("Multiple referrals for a single code - this shouldn't happen.")
         });
       } else if (r.length == 0) {
+        rollbar.handleError("Invalid Access Code", req);
         res.json({ referral: null });
       } else if (r[0].totalUsers == r[0].inUse) {
         return res.status(400).send({

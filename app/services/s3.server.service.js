@@ -4,10 +4,11 @@ var _ = require('lodash'),
     Q = require('q'),
     config = require('../../config/config'),
     AWS = require('aws-sdk'),
-    fs = require('fs');    
+    rollbar = require('rollbar'),
+    fs = require('fs');
 
 AWS.config.update({
-  accessKeyId: config.aws.id, 
+  accessKeyId: config.aws.id,
   secretAccessKey: config.aws.key,
   region: 'us-east-1'
 });
@@ -23,8 +24,8 @@ function uploadFile(path, type) {
 
   photoBucket
       .upload({
-          ACL: 'public-read', 
-          Body: fs.createReadStream(path), 
+          ACL: 'public-read',
+          Body: fs.createReadStream(path),
           Key: 'images/' + destFileName.toString() + type,
           ContentType: 'application/octet-stream' // force download if it's accessed as a top location
       })

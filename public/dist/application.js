@@ -150,6 +150,14 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     };
 
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+
+      $rootScope.state = toState.name;
+      if(toState.data && toState.data.disableBack) {
+        $rootScope.showBack = false;
+      } else {
+        $rootScope.showBack = true;
+      }
+
       setHeaderState(toState.name);
     });
   }]);
@@ -193,10 +201,6 @@ ApplicationConfiguration.registerModule('findhelp');
 
 'use strict';
 
-// Use applicaion configuration module to register a new module
-ApplicationConfiguration.registerModule('issues');
-'use strict';
-
 ApplicationConfiguration.registerModule('kyr');
 'use strict';
 
@@ -219,10 +223,8 @@ ApplicationConfiguration.registerModule('users');
 angular.module('actions').config(['$stateProvider', '$urlRouterProvider',
 	function($stateProvider, $urlRouterProvider) {
 
-		// Jump to first child state
-		//$urlRouterProvider.when('/issues/create', '/issues/create/checklist');
 
-		// Issues state routing
+		// Actions state routing
 		$stateProvider
 			.state('listActions', {
 				url: '/take-action',
@@ -348,6 +350,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 				if(!$scope.status.created) {
 					$scope.status.loading = false;
 					$scope.status.error = true;
+					Rollbar.warning("Request for the letter took too long to respond");
 	  			$scope.errorCode = 'Request for the letter took too long to respond';
 				}
 			}, timerCountdown * 1000);
@@ -369,6 +372,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 	  		function failure(error) {
 					$scope.status.loading = false;
 					$scope.status.error = true;
+					Rollbar.error("Error with letter generation");
 	  			$scope.errorCode = error;
 	  		}
 	  	);
@@ -392,50 +396,25 @@ angular.module('actions').controller('ContactSuperController', ['$scope', '$moda
 
     $scope.newActivity = newActivity;
 
-    var isIOS8 = function() {
-      var deviceAgent = deviceDetector.raw.userAgent.toLowerCase();
-      return /(iphone|ipod|ipad).* os 8_/.test(deviceAgent);
-    };
+    $scope.formSubmitted = false;
 
-    var generateURL = function() {
+    $scope.done = function (isValid, event) {
 
-      // ios ;
-      // ios8 &
-      // android ?
+      $scope.formSubmitted = true;
 
-      var href = 'sms:';
-      var msg = Messages.getSMSMessage();
+      console.log(event);
 
-      if($scope.superphone) href += $scope.superphone;
-
-      if(deviceDetector.os === 'ios') {
-        if(isIOS8()) href += '&';
-        else href += ';';
-        href = href + 'body=' + msg;
-      } else if(deviceDetector.os === 'android') {
-        href = href + '?body=' + msg;
+      if(isValid && event.target.href) {
+        $modalInstance.close({ newActivity: $scope.newActivity });
+        window.location.href = event.target.href;
       } else {
-        // alert('If you were using a phone, the message would be: \n\n' + msg);
-        return;
+        console.log('no href?');
       }
-
-      return href;
     };
 
-
-  $scope.done = function (type, event) {
-
-    var href = '';
-    if(type === 'sms') href = generateURL();
-    else if(type === 'tel' && $scope.superphone) href = 'tel:' + $scope.superphone;
-
-    $modalInstance.close({ newActivity: $scope.newActivity });
-    if(href.length) window.location.href = href;
-  };
-
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
 }]);
 
 'use strict';
@@ -501,8 +480,6 @@ angular.module('actions').controller('RentalHistoryController', ['$scope','$moda
     $scope.emailHref = 'mailto:' + encodeURI('rentinfo@nyshcr.org?subject=Request For Rental History&body=' + $scope.emailContent);
 
     $scope.done = function () {
-
-
       $modalInstance.close({ newActivity: $scope.newActivity });
       window.location.href = $scope.emailHref;
     };
@@ -817,6 +794,7 @@ angular.module('actions')
 
               // load new actions
               // var idx = scope.$index;
+              console.log('key', scope.newActivity.key);
               var newActions = Actions.query(
                 {key: scope.newActivity.key},
                 function() {
@@ -913,45 +891,60 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
       var message = 'To whom it may regard, \n\n' +
         'I am requesting the following repairs in my apartment referenced below [and/or] in the public areas of the building:\n\n';
 
-      var issuesContent = '';
-      for(var issue in user.issues) {
-        var key = issue,
-            title = $filter('areaTitle')(key),
-            vals = user.issues[issue];
+      var problemsContent = '';
 
-        if(vals.length) {
+      for(var i = 0; i < user.problems.length; i++) {
 
-          var activityIdx = user.activity.map(function(i) { return i.key; }).indexOf(key);
-          if(activityIdx !== -1) var activity = user.activity[activityIdx];
+        var prob = user.problems[i];
 
-          issuesContent += title + ':\n';
-          vals.forEach(function(v) {
-            issuesContent += ' - ' + v.title;
-            if(v.emergency) issuesContent += ' (FIX IMMEDIATELY)';
-            issuesContent += '\n';
-          });
-
-          issuesContent += '\n   First Appeared: ';
-          if(activity) {
-            issuesContent += $filter('date')(activity.date, 'longDate');
-            issuesContent += '\n   Additional Information:';
-            issuesContent += '\n   ' + activity.description;
-            issuesContent += '\n';
-            activity = undefined;
-          } else {
-            issuesContent += '\n   Additional Information:';
-          }
-
-          issuesContent += '\n';
+        problemsContent += prob.title + ':\n';
+        for(var j = 0; j < prob.issues.length; j++) {
+          problemsContent += ' - ' + prob.issues[j].key;
+          if(prob.issues[j].emergency) problemsContent += ' (FIX IMMEDIATELY)';
+          problemsContent += '\n';
         }
+        problemsContent += '\n';
+
       }
 
-      message += issuesContent + '\n\n';
+      // for(var issue in user.issues) {
+      //   var key = issue,
+      //       title = $filter('areaTitle')(key),
+      //       vals = user.issues[issue];
+      //
+      //   if(vals.length) {
+      //
+      //     var activityIdx = user.activity.map(function(i) { return i.key; }).indexOf(key);
+      //     if(activityIdx !== -1) var activity = user.activity[activityIdx];
+      //
+      //     issuesContent += title + ':\n';
+      //     vals.forEach(function(v) {
+      //       issuesContent += ' - ' + v.title;
+      //       if(v.emergency) issuesContent += ' (FIX IMMEDIATELY)';
+      //       issuesContent += '\n';
+      //     });
+      //
+      //     issuesContent += '\n   First Appeared: ';
+      //     if(activity) {
+      //       issuesContent += $filter('date')(activity.date, 'longDate');
+      //       issuesContent += '\n   Additional Information:';
+      //       issuesContent += '\n   ' + activity.description;
+      //       issuesContent += '\n';
+      //       activity = undefined;
+      //     } else {
+      //       issuesContent += '\n   Additional Information:';
+      //     }
+      //
+      //     issuesContent += '\n';
+      //   }
+      // }
+      //
+      message += problemsContent + '\n\n';
 
       var superContactIdx = user.activity.map(function(i) { return i.key; }).indexOf('contactSuper');
       if(superContactIdx !== -1) {
         message += 'I have already contacted the person responsible for making repairs on ';
-        message += $filter('date')(user.activity[superContactIdx].date, 'longDate');
+        message += $filter('date')(user.activity[superContactIdx].createdDate, 'longDate');
         message += ', but the issue has not been resolved. ';
       }
 
@@ -1379,8 +1372,6 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
   function($rootScope, $state, $window, Authentication) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
-      $rootScope.state = toState.name;
-
       if(toState.globalStyles) {
         $rootScope.globalStyles = toState.globalStyles;
       } else {
@@ -1633,7 +1624,14 @@ angular.module('core')
       link: function (scope, element, attrs) {
 
         var msg = Messages.getShareMessage("share");
-        var href = 'mailto:' + encodeURI(Authentication.user.referral.email + '?subject=' + Authentication.user.fullName + ' - JustFix.nyc Case History&body=' + msg);
+
+        var href = 'mailto:';
+
+        if(attrs.email && attrs.email.length) {
+          href += attrs.email;
+        }
+
+        href = encodeURI(href + '?subject=' + Authentication.user.fullName + ' - JustFix.nyc Case History&body=' + msg);
         attrs.$set('href', href);
 
       }
@@ -1712,6 +1710,33 @@ angular.module('core').directive('fullBg', ["$window", function($window) {
       element.css('width', getWidth() + 'px');
     };
 }]);
+'use strict';
+
+angular.module('core')
+  .directive('gaEvent', ['deviceDetector', '$window',
+  function (deviceDetector, $window) {
+    return {
+      restrict: 'A',
+      scope: false,
+      link: function (scope, element, attrs) {
+
+        var a = attrs.gaEvent.split(',');
+        var cat = a[0];
+        var action = a[1];
+
+        if(a.length == 3) var label = a[2];
+        else var label = "";
+
+        element.on('click', function (event) {
+          $window.ga('send', 'event', cat, action, label);
+        });
+
+
+      }
+    };
+
+  }]);
+
 'use strict';
 
 angular.module('core').directive('goToTop', ["$document", function($document) {
@@ -1952,27 +1977,32 @@ angular.module('core')
         // ios8 &
         // android ?
 
-        var href = 'sms:';
-        var type = attrs.type;
-        var msg = Messages.getShareMessage(type);
 
-        href += Authentication.user.referral.phone;
+        element.on('click', function (e) {
 
-        if(deviceDetector.os === 'ios') {
-          if(isIOS8()) href += '&';
-          else href += ';';
-          href = href + 'body=' + msg;
-          console.log('href', href);
-          attrs.$set('href', href);
-        } else if(deviceDetector.os === 'android') {
-          href = href + '?body=' + msg;
-          attrs.$set('href', href);
-        } else {
-          href = href + '?body=' + msg;
-          console.log(href);
-          console.log('If you were using a phone, the message would be: \n\n' + msg);
-        }
+          var href = 'sms:';
+          var type = attrs.type;
+          var msg = Messages.getShareMessage(type);
 
+          if(attrs.phone && attrs.phone.length) {
+            href += attrs.phone;
+          }
+
+          if(deviceDetector.os === 'ios') {
+            if(isIOS8()) href += '&';
+            else href += ';';
+            href = href + 'body=' + msg;
+            console.log('href', href);
+            attrs.$set('href', href);
+          } else if(deviceDetector.os === 'android') {
+            href = href + '?body=' + msg;
+            attrs.$set('href', href);
+          } else {
+            href = href + '?body=' + msg;
+            console.log(href);
+            console.log('If you were using a phone, the message would be: \n\n' + msg);
+          }
+        });
 
       }
     };
@@ -2443,6 +2473,7 @@ angular.module('findhelp').controller('FindHelpController', ['$scope', '$window'
 
         }).error(function(errors) {
             // errors contains a list of errors
+						Rollbar.error("Carto List Error", errors);
             console.log("errors:" + errors);
         });
       };
@@ -2529,6 +2560,7 @@ angular.module('findhelp').directive('cartoMap', ['$rootScope', 'CartoDB', funct
           })
           .error(function(err) {
             // report error
+            Rollbar.error("Carto Map Error", err);
             console.log("An error occurred: " + err);
           });
 
@@ -2632,336 +2664,6 @@ angular.module('onboarding').factory('Hotlines', ['$http', '$q',
 
 
 	}]);
-
-'use strict';
-
-// Configuring the Articles module
-angular.module('issues').run(['Menus',
-	function(Menus) {
-		// Set top bar menu items
-		// Menus.addMenuItem('topbar', 'Issues', 'issues', 'dropdown', '/issues(/create)?');
-		// Menus.addSubMenuItem('topbar', 'issues', 'List Issues', 'issues');
-		// Menus.addSubMenuItem('topbar', 'issues', 'New Issue', 'issues/create');
-	}
-
-]);
-'use strict';
-
-//Setting up route
-angular.module('issues').config(['$stateProvider', '$urlRouterProvider',
-	function($stateProvider, $urlRouterProvider) {
-
-		// Jump to first child state
-		$urlRouterProvider.when('/issues/create', '/issues/create/checklist');
-
-		// Issues state routing
-		$stateProvider.
-		state('listIssues', {
-			url: '/issues',
-			templateUrl: 'modules/issues/views/list-issues.client.view.html'
-		}).
-		state('createIssue', {
-			url: '/issues/create',
-			templateUrl: 'modules/issues/views/create-issue.client.view.html',
-			abstract: true
-		}).
-		state('createIssue.accessCode', {
-			url: '/access-code',
-			templateUrl: 'modules/issues/partials/access-code.client.view.html',
-			data: { disableBack: true }
-		}).
-		state('createIssue.checklist', {
-			url: '/checklist',
-			title: 'Issues Checklist',
-			templateUrl: 'modules/issues/partials/create-issue-checklist.client.view.html'
-		}).
-		state('createIssue.general', {
-			url: '/general',
-			title: 'General Info',
-			templateUrl: 'modules/issues/partials/create-issue-general.client.view.html'
-		}).
-		state('createIssue.personal', {
-			url: '/personal',
-			title: 'Personal Information',
-			templateUrl: 'modules/issues/partials/create-issue-personal.client.view.html'
-		}).
-		state('createIssue.contact', {
-			url: '/contact',
-			title: 'Who To Contact',
-			templateUrl: 'modules/issues/partials/create-issue-contact.client.view.html'
-		}).
-		state('createIssue.review', {
-			url: '/review',
-			title: 'Review',
-			templateUrl: 'modules/issues/partials/create-issue-review.client.view.html'
-		}).
-		state('updateIssues', {
-			url: '/issues/update',
-			templateUrl: 'modules/issues/views/update-issues.client.view.html'
-		});
-		// state('viewIssue', {
-		// 	url: '/issues/:issueId',
-		// 	templateUrl: 'modules/issues/views/view-issue.client.view.html'
-		// }).
-		// state('editIssue', {
-		// 	url: '/issues/:issueId/edit',
-		// 	templateUrl: 'modules/issues/views/edit-issue.client.view.html'
-		// });
-	}
-]);
-
-'use strict';
-
-// Issues controller
-angular.module('issues').controller('IssuesChecklistController', ['$scope', 'Issues',
-  function($scope, Issues) {
-
-    $scope.checklist = {};
-    $scope.open = [];
-
-    // detects if checklist is included in the update view or the onboarding form
-    // used mainly to switch CTA at the bottom
-    if($scope.updateView === undefined) $scope.updateView = false;
-
-    Issues.getChecklist().then(function (data) {
-
-      var i = 0;
-      for(var area in data[0]) {
-        var issues = data[0][area].issues;
-
-        // add to checklist object
-        $scope.checklist[area] = {
-          numChecked : $scope.newIssue.issues[area] ? $scope.newIssue.issues[area].length : 0,
-          issues: issues
-        };
-
-        // initialize newIssues
-        if(!$scope.newIssue.issues[area]) $scope.newIssue.issues[area] = [];
-
-        // add issues that are already selected
-        issues.forEach(function (issue) {
-
-          // ugly ugly ugly
-          if($scope.issues[area] &&
-            $scope.issues[area].map(function(i) { return i.title; }).indexOf(issue.title) !== -1) {
-              $scope.select(area,issue);
-          }
-        });
-
-        $scope.open[i++] = false;
-
-      }
-    }, function (err) {
-      console.error(err);
-    });
-
-    $scope.oneAtATime = true;
-    $scope.status = {
-      idx: -1,
-      isFirstOpen: true,
-      isFirstDisabled: false
-    };
-
-    $scope.select = function(area, issue) {
-
-      if(!this.isSelected(area, issue)) {
-        $scope.newIssue.issues[area].push(issue);
-        $scope.checklist[area].numChecked++;
-      } else {
-        var i = $scope.newIssue.issues[area].indexOf(issue);
-        $scope.newIssue.issues[area].splice(i, 1);
-        $scope.checklist[area].numChecked--;
-      }
-    };
-    $scope.isSelected = function(area, issue) {
-      if(!$scope.newIssue.issues[area]) return false;
-      return $scope.newIssue.issues[area].indexOf(issue) !== -1;
-    };
-    // $scope.prevGroup = function(idx) {
-    //   $scope.open[idx] = false;
-    //   $scope.open[idx-1] = true;
-    // };
-    // $scope.nextGroup = function(idx) {
-    //   $scope.open[idx] = false;
-    //   $scope.open[idx+1] = true;
-    // };
-    $scope.closeGroup = function(idx) {
-      $scope.open[idx] = false;
-      //$window.scrollTo(0, 0);
-    };
-
-  }
-]);
-
-'use strict';
-
-// Issues controller
-angular.module('issues').controller('IssuesController', ['$scope', '$location', '$http', 'Authentication', 'Users', 'Referrals',
-  function($scope, $location, $http, Authentication, Users, Referrals) {
-    $scope.authentication = Authentication;
-
-    if($scope.authentication.user) {
-      $scope.issues = $scope.authentication.user.issues;
-    } else {
-      $scope.issues = {};
-    }
-
-    $scope.newIssue = {};
-    $scope.newIssue.issues = {};
-
-    if($location.search().address) {
-
-      var query = $location.search();
-      //console.log('string');
-
-      $scope.newIssue.name = query.name;
-      $scope.newIssue.phone = query.phone;
-      $scope.newIssue.address = query.address;
-      $scope.newIssue.borough = query.borough;
-      $scope.newIssue.unit = query.unit;
-      $scope.newIssue.nycha = query.nycha;
-      $scope.newIssue.password = query.password;
-    }
-
-    // $scope.newIssue.name = 'Marîa Hernandez';
-    // $scope.newIssue.phone = (Math.floor(Math.random() * 9999999999) + 1111111111).toString();
-    // //$scope.newIssue.phone = '1234567890';
-    // $scope.newIssue.password = 'testtest';
-    // $scope.newIssue.borough = 'Bronx';
-    // $scope.newIssue.address = '3031 bronxwood ave';
-    // $scope.newIssue.unit = '10F';
-
-      // $scope.currentStep = 60;
-      // console.log($scope.currentStep);
-
-    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-      $scope.currentStateTitle = toState.title;
-      // console.log(toState.name);
-      // $scope.currentStep = 50;
-      // console.log($scope.currentStep);
-    });
-
-
-
-
-
-
-    // Validate Access Code
-    $scope.newUser = {};
-    $scope.newUser.accessCode = 'test';
-
-
-    $scope.validateCode = function() {
-
-      var referral = new Referrals();
-      referral.$validate({ code: $scope.newUser.accessCode },
-        function(success) {
-          if(success.referral) {
-            alert('valid');
-            console.log(success.referral);
-          } else {
-            alert('invalid');
-          }
-        }, function(error) {
-          // error
-        });
-
-    };
-
-
-
-    // Create new Issue
-    $scope.create = function() {
-
-      //console.log($scope.issues);
-
-      var newUser = {
-        fullName:     $scope.newIssue.name,
-        firstName:    'Dan',
-        lastName:     'Kass',
-        phone:        '0000000000',
-        borough:      $scope.newIssue.borough,
-        address:      $scope.newIssue.address,
-        unit:         $scope.newIssue.unit,
-        nycha:        $scope.newIssue.nycha,
-        issues:       $scope.newIssue.issues,
-        password:     'password'
-      };
-
-      console.log(newUser);
-
-      $http.post('/auth/signup', newUser).success(function(response) {
-        // If successful we assign the response to the global user model
-        $scope.authentication.user = response;
-        $location.path('/');
-      }).error(function(response) {
-        console.log(response);
-        $scope.error = response;
-      });
-    };
-
-    $scope.update = function() {
-
-      $scope.authentication.user.issues = $scope.newIssue.issues;
-      var user = new Users($scope.authentication.user);
-
-      user.$update(function(response) {
-        Authentication.user = response;
-        $scope.authentication.user = response;
-        $location.path('/issues');
-      }, function(response) {
-        $scope.error = response.data.message;
-      });
-
-    };
-
-    // detirmines if the user hasn't selected any issues
-    $scope.hasIssues = function() {
-      for(var area in $scope.issues) {
-        if($scope.issues[area].length) return true;
-      }
-      return false;
-    };
-
-  }
-]);
-
-'use strict';
-
-angular.module('issues').factory('Issues', ['$http', '$q', 'Authentication',
-  function Issues($http, $q, Authentication) {
-
-    var checklist = 'data/checklist_old.json';
-    var request = function(url) {
-      var deferred = $q.defer();
-
-      $http.get(url).
-        then(function(response) {
-          deferred.resolve(response.data);
-        }, function(err) {
-          deferred.reject();
-        });
-
-      return deferred.promise;
-    };
-
-    return {
-      getChecklist: function() {
-        return request(checklist);
-      },
-      getUserIssuesByKey: function(key) {
-        return Authentication.user.issues[key];
-      },
-      getUserAreas: function() {
-        var areas = [];
-        angular.forEach(Authentication.user.issues, function (v, k) {
-          if(v.length) { areas.push(k); }
-        });
-        return areas;
-      }
-    };
-  }
-]);
 
 'use strict';
 
@@ -3122,14 +2824,18 @@ angular.module('kyr').factory('kyrService', ['$resource', '$http', '$q',
 
 'use strict';
 
+<<<<<<< HEAD
 // TODO: discuss putting all 'run' methods together 
+=======
+// TODO: discuss putting all 'run' methods together
+>>>>>>> refs/remotes/origin/master
 angular.module('onboarding').run(['$rootScope', '$state', 'Authentication', '$window', function($rootScope, $state, Authentication, $window) {
 
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-		if(!Authentication.user && toState.onboarding && !$rootScope.validated && toState.name !== 'onboarding.accessCode') {
-			event.preventDefault();
-			$state.go('onboarding.accessCode');
-		}
+		// if(!Authentication.user && toState.onboarding && !$rootScope.validated && toState.name !== 'onboarding.accessCode') {
+		// 	event.preventDefault();
+		// 	$state.go('onboarding.accessCode');
+		// }
 	});
 
 }]);
@@ -3141,7 +2847,10 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider){
 
     // Jump to first child state
-    $urlRouterProvider.when('/onboarding', '/onboarding/referral');
+    // $urlRouterProvider.when('/onboarding', '/onboarding/referral');
+
+    // Disabling access codes
+    $urlRouterProvider.when('/onboarding', '/onboarding/checklist');
 
   	// Onboarding state routing
     $stateProvider
@@ -3280,7 +2989,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 
 		$scope.createAndNext = function (isValid) {
 
-			console.log('create account pre save', $scope.newUser);
+			if(typeof DEBUG !== 'undefined' && DEBUG == true) console.log('create account pre save', $scope.newUser);
 
 			if(isValid) {
 
@@ -3295,13 +3004,14 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 
 					// If successful we assign the response to the global user model
 					$rootScope.loading = false;
+					$rootScope.takeActionAlert = true;
 					$scope.authentication.user = response;
-					console.log('create account post save', response);
+					if(typeof DEBUG !== 'undefined' && DEBUG == true) console.log('create account post save', response);
 					$location.path('/tutorial');
 
 				}).error(function(err) {
 					$rootScope.loading = false;
-					console.log(err);
+					// console.log(err);
         	$scope.error = err;
 				});
 

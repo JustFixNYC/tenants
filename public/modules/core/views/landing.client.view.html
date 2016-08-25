@@ -4,10 +4,10 @@
 
     <div class="above-fold-content col-xs-10 col-xs-offset-1">
       <h1 class="big-text">{{'modules.core.views.landing.bigText' | translate}}</h1>
-      <a ui-sref="onboarding.accessCode" class="btn btn-primary btn-block">{{'modules.core.views.landing.start' | translate}}</a>
+      <a ui-sref="onboarding.accessCode" class="btn btn-primary btn-block" ga-event="Potential User,click,First Button">{{'modules.core.views.landing.start' | translate}}</a>
       <!-- <a ui-sref="signin" class="btn btn-link btn-block">Sign In</a> -->
       <!-- <a href="mailto:hello@justfix.nyc?subject=Tell me more about JustFix.nyc!" target="_blank" class="btn btn-primary btn-block">Contact Us</a> -->
-      <a href="https://twitter.com/JustFixNYC" target="_blank" class="btn btn-link btn-block">{{'modules.core.views.landing.twitter' | translate}}</a>
+      <a href="https://twitter.com/JustFixNYC" target="_blank" class="btn btn-link btn-block" ga-event="Twitter,click">{{'modules.core.views.landing.twitter' | translate}}</a>
     </div>
     <div class="learn-more" jump-to="main-idea">
       {{'modules.core.views.landing.how' | translate}} <br /><span class="glyphicon glyphicon-menu-down"></span>
@@ -47,7 +47,7 @@
   <section class="just-questions">
     <h1>{{'modules.core.views.landing.immediate' | translate}}</h1>
     <p>{{'modules.core.views.landing.immediateBody' | translate}}</p>
-    <a href="http://findhelp.justfix.nyc" class="btn btn-warning btn-block">{{'modules.core.views.landing.findHelp' | translate}}</a>
+    <a href="http://findhelp.justfix.nyc" class="btn btn-warning btn-block" ga-event="Find Help,click">{{'modules.core.views.landing.findHelp' | translate}}</a>
   </section>
 
   <section id="manifesto-idea" class="manifesto-idea text-center">

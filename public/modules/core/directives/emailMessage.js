@@ -9,7 +9,14 @@ angular.module('core')
       link: function (scope, element, attrs) {
 
         var msg = Messages.getShareMessage("share");
-        var href = 'mailto:' + encodeURI(Authentication.user.referral.email + '?subject=' + Authentication.user.fullName + ' - JustFix.nyc Case History&body=' + msg);
+
+        var href = 'mailto:';
+
+        if(attrs.email && attrs.email.length) {
+          href += attrs.email;
+        }
+
+        href = encodeURI(href + '?subject=' + Authentication.user.fullName + ' - JustFix.nyc Case History&body=' + msg);
         attrs.$set('href', href);
 
       }

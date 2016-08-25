@@ -24,7 +24,7 @@ exports.getErrorMessage = function(err) {
 	var message = '';
 
 	console.log('[ERROR]', err);
-	console.log('[ERROR????]', err.code);
+	console.log('[ERROR CODE]', err.code);
 
 	if (err.code) {
 		switch (err.code) {
@@ -43,6 +43,6 @@ exports.getErrorMessage = function(err) {
 		message = err;
 	}
 
-	console.log(message);
+	console.log('[ERROR MESSAGE]', message);
 	return message;
 };

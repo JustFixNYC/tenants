@@ -4,7 +4,6 @@ var _ = require('lodash'),
     Q = require('q'),
     request = require('request'),
     mongoose = require('mongoose'),
-    User = mongoose.model('User'),
     config = require('../../config/config');
 
 
@@ -96,8 +95,21 @@ var requestRentStabilized = function(bbl, lat, lon) {
   //var sql2 = trQuery(lat, lon);
 
   request(rsCartoUrl + sql, function (error, response, body) {
-    if(JSON.parse(body).rows.length > 0) stabilized.resolve(true);
-    else stabilized.resolve(false);
+
+    if(error) {
+      console.log('[RS database error 1]', error);
+      stabilized.reject(error);
+    }
+
+    // handle the response being HTML...
+    try {
+      if(JSON.parse(body).rows.length > 0) stabilized.resolve(true);
+      else stabilized.resolve(false);
+    } catch(e) {
+      console.log('[RS database error 2]', error);
+      stabilized.resolve(false);
+    }
+
   });
   // request(rsCartoURL + sql2, function (error, response, body) {
   //   console.log(body);

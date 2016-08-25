@@ -11,6 +11,7 @@ var _ = require('lodash'),
   profileHandler = require('./users.profile.server.controller'),
   mongoose = require('mongoose'),
   passport = require('passport'),
+  rollbar = require('rollbar'),
   User = mongoose.model('User');
 
 var saveUser = function(req, user) {
@@ -19,7 +20,6 @@ var saveUser = function(req, user) {
 
   user.save(function(err) {
     if (err) {
-      console.log('yee',errorHandler.getErrorMessage(err));
       saved.reject(errorHandler.getErrorMessage(err));
     } else {
       // Remove sensitive data before login
@@ -52,8 +52,14 @@ exports.signup = function(req, res) {
 
   var save = function() {
     saveUser(req, user)
-      .then(function (user) {   console.log('new user', user); res.json(user); })
-      .fail(function (err) { res.status(400).send(err); });
+      .then(function (user) {
+        rollbar.reportMessage("New User Signup!", "info", req);
+        res.json(user);
+      })
+      .fail(function (err) {
+        rollbar.handleError(errorHandler.getErrorMessage(err), req);
+        res.status(400).send(errorHandler.getErrorMessage(err));
+      });
   };
 
   // Add missing user fields
@@ -79,25 +85,24 @@ exports.signup = function(req, res) {
     startDate: acctCreatedDate
   });
 
-  // check some address stuff
-  addressHandler.requestGeoclient(user.borough, user.address)
-    .then(function (geo) {
-      user.geo = geo;
-      // check for tenant harassment hotline
-      if(addressHandler.harassmentHelp(user.geo.zip)) user.actionFlags.push('isHarassmentElligible');
-      return addressHandler.requestRentStabilized(geo.bbl, geo.lat, geo.lon);
-    })
-    .then(function (rs) {
-      if(rs) user.actionFlags.push('isRentStabilized');
-      save();
-    })
-    .fail(function (e) {
-      console.log('[GEO]', e);
-      save();
-    });
+  // // check some address stuff
+  // addressHandler.requestGeoclient(user.borough, user.address)
+  //   .then(function (geo) {
+  //     user.geo = geo;
+  //     // check for tenant harassment hotline
+  //     if(addressHandler.harassmentHelp(user.geo.zip)) user.actionFlags.push('isHarassmentElligible');
+  //     return addressHandler.requestRentStabilized(geo.bbl, geo.lat, geo.lon);
+  //   })
+  //   .then(function (rs) {
+  //     if(rs) user.actionFlags.push('isRentStabilized');
+  //     save();
+  //   })
+  //   .fail(function (e) {
+  //     console.log('[GEO]', e);
+  //     save();
+  //   });
 
-
-
+  save();
 
 };
 
@@ -105,9 +110,9 @@ exports.signup = function(req, res) {
  * Signin after passport authentication
  */
 exports.signin = function(req, res, next) {
-  console.log('signin', req.body);
   passport.authenticate('local', function(err, user, info) {
     if (err || !user) {
+      rollbar.handleError(info, req);
       res.status(400).send(info);
     } else {
       // Remove sensitive data before login
@@ -116,6 +121,7 @@ exports.signin = function(req, res, next) {
 
       req.login(user, function(err) {
         if (err) {
+          rollbar.handleError(err, req);
           res.status(400).send(err);
         } else {
           res.json(user);
@@ -129,7 +135,6 @@ exports.signin = function(req, res, next) {
  * Signout
  */
 exports.signout = function(req, res) {
-  console.log('SIGN OUT');
   req.logout();
   res.redirect('/');
 };

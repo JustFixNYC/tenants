@@ -5,6 +5,10 @@ module.exports = {
   app: {
     title: 'JustFix.nyc'
   },
+  superuser: {
+    phone: process.env.SUPERUSERPHONE,
+    pwd: process.env.SUPERUSERPASS
+  },
   assets: {
     lib: {
       css: [
@@ -20,6 +24,9 @@ module.exports = {
     },
     css: 'public/dist/style.min.css',
     js: 'public/dist/application.min.js'
+  },
+  heap: {
+    token: process.env.HEAPTOKEN
   },
   mailer: {
     from: process.env.MAILER_FROM || 'MAILER_FROM',

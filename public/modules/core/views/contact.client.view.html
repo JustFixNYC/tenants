@@ -4,7 +4,6 @@
 		<h1>{{'modules.core.views.contact.title' | translate}}</h1>
     <p>{{'modules.core.views.contact.body' | translate}}</p>
 	</div>
-  <br />
   <a  class="btn btn-success btn-block"
       href="tel:6468200349">
       <span class="glyphicon glyphicon-earphone pull-left"></span>
@@ -15,6 +14,13 @@
       target="_blank"
       href="mailto:hello@justfix.nyc">
       <span class="glyphicon glyphicon-envelope pull-left"></span>
+      {{'modules.core.views.contact.email' | translate}}
+  </a>
+  <br />
+  <br />
+  <p ng-bind-html="modules.core.views.contact.findhelp | trustTranslate" compile-template></p>
+  <a  class="btn btn-primary btn-block"
+      ui-sref="findHelp">
       {{'modules.core.views.contact.email' | translate}}
   </a>
 </section>

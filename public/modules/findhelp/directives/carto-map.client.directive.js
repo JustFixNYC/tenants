@@ -67,6 +67,7 @@ angular.module('findhelp').directive('cartoMap', ['$rootScope', 'CartoDB', funct
           })
           .error(function(err) {
             // report error
+            Rollbar.error("Carto Map Error", err);
             console.log("An error occurred: " + err);
           });
 

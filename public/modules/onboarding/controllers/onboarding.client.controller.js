@@ -99,7 +99,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 
 		$scope.createAndNext = function (isValid) {
 
-			console.log('create account pre save', $scope.newUser);
+			if(typeof DEBUG !== 'undefined' && DEBUG == true) console.log('create account pre save', $scope.newUser);
 
 			if(isValid) {
 
@@ -114,13 +114,14 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 
 					// If successful we assign the response to the global user model
 					$rootScope.loading = false;
+					$rootScope.takeActionAlert = true;
 					$scope.authentication.user = response;
-					console.log('create account post save', response);
+					if(typeof DEBUG !== 'undefined' && DEBUG == true) console.log('create account post save', response);
 					$location.path('/tutorial');
 
 				}).error(function(err) {
 					$rootScope.loading = false;
-					console.log(err);
+					// console.log(err);
         	$scope.error = err;
 				});
 

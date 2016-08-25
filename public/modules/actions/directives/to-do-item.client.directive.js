@@ -169,6 +169,7 @@ angular.module('actions')
 
               // load new actions
               // var idx = scope.$index;
+              console.log('key', scope.newActivity.key);
               var newActions = Actions.query(
                 {key: scope.newActivity.key},
                 function() {

@@ -9,8 +9,6 @@ angular.module('actions').controller('RentalHistoryController', ['$scope','$moda
     $scope.emailHref = 'mailto:' + encodeURI('rentinfo@nyshcr.org?subject=Request For Rental History&body=' + $scope.emailContent);
 
     $scope.done = function () {
-
-
       $modalInstance.close({ newActivity: $scope.newActivity });
       window.location.href = $scope.emailHref;
     };
