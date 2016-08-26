@@ -14,7 +14,7 @@
 
 	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.lastName.$invalid }">
 		<label class="control-label" for="lastName">{{'modules.onboarding.partials.onboardingDetails.lastName' | translate}}</label>
-		<input class="form-control" type="text" placeholder="{'modules.onboarding.partials.onboardingDetails.lastName' | translate}}" name="lastName" ng-model="newUser.lastName" required>
+		<input class="form-control" type="text" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.lastName' | translate}}" name="lastName" ng-model="newUser.lastName" required>
 		<div ng-show="createUserForm.$submitted || createUserForm.lastName.$touched">
 			<p ng-show="createUserForm.lastName.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.lastNameError' | translate}}</p>
 		</div>
@@ -39,15 +39,15 @@
 			class="control-label" 
 			for="address"
 			ng-bind-html="'modules.onboarding.partials.onboardingDetails.streetAddress' | trustTranslate" compile-template></label>
-		<input class="form-control" type="text" placeholder="{{'modules.onbarding.partials.onboardingDetails.errorAddress' | translate}}" name="address" ng-model="newUser.address" required>
+		<input class="form-control" type="text" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.streetError' | translate}}" name="address" ng-model="newUser.address" required>
 		<div ng-show="createUserForm.$submitted || createUserForm.address.$touched">
-			<p ng-show="createUserForm.address.$error.required" class="text-danger">{{'modules.onbarding.partials.onboardingDetails.errorAddress' | translate}}</p>
+			<p ng-show="createUserForm.address.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.streetError' | translate}}</p>
 		</div>
 	</div>
 
 	<div class="form-group apt-field" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.unit.$invalid }">
 		<label class="control-label" for="unit">{{'modules.onboarding.partials.onboardingDetails.apt' | translate}}</label>
-		<input class="form-control" type="text" placeholder="{{'modules.onboarding.partials.onboardingDetails.apt' | translate}}" name="unit" ng-model="newUser.unit" required>
+		<input class="form-control" type="text" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.apt' | translate}}" name="unit" ng-model="newUser.unit" required>
 		<div ng-show="createUserForm.$submitted || createUserForm.unit.$touched">
 			<p ng-show="createUserForm.unit.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.aptError' | translate}}</p>
 		</div>
@@ -55,7 +55,7 @@
 
 	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.phone.$invalid }">
 		<label class="control-label" for="phone" ng-bind-html="'modules.onboarding.partials.onboardingDetails.phone' | trustTranslate" compile-template></label>
-		<input class="form-control" type="tel" placeholder="Phone Number" name="phone" ng-model="newUser.phone" name="phone" required phone-input>
+		<input class="form-control" type="tel" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.phoneNumber' | translate}}" name="phone" ng-model="newUser.phone" name="phone" required phone-input>
 		<div ng-show="createUserForm.$submitted || createUserForm.phone.$touched">
 			<p ng-show="createUserForm.phone.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.phoneError' | translate}}</p>
 		</div>
@@ -63,7 +63,7 @@
 
 	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.pw.$invalid }">
 		<label class="control-label" for="pw" ng-bind-html="'modules.onboarding.partials.onboardingDetails.password' | trustTranslate"></label>
-		<input class="form-control" type="password" placeholder="Create Password" id="pw1" name="pw" ng-model="newUser.password" ng-minlength="6" required>
+		<input class="form-control" type="password" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.wrongPassword' | translate}}" id="pw1" name="pw" ng-model="newUser.password" ng-minlength="6" required>
 		<div ng-show="createUserForm.$submitted || createUserForm.pw.$touched">
 			<p ng-show="createUserForm.pw.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.wrongPassword' | translate}}</p>
 			<p ng-show="createUserForm.pw.$error.minlength" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.shortPassword' | translate}}</p>
@@ -72,7 +72,7 @@
 
 	<div class="form-group pw-check-field" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.pw2.$invalid }">
 		<label class="control-label" for="pw2">{{'modules.onboarding.partials.onboardingDetails.verify' | translate}}</label>
-		<input class="form-control" ng-model="pw2" type="password" placeholder="Confirm Password" name="pw2" pw-check="pw1" ng-minlength="6" required>
+		<input class="form-control" ng-model="pw2" type="password" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.verify' | translate}}" name="pw2" pw-check="pw1" ng-minlength="6" required>
 		<div ng-show="createUserForm.$submitted || createUserForm.pw2.$touched">
 			<p ng-show="createUserForm.pw2.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.verifyEmpty' | translate}}</p>
 			<p ng-show="createUserForm.pw2.$error.pwmatch" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.verifyWrong' | translate}}</p>

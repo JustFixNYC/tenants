@@ -359,6 +359,7 @@
 					"apt": "Número de apartamento",
 					"aptError": "Introduzca su número de apartamento.",
 					"phone": "Teléfono <em>(utilizará esto para iniciar cada sesión)</em>",
+					"phoneNumber": "Phone Number",
 					"phoneError": "Introduzca su teléfono.",
 					"password": "Cree una contraseña para su cuenta <em>(deberá tener un mínimo de 6 caracteres)</em>",
 					"wrongPassword": "Cree una contraseña.",
@@ -667,6 +668,64 @@
     }
   },
   "actions": {
+  	"addDetails": {
+  		"bedrooms": {
+  			"title": "Add Bedroom Details",
+  			"activityTitle": "Added Bedroom Details",
+  			"content": "Upload photos and information about your <b>bedroom</b> issues. The more documentation you have, the stronger your case will be!",
+  			"cta": {
+  				"buttonTitle": "<span class=\"glyphicon glyphicon-camera pull-left\"></span> Gather Evidence"
+  			}
+  		},
+  		"kitchen": {
+  			"title": "Add Kitchen Details",
+  			"activityTitle": "Added Kitchen Details",
+  			"content": "Upload photos and information about your <b>kitchen</b> issues. The more documentation you have, the stronger your case will be!",
+  			"cta": {
+  				"buttonTitle": "<span class=\"glyphicon glyphicon-camera pull-left\"></span> Gather Evidence"
+  			}
+  		},
+  		"livingRoom": {
+  			"title": "Add Living Room Details",
+  			"activityTitle": "Added Living Room Details",
+  			"content": "Upload photos and information about your <b>living room</b> issues. The more documentation you have, the stronger your case will be!",
+  			"cta": {
+  				"buttonTitle": "<span class=\"glyphicon glyphicon-camera pull-left\"></span> Gather Evidence"
+  			}
+  		},
+  		"bathroom": {
+  			"title": "Add Bathroom Details",
+  			"activityTitle": "Added Bathroom Details",
+  			"content": "Upload photos and information about your <b>bathroom</b> issues. The more documentation you have, the stronger your case will be!",
+  			"cta": {
+  				"buttonTitle": "<span class=\"glyphicon glyphicon-camera pull-left\"></span> Gather Evidence"
+  			}
+  		},
+  		"entireHome": {
+  			"title": "Add Entire Home Details",
+  			"activityTitle": "Added Entire Home Details",
+  			"content": "Upload photos and information about your <b>entire home</b> issues. The more documentation you have, the stronger your case will be!",
+  			"cta": {
+  				"buttonTitle": "<span class=\"glyphicon glyphicon-camera pull-left\"></span> Gather Evidence"
+  			}
+  		},
+  		"publicAreas": {
+  			"title": "Add Public Areas Details",
+  			"activityTitle": "Added Public Areas Details",
+  			"content": "Upload photos and information about your <b>public areas</b> issues. The more documentation you have, the stronger your case will be!",
+  			"cta": {
+  				"buttonTitle": "<span class=\"glyphicon glyphicon-camera pull-left\"></span> Gather Evidence"
+  			}
+  		},
+  		"landlordIssues": {
+  			"title": "Add Landlord Issues Details",
+  			"activityTitle": "Added Landlord Issues Details",
+  			"content": "Upload photos and information about your <b>landlord issues</b> issues. The more documentation you have, the stronger your case will be!",
+  			"cta": {
+  				"buttonTitle": "<span class=\"glyphicon glyphicon-camera pull-left\"></span> Gather Evidence"
+  			}
+  		}
+  	},
   	"getRentalHistory": {
   		"title": "Obtener su Historial de Alquiler",
   		"activityTitle": "Historial de Alquiler solicitado",
@@ -755,7 +814,8 @@
 	    "activityTitle": "Contacted Super/Management",
 	    "content": "Your first step should always be to contact the person directly responsible for making repairs in your home.",
 	    "cta": {
-	      "buttonTitle": "Contact"
+	      "buttonTitle": "Contact",
+	      "title": "@:actions.contactSuper.cta.buttonTitle"
 	    },
 	    "followUp": {
 	      "title": "What did your super say?"

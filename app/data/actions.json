@@ -121,7 +121,7 @@
     "type": "once",
     "cta": {
       "type": "modal",
-      "buttonTitle": "actions.contactSuper.cta.title",
+      "buttonTitle": "actions.contactSuper.cta.buttonTitle",
       "template": "contact-super.client.view.html",
       "controller": "ContactSuperController"
     },
@@ -132,13 +132,13 @@
   {
     "title": "actions.emailLandlord.title",
     "activityTitle": "actions.emailLandlord.activityTitle",
-    "content": "actions.emailLandlord.contact",
+    "content": "actions.emailLandlord.content",
     "key": "emailLandlord",
     "addIf": ["contactSuper"],
     "type": "once",
     "cta": {
       "type": "modal",
-      "buttonTitle": "actions.emailLandlord.cta.title",
+      "buttonTitle": "actions.emailLandlord.cta.buttonTitle",
       "template": "message-landlord.client.view.html",
       "controller": "MessageLandlordController"
     },
