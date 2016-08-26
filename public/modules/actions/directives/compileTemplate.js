@@ -20,6 +20,7 @@ angular.module('actions').directive('compileTemplate', ['$compile', '$parse', '$
 	            		$compile(element, null, -9999)(scope);	
             		});
             	} else {
+            		element.html(val);
 	              $compile(element, null, -9999)(scope);  //The -9999 makes it skip directives so that we do not recompile ourselves
             	}
           	});

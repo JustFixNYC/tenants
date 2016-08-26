@@ -174,6 +174,11 @@
 	  			"labelShare": "Copy and paste this link to share your Case History: ",
 	  			"empty": "Nothing has been added to your case yet! <a ui-sref=\"listActions\">Click here</a> to see some things to do."
 	  		}
+	  	},
+	  	"other": {
+		    "added": "Added new issues to checklist",
+		    "removed": "Removed issues from checklist",
+		    "created": "Created an account on JustFix.nyc"
 	  	}
   	},
   	"admin": {
@@ -604,15 +609,15 @@
       "WaterPressureShower": "Inadequate Water pressure (Shower)",
       "leakyShowerHead": "Leaky shower head (Shower)",
       "wallTiles": "Wall tiles cracked (Shower)", 
-      "walltilesMissing": "Wall tiles missing (Shower)",
-      "drainStopppage": "Drain Stoppage (Shower)"
+      "wallTilesMissing": "Wall tiles missing (Shower)",
+      "drainStoppage": "Drain Stoppage (Shower)"
     },
     "entireHome": {
     	"title": "Entire Home",
       "mice": "Mice",
       "rats": "Rats",
       "cockroaches": "Cockroaches",
-      "hotWater": "Not Hot water",
+      "hotWater": "No Hot water",
       "coldWater": "No Cold water",
       "heat": "No heat",
       "frontDoorDefective": "Front door defective",
@@ -633,7 +638,7 @@
       "paintOverdue": "Painting overdue (3 years)",
       "peelingFlaking": "Peeling/flaking paint",
       "heat": "@:checklist.entireHome.heat",
-      "hotWater": "@:checklist.bedrooms.hotWater",
+      "hotWater": "@:checklist.entireHome.hotWater",
       "waterPressure": "Inadequate water pressure",
       "rusty": "Rusty water",
       "electricExposed": "@:checklist.bedrooms.electricExposed",
@@ -651,6 +656,7 @@
     "landlordIssues": {
     	"title": "Landlord Issues",
     	"noReceipts": "@:checklist.publicAreas.noReceipts",
+      "noReciepts": "@:checklist.publicAreas.noReceipts",
       "noLease": "No lease", 
       "falseDocuments": "False documents",
       "illegalConstruction": "Illegal construction",

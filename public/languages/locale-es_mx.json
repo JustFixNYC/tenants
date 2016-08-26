@@ -1,5 +1,5 @@
 {
-  "directives.language-select.Language": "Language",
+  "directives.language-select.Language": "El Idioma",
   "repeating": {
   	"cancel": "Cancelar",
   	"add": "Añadir a su caso",
@@ -175,6 +175,11 @@
 	  			"labelShare": "Copie y pegue este enlace para compartir su Historial del Caso: ",
 	  			"empty": "¡Aún no se le ha añadido nada a su caso! <a ui-sref=\"listActions\">Haga clic aquí</a> para ver algunas cosas que puede hacer."
 	  		}
+	  	},
+	  	"other": {
+		    "added": "Added new issues to checklist",
+		    "removed": "Removed issues from checklist",
+		    "created": "Created an account on JustFix.nyc"
 	  	}
   	},
   	"admin": {
@@ -605,8 +610,8 @@
       "WaterPressureShower": "Presión de agua inadecuada (ducha)",
       "leakyShowerHead": "Cabezal de la ducha gotea (ducha)",
       "wallTiles": "Azulejos rajados (ducha)", 
-      "walltilesMissing": "Faltan azulejos (ducha)",
-      "drainStopppage": "Desagüe tapado (ducha)"
+      "wallTilesMissing": "Faltan azulejos (ducha)",
+      "drainStoppage": "Desagüe tapado (ducha)"
     },
     "entireHome": {
     	"title": "Toda La Casa",
@@ -634,7 +639,7 @@
       "paintOverdue": "Trabajo de pintura atrasado (3 años)",
       "peelingFlaking": "Pintura descascarada o pelada",
       "heat": "@:checklist.entireHome.heat",
-      "hotWater": "@:checklist.bedrooms.hotWater",
+      "hotWater": "@:checklist.bathrooms.hotWater",
       "waterPressure": "Presión de agua inadecuada",
       "rusty": "Agua oxidada",
       "electricExposed": "@:checklist.bedrooms.electricExposed",
@@ -652,6 +657,7 @@
     "landlordIssues": {
     	"title": "Problemas Entre Propietarios",
     	"noReceipts": "@:checklist.publicAreas.noReceipts",
+      "noReciepts": "@:checklist.publicAreas.noReceipts",
       "noLease": "No hay contrato de arrendamiento", 
       "falseDocuments": "Documentos falsos",
       "illegalConstruction": "Construcción ilegal",

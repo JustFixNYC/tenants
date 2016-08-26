@@ -511,6 +511,7 @@ angular.module('actions').directive('compileTemplate', ['$compile', '$parse', '$
 	            		$compile(element, null, -9999)(scope);	
             		});
             	} else {
+            		element.html(val);
 	              $compile(element, null, -9999)(scope);  //The -9999 makes it skip directives so that we do not recompile ourselves
             	}
           	});
@@ -1162,9 +1163,7 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
     $scope.isDesktop = deviceDetector.isDesktop();
 
     $scope.list = function() {
-
       $scope.activities = Activity.query();
-      // console.log($scope.activities);
     };
 
     $scope.activityTemplate = function(key) {
@@ -3149,7 +3148,6 @@ angular.module('problems').controller('ModalProblemController', ['$scope', 'Prob
 
 		$scope.issues = issues;
 		$scope.userProblem = userProblem;
-		console.log($scope.userProblem);
 
 		// only use this in case of "cancel"
 		var userIssuesClone = $scope.userProblem.issues.slice(0);

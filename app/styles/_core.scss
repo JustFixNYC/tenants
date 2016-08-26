@@ -285,12 +285,24 @@ input[type="date"].date-mobile:focus:before {
   margin-bottom: 15px;
 }
 
+.language-select-wrap {
+	float: right;
+}
+
 .language-select {
   position: relative;
+
+  span {
+  	color: white;
+  }
 
   .language-select-toggle {
     display: inline-block;
     // padding-top: 15px;
+
+   	&.option {
+   		cursor: pointer;
+   	} 
   }
 
   .language-select-menu {

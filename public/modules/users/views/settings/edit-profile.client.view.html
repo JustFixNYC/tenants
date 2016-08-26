@@ -8,7 +8,7 @@
     <form name="userForm" data-ng-submit="updateUserProfile(userForm.$valid)" class="signin form-horizontal edit-profile-form col-xs-12 col-md-12" autocomplete="off">
       <div class="form-group" ng-class="{ 'has-error' : userForm.$submitted && userForm.firstName.$invalid }">
 				<label class="control-label" for="firstName">{{'modules.onboarding.partials.onboardingDetails.firstName' | translate}}</label>
-				<input class="form-control" type="text" placeholder="{{'modules.onboarding.partials.onboardingDetails.firstName' | translate}}" name="firstName" ng-model="user.firstName" required>
+				<input class="form-control" type="text" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.firstName' | translate}}" name="firstName" ng-model="user.firstName" required>
 				<div ng-show="userForm.$submitted || userForm.firstName.$touched">
 					<p ng-show="userForm.firstName.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.firstNameError' | translate}}</p>
 				</div>
@@ -16,7 +16,7 @@
 
 			<div class="form-group" ng-class="{ 'has-error' : userForm.$submitted && userForm.lastName.$invalid }">
 				<label class="control-label" for="lastName">{{'modules.onboarding.partials.onboardingDetails.lastName' | translate}}</label>
-				<input class="form-control" type="text" placeholder="{{'modules.onboarding.partials.onboardingDetails.lastName' | translate}}" name="lastName" ng-model="user.lastName" required>
+				<input class="form-control" type="text" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.lastName' | translate}}" name="lastName" ng-model="user.lastName" required>
 				<div ng-show="userForm.$submitted || userForm.lastName.$touched">
 					<p ng-show="userForm.lastName.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.lastNameError' | translate}}</p>
 				</div>
@@ -38,9 +38,9 @@
 
 			<div class="form-group" ng-class="{ 'has-error' : userForm.$submitted && userForm.address.$invalid }">
 				<label class="control-label" for="address">{{'modules.users.views.settings.editProfile.address' | translate}}</label>
-				<input class="form-control" type="text" placeholder="{{'modules.users.views.settings.editProfile.title' | translate}}" name="address" ng-model="user.address" required>
+				<input class="form-control" type="text" ng-attr-placeholder="{{'modules.users.views.settings.editProfile.title' | translate}}" name="address" ng-model="user.address" required>
 				<div ng-show="userForm.$submitted || userForm.address.$touched">
-					<p ng-show="userForm.address.$error.required" class="text-danger">{{'modules.onbarding.partials.onboardingDetails.errorAddress' | translate}}</p>
+					<p ng-show="userForm.address.$error.required" class="text-danger">{{'modules.onbarding.partials.onboardingDetails.streetError' | translate}}</p>
 				</div>
 			</div>
 

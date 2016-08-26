@@ -1,9 +1,9 @@
 <div class="activity-panel-default">
 
   <div data-ng-repeat="problem in activity.problems">
-    {{ problem.title }}
+    {{ problem.title | translate }}
     <ul>
-      <li data-ng-repeat="issue in problem.issues">{{ issue.key }}</li>
+      <li data-ng-repeat="issue in problem.issues">{{ issue.key | translate }}</li>
     </ul>
 
   </div>

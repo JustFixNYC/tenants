@@ -39,7 +39,7 @@
           </label>
         </h2>
 
-        <div class="alert alert-warning" ng-if="!authentication.user.sharing.enabled" ng-bind-html="'modules.activity.views.listActivity.alert' | trustTranslate">
+        <div class="alert alert-warning" ng-if="!authentication.user.sharing.enabled" ng-bind-html="'modules.activity.views.listActivity.alert' | trustTranslate" compile-template>
           
         </div>
 
@@ -69,8 +69,7 @@
       <div data-ng-if="activities.length">
           <div data-ng-repeat="activity in activities | orderBy:'createdDate':true" class="panel activity-panel">
               <div class="panel-heading">
-
-                  <h3>{{ activity.title }}</h3>
+                <h3>{{ activity.title | translate}}</h3>
               </div>
               <div class="panel-body">
 

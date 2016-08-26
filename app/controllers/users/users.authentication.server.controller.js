@@ -80,7 +80,7 @@ exports.signup = function(req, res) {
 
   user.activity.push({
     key: 'createAcount',
-    title: 'Created an account on JustFix.nyc',
+    title: 'modules.activity.other.created',
     createdDate: acctCreatedDate,
     startDate: acctCreatedDate
   });

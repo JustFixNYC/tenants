@@ -55,14 +55,14 @@ var createProblemActivities = function(user, added, removed) {
   if(added.length) {
     user.activity.push({
       key: 'checklist',
-      title: 'Added new issues to checklist',
+      title: 'modules.activity.other.added',
       problems: added
     });
   }
   if(removed.length) {
     user.activity.push({
       key: 'checklist',
-      title: 'Removed issues from checklist',
+      title: 'modules.activity.other.removed',
       problems: removed
     });
   }
