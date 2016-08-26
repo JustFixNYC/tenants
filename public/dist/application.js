@@ -495,8 +495,8 @@ angular.module('actions').controller('RentalHistoryController', ['$scope','$moda
 // see http://stackoverflow.com/questions/20297638/call-function-inside-sce-trustashtml-string-in-angular-js
 // TODO: this is used all over the place, move it into /core module?
 
-angular.module('actions').directive('compileTemplate', ['$compile', '$parse', '$sce',
-	function($compile, $parse, $sce){
+angular.module('actions').directive('compileTemplate', ['$compile', '$parse', '$sce', '$translate',
+	function($compile, $parse, $sce, $translate){
     return {
         link: function(scope, element, attr){
             var parsed = $parse(attr.ngBindHtml);
@@ -504,8 +504,16 @@ angular.module('actions').directive('compileTemplate', ['$compile', '$parse', '$
             var getStringValue = function() { return (parsed(scope) || '').toString(); }
             //Recompile if the template changes
             scope.$watch(getStringValue, function(val) {
-              $compile(element, null, -9999)(scope);  //The -9999 makes it skip directives so that we do not recompile ourselves
-            });
+            	// Check if our translation service has failed
+            	if(val.indexOf('modules') !== -1) {
+            		$translate(val).then(function(newVal){
+	            		element.html(newVal);
+	            		$compile(element, null, -9999)(scope);	
+            		});
+            	} else {
+	              $compile(element, null, -9999)(scope);  //The -9999 makes it skip directives so that we do not recompile ourselves
+            	}
+          	});
         }
     }
 	}
@@ -645,14 +653,12 @@ angular.module('actions')
       restrict: 'E',
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
       controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
-      	console.log($scope.action)
+
       	$translate($scope.action.title).then(function(title) {
-      		console.log(title);
       		$scope.filterTitleHTML = function() { return $sce.trustAsHtml(title); };
       	});
         // $scope.filterTitleHTML = function() { return $sce.trustAsHtml($scope.action.title); };
         $translate($scope.action.content).then(function(content) {
-        	// console.log(content)
       		$scope.filterContentHTML = function() { return $sce.trustAsHtml(content); };
       	});
         // $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
@@ -2185,9 +2191,8 @@ angular.module('core').filter('titlecase', function() {
 angular.module('core').filter('trustTranslate', ['$sce', '$filter',
 	function($sce, $filter) {
 		var translatedText = $filter('translate');
-    return function (val) {
+	  return function (val) {
     	var returnedTranslation = translatedText(val);
-    	console.log(returnedTranslation);
     	return $sce.trustAsHtml(returnedTranslation);
     }
 }]);
