@@ -42,6 +42,12 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 				disableBack: true
 			}
 		})
+		.state('donate', {
+			url: '/donate',
+			onEnter: function($window) {
+		 		$window.open('https://www.nycharities.org/give/donate.aspx?cc=4125', '_self');
+ 			}
+		})
 		.state('home', {
 			url: '/home',
 			templateUrl: 'modules/core/views/home.client.view.html',
