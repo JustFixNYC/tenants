@@ -1,4 +1,4 @@
-<section>
+<section data-ng-controller="ContactController">
   <div class="page-header">
 		<img src="/modules/core/img/brand/icon_only.svg" alt="JustFix.nyc" />
 		<h1>Contact Us</h1>
@@ -18,9 +18,18 @@
   </a>
   <br />
   <br />
-  <p>If you need <b>immediate assistance</b> or want to speak with someone about your housing situation, please visit the <b>Find Help</b> section of our website to connect with community resources and tenant hotlines:</p>
-  <a  class="btn btn-primary btn-block"
-      ui-sref="findHelp">
-      Find Help
-  </a>
+  <p>If you need <b>immediate assistance</b> or want to speak with someone about your housing situation, please visit <span ng-if="authentication.user">the <b>Find Help</b> section of our website</span><span ng-if="!authentication.user">our Tenant Assistance Directory</span> to connect with community resources and tenant hotlines:</p>
+  <div ng-if="authentication.user">
+    <a  class="btn btn-primary btn-block"
+        ui-sref="findHelp">
+        Find Help
+    </a>
+  </div>
+  <div ng-if="!authentication.user">
+    <a  class="btn btn-warning btn-block"
+        href="http://findhelp.justfix.nyc">
+        Find Help
+    </a>
+  </div>
+
 </section>
