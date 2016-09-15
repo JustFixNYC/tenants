@@ -2,7 +2,7 @@
 
 module.exports = {
 	app: {
-	  title: 'JustFix.nyc',
+	  title: 'JustFix.nyc - Technology for Housing Justice',
 	  description: 'JustFix.nyc is a tool for New Yorkers to document, organize, and take action in getting repairs made on their apartment.',
 	  keywords: 'something'
 	},
