@@ -23,10 +23,10 @@
 					 ui-sref="signin"
 					 ng-if="!authentication.user && ($root.state == 'landing' || $root.state == 'manifesto')"
 					 ga-event="Sign In,click">Sign In</a>
-			 <a class="header-btn pull-right header-btn-text header-donate"
+			 <!-- <a class="header-btn pull-right header-btn-text header-donate"
  					href="https://www.nycharities.org/give/donate.aspx?cc=4125" target="_blank"
  					ng-if="!authentication.user && ($root.state == 'landing' || $root.state == 'manifesto')"
- 					ga-event="Donate,click,Header">Donate</a>
+ 					ga-event="Donate,click,Header">Donate</a> -->
 				<a class="header-btn header-home pull-right glyphicon glyphicon-home"
 					 ui-sref="home"
 					 ng-if="authentication.user && $root.state != 'home'"
