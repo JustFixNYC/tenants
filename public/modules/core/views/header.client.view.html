@@ -11,7 +11,12 @@
 						ui-sref="kyr"
 						ng-if="!$root.showBack && showKyrBackBtn"
 				>
-				<a href="/" class="header-brand" ga-event="JustFix Logo,click">
+				<a ng-if="!authentication.user" href="http://www.justfix.nyc" class="header-brand" ga-event="JustFix Logo,click">
+						<!-- <div data-ng-include="'/modules/core/img/brand/logo.svg'" aria-label="justfix.nyc"/ class="logo"></div> -->
+						<img ng-if="!$root.headerLightBG" src="/modules/core/img/brand/logo.png" class="logo" />
+						<img ng-if="$root.headerLightBG" src="/modules/core/img/brand/logo_dark.png" class="logo" />
+				</a>
+				<a ng-if="authentication.user" href="/" class="header-brand" ga-event="JustFix Logo,click">
 						<!-- <div data-ng-include="'/modules/core/img/brand/logo.svg'" aria-label="justfix.nyc"/ class="logo"></div> -->
 						<img ng-if="!$root.headerLightBG" src="/modules/core/img/brand/logo.png" class="logo" />
 						<img ng-if="$root.headerLightBG" src="/modules/core/img/brand/logo_dark.png" class="logo" />
