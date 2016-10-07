@@ -3,7 +3,7 @@
   "repeating": {
   	"cancel": "Cancel",
   	"add": "Add To Your Case",
-  	"success": "Success",
+  	"success": "Success!",
   	"error": "Error",
   	"gotIt": "Got it!",
   	"submit": "Submit",
@@ -19,6 +19,7 @@
 		"kyr": "Know Your Rights",
 		"call": "Call",
 		"signOut": "Sign Out",
+		"signIn": "Sign In",
 		"continue": "Continue",
 		"back": "Back",
 		"close": "Close"
@@ -418,7 +419,7 @@
 					"introOne": "Your JustFix.nyc account will help you gather evidence and take action toward resolving your housing issues.",
 					"introTwo": " Here's how it works...",
 					"button": "Take the Tour"
-				}, 
+				},
 				"main": {
 					"title1": "Gather Evidence",
 					"main1": "The more evidence you upload, the stronger your case will be. Start with the <strong>Take Action</strong> section to add photos, file 311 complaints and send notices to your landlord.",
@@ -438,9 +439,10 @@
 						"title": "Sign in to access your JustFix.nyc account.",
 						"phone": "Phone Number",
 						"password": "password",
+						"signIn": "@:repeating.signIn",
 						"forgot": "I forgot my password.",
 						"signUp": "Don’t have an account yet? Sign up now!",
-						"contactText": "Contact Us",
+            "contactText": "Contact Us",
 						"contactUsFinal": " if you need assistance or forgot your password."
 					}
 				},
@@ -456,7 +458,7 @@
 					},
 					"resetSuccess": {
 						"title": "Password successfully reset",
-						"continue": "Continue to home page" 
+						"continue": "Continue to home page"
 					},
 					"reset": {
 						"title": "Reset your password",
@@ -533,9 +535,9 @@
   		"title": "Kitchen",
   		"paint": "@:checklist.bedrooms.paint",
       "cracked": "@:checklist.bedrooms.cracked",
-      "mold": "@:checklist.bedrooms.mold", 
-      "water": "@:checklist.bedrooms.water", 
-      "loose": "@:checklist.bedrooms.loose", 
+      "mold": "@:checklist.bedrooms.mold",
+      "water": "@:checklist.bedrooms.water",
+      "loose": "@:checklist.bedrooms.loose",
       "baseboards": "Baseboards Defective",
       "windowGlass": "@:checklist.bedrooms.windowGlass",
       "windowFrame": "@:checklist.bedrooms.windowFrame",
@@ -561,9 +563,9 @@
     	"title": "Living Room",
   		"paint": "@:checklist.bedrooms.paint",
       "cracked": "@:checklist.bedrooms.cracked",
-      "mold": "@:checklist.bedrooms.mold", 
-      "water": "@:checklist.bedrooms.water", 
-      "loose": "@:checklist.bedrooms.loose", 
+      "mold": "@:checklist.bedrooms.mold",
+      "water": "@:checklist.bedrooms.water",
+      "loose": "@:checklist.bedrooms.loose",
       "baseboards": "Baseboards Defective",
       "windowGlass": "@:checklist.bedrooms.windowGlass",
       "windowFrame": "@:checklist.bedrooms.windowFrame",
@@ -575,13 +577,13 @@
       "electricExposed": "@:checklist.bedrooms.electricExposed",
       "outlets": "@:checklist.bedrooms.outlets"
     },
-    "bathroom": {   
+    "bathroom": {
     	"title": "Bathroom",
   		"paint": "@:checklist.bedrooms.paint",
       "cracked": "@:checklist.bedrooms.cracked",
-      "mold": "@:checklist.bedrooms.mold", 
-      "water": "@:checklist.bedrooms.water", 
-      "loose": "@:checklist.bedrooms.loose", 
+      "mold": "@:checklist.bedrooms.mold",
+      "water": "@:checklist.bedrooms.water",
+      "loose": "@:checklist.bedrooms.loose",
       "baseboards": "Baseboards Defective",
       "windowGlass": "@:checklist.bedrooms.windowGlass",
       "windowFrame": "@:checklist.bedrooms.windowFrame",
@@ -593,7 +595,7 @@
       "electricExposed": "@:checklist.bedrooms.electricExposed",
       "outlets": "@:checklist.bedrooms.outlets",
       "toiletBroken": "Toilet not working (Toilet)",
-      "toiletLeaking": "Toilet leaking (Toilet)", 
+      "toiletLeaking": "Toilet leaking (Toilet)",
       "waterPressureToilet": "Inadequate Water pressure (Toilet)",
       "sink": "Cracked Sink (Sink)",
       "leakyFaucet": "Leaky Faucet (Sink)",
@@ -608,7 +610,7 @@
       "notWorkingShower": "Not working (Shower)",
       "WaterPressureShower": "Inadequate Water pressure (Shower)",
       "leakyShowerHead": "Leaky shower head (Shower)",
-      "wallTiles": "Wall tiles cracked (Shower)", 
+      "wallTiles": "Wall tiles cracked (Shower)",
       "wallTilesMissing": "Wall tiles missing (Shower)",
       "drainStoppage": "Drain Stoppage (Shower)"
     },
@@ -657,7 +659,7 @@
     	"title": "Landlord Issues",
     	"noReceipts": "@:checklist.publicAreas.noReceipts",
       "noReciepts": "@:checklist.publicAreas.noReceipts",
-      "noLease": "No lease", 
+      "noLease": "No lease",
       "falseDocuments": "False documents",
       "illegalConstruction": "Illegal construction",
       "repeatedMci": "Repeated MCI",
@@ -790,7 +792,7 @@
 	        "title": "Tracking number:",
 	        "placeholder": "The number you were given to track your Work Order."
 	      }]
-	    }	    
+	    }
   	},
   	"contactLegalServices": {
 	    "title": "Call Housing Court Answers",
@@ -804,7 +806,7 @@
 	      "title": "What did legal services say?"
 	    }
   	},
-  	"callHotline": {
+  	"connectAdvocate": {
 	    "title": "Connect With an Advocate",
 	    "content": "Find local community groups, legal services, and city hotlines to help with your housing issues.",
     	"cta": {

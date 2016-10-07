@@ -97,20 +97,18 @@
     }
   },
   {
-    "title": "actions.callHotline.title",
-    "activityTitle": "actions.callHotline.activityTitle",
-    "content": "actions.callHotline.content",
-    "key": "callHotline",
+    "title": "actions.connectAdvocate.title",
+    "activityTitle": "actions.connectAdvocate.activityTitle",
+    "content": "actions.connectAdvocate.content",
+    "key": "connectAdvocate",
     "addIf": ["initial"],
     "type": "recurring",
     "cta": {
-      "type": "call",
-      "buttonTitle": "actions.callHotline.cta.buttonTitle",
-      "phone": 2129790611
+      "type": "link-internal",
+      "buttonTitle": "actions.connectAdvocate.cta.buttonTitle",
+      "url": "findHelp"
     },
-    "followUp": {
-      "title": "actions.contactLegalServices.followUp.title"
-    }
+    "hasFollowUp": false
   },
   {
     "title": "actions.contactSuper.title",

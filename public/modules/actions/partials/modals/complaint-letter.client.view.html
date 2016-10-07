@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h3 class="modal-title" ng-if="!status.created && !status.error">{{'modules.actions.partials.modals.complaintLetter.title' | translate}}</h3>
-  <h3 class="modal-title" ng-if="status.created"><span class="glyphicon glyphicon-ok-sign"></span> {{'modules.actions.partials.modals.complaintLetter.success' | translate}}!</h3>
+  <h3 class="modal-title" ng-if="status.created"><span class="glyphicon glyphicon-ok-sign"></span>{{'modules.actions.partials.modals.complaintLetter.success' | translate}}</h3>
   <h3 class="modal-title text-danger" ng-if="status.error"><span class="glyphicon glyphicon-remove-sign"></span> {{'modules.actions.partials.modals.complaintLetter.error' | translate}}</h3>
 </div>
 <div class="modal-body" stop-event="touchend">
@@ -53,8 +53,8 @@
     <div class="letter-step letter-step-created" ng-if="status.created">
       <p>{{'modules.actions.partials.modals.complaintLetter.successTitle' | translate}}</p>
       <span class="glyphicon glyphicon-file text-success lead"></span><a class="text-link" ng-href="{{letterUrl}}" target="_blank">{{'modules.actions.partials.modals.complaintLetter.successLinkText' | translate}}</a>
-      <p 
-      ng-bind-html="'modules.actions.partials.modals.complaintLetter.successBody' | trustTranslate" 
+      <p
+      ng-bind-html="'modules.actions.partials.modals.complaintLetter.successBody' | trustTranslate"
       compile-template></p>
     </div>
     <div class="letter-step" ng-if="status.error">

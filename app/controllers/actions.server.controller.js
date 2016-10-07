@@ -113,7 +113,7 @@ var generateActions = function(user) {
     // var reject = user.actionFlags.indexOf(action.key) !== -1 && action.type == 'once';
     var reject = _.contains(user.actionFlags, action.key) && action.type == 'once';
 
-    if(add && !reject) {
+    // if(add && !reject) {
       if(action.followUp) action.hasFollowUp = true;
       else action.hasFollowUp = false;
 
@@ -127,12 +127,8 @@ var generateActions = function(user) {
       }
       else action.isFollowUp = false;
 
-      // WARNING: This is for lang debugging, need to see all actions. Enable before commit
-      // actions.push(action);
-    }
-
-    // WARNING: Remove this before commit
-    actions.push(action);
+      actions.push(action);
+    // }
 
   });
 

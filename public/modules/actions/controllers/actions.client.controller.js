@@ -6,7 +6,7 @@ angular.module('actions').controller('ActionsController', ['$scope', '$filter', 
     //$scope.authentication = Authentication;
     $scope.user = Authentication.user;
 
-    // 
+    //
     // $scope.userCompletedDetailsProgress = function() {
     //
     //   var prog = 0,
@@ -26,6 +26,9 @@ angular.module('actions').controller('ActionsController', ['$scope', '$filter', 
 
     $scope.list = function() {
       Actions.query(function(actions) {
+
+        console.log(actions);
+
         $scope.onceActions = $filter('filter')(actions, { $: 'once' }, true);
         $scope.recurringActions = $filter('filter')(actions, { $: 'recurring' }, true);
         $scope.legalActions = $filter('filter')(actions, { $: 'legal' }, true);
