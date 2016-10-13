@@ -86,7 +86,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
       return;
     };
   })
-  .run(function($rootScope) {
+  .run(function($rootScope, LOCALES, $translate, $location) {
 
     // ensure that this happens on pageload
     // https://github.com/angular-ui/ui-router/issues/1307
@@ -106,6 +106,15 @@ angular.module(ApplicationConfiguration.applicationModuleName)
           break;
       };
     };
+
+    if(!$location.search().hasOwnProperty('lang')) {
+  		$location.search('lang', $translate.use());
+  	} else {
+  		if(LOCALES.locales.hasOwnProperty($location.search().lang))
+  			$translate.use($location.search().lang);
+
+  		$translate.use( $translate.preferredLanguage());
+  	}
 
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
 
