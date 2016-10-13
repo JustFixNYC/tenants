@@ -16,7 +16,6 @@ angular.module('onboarding').directive('selectionList', function selectionList(/
 	    		}
 	  			thisWrapped.addClass('active');
 	  			scope.process = this.getAttribute('process');
-	  			console.log(scope);
     		});
     	};
 

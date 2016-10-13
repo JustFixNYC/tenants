@@ -49,7 +49,7 @@
                       data-ng-repeat="problem in problems"
                       data-ng-click="selectProblem(problem)"
                       data-ng-class="{ 'list-group-item-primary': isSelectedProblem(problem) }">
-                      {{ problem }}
+                      {{ problem | translate}}
                       <span data-ng-show="isSelectedProblem(problem)" class="selected-icon glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
               </button>
           </div>

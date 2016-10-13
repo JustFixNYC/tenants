@@ -8,6 +8,8 @@ angular.module('actions').controller('AddDetailsController', ['$scope', '$filter
 
   $scope.issues = Problems.getUserIssuesByKey($scope.newActivity.key);
 
+  $scope.newActivity.keyTitle = 'checklist.' + $scope.newActivity.key + '.title';
+
   $scope.newActivity.problems = [{ issues: JSON.parse(JSON.stringify( $scope.issues, function( key, value ) {
         if( key === "$$hashKey" || key === "_id" ) {
             return undefined;

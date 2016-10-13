@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h3 class="modal-title">
     <span class="glyphicon-addl pull-left" ng-class="newActivity.key"></span>
-    {{ newActivity.key | problemTitle }} {{'modules.actions.partials.modals.addDetails.title' | translate}}
+    {{ newActivity.keyTitle | translate }} {{'modules.actions.partials.modals.addDetails.title' | translate}}
   </h3>
 </div>
 <form class="update-activity-form" name="addDetailsForm" novalidate>
@@ -9,7 +9,7 @@
     <p>
 	    {{'modules.actions.partials.modals.addDetails.body' | translate}}
 	    <ul class="modal-issue-list">
-	      <li data-ng-repeat="issue in issues" data-ng-bind="issue.key"></li>
+	      <li data-ng-repeat="issue in issues" data-ng-bind="issue.key | trustTranslate"></li>
 	    </ul>
     </p>
       <div class="form-group" ng-class="{ 'has-error' : formSubmitted && addDetailsForm.startDate.$invalid }">
@@ -41,7 +41,7 @@
       <div class="form-group" ng-class="{ 'has-error' : formSubmitted && addDetailsForm.description.$invalid }">
         <label class="control-label" for="description">{{'modules.actions.partials.modals.addDetails.description' | translate}}</label>
         <div class="controls">
-            <textarea name="description" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="5" maxlength="500" placeholder="Please describe these issues in more detail."></textarea>
+            <textarea name="description" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="5" maxlength="500" placeholder="{{'modules.actions.partials.modals.addDetails.descriptionBodyPlaceholder' | translate}}"></textarea>
         </div>
         <span class="text-danger" ng-show="formSubmitted && addDetailsForm.description.$invalid">{{'modules.actions.partials.modals.addDetails.descriptionPlaceholder' | translate}}</span>
       </div>

@@ -1,7 +1,7 @@
 'use strict';
 
 //Menu service used for managing  menus
-angular.module('core').service('LocaleService', function ($translate, LOCALES, $rootScope, tmhDynamicLocale) {
+angular.module('core').service('LocaleService', function ($translate, LOCALES, $rootScope, tmhDynamicLocale, $location) {
 
   // PREPARING LOCALES INFO
   var localesObj = LOCALES.locales;
@@ -39,6 +39,7 @@ angular.module('core').service('LocaleService', function ($translate, LOCALES, $
   // on successful applying translations by angular-translate
   $rootScope.$on('$translateChangeSuccess', function (event, data) {
     document.documentElement.setAttribute('lang', data.language);// sets "lang" attribute to html
+    $location.search('lang', $translate.use());
   
      // asking angular-dynamic-locale to load and apply proper AngularJS $locale setting
     tmhDynamicLocale.set(data.language.toLowerCase().replace(/_/g, '-'));

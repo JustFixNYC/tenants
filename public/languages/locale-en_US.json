@@ -37,6 +37,7 @@
   					"photoWord": "Photo",
   					"description": "@:repeating.description",
   					"descriptionHeaderPlaceholder": "Add a status update here!",
+  					"descriptionBodyPlaceholder": "Please describe these issues in more detail.",
   					"cancel": "@:repeating.cancel",
   					"add": "@:repeating.add"
   				},
@@ -119,7 +120,8 @@
   			},
   			"toDoItem": {
   				"tried": "I've tried this",
-  				"dateOf": "Date of"
+  				"dateOf": "Date of",
+  				"followUp": " - Follow Up"
   			}
   		},
   		"views": {
@@ -327,6 +329,9 @@
   			}
   		}
   	},
+  	"kyr": {
+  		"disclaimer": "<p><b>The information contained on this web site does not constitute legal advice</b>. It must not be used as a substitute for the advice of a lawyer qualified to give advice on legal issues pertaining to housing. This information pertains <b>only to tenants living in New York City</b>.</p><p>Many of your rights depend on the <b>type of housing</b> you live in or your type of tenancy. You may be subject to different laws and have different sets of rights than even neighbors in your own building. Learn which rights and responsibilities apply to you.</p>"
+  	},
 		"onboarding": {
 			"partials": {
 				"additionalInfo": {
@@ -402,6 +407,7 @@
 				"problemModal": {
 					"issue": "issue",
 					"other": "Add Other",
+					"otherPlaceholder": "What's the issue?",
 					"cancel": "@:repeating.cancel",
 					"save": "Save"
 				}
@@ -486,6 +492,7 @@
 						"title": "Change phone number",
 						"password": "Please verify your account by re-entering your password:",
 						"cancel": "@:repeating.cancel",
+						"verify": "Verify",
 						"phone": "Phone Number",
 						"phoneExt": "<em>(you will use this to sign in)</em>",
 						"invalid": "Please enter a valid phone number",
@@ -742,10 +749,10 @@
   		},
   		"followUp": {
 	      "title": "Do you have any additional concerns about your DHCR letter?",
-	      "fields": [{
+	      "fields": {
 	        "prompt": "Are you rent stabilized?",
 	        "title":  "Rent stabilized:"
-	      }]
+	      }
   		}
   	},
   	"contactHarassment": {
@@ -770,11 +777,11 @@
 	    },
 	    "followUp": {
 	      "title": "How did your 311 call go?",
-	      "fields": [{
+	      "fields": {
 	        "prompt": "Enter your confirmation number:",
 	        "title": "Confirmation number:",
 	        "type": "text",
-	        "placeholder": "Begins with C1-1-, followed by 9 or 10 numbers." }]
+	        "placeholder": "Begins with C1-1-, followed by 9 or 10 numbers." }
 	    }
   	},
   	"contactNYCHA": {
@@ -787,11 +794,11 @@
 	    },
 	    "followUp": {
 	      "title": "How did your call to NYCHA go?",
-	      "fields": [{
+	      "fields": {
 	        "prompt": "Enter your tracking number:",
 	        "title": "Tracking number:",
 	        "placeholder": "The number you were given to track your Work Order."
-	      }]
+	      }
 	    }
   	},
   	"contactLegalServices": {

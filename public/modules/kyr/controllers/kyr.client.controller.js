@@ -1,8 +1,12 @@
 
 'use strict';
 
-angular.module('kyr').controller('KyrController', ['kyrService', '$scope', 'Pdf',
-	function(kyrService, $scope, Pdf) {
+angular.module('kyr').controller('KyrController', ['kyrService', '$scope', 'Pdf', '$translate',
+	function(kyrService, $scope, Pdf, $translate) {
+		$scope.lang = $translate.use();
+
+		console.log($scope.lang);
+
 		var emptyArray = [];
 		$scope.kyrResponse;
 

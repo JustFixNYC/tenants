@@ -7,11 +7,11 @@
 	<form data-ng-submit="signin()" autocomplete="off" novalidate>
     <div class="form-group">
       <label for="phone">{{'modules.users.views.authentication.signIn.phone' | translate}}</label>
-      <input type="tel" id="phone" name="phone" class="form-control" data-ng-model="credentials.phone" placeholder="Phone Number" phone-input>
+      <input type="tel" id="phone" name="phone" class="form-control" data-ng-model="credentials.phone" placeholder="{{'modules.users.views.authentication.signIn.phone' | translate}}" phone-input>
     </div>
     <div class="form-group">
       <label for="password">{{'modules.users.views.authentication.signIn.password' | translate}}</label>
-      <input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Password">
+      <input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="{{'modules.users.views.authentication.signIn.password' | translate}}">
     </div>
 	  <div class="form-group">
 	    <button type="submit" class="btn btn-primary btn-block" go-to-top>{{'modules.users.views.authentication.signIn.signIn' | translate}}</button>

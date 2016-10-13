@@ -37,6 +37,7 @@
   					"photoWord": "Foto",
   					"description": "@:repeating.description",
   					"descriptionHeaderPlaceholder": "¡Añada aquí una actualizacion de estatos!",
+  					"descriptionBodyPlaceholder": "Please describe these issues in more detail.",
   					"descriptionPlaceholder": "Añada una breve descripción.",
   					"cancel": "@:repeating.cancel",
   					"add": "@:repeating.add"
@@ -120,7 +121,8 @@
   			},
   			"toDoItem": {
   				"tried": "He intentado esto",
-  				"dateOf": "Fecha de"
+  				"dateOf": "Fecha de",
+  				"followUp": " - Seguimiento"
   			}
   		},
   		"views": {
@@ -328,6 +330,9 @@
   			}
   		}
   	},
+  	"kyr": {
+  		"disclaimer": "<b>Relevo de responsabilidad:</b> La información que contiene JustFix.nyc no constituye asesoramiento legal y no deberá sustituir el asesoramiento de un abogado cualificado para impartir asesoramiento sobre asuntos legales con respecto a la vivienda. Podemos dirigirle a servicios legales gratuitos o de bajo costo, si es necesario."
+  	},
 		"onboarding": {
 			"partials": {
 				"additionalInfo": {
@@ -365,7 +370,7 @@
 					"apt": "Número de apartamento",
 					"aptError": "Introduzca su número de apartamento.",
 					"phone": "Teléfono <em>(utilizará esto para iniciar cada sesión)</em>",
-					"phoneNumber": "Phone Number",
+					"phoneNumber": "Número de teléfono",
 					"phoneError": "Introduzca su teléfono.",
 					"password": "Cree una contraseña para su cuenta <em>(deberá tener un mínimo de 6 caracteres)</em>",
 					"wrongPassword": "Cree una contraseña.",
@@ -403,6 +408,7 @@
 				"problemModal": {
 					"issue": "asunto",
 					"other": "Añadir otro",
+					"otherPlaceholder": "¿Cual es el problema?",
 					"cancel": "@:repeating.cancel",
 					"save": "Guardar"
 				}
@@ -488,6 +494,7 @@
 						"title": "Cambiar el número de teléfono",
 						"password": "Verifique su cuenta y reintroduzca su contraseña:",
 						"cancel": "@:repeating.cancel",
+						"verify": "Verificar",
 						"phone": "Número de teléfono",
 						"phoneExt": "<em>(utilizará esto para iniciar cada sesión)</em>",
 						"invalid": "Introduzca un número de teléfono válido",
@@ -744,10 +751,10 @@
   		},
   		"followUp": {
 	      "title": "¿Tiene alguna otra preocupación sobre su carta de la División de Vivienda y Renovación de la Comunidad (DHCR)?",
-	      "fields": [{
+	      "fields": {
 	        "prompt": "¿Usted tiene alquiler estabilizado?",
 	        "title":  "Alquiler estabilizado:"
-	      }]
+	      }
   		}
   	},
   	"contactHarassment": {
@@ -772,11 +779,11 @@
 	    },
 	    "followUp": {
 	      "title": "¿Cómo le fue en la llamada al 311?",
-	      "fields": [{
+	      "fields": {
 	        "prompt": "Introduzca su número de confirmación:",
 	        "title": "Número de confirmación:",
 	        "type": "texto",
-	        "placeholder": "Empieza con C1-1-, seguido por 9 o 10 números." }]
+	        "placeholder": "Empieza con C1-1-, seguido por 9 o 10 números." }
 	    }
   	},
   	"contactNYCHA": {
@@ -789,11 +796,11 @@
 	    },
 	    "followUp": {
 	      "title": "¿Cómo le fue en la llamada a la Autoridad de la Vivienda de la Ciudad de Nueva York (NYCHA)?",
-	      "fields": [{
+	      "fields": {
 	        "prompt": "Introduzca su número de rastreo:",
 	        "title": "Número de rastreo:",
 	        "placeholder": "El número que le dieron para rastrear su Orden de Trabajo."
-	      }]
+	      }
 	    }
   	},
   	"contactLegalServices": {
