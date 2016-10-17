@@ -239,7 +239,7 @@
   			"footer": {
   				"home": "Home",
   				"contact": "Contact",
-  				"manifesto": "Manifesto",
+  				"about": "About",
   				"donate": "@:repeating.donate",
   				"description": "<small><b>Disclaimer:</b> The information contained in JustFix.nyc does not constitute legal advice and must not be used as a substitute for the advice of a lawyer qualified to give advice on legal issues pertaining to housing. We can help direct you to free and/or low-cost legal services as necessary.</small>"
   			},
@@ -260,8 +260,8 @@
   				"signOut": "@:repeating.signOut"
   			},
   			"landing": {
-  				"bigText": "A digital paper trail for your housing issues.",
-  				"start": "Create an Account",
+  				"bigText": "JustFix.nyc is a digital paper trail for your housing issues.",
+  				"start": "Create a free account",
   				"twitter": "Follow us on Twitter!",
   				"how": "how it works",
   				"build": "Build Your Case",

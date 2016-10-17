@@ -242,7 +242,7 @@
   			"footer": {
   				"home": "Página principal",
   				"contact": "Contacto",
-  				"manifesto": "Manifiesto",
+  				"about": "Información",
           "donate": "@:repeating.donate",
   				"description": "<small><b>Relevo de responsabilidad:</b> La información que contiene JustFix.nyc no constituye asesoramiento legal y no deberá sustituir el asesoramiento de un abogado cualificado para impartir asesoramiento sobre asuntos legales con respecto a la vivienda. Podemos dirigirle a servicios legales gratuitos o de bajo costo, si es necesario.</small>"
   			},
@@ -263,8 +263,8 @@
   				"signOut": "@:repeating.signOut"
   			},
   			"landing": {
-  				"bigText": "Un rastro digital de documentos para sus problemas de vivienda.",
-  				"start": "Crear su cuenta",
+  				"bigText": "JustFix.nyc es un rastro digital de documentos para sus problemas de vivienda.",
+  				"start": "Crear su cuenta gratuita",
   				"twitter": "¡Síganos en Twitter!",
   				"how": "cómo funciona",
   				"build": "Fortalezca su caso",

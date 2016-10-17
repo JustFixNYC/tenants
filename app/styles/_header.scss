@@ -52,6 +52,9 @@ header {
     font-size: 20px;
     line-height: 20px;
 
+    & a {
+      color: #fff;
+    }
 
     @media (min-width: $screen-md-min) {
       font-size: 28px;
@@ -144,7 +147,7 @@ header {
     fill: $darkgray-dark;
   }
 
-  .header-btn {
+  .header-btn, .header-btn a {
     color: $darkgray-dark;
     border-color: $darkgray-dark;
   }

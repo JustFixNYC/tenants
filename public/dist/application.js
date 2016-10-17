@@ -84,13 +84,11 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     },
     'preferredLocale': 'en_US'
   })
-  // TODO: Build all translation stuff together
-  // enable logging for missing IDs
-  .config(["$translateProvider", function ($translateProvider) {
-    $translateProvider.useMissingTranslationHandlerLog();
-  }])
   // async loading for templates
   .config(["$translateProvider", "$translateSanitizationProvider", function ($translateProvider, $translateSanitizationProvider) {
+  	// enable logging for missing IDs
+    $translateProvider.useMissingTranslationHandlerLog();
+
     $translateProvider.useStaticFilesLoader({
         prefix: 'languages/locale-',// path to translations files
         suffix: '.json'// suffix, currently- extension of the translations
@@ -100,7 +98,6 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     $translateProvider.useLocalStorage();// saves selected language to localStorage
     // NOTE: This shit causes all sorts of issues with our UI-SREF attribute. Not recognized in any sanitizer module, and causes it to break
     $translateProvider.useSanitizeValueStrategy(null); // Prevent XSS
-    // TODO: Remove ngSanitize?
   }])
   // location of the locale settings
   .config(["tmhDynamicLocaleProvider", function (tmhDynamicLocaleProvider) {
@@ -128,7 +125,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
       return;
     };
   })
-  .run(["$rootScope", function($rootScope) {
+  .run(["$rootScope", "LOCALES", "$translate", "$location", "LocaleService", function($rootScope, LOCALES, $translate, $location, LocaleService) {
 
     // ensure that this happens on pageload
     // https://github.com/angular-ui/ui-router/issues/1307
@@ -136,7 +133,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
       switch(name) {
         case 'landing':
           $rootScope.headerInner = false;
-          $rootScope.headerLightBG = false;
+          $rootScope.headerLightBG = true;
           break;
         case 'manifesto':
           $rootScope.headerInner = false;
@@ -148,6 +145,25 @@ angular.module(ApplicationConfiguration.applicationModuleName)
           break;
       };
     };
+
+    var browserLanguage = navigator.language || navigator.userLanguage;
+
+    var langQuery = $location.search().lang;
+
+    if(!$location.search().hasOwnProperty('lang')) { // No language selected, defaults to english
+    	console.log('fired?')
+    	return;
+  	} else if(langQuery === 'es' || langQuery === 'es-mx') { // Spanish URL slightly wrong
+			$location.search('lang', 'es_mx');
+			LocaleService.setLocaleByName('es_mx');
+		}else if(langQuery === 'en' || langQuery === 'en-us') { // English url slightly wrong
+			$location.search('lang', 'en_US');
+			LocaleService.setLocaleByName('en_US');
+		} else if(LocaleService.checkIfLocaleIsValid(langQuery)){  // account for exactly-correct urls
+			LocaleService.setLocaleByName(langQuery);
+		} else { 														// Totally wrong lang query, default to english
+			$location.search('lang', '');
+  	}
 
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
 
@@ -243,7 +259,7 @@ angular.module('actions').controller('ActionsController', ['$scope', '$filter', 
     //$scope.authentication = Authentication;
     $scope.user = Authentication.user;
 
-    // 
+    //
     // $scope.userCompletedDetailsProgress = function() {
     //
     //   var prog = 0,
@@ -263,6 +279,9 @@ angular.module('actions').controller('ActionsController', ['$scope', '$filter', 
 
     $scope.list = function() {
       Actions.query(function(actions) {
+
+        console.log(actions);
+
         $scope.onceActions = $filter('filter')(actions, { $: 'once' }, true);
         $scope.recurringActions = $filter('filter')(actions, { $: 'recurring' }, true);
         $scope.legalActions = $filter('filter')(actions, { $: 'legal' }, true);
@@ -282,6 +301,8 @@ angular.module('actions').controller('AddDetailsController', ['$scope', '$filter
   $scope.newActivity = newActivity;
 
   $scope.issues = Problems.getUserIssuesByKey($scope.newActivity.key);
+
+  $scope.newActivity.keyTitle = 'checklist.' + $scope.newActivity.key + '.title';
 
   $scope.newActivity.problems = [{ issues: JSON.parse(JSON.stringify( $scope.issues, function( key, value ) {
         if( key === "$$hashKey" || key === "_id" ) {
@@ -308,7 +329,7 @@ angular.module('actions').controller('AddDetailsController', ['$scope', '$filter
     $scope.formSubmitted = true;
 
     if(isValid) {
-      $scope.newActivity.fields.push({ title: 'First experienced on:', value: $filter('date')($scope.newActivity.startDate, 'longDate') });
+      $scope.newActivity.fields.push({ title: 'modules.activity.views.listActivity.experienced', value: $filter('date')($scope.newActivity.startDate, 'longDate') });
       $modalInstance.close({ newActivity: $scope.newActivity });
     }
   };
@@ -655,11 +676,16 @@ angular.module('actions')
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
       controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
 
+      	$scope.user = Authentication.user;
+
       	$translate($scope.action.title).then(function(title) {
       		$scope.filterTitleHTML = function() { return $sce.trustAsHtml(title); };
       	});
         // $scope.filterTitleHTML = function() { return $sce.trustAsHtml($scope.action.title); };
         $translate($scope.action.content).then(function(content) {
+	        if(content.indexOf('user.borough') > -1) {
+	        	content = content.replace('user.borough', $scope.user.borough);
+	        }
       		$scope.filterContentHTML = function() { return $sce.trustAsHtml(content); };
       	});
         // $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
@@ -792,7 +818,7 @@ angular.module('actions')
 
             // if(addDOA && compareDates(scope.newActivity.startDate, new Date())) {
             if(addDOA) {
-              scope.newActivity.fields.unshift({ title: 'This occurred on:', value: $filter('date')(scope.newActivity.startDate, 'longDate') });
+              scope.newActivity.fields.unshift({ title: 'modules.actions.partials.toDoItem.occurredDate', value: $filter('date')(scope.newActivity.startDate, 'longDate') });
             }
 
             $rootScope.loading = true;
@@ -814,11 +840,11 @@ angular.module('actions')
 
               // load new actions
               // var idx = scope.$index;
-              console.log('key', scope.newActivity.key);
+              // console.log('key', scope.newActivity.key);
               var newActions = Actions.query(
                 {key: scope.newActivity.key},
                 function() {
-                  console.log('new actions', newActions);
+                  // console.log('new actions', newActions);
                   newActions.forEach(function (action) {
                     var section = getSection(action.type);
                     section.push(action);
@@ -1844,7 +1870,7 @@ angular.module('core').directive('jumpTo', ['$document', function($document) {
 }]);
 'use strict';
 
-angular.module('core').directive('languageSelect', ["LocaleService", "$window", function (LocaleService, $window) { 'use strict';
+angular.module('core').directive('languageSelect', ["LocaleService", "$window", "$location", function (LocaleService, $window, $location) { 'use strict';
   return {
     restrict: 'A',
     replace: true,
@@ -1857,10 +1883,43 @@ angular.module('core').directive('languageSelect', ["LocaleService", "$window", 
 
       $scope.changeLanguage = function (locale) {
         LocaleService.setLocaleByDisplayName(locale);
+        // FYI: locale changes happens in LocaleService at /services/locale.client.service.js
       };
     }]
   };
 }]);
+'use strict';
+
+angular.module('core').directive('languageToggle', ["LocaleService", "$window", "$location", function (LocaleService, $window, $location) { 'use strict';
+  return {
+    restrict: 'A',
+    replace: true,
+    templateUrl: 'modules/core/partials/language-toggle.client.view.html',
+    controller: ["$scope", function ($scope) {
+
+
+      var getLocaleName = function() {
+        $scope.currentLocaleDisplayName = LocaleService.getLocaleDisplayName();
+
+        if($scope.currentLocaleDisplayName == "Español") {
+          $scope.newLocaleName = "English";
+        } else {
+          $scope.newLocaleName = "Español";
+        }
+
+        // $scope.$apply();
+      }
+      getLocaleName();
+
+      $scope.changeLanguage = function (locale) {
+        LocaleService.setLocaleByDisplayName(locale);
+        getLocaleName();
+        // FYI: locale changes happens in LocaleService at /services/locale.client.service.js
+      };
+    }]
+  };
+}]);
+
 'use strict';
 
 angular.module('core').directive('loading', ["$document", function($document) {
@@ -2217,7 +2276,7 @@ angular.module('core').filter('trustTranslate', ['$sce', '$filter',
 'use strict';
 
 //Menu service used for managing  menus
-angular.module('core').service('LocaleService', ["$translate", "LOCALES", "$rootScope", "tmhDynamicLocale", function ($translate, LOCALES, $rootScope, tmhDynamicLocale) {
+angular.module('core').service('LocaleService', ["$translate", "LOCALES", "$rootScope", "tmhDynamicLocale", "$location", function ($translate, LOCALES, $rootScope, tmhDynamicLocale, $location) {
 
   // PREPARING LOCALES INFO
   var localesObj = LOCALES.locales;
@@ -2255,6 +2314,7 @@ angular.module('core').service('LocaleService', ["$translate", "LOCALES", "$root
   // on successful applying translations by angular-translate
   $rootScope.$on('$translateChangeSuccess', function (event, data) {
     document.documentElement.setAttribute('lang', data.language);// sets "lang" attribute to html
+    $location.search('lang', $translate.use());
   
      // asking angular-dynamic-locale to load and apply proper AngularJS $locale setting
     tmhDynamicLocale.set(data.language.toLowerCase().replace(/_/g, '-'));
@@ -2270,6 +2330,12 @@ angular.module('core').service('LocaleService', ["$translate", "LOCALES", "$root
           _LOCALES_DISPLAY_NAMES.indexOf(localeDisplayName)// get locale index
           ]
       );
+    },
+    setLocaleByName: function(localeName) {
+    	setLocale(localeName);
+    },
+    checkIfLocaleIsValid: function(locale) {
+    	return checkLocaleIsValid(locale);
     },
     getLocalesDisplayNames: function () {
       return _LOCALES_DISPLAY_NAMES;
@@ -2778,16 +2844,27 @@ angular.module('kyr').controller('KyrDetailController', ['$scope', '$stateParams
 
 'use strict';
 
-angular.module('kyr').controller('KyrController', ['kyrService', '$scope', 'Pdf',
-	function(kyrService, $scope, Pdf) {
+angular.module('kyr').controller('KyrController', ['kyrService', '$scope', 'Pdf', '$translate',
+	function(kyrService, $scope, Pdf, $translate) {
+		$scope.lang = $translate.use();
+
 		var emptyArray = [];
 		$scope.kyrResponse;
 
-		kyrService.fetch().then(function(data){
-			$scope.kyrResponse = data;
-		}, function(err) {
-			console.log(err);
-		});
+		if($scope.lang === 'es_mx') {
+			console.log('true');
+			kyrService.fetchEs().then(function(data){
+				$scope.kyrResponse = data;
+			}, function(err){
+				console.log(err);
+			})
+		} else {
+			kyrService.fetch().then(function(data){
+				$scope.kyrResponse = data;
+			}, function(err) {
+				console.log(err);
+			});
+		}
 		
 	}]);
 
@@ -2819,6 +2896,18 @@ angular.module('kyr').factory('kyrService', ['$resource', '$http', '$q',
 				deferred.reject(err);
 			});
 			return deferred.promise;
+		};
+
+		this.fetchEs = function() {
+			var deferred = $q.defer();
+			$http.get('/data/kyr_es.json').then(function(data){
+				var finalData = data.data;
+				deferred.resolve(finalData);
+			}, function(err) {
+				console.log(err);
+				deferred.reject(err);
+			});
+			return deferred.promise;	
 		};
 
 		// Query single kyr
@@ -3090,7 +3179,6 @@ angular.module('onboarding').directive('selectionList', function selectionList(/
 	    		}
 	  			thisWrapped.addClass('active');
 	  			scope.process = this.getAttribute('process');
-	  			console.log(scope);
     		});
     	};
 
