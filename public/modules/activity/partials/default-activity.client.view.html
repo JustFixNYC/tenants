@@ -5,7 +5,7 @@
   </div> -->
 
   <div data-ng-if="activity.fields.length">
-    <p data-ng-repeat="field in activity.fields"><b>{{field.title}}</b> {{field.value}}</p>
+    <p data-ng-repeat="field in activity.fields">{{field | json}}<b>{{field.title | translate}}</b> {{field.value}}</p>
   </div>
 
   <div data-ng-if="activity.relatedProblems.length">
@@ -21,7 +21,7 @@
     </div>
   </div>
 
-  <p ng-if="activity.description">{{ activity.description | translate }}</p>
+  <p ng-if="activity.description">{{ activity.description }}</p>
 
   <div class="row thumb-list">
       <div data-ng-repeat="photo in activity.photos" class="col-xs-4">

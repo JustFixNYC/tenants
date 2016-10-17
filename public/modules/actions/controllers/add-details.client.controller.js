@@ -35,7 +35,7 @@ angular.module('actions').controller('AddDetailsController', ['$scope', '$filter
     $scope.formSubmitted = true;
 
     if(isValid) {
-      $scope.newActivity.fields.push({ title: 'First experienced on:', value: $filter('date')($scope.newActivity.startDate, 'longDate') });
+      $scope.newActivity.fields.push({ title: 'modules.activity.views.listActivity.experienced', value: $filter('date')($scope.newActivity.startDate, 'longDate') });
       $modalInstance.close({ newActivity: $scope.newActivity });
     }
   };

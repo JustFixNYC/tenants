@@ -72,8 +72,8 @@
                     <!-- <textarea name="field" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="3" maxlength="500" placeholder="Briefly describe what happened."></textarea> -->
                 </div>
                 <div class="controls" data-ng-if="field.type === 'binary'">
-                  <label class="btn btn-default" name="{{ 'field' + $index }}" data-ng-model="newActivity.fields[$index].value" btn-radio="'yes'" required>Yes</label>
-                  <label class="btn btn-default" name="{{ 'field' + $index }}" data-ng-model="newActivity.fields[$index].value" btn-radio="'no'" required>No</label>
+                  <label class="btn btn-default" name="{{ 'field' + $index }}" data-ng-model="newActivity.fields[$index].value" btn-radio="'yes'" required>{{'repeating.yes' | translate}}</label>
+                  <label class="btn btn-default" name="{{ 'field' + $index }}" data-ng-model="newActivity.fields[$index].value" btn-radio="'no'" required>{{'repeating.no' | translate}}</label>
                 </div>
               </div>
             </div>
@@ -83,7 +83,7 @@
                     <textarea name="description" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="3" maxlength="500" placeholder="{{ 'modules.actions.partials.statusUpdate.description' | translate}}"></textarea>
                 </div>
             </div>
-            <span class="text-danger" ng-show="followUpSubmitted && followUpForm.$invalid">Please add the required fields.</span>
+            <span class="text-danger" ng-show="followUpSubmitted && followUpForm.$invalid">{{ 'modules.actions.partials.toDoItem.enterRequired' | translate}}</span>
       </div>
       <div class="row">
         <div class="col-xs-4">
@@ -103,6 +103,6 @@
     </form>
   </div>
 </div>
-<alert data-ng-show="action.completed" data-ng-show="!action.closeAlert" type="success" close="closeAlert()"><strong>Well done!</strong> We've added <em>{{ action.title | translate}}</em> to your <a ui-sref="listActivity">Case History</a>.</alert>
-<alert data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong! Please <a ui-sref="contact">Contact Us</a> to report this issue.</alert>
+<alert data-ng-show="action.completed" data-ng-show="!action.closeAlert" type="success" close="closeAlert()"><strong>{{ 'modules.actions.partials.toDoItem.wellDone' | translate}}</strong> {{ 'modules.actions.partials.toDoItem.added' | translate}} <em>{{ action.title | translate}}</em> {{ 'modules.actions.partials.toDoItem.to' | translate}} <a ui-sref="listActivity">{{'repeating.caseHistory' | translate}}</a>.</alert>
+<alert data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true" ng-bind-html="'modules.actions.partials.toDoItem.error' | trustTranslate" compile-template></alert>
 <!-- <alert data-ng-if="error.length" data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert> -->

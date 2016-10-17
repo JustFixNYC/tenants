@@ -23,7 +23,9 @@
 		"signIn": "Sign In",
 		"continue": "Continue",
 		"back": "Back",
-		"close": "Close"
+		"close": "Close",
+		"yes": "Yes",
+		"no": "No"
   },
   "modules": {
   	"actions": {
@@ -122,7 +124,13 @@
   			"toDoItem": {
   				"tried": "I've tried this",
   				"dateOf": "Date of",
-  				"followUp": " - Follow Up"
+  				"followUp": " - Follow Up",
+  				"enterRequired": "Please add the required fields.",
+  				"wellDone": "Well done!",
+  				"added": "We've added",
+  				"to": "to your",
+  				"error": "We're sorry, something went wrong! Please <a ui-sref=contact>Contact Us</a> to report this issue.",
+  				"occurredDate": "This occurred on:"
   			}
   		},
   		"views": {
@@ -176,7 +184,8 @@
 	  			"shareLinkText": "Share Link (on):",
 	  			"alert": "This allows you to share your Case History with advocates. <b>It does not give access to the rest of your account.</b>",
 	  			"labelShare": "Copy and paste this link to share your Case History: ",
-	  			"empty": "Nothing has been added to your case yet! <a ui-sref=\"listActions\">Click here</a> to see some things to do."
+	  			"empty": "Nothing has been added to your case yet! <a ui-sref=\"listActions\">Click here</a> to see some things to do.",
+	  			"experienced": "First experienced on:"
 	  		}
 	  	},
 	  	"other": {
