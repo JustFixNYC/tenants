@@ -872,7 +872,7 @@
   	"HPAction": {
 	    "title": "Acción de HP",
 	    "activityTitle": "Acción de HP",
-	    "content": "Las Acciones de HP son procedimientos en la corte de vivienda que ofrecen resoluciones rápidas y económicas a los problemas de reparaciones y recurso o remedios legales si su casero no cumple. <b>Debe ir a la corte de vivienda de {{user.borough}} para presentar la Acción de HP.</b>",
+	    "content": "Las Acciones de HP son procedimientos en la corte de vivienda que ofrecen resoluciones rápidas y económicas a los problemas de reparaciones y recurso o remedios legales si su casero no cumple. <b>Debe ir a la corte de vivienda de user.borough para presentar la Acción de HP.</b>",
 	    "cta": {
 	      "buttonTitle": "Más información"
 	    },

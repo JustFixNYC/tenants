@@ -869,7 +869,7 @@
   	"HPAction": {
 	    "title": "HP Action",
 	    "activityTitle": "HP Action",
-	    "content": "HP Actions are housing court proceedings that offer quick and cheap resolution to repair issues, and legal recourse if your landlord doesn't comply. <b>You must go to the {{user.borough}} Housing Court to file the HP Action.</b>",
+	    "content": "HP Actions are housing court proceedings that offer quick and cheap resolution to repair issues, and legal recourse if your landlord doesn't comply. <b>You must go to the user.borough Housing Court to file the HP Action.</b>",
 	    "cta": {
 	      "buttonTitle": "Get info"
 	    },
