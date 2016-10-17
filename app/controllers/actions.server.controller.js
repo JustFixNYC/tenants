@@ -72,7 +72,7 @@ var getAreaActions = function(user) {
     if(!_.contains(user.actionFlags, p.key)) {
       areaActions.push({
         title: 'actions.addDetails.' + p.key + '.title',
-        activityTitle: 'actions.addDetails.' + p.key + ' .activityTitle',
+        activityTitle: 'actions.addDetails.' + p.key + '.activityTitle',
         content: 'actions.addDetails.' + p.key + '.content',
         key: p.key,
         addIf: ['initial'],
