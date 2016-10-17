@@ -83,26 +83,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
       return;
     };
   })
-  .run(function($rootScope, LOCALES, $translate, $location, LocaleService) {
-
-    // ensure that this happens on pageload
-    // https://github.com/angular-ui/ui-router/issues/1307
-    var setHeaderState = function(name) {
-      switch(name) {
-        case 'landing':
-          $rootScope.headerInner = false;
-          $rootScope.headerLightBG = true;
-          break;
-        case 'manifesto':
-          $rootScope.headerInner = false;
-          $rootScope.headerLightBG = true;
-          break;
-        default:
-          $rootScope.headerInner = true;
-          $rootScope.headerLightBG = false;
-          break;
-      };
-    };
+  .run(function($rootScope, $location, LocaleService) {
 
     var browserLanguage = navigator.language || navigator.userLanguage;
 
@@ -127,9 +108,33 @@ angular.module(ApplicationConfiguration.applicationModuleName)
 			$location.search('lang', '');
   	}
 
-    $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+    // ensure that this happens on pageload
+    // https://github.com/angular-ui/ui-router/issues/1307
+    var setHeaderState = function(name) {
+      console.log('name', name);
+      switch(name) {
+        case 'landing':
+          $rootScope.headerInner = false;
+          $rootScope.headerLightBG = true;
+          break;
+        case 'manifesto':
+          $rootScope.headerInner = false;
+          $rootScope.headerLightBG = true;
+          break;
+        default:
+          $rootScope.headerInner = true;
+          $rootScope.headerLightBG = false;
+          break;
+      };
+    };
+    setHeaderState('landing');
+
+    $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
 
       $rootScope.state = toState.name;
+
+      console.log(toState.name);
+
       if(toState.data && toState.data.disableBack) {
         $rootScope.showBack = false;
       } else {

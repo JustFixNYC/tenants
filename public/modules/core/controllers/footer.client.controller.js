@@ -3,6 +3,8 @@
 angular.module('core').controller('FooterController', ['$scope', '$window', 'Authentication',
   function($scope, $window, Authentication) {
 
+    $scope.authentication = Authentication;
+
     var links = {
       actions : {
         link: 'listActions',

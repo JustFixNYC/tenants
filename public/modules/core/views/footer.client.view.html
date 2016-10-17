@@ -11,7 +11,8 @@
   <div class="footer-main container">
     <ul class="list-inline">
       <li><a twitter-follow class="twitter-link"></a></li>
-      <li><a ui-sref="home">{{'modules.core.views.footer.home' | translate}}</a></li>
+      <li><a ui-sref="home" ng-if="authentication.user">{{'modules.core.views.footer.home' | translate}}</a></li>
+      <li><a ui-sref="landing" ng-if="!authentication.user">{{'modules.core.views.footer.home' | translate}}</a></li>
       <li><a ui-sref="contact">{{'modules.core.views.footer.contact' | translate}}</a></a></li>
       <li><a href="http://www.justfix.nyc">{{'modules.core.views.footer.about' | translate}}</a></a></li>
       <li><a href="https://www.nycharities.org/give/donate.aspx?cc=4125" target="_blank" ga-event="Donate,click,Footer">{{'modules.core.views.footer.donate' | translate}}</a></li>
