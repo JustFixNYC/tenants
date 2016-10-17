@@ -163,6 +163,17 @@ header {
     border-color: $darkgray-dark;
   }
 }
+#header-wrapper.inner {
+
+  .header-brand > .logo > svg * {
+    fill: #fff;
+  }
+
+  .header-btn, .header-btn.header-btn-main, .header-btn a {
+    color: #fff;
+    border-color: #fff;
+  }
+}
 
 
 .sign-in-button {
