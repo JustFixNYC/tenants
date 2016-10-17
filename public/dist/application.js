@@ -125,11 +125,34 @@ angular.module(ApplicationConfiguration.applicationModuleName)
       return;
     };
   })
-  .run(["$rootScope", "LOCALES", "$translate", "$location", "LocaleService", function($rootScope, LOCALES, $translate, $location, LocaleService) {
+  .run(["$rootScope", "$location", "LocaleService", function($rootScope, $location, LocaleService) {
+
+    var browserLanguage = navigator.language || navigator.userLanguage;
+
+    var langQuery = $location.search().lang;
+    var userLang = navigator.language || navigator.userLanguage;
+
+    if(!$location.search().hasOwnProperty('lang')) { // No language selected, check if browser lang is true
+    	if(LocaleService.checkIfLocaleIsValid(userLang)) {
+    		LocaleService.setLocaleByName(userLang);
+    	}
+    	return;
+  	} else if(langQuery === 'es' || langQuery === 'es-mx') { // Spanish URL slightly wrong
+			$location.search('lang', 'es_mx');
+			LocaleService.setLocaleByName('es_mx');
+		}else if(langQuery === 'en' || langQuery === 'en-us') { // English url slightly wrong
+			$location.search('lang', 'en_US');
+			LocaleService.setLocaleByName('en_US');
+		} else if(LocaleService.checkIfLocaleIsValid(langQuery)){  // account for exactly-correct urls
+			LocaleService.setLocaleByName(langQuery);
+		} else { 														// Totally wrong lang query, default to english
+			$location.search('lang', '');
+  	}
 
     // ensure that this happens on pageload
     // https://github.com/angular-ui/ui-router/issues/1307
     var setHeaderState = function(name) {
+      console.log('name', name);
       switch(name) {
         case 'landing':
           $rootScope.headerInner = false;
@@ -145,29 +168,14 @@ angular.module(ApplicationConfiguration.applicationModuleName)
           break;
       };
     };
+    setHeaderState('landing');
 
-    var browserLanguage = navigator.language || navigator.userLanguage;
-
-    var langQuery = $location.search().lang;
-
-    if(!$location.search().hasOwnProperty('lang')) { // No language selected, defaults to english
-    	console.log('fired?')
-    	return;
-  	} else if(langQuery === 'es' || langQuery === 'es-mx') { // Spanish URL slightly wrong
-			$location.search('lang', 'es_mx');
-			LocaleService.setLocaleByName('es_mx');
-		}else if(langQuery === 'en' || langQuery === 'en-us') { // English url slightly wrong
-			$location.search('lang', 'en_US');
-			LocaleService.setLocaleByName('en_US');
-		} else if(LocaleService.checkIfLocaleIsValid(langQuery)){  // account for exactly-correct urls
-			LocaleService.setLocaleByName(langQuery);
-		} else { 														// Totally wrong lang query, default to english
-			$location.search('lang', '');
-  	}
-
-    $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+    $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
 
       $rootScope.state = toState.name;
+
+      console.log(toState.name);
+
       if(toState.data && toState.data.disableBack) {
         $rootScope.showBack = false;
       } else {
@@ -1427,6 +1435,7 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
         $rootScope.globalStyles = '';
         $state.go('home');
       }
+
       if(!Authentication.user && toState.data && toState.data.protected) {
       // if(toState.data && toState.data.protected) {
         event.preventDefault();
@@ -1525,6 +1534,8 @@ angular.module('core').controller('ContactController', ['$rootScope', '$scope', 
 
 angular.module('core').controller('FooterController', ['$scope', '$window', 'Authentication',
   function($scope, $window, Authentication) {
+
+    $scope.authentication = Authentication;
 
     var links = {
       actions : {
