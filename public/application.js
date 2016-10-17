@@ -107,9 +107,13 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     var browserLanguage = navigator.language || navigator.userLanguage;
 
     var langQuery = $location.search().lang;
+    var userLang = navigator.language || navigator.userLanguage;
 
-    if(!$location.search().hasOwnProperty('lang')) { // No language selected, defaults to english
-    	console.log('fired?')
+    if(!$location.search().hasOwnProperty('lang')) { // No language selected, check if browser lang is true
+    	console.log(userLang);
+    	if(LocaleService.checkIfLocaleIsValid(userLang)) {
+    		LocaleService.setLocaleByName(userLang);
+    	}
     	return;
   	} else if(langQuery === 'es' || langQuery === 'es-mx') { // Spanish URL slightly wrong
 			$location.search('lang', 'es_mx');
