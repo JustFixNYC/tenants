@@ -126,29 +126,6 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     };
   })
   .run(["$rootScope", "$location", "LocaleService", function($rootScope, $location, LocaleService) {
-
-    var browserLanguage = navigator.language || navigator.userLanguage;
-
-    var langQuery = $location.search().lang;
-    var userLang = navigator.language || navigator.userLanguage;
-
-    if(!$location.search().hasOwnProperty('lang')) { // No language selected, check if browser lang is true
-    	if(LocaleService.checkIfLocaleIsValid(userLang)) {
-    		LocaleService.setLocaleByName(userLang);
-    	}
-    	return;
-  	} else if(langQuery === 'es' || langQuery === 'es-mx') { // Spanish URL slightly wrong
-			$location.search('lang', 'es_mx');
-			LocaleService.setLocaleByName('es_mx');
-		}else if(langQuery === 'en' || langQuery === 'en-us') { // English url slightly wrong
-			$location.search('lang', 'en_US');
-			LocaleService.setLocaleByName('en_US');
-		} else if(LocaleService.checkIfLocaleIsValid(langQuery)){  // account for exactly-correct urls
-			LocaleService.setLocaleByName(langQuery);
-		} else { 														// Totally wrong lang query, default to english
-			$location.search('lang', '');
-  	}
-
     // ensure that this happens on pageload
     // https://github.com/angular-ui/ui-router/issues/1307
     var setHeaderState = function(name) {
@@ -184,6 +161,30 @@ angular.module(ApplicationConfiguration.applicationModuleName)
 
       setHeaderState(toState.name);
     });
+  }])
+  .run(["$rootScope", "$location", "LocaleService", function($rootScope, $location, LocaleService) {
+
+    var browserLanguage = navigator.language || navigator.userLanguage;
+
+    var langQuery = $location.search().lang;
+    var userLang = navigator.language || navigator.userLanguage;
+
+    if(!$location.search().hasOwnProperty('lang')) { // No language selected, check if browser lang is true
+    	if(LocaleService.checkIfLocaleIsValid(userLang)) {
+    		LocaleService.setLocaleByName(userLang);
+    	}
+    	return;
+  	} else if(langQuery === 'es' || langQuery === 'es-mx') { // Spanish URL slightly wrong
+			$location.search('lang', 'es_mx');
+			LocaleService.setLocaleByName('es_mx');
+		}else if(langQuery === 'en' || langQuery === 'en-us') { // English url slightly wrong
+			$location.search('lang', 'en_US');
+			LocaleService.setLocaleByName('en_US');
+		} else if(LocaleService.checkIfLocaleIsValid(langQuery)){  // account for exactly-correct urls
+			LocaleService.setLocaleByName(langQuery);
+		} else { 														// Totally wrong lang query, default to english
+			$location.search('lang', '');
+  	}
   }]);
 
 
