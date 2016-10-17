@@ -16,7 +16,7 @@ angular.module('actions')
         // $scope.filterTitleHTML = function() { return $sce.trustAsHtml($scope.action.title); };
         $translate($scope.action.content).then(function(content) {
 	        if(content.indexOf('user.borough') > -1) {
-	        	content.replace('user.borough', $scope.user.borough);
+	        	content = content.replace('user.borough', $scope.user.borough);
 	        }
       		$scope.filterContentHTML = function() { return $sce.trustAsHtml(content); };
       	});
