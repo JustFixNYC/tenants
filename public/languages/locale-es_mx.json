@@ -14,9 +14,10 @@
 		"takeAction": "Tomar acción",
 		"listActions": "@:repeating.takeAction",
 		"caseHistory": "Historial del Caso",
-		"issueChecklist": "Lista de revisión de asuntos",
+		"gatherEvidence": "<span class=\"glyphicon glyphicon-camera pull-left\"></span> Colectar pruebas",
+		"issueChecklist": "Asuntos de casa",
 		"profile": "Perfil",
-		"findHelp": "Buscar ayuda",
+		"findHelp": "Buscar ayuda local",
 		"kyr": "Conozca sus derechos",
 		"call": "Llamar",
 		"signIn": "Iniciar sesión",
@@ -121,7 +122,7 @@
   				"error": "Lo sentimos, ¡pero algo no funcionó! <a ui-sref=\"contact\">Contáctenos</a> para reportar el problema."
   			},
   			"toDoItem": {
-  				"tried": "He intentado esto",
+  				"tried": "Hice esto",
   				"dateOf": "Fecha de",
   				"followUp": " - Seguimiento"
   			}
@@ -688,68 +689,68 @@
   "actions": {
   	"addDetails": {
   		"bedrooms": {
-  			"title": "Add Bedroom Details",
-  			"activityTitle": "Added Bedroom Details",
-  			"content": "Upload photos and information about your <b>bedroom</b> issues. The more documentation you have, the stronger your case will be!",
+  			"title": "Añada detalles de Dormitorios",
+  			"activityTitle": "Añadí detalles de Dormitorios",
+  			"content": "Suba fotos e información sobre las problemas de <b>dormitorios</b>. Entre más documentación tenga, ¡más fuerte será su caso!",
   			"cta": {
-  				"buttonTitle": "<span class=\"glyphicon glyphicon-camera pull-left\"></span> Gather Evidence"
+  				"buttonTitle": "@:repeating.gatherEvidence"
   			}
   		},
   		"kitchen": {
-  			"title": "Add Kitchen Details",
-  			"activityTitle": "Added Kitchen Details",
-  			"content": "Upload photos and information about your <b>kitchen</b> issues. The more documentation you have, the stronger your case will be!",
+        "title": "Añada detalles de Cocina",
+  			"activityTitle": "Añadí detalles de Cocina",
+  			"content": "Suba fotos e información sobre las problemas de <b>cocina</b>. Entre más documentación tenga, ¡más fuerte será su caso!",
   			"cta": {
-  				"buttonTitle": "<span class=\"glyphicon glyphicon-camera pull-left\"></span> Gather Evidence"
+  				"buttonTitle": "@:repeating.gatherEvidence"
   			}
   		},
   		"livingRoom": {
-  			"title": "Add Living Room Details",
-  			"activityTitle": "Added Living Room Details",
-  			"content": "Upload photos and information about your <b>living room</b> issues. The more documentation you have, the stronger your case will be!",
+        "title": "Añada detalles de Sala",
+  			"activityTitle": "Añadí detalles de Sala",
+  			"content": "Suba fotos e información sobre las problemas de <b>sala</b>. Entre más documentación tenga, ¡más fuerte será su caso!",
   			"cta": {
-  				"buttonTitle": "<span class=\"glyphicon glyphicon-camera pull-left\"></span> Gather Evidence"
+  				"buttonTitle": "@:repeating.gatherEvidence"
   			}
   		},
   		"bathroom": {
-  			"title": "Add Bathroom Details",
-  			"activityTitle": "Added Bathroom Details",
-  			"content": "Upload photos and information about your <b>bathroom</b> issues. The more documentation you have, the stronger your case will be!",
+        "title": "Añada detalles de Baño",
+  			"activityTitle": "Añadí detalles de Baño",
+  			"content": "Suba fotos e información sobre las problemas de <b>baño</b>. Entre más documentación tenga, ¡más fuerte será su caso!",
   			"cta": {
-  				"buttonTitle": "<span class=\"glyphicon glyphicon-camera pull-left\"></span> Gather Evidence"
+  				"buttonTitle": "@:repeating.gatherEvidence"
   			}
   		},
   		"entireHome": {
-  			"title": "Add Entire Home Details",
-  			"activityTitle": "Added Entire Home Details",
-  			"content": "Upload photos and information about your <b>entire home</b> issues. The more documentation you have, the stronger your case will be!",
+        "title": "Añada detalles de Toda la casa",
+  			"activityTitle": "Añadí detalles de Toda la casa",
+  			"content": "Suba fotos e información sobre las problemas de <b>toda la casa</b>. Entre más documentación tenga, ¡más fuerte será su caso!",
   			"cta": {
-  				"buttonTitle": "<span class=\"glyphicon glyphicon-camera pull-left\"></span> Gather Evidence"
+  				"buttonTitle": "@:repeating.gatherEvidence"
   			}
   		},
   		"publicAreas": {
-  			"title": "Add Public Areas Details",
-  			"activityTitle": "Added Public Areas Details",
-  			"content": "Upload photos and information about your <b>public areas</b> issues. The more documentation you have, the stronger your case will be!",
+        "title": "Añada detalles de Áreas públicas",
+  			"activityTitle": "Añadí detalles de Áreas públicas",
+  			"content": "Suba fotos e información sobre las problemas de <b>áreas públicas</b>. Entre más documentación tenga, ¡más fuerte será su caso!",
   			"cta": {
-  				"buttonTitle": "<span class=\"glyphicon glyphicon-camera pull-left\"></span> Gather Evidence"
+  				"buttonTitle": "@:repeating.gatherEvidence"
   			}
   		},
   		"landlordIssues": {
-  			"title": "Add Landlord Issues Details",
-  			"activityTitle": "Added Landlord Issues Details",
-  			"content": "Upload photos and information about your <b>landlord issues</b> issues. The more documentation you have, the stronger your case will be!",
+        "title": "Añada detalles de Casero",
+  			"activityTitle": "Añadí detalles de Casero",
+  			"content": "Suba fotos e información sobre las problemas de <b>casero</b>. Entre más documentación tenga, ¡más fuerte será su caso!",
   			"cta": {
-  				"buttonTitle": "<span class=\"glyphicon glyphicon-camera pull-left\"></span> Gather Evidence"
+  				"buttonTitle": "@:repeating.gatherEvidence"
   			}
   		}
   	},
   	"getRentalHistory": {
   		"title": "Obtener su Historial de Alquiler",
   		"activityTitle": "Historial de Alquiler solicitado",
-  		"content": "<b>Parece que tiene alquiler estabilizado.</b> Asegúrese y pida su historial de alquiler.",
+  		"content": "<b>Parece que tiene alquiler estabilizado.</b> Asegúrese y pida su historial de alquiler de la División de Vivienda y Renovación de la Comunidad (DHCR).",
   		"cta": {
-  			"buttonTitle": "Contactar a la DHCR"
+  			"buttonTitle": "Pedir"
   		},
   		"followUp": {
 	      "title": "¿Tiene alguna otra preocupación sobre su carta de la División de Vivienda y Renovación de la Comunidad (DHCR)?",
@@ -863,7 +864,7 @@
 	    "activityTitle": "Aplicación de la División de Vivienda y Renovación de la Comunidad (DHCR) por Disminución de Servicios",
 	    "content": "Para solicitar una reducción de alquiler para su <b>alquiler estabilizado</b>, debe presentar una querella formal a la División de Vivienda y Renovación de la Comunidad (DHCR). ¡Utilice su <b>Historial del Caso</b> para rellenar este formulario!",
 	    "cta": {
-	      "buttonTitle": "Vea el formulario"
+	      "buttonTitle": "Vea más"
 	    },
 	    "followUp": {
 	      "title": "¿Ha sabido algo de la División de Vivienda y Renovación de la Comunidad (DHCR)?"
@@ -874,7 +875,7 @@
 	    "activityTitle": "Acción de HP",
 	    "content": "Las Acciones de HP son procedimientos en la corte de vivienda que ofrecen resoluciones rápidas y económicas a los problemas de reparaciones y recurso o remedios legales si su casero no cumple. <b>Debe ir a la corte de vivienda de user.borough para presentar la Acción de HP.</b>",
 	    "cta": {
-	      "buttonTitle": "Más información"
+	      "buttonTitle": "Más info"
 	    },
 	    "followUp": {
 	      "title": "¿Ya fue a la corte?"
