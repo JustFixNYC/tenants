@@ -141,18 +141,28 @@ header {
   }
 }
 
-#header-wrapper.light-bg {
+// #header-wrapper.light-bg {
+//
+//   .header-brand > .logo > svg * {
+//     fill: $darkgray-dark;
+//   }
+//
+//   .header-btn, .header-btn a {
+//     color: $darkgray-dark;
+//     border-color: $darkgray-dark;
+//   }
+// }
+#header-wrapper {
 
   .header-brand > .logo > svg * {
     fill: $darkgray-dark;
   }
 
-  .header-btn, .header-btn a {
+  .header-btn, .header-btn.header-btn-main, .header-btn a {
     color: $darkgray-dark;
     border-color: $darkgray-dark;
   }
 }
-
 
 
 .sign-in-button {
