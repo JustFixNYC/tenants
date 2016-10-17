@@ -112,7 +112,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
   	} else {
   		
   		// account for mostly-correct URLS
-  		if($location.search().lang === 'es' || 'es-mx') {
+  		if($location.search().lang === 'es' || $location.search.lang === 'es-mx') {
   			$location.search('lang', 'es_mx');
   		}else if($location.search.lang === 'en' || $location.search.lang === 'en-us') {
   			$location.search('lang', 'en_US');
