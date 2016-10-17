@@ -56,6 +56,12 @@ angular.module('core').service('LocaleService', function ($translate, LOCALES, $
           ]
       );
     },
+    setLocaleByName: function(localeName) {
+    	setLocale(localeName);
+    },
+    checkIfLocaleIsValid: function(locale) {
+    	return checkLocaleIsValid(locale);
+    },
     getLocalesDisplayNames: function () {
       return _LOCALES_DISPLAY_NAMES;
     }

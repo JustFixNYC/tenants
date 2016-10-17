@@ -83,7 +83,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
       return;
     };
   })
-  .run(function($rootScope, LOCALES, $translate, $location) {
+  .run(function($rootScope, LOCALES, $translate, $location, LocaleService) {
 
     // ensure that this happens on pageload
     // https://github.com/angular-ui/ui-router/issues/1307
@@ -104,29 +104,21 @@ angular.module(ApplicationConfiguration.applicationModuleName)
       };
     };
 
-    // TODO: Implement browser check
-    var browserLanguage = navigator.language || navigator.userLanguage;
+    var langQuery = $location.search().lang;
 
-    if(!$location.search().hasOwnProperty('lang')) {
-  		$location.search('lang', $translate.use());
-  	} else {
-  		
-  		// account for mostly-correct URLS
-  		if($location.search().lang === 'es' || $location.search.lang === 'es-mx') {
-  			$location.search('lang', 'es_mx');
-  		}else if($location.search.lang === 'en' || $location.search.lang === 'en-us') {
-  			$location.search('lang', 'en_US');
-  		}
-
-
-  		if(LOCALES.locales.hasOwnProperty($location.search().lang)){
-  			$translate.use($location.search().lang);
-  		} else {
-  			$translate.use( $translate.preferredLanguage());
-  			$location.search('lang', $translate.use());
-  		}
-
-  		
+    if(!$location.search().hasOwnProperty('lang')) { // No language selected, defaults to english
+    	console.log('fired?')
+    	return;
+  	} else if(langQuery === 'es' || langQuery === 'es-mx') { // Spanish URL slightly wrong
+			$location.search('lang', 'es_mx');
+			LocaleService.setLocaleByName('es_mx');
+		}else if(langQuery === 'en' || langQuery === 'en-us') { // English url slightly wrong
+			$location.search('lang', 'en_US');
+			LocaleService.setLocaleByName('en_US');
+		} else if(LocaleService.checkIfLocaleIsValid(langQuery)){  // account for exactly-correct urls
+			LocaleService.setLocaleByName(langQuery);
+		} else { 														// Totally wrong lang query, default to english
+			$location.search('lang', '');
   	}
 
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
