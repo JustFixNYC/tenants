@@ -91,7 +91,6 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     var userLang = navigator.language || navigator.userLanguage;
 
     if(!$location.search().hasOwnProperty('lang')) { // No language selected, check if browser lang is true
-    	console.log(userLang);
     	if(LocaleService.checkIfLocaleIsValid(userLang)) {
     		LocaleService.setLocaleByName(userLang);
     	}

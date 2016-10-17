@@ -18,7 +18,7 @@
   </a>
   <br />
   <br />
-  <p ng-bind-html="modules.core.views.contact.findhelp | trustTranslate" compile-template></p>
+  <p ng-bind-html="'modules.core.views.contact.findhelp' | trustTranslate" compile-template></p>
   <div ng-if="authentication.user">
     <a  class="btn btn-primary btn-block"
         ui-sref="findHelp">
