@@ -110,10 +110,23 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     if(!$location.search().hasOwnProperty('lang')) {
   		$location.search('lang', $translate.use());
   	} else {
-  		if(LOCALES.locales.hasOwnProperty($location.search().lang))
-  			$translate.use($location.search().lang);
+  		
+  		// account for mostly-correct URLS
+  		if($location.search().lang === 'es' || 'es-mx') {
+  			$location.search('lang', 'es_mx');
+  		}else if($location.search.lang === 'en' || $location.search.lang === 'en-us') {
+  			$location.search('lang', 'en_US');
+  		}
 
-  		$translate.use( $translate.preferredLanguage());
+
+  		if(LOCALES.locales.hasOwnProperty($location.search().lang)){
+  			$translate.use($location.search().lang);
+  		} else {
+  			$translate.use( $translate.preferredLanguage());
+  			$location.search('lang', $translate.use());
+  		}
+
+  		
   	}
 
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
