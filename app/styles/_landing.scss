@@ -58,7 +58,7 @@
         -ms-transform: translateY(-50%);
         transform: translateY(-50%);
         z-index: 10;
-        color: #fff;
+        // color: #fff;
 
         @media (max-width: $screen-xs-max) {
           top: 45%;
@@ -74,11 +74,13 @@
         // }
 
         h1 {
-          text-shadow: 0px 2px 4px rgba(0,0,0,0.50);
+          // text-shadow: 0px 2px 4px rgba(0,0,0,0.50);
+
         }
 
         .btn-link {
-          color: #fff;
+          // color: #fff;
+          color: $darkgray-dark;
           font-size: 16px;
           text-decoration: underline;
         }
@@ -92,17 +94,19 @@
         left: 0%;
         width: 100%;
         height: 100%;
-        background: url("http://degy28l8twq8c.cloudfront.net/brownstones_small.jpg") no-repeat center;
-        background-size: cover;
+        // background: url("http://degy28l8twq8c.cloudfront.net/brownstones_small.jpg") no-repeat center;
+        // background-size: cover;
+        background-color: $mediumgray-light;
+        opacity: 0.3;
         z-index: -1;
       }
 
-      @media (min-width: $screen-xs-min) {
-        &:before {
-          background: url("http://degy28l8twq8c.cloudfront.net/brownstones.jpg") no-repeat center;
-          background-size: cover;
-        }
-      }
+      // @media (min-width: $screen-xs-min) {
+      //   &:before {
+      //     background: url("http://degy28l8twq8c.cloudfront.net/brownstones.jpg") no-repeat center;
+      //     background-size: cover;
+      //   }
+      // }
 
     }  // above fold
 
@@ -205,7 +209,7 @@
     cursor: pointer;
   }
 
-  color: #fff;
+  // color: #fff;
 
   span {
     margin-top: 5px;

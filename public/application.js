@@ -91,7 +91,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
       switch(name) {
         case 'landing':
           $rootScope.headerInner = false;
-          $rootScope.headerLightBG = false;
+          $rootScope.headerLightBG = true;
           break;
         case 'manifesto':
           $rootScope.headerInner = false;
@@ -110,7 +110,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     if(!$location.search().hasOwnProperty('lang')) {
   		$location.search('lang', $translate.use());
   	} else {
-  		
+
   		// account for mostly-correct URLS
   		if($location.search().lang === 'es' || $location.search.lang === 'es-mx') {
   			$location.search('lang', 'es_mx');
@@ -126,7 +126,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
   			$location.search('lang', $translate.use());
   		}
 
-  		
+
   	}
 
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
