@@ -42,6 +42,13 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 				disableBack: true
 			}
 		})
+		.state('espanol', {
+			url: '/espanol',
+			onEnter: function(LocaleService, $state) {
+				LocaleService.setLocaleByName('es_mx');
+				$state.go('landing');
+			}
+		})
 		.state('donate', {
 			url: '/donate',
 			onEnter: function($window) {
