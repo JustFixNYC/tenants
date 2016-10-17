@@ -341,6 +341,9 @@
   		}
   	},
   	"kyr": {
+      "title": "@:repeating.kyr",
+      "description": "It's important to know your rights as a tenant. Here are a few common topics, and resources to learn more.",
+      "disclaimerTitle": "Legal Disclaimer",
   		"disclaimer": "<p><b>The information contained on this web site does not constitute legal advice</b>. It must not be used as a substitute for the advice of a lawyer qualified to give advice on legal issues pertaining to housing. This information pertains <b>only to tenants living in New York City</b>.</p><p>Many of your rights depend on the <b>type of housing</b> you live in or your type of tenancy. You may be subject to different laws and have different sets of rights than even neighbors in your own building. Learn which rights and responsibilities apply to you.</p>"
   	},
 		"onboarding": {

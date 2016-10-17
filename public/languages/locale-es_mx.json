@@ -41,7 +41,7 @@
   					"photoWord": "Foto",
   					"description": "@:repeating.description",
   					"descriptionHeaderPlaceholder": "¡Añada aquí una actualizacion de estatos!",
-  					"descriptionBodyPlaceholder": "Please describe these issues in more detail.",
+  					"descriptionBodyPlaceholder": "Añada una breve descripción.",
   					"descriptionPlaceholder": "Añada una breve descripción.",
   					"cancel": "@:repeating.cancel",
   					"add": "@:repeating.add"
@@ -127,11 +127,12 @@
   				"tried": "Hice esto",
   				"dateOf": "Fecha de",
   				"followUp": " - Seguimiento",
-  				"enterRequired": "Please add the required fields.",
-  				"wellDone": "Well done!",
-  				"added": "We've added",
-  				"to": "to your",
+  				"enterRequired": "Por favor, añada los campos requeridos.",
+  				"wellDone": "¡Bien hecho!",
+  				"added": "Hemos añadido",
+  				"to": "a su",
   				"error": "We're sorry, something went wrong! Please <a ui-sref=contact>Contact Us</a> to report this issue.",
+  				"error": "¡Lo sentimos. Algo salió mal! Por favor <a ui-sref=contact>Contactemos</a> para informar de este problema.",
   				"occurredDate": "This occurred on:"
   			}
   		},
@@ -187,7 +188,7 @@
 	  			"alert": "Esto le permite compartir su Historial del Caso con defensores. <b>No otorga acceso al resto de su cuenta.</b>",
 	  			"labelShare": "Copie y pegue este enlace para compartir su Historial del Caso: ",
 	  			"empty": "¡Aún no se le ha añadido nada a su caso! <a ui-sref=\"listActions\">Haga clic aquí</a> para ver algunas cosas que puede hacer.",
-	  			"experienced": "First experienced on:"
+	  			"experienced": "Primera experiencia en:"
 	  		}
 	  	},
 	  	"other": {
@@ -343,6 +344,9 @@
   		}
   	},
   	"kyr": {
+      "title": "@:repeating.kyr",
+      "description": "Es importante conocer sus derechos como inquilino. Aquí hay algunos temas comunes y recursos para aprender más.",
+      "disclaimerTitle": "Relevo de responsabilidad",
   		"disclaimer": "<b>Relevo de responsabilidad:</b> La información que contiene JustFix.nyc no constituye asesoramiento legal y no deberá sustituir el asesoramiento de un abogado cualificado para impartir asesoramiento sobre asuntos legales con respecto a la vivienda. Podemos dirigirle a servicios legales gratuitos o de bajo costo, si es necesario."
   	},
 		"onboarding": {
