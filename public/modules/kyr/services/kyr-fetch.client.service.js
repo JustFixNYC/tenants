@@ -17,6 +17,18 @@ angular.module('kyr').factory('kyrService', ['$resource', '$http', '$q',
 			return deferred.promise;
 		};
 
+		this.fetchEs = function() {
+			var deferred = $q.defer();
+			$http.get('/data/kyr_es.json').then(function(data){
+				var finalData = data.data;
+				deferred.resolve(finalData);
+			}, function(err) {
+				console.log(err);
+				deferred.reject(err);
+			});
+			return deferred.promise;	
+		};
+
 		// Query single kyr
 		this.single = function(id) {
 			var deferred = $q.defer();
