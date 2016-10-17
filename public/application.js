@@ -42,13 +42,11 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     },
     'preferredLocale': 'en_US'
   })
-  // TODO: Build all translation stuff together
-  // enable logging for missing IDs
-  .config(function ($translateProvider) {
-    $translateProvider.useMissingTranslationHandlerLog();
-  })
   // async loading for templates
   .config(function ($translateProvider, $translateSanitizationProvider) {
+  	// enable logging for missing IDs
+    $translateProvider.useMissingTranslationHandlerLog();
+
     $translateProvider.useStaticFilesLoader({
         prefix: 'languages/locale-',// path to translations files
         suffix: '.json'// suffix, currently- extension of the translations
@@ -58,7 +56,6 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     $translateProvider.useLocalStorage();// saves selected language to localStorage
     // NOTE: This shit causes all sorts of issues with our UI-SREF attribute. Not recognized in any sanitizer module, and causes it to break
     $translateProvider.useSanitizeValueStrategy(null); // Prevent XSS
-    // TODO: Remove ngSanitize?
   })
   // location of the locale settings
   .config(function (tmhDynamicLocaleProvider) {
@@ -107,13 +104,29 @@ angular.module(ApplicationConfiguration.applicationModuleName)
       };
     };
 
+    // TODO: Implement browser check
+    var browserLanguage = navigator.language || navigator.userLanguage;
+
     if(!$location.search().hasOwnProperty('lang')) {
   		$location.search('lang', $translate.use());
   	} else {
-  		if(LOCALES.locales.hasOwnProperty($location.search().lang))
-  			$translate.use($location.search().lang);
+  		
+  		// account for mostly-correct URLS
+  		if($location.search().lang === 'es' || $location.search.lang === 'es-mx') {
+  			$location.search('lang', 'es_mx');
+  		}else if($location.search.lang === 'en' || $location.search.lang === 'en-us') {
+  			$location.search('lang', 'en_US');
+  		}
 
-  		$translate.use( $translate.preferredLanguage());
+
+  		if(LOCALES.locales.hasOwnProperty($location.search().lang)){
+  			$translate.use($location.search().lang);
+  		} else {
+  			$translate.use( $translate.preferredLanguage());
+  			$location.search('lang', $translate.use());
+  		}
+
+  		
   	}
 
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {

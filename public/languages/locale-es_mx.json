@@ -24,7 +24,9 @@
 		"signOut": "Cerrar sesión",
 		"continue": "Continuar",
 		"back": "Atrás",
-		"close": "Cerrar"
+		"close": "Cerrar",
+		"yes": "Sí",
+		"no": "No"
   },
   "modules": {
   	"actions": {
@@ -124,7 +126,13 @@
   			"toDoItem": {
   				"tried": "Hice esto",
   				"dateOf": "Fecha de",
-  				"followUp": " - Seguimiento"
+  				"followUp": " - Seguimiento",
+  				"enterRequired": "Please add the required fields.",
+  				"wellDone": "Well done!",
+  				"added": "We've added",
+  				"to": "to your",
+  				"error": "We're sorry, something went wrong! Please <a ui-sref=contact>Contact Us</a> to report this issue.",
+  				"occurredDate": "This occurred on:"
   			}
   		},
   		"views": {
@@ -178,7 +186,8 @@
 	  			"shareLinkText": "Compartir Enlace (activado):",
 	  			"alert": "Esto le permite compartir su Historial del Caso con defensores. <b>No otorga acceso al resto de su cuenta.</b>",
 	  			"labelShare": "Copie y pegue este enlace para compartir su Historial del Caso: ",
-	  			"empty": "¡Aún no se le ha añadido nada a su caso! <a ui-sref=\"listActions\">Haga clic aquí</a> para ver algunas cosas que puede hacer."
+	  			"empty": "¡Aún no se le ha añadido nada a su caso! <a ui-sref=\"listActions\">Haga clic aquí</a> para ver algunas cosas que puede hacer.",
+	  			"experienced": "First experienced on:"
 	  		}
 	  	},
 	  	"other": {

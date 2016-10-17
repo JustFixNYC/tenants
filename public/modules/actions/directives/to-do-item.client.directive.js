@@ -150,7 +150,7 @@ angular.module('actions')
 
             // if(addDOA && compareDates(scope.newActivity.startDate, new Date())) {
             if(addDOA) {
-              scope.newActivity.fields.unshift({ title: 'This occurred on:', value: $filter('date')(scope.newActivity.startDate, 'longDate') });
+              scope.newActivity.fields.unshift({ title: 'modules.actions.partials.toDoItem.occurredDate', value: $filter('date')(scope.newActivity.startDate, 'longDate') });
             }
 
             $rootScope.loading = true;
