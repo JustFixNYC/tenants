@@ -21,7 +21,7 @@
 		<a class="kyr-item" ng-repeat="kyr in kyrResponse track by $index" ng-if="lang == 'en_US'" ng-href="/#!/kyr/{{$index + 1}}">
 			<strong>{{kyr.title}} <span class="glyphicon glyphicon-menu-right pull-right"></span></strong>
 		</a>
-		<a class="kyr-item" ng-repeat="kyr in kyrResponse track by $index" ng-if="lang == 'es_mx'" ng-href="http://google.com">
+		<a class="kyr-item" ng-repeat="kyr in kyrResponse track by $index" ng-if="lang == 'es_mx'" target="_blank" ng-href="{{kyr.href}}">
 			<strong>{{kyr.title}} <span class="glyphicon glyphicon-menu-right pull-right"></span></strong>
 		</a>
   </div>
