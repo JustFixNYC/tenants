@@ -107,9 +107,11 @@ module.exports = function(db) {
 		saveUninitialized: false,
 		resave: true,
 		secret: config.sessionSecret,
+		cookie: { maxAge: 14 * 24 * 60 * 60 * 1000 },		// 14 days
 		store: new mongoStore({
 			db: db.connection.db,
-			collection: config.sessionCollection
+			collection: config.sessionCollection,
+			auto_reconnect: true												// this only works for connect-mongo < 0.5
 		})
 	}));
 

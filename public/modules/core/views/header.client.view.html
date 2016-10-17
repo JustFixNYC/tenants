@@ -11,7 +11,12 @@
 						ui-sref="kyr"
 						ng-if="!$root.showBack && showKyrBackBtn"
 				>
-				<a href="/" class="header-brand" ga-event="JustFix Logo,click">
+				<a ng-if="!authentication.user" href="http://www.justfix.nyc" class="header-brand" ga-event="JustFix Logo,click">
+						<!-- <div data-ng-include="'/modules/core/img/brand/logo.svg'" aria-label="justfix.nyc"/ class="logo"></div> -->
+						<img ng-if="!$root.headerLightBG" src="/modules/core/img/brand/logo.png" class="logo" />
+						<img ng-if="$root.headerLightBG" src="/modules/core/img/brand/logo_dark.png" class="logo" />
+				</a>
+				<a ng-if="authentication.user" href="/" class="header-brand" ga-event="JustFix Logo,click">
 						<!-- <div data-ng-include="'/modules/core/img/brand/logo.svg'" aria-label="justfix.nyc"/ class="logo"></div> -->
 						<img ng-if="!$root.headerLightBG" src="/modules/core/img/brand/logo.png" class="logo" />
 						<img ng-if="$root.headerLightBG" src="/modules/core/img/brand/logo_dark.png" class="logo" />
@@ -23,6 +28,10 @@
 					 ui-sref="signin"
 					 ng-if="!authentication.user && $root.state == 'landing'"
 					 ga-event="Sign In,click">{{'modules.core.views.header.signIn' | translate}}</a>
+			 <!-- <a class="header-btn pull-right header-btn-text header-donate"
+ 					href="https://www.nycharities.org/give/donate.aspx?cc=4125" target="_blank"
+ 					ng-if="!authentication.user && ($root.state == 'landing' || $root.state == 'manifesto')"
+ 					ga-event="Donate,click,Header">Donate</a> -->
 				<a class="header-btn header-home pull-right glyphicon glyphicon-home"
 					 ui-sref="home"
 					 ng-if="authentication.user && $root.state != 'home'"

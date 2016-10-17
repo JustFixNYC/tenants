@@ -1459,6 +1459,12 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 				disableBack: true
 			}
 		})
+		.state('donate', {
+			url: '/donate',
+			onEnter: ["$window", function($window) {
+		 		$window.open('https://www.nycharities.org/give/donate.aspx?cc=4125', '_self');
+ 			}]
+		})
 		.state('home', {
 			url: '/home',
 			templateUrl: 'modules/core/views/home.client.view.html',
@@ -1474,6 +1480,18 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 			},
 			globalStyles: 'white-bg'
 		})
+	}
+]);
+
+'use strict';
+
+
+angular.module('core').controller('ContactController', ['$rootScope', '$scope', 'Authentication', 'deviceDetector',
+	function($rootScope, $scope, Authentication, deviceDetector) {
+		// This provides Authentication context.
+		$scope.authentication = Authentication;
+    $scope.device = deviceDetector;
+
 	}
 ]);
 

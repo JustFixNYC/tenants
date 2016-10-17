@@ -10,6 +10,7 @@
 		"description": "Description",
 		"done": "Done",
 		"delete": "Delete",
+		"donate": "Donate",
 		"takeAction": "Take Action",
 		"listActions": "@:repeating.takeAction",
 		"caseHistory": "Case History",
@@ -230,6 +231,7 @@
   				"home": "Home",
   				"contact": "Contact",
   				"manifesto": "Manifesto",
+  				"donate": "@:repeating.donate",
   				"description": "<small><b>Disclaimer:</b> The information contained in JustFix.nyc does not constitute legal advice and must not be used as a substitute for the advice of a lawyer qualified to give advice on legal issues pertaining to housing. We can help direct you to free and/or low-cost legal services as necessary.</small>"
   			},
   			"header": {
@@ -256,7 +258,7 @@
   				"build": "Build Your Case",
   				"buildBody": "Your case is your story. It provides a clear record of everything you have done to resolve your housing issues, like taking photos or notifying your landlord. If things get more serious, it can help avoid disputes or be used as a powerful tool in housing court. JustFix.nyc makes the process of building your case as easy as possible.",
   				"one": "Step 1: Document",
-  				"oneBody": "Create an account by conducting a room-by-room inspection and describing your situation.",
+  				"oneBody": "Create an account by conducting a room-by-room inspection and describing your situation. Your information is kept private and secure.",
   				"two": "Step 2: Take Action",
   				"twoBody": "We provide a personalized plan-of-attack for working with your landlord, notifying the right city agencies, and connecting with local organizations.",
   				"three": "Step 3: Keep Records",
@@ -444,7 +446,7 @@
 					"signIn": {
 						"title": "Sign in to access your JustFix.nyc account.",
 						"phone": "Phone Number",
-						"password": "password",
+						"password": "Password",
 						"signIn": "@:repeating.signIn",
 						"forgot": "I forgot my password.",
 						"signUp": "Don’t have an account yet? Sign up now!",

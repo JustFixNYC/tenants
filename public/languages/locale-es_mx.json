@@ -10,6 +10,7 @@
 		"description": "Descripción",
 		"done": "Fin",
 		"delete": "Borrar",
+    "donate": "Donar",
 		"takeAction": "Tomar acción",
 		"listActions": "@:repeating.takeAction",
 		"caseHistory": "Historial del Caso",
@@ -231,6 +232,7 @@
   				"home": "Página principal",
   				"contact": "Contacto",
   				"manifesto": "Manifiesto",
+          "donate": "@:repeating.donate",
   				"description": "<small><b>Relevo de responsabilidad:</b> La información que contiene JustFix.nyc no constituye asesoramiento legal y no deberá sustituir el asesoramiento de un abogado cualificado para impartir asesoramiento sobre asuntos legales con respecto a la vivienda. Podemos dirigirle a servicios legales gratuitos o de bajo costo, si es necesario.</small>"
   			},
   			"header": {
@@ -257,7 +259,7 @@
   				"build": "Fortalezca su caso",
   				"buildBody": "Su caso es su historia. Muestra un registro claro de todo lo que ha hecho para resolver sus problemas de vivienda, como tomar fotos o notificar al casero. Si las cosas empeoran, puede ayudarle a evitar disputas o utilizarse como una herramienta poderosa en la corte de vivienda. JustFix.nyc hace que el proceso de fortalecer su caso sea lo más fácil posible.",
   				"one": "Paso 1: Documentar",
-  				"oneBody": "Crear una historia al llevar a cabo una inspección de cada cuarto o espacio y describir su situación.",
+  				"oneBody": "Crear una historia al llevar a cabo una inspección de cada cuarto o espacio y describir su situación. Su información se mantiene como privado y seguro.",
   				"two": "Paso 2: Tomar acción",
   				"twoBody": "Brindamos un plan de ataque personalizado para trabajar con el casero, notificar a las agencias municipales correctas y conectar con organizaciones locales.",
   				"three": "Paso 3: Mantener registros",

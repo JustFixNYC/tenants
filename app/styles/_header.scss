@@ -146,6 +146,7 @@ header {
 
   .header-btn {
     color: $darkgray-dark;
+    border-color: $darkgray-dark;
   }
 }
 
@@ -161,5 +162,11 @@ header {
   }
   @media (min-width: $screen-xs-min) {
     margin-top: 20px;
+  }
+}
+
+.header-donate {
+  @media (max-width: $screen-xs-min) {
+    display: none !important;
   }
 }

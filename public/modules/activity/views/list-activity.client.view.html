@@ -40,7 +40,7 @@
         </h2>
 
         <div class="alert alert-warning" ng-if="!authentication.user.sharing.enabled" ng-bind-html="'modules.activity.views.listActivity.alert' | trustTranslate" compile-template>
-          
+
         </div>
 
         <div class="share-link" ng-if="authentication.user.sharing.enabled">
@@ -83,8 +83,8 @@
               </div>
           </div>
       </div>
-      <div class="alert alert-warning text-center" ng-bind-html="'modules.activity.views.listActivity.empty' | trustTranslate" compile-template>
-      	
+      <div class="alert alert-warning text-center" data-ng-if="!activities.length" ng-bind-html="'modules.activity.views.listActivity.empty' | trustTranslate" compile-template>
+
       </div>
     </div>
 
