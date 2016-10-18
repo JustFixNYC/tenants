@@ -103,13 +103,13 @@ angular.module(ApplicationConfiguration.applicationModuleName)
           break;
       };
     };
-    setHeaderState('landing');
+    // setHeaderState('landing');
 
-    $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+    $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
 
       $rootScope.state = toState.name;
 
-      console.log(toState.name);
+      console.log('to state', toState.name);
 
       if(toState.data && toState.data.disableBack) {
         $rootScope.showBack = false;
