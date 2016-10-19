@@ -843,30 +843,30 @@
   	},
   	"contactSuper": {
 	    "title": "Contacte al Súper (Paso 1 de 3)",
-	    "activityTitle": "Contacted Super/Management",
+	    "activityTitle": "Contacté al Súper",
 	    "content": "Su primer paso siempre debería ser contactar a la persona que es directamente responsable por hacer reparaciones en su hogar.",
 	    "cta": {
 	      "buttonTitle": "Contactar",
 	      "title": "@:actions.contactSuper.cta.buttonTitle"
 	    },
 	    "followUp": {
-	      "title": "What did your super say?"
+	      "title": "¿Qué dijo su súper?"
 	    }
 	  },
 	  "emailLandlord": {
-	    "title": "Enviar Email al Casero (Paso 2 de 3)",
-	    "activityTitle": "Emailed Repair Issues to Landlord",
+	    "title": "Envíe un email al Casero (Paso 2 de 3)",
+	    "activityTitle": "Envié un email de asuntos al Casero",
 	    "content": "Si su súper no responde, es hora de enviar un email al casero. <b>Hemo escrito un borrador del mensaje que puede enviarle, que incluye una lista de reparaciones que necesita.</b>",
 	    "cta": {
 	      "buttonTitle": "Contactar"
 	    },
 	    "followUp": {
-	      "title": "What did your landlord say?"
+	      "title": "¿Qué dijo su casero?"
 	    }
 	  },
 	  "mailLetter": {
-	    "title": "Enviar una Carta de Queja Oficial (Paso 3 de 3)",
-	    "activityTitle": "Created an Official Letter of Complaint",
+	    "title": "Envíe una Carta de Queja Oficial (Paso 3 de 3)",
+	    "activityTitle": "Envié una Carta de Queja Oficial",
 	    "content": "Para tener un registro formal de sus peticiones, necesitará enviar una carta al casero. <b>Hemo escrito una carta que usted puede enviar que incluye los problemas de reparaciones que indicó.</b>",
 	    "cta": {
 	      "buttonTitle": "Previsualice"
