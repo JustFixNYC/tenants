@@ -263,7 +263,7 @@
   				"signOut": "@:repeating.signOut"
   			},
   			"landing": {
-  				"bigText": "JustFix.nyc es un rastro digital de documentos para sus problemas de vivienda.",
+  				"bigText": "JustFix.nyc es un registro digital de documentos para sus problemas de vivienda.",
   				"start": "Crear su cuenta gratuita",
   				"twitter": "¡Síganos en Twitter!",
   				"how": "cómo funciona",
