@@ -8,15 +8,30 @@ angular.module('core')
       scope: false,
       link: function (scope, element, attrs) {
 
-        var isIOS8 = function() {
-          var deviceAgent = deviceDetector.raw.userAgent.toLowerCase();
-          return /(iphone|ipod|ipad).* os [8-9]_/.test(deviceAgent);
+
+        var getIOSversion = function() {
+          // if (/iP(hone|od|ad)/.test(navigator.platform)) {
+            // supports iOS 2.0 and later: <http://bit.ly/TJjs1V>
+            var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+            return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
+          // } else {
+            // this shouldn't happen
+            // Rollbar.error("Didn't detect iOS correctly?");
+          // }
+        }
+
+        var isGtIOS7 = function() {
+          if (deviceDetector.os === 'ios' && getIOSversion()[0] > 7) {
+            return true;
+          } else {
+            return false;
+          }
         };
 
 
-        // ios ;
-        // ios8 &
-        // android ?
+        // ios <=7  ;
+        // ios >7   &
+        // android  ?
 
 
         element.on('click', function (e) {
@@ -30,7 +45,7 @@ angular.module('core')
           }
 
           if(deviceDetector.os === 'ios') {
-            if(isIOS8()) href += '&';
+            if(isGtIOS7()) href += '&';
             else href += ';';
             href = href + 'body=' + msg;
             console.log('href', href);

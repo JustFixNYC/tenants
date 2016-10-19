@@ -87,7 +87,6 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     // ensure that this happens on pageload
     // https://github.com/angular-ui/ui-router/issues/1307
     var setHeaderState = function(name) {
-      console.log('name', name);
       switch(name) {
         case 'landing':
           $rootScope.headerInner = false;
@@ -109,8 +108,6 @@ angular.module(ApplicationConfiguration.applicationModuleName)
 
       $rootScope.state = toState.name;
 
-      console.log('to state', toState.name);
-
       if(toState.data && toState.data.disableBack) {
         $rootScope.showBack = false;
       } else {
@@ -128,24 +125,24 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     var userLang = navigator.language || navigator.userLanguage;
 
     if(!$location.search().hasOwnProperty('lang')) { // No language selected, check if browser lang is true
-      console.log('condition 0');
+      // console.log('condition 0');
     	if(LocaleService.checkIfLocaleIsValid(userLang)) {
     		LocaleService.setLocaleByName(userLang);
     	}
     	return;
   	} else if(langQuery === 'es' || langQuery === 'es-mx') { // Spanish URL slightly wrong
-      console.log('condition 1');
+      // console.log('condition 1');
 			$location.search('lang', 'es_mx');
 			LocaleService.setLocaleByName('es_mx');
 		}else if(langQuery === 'en' || langQuery === 'en-us') { // English url slightly wrong
-      console.log('condition 2');
+      // console.log('condition 2');
 			$location.search('lang', 'en_US');
 			LocaleService.setLocaleByName('en_US');
 		} else if(LocaleService.checkIfLocaleIsValid(langQuery)){  // account for exactly-correct urls
-      console.log('condition 3');
+      // console.log('condition 3');
 			LocaleService.setLocaleByName(langQuery);
 		} else { 														// Totally wrong lang query, default to english
-      console.log('condition 4');
+      // console.log('condition 4');
 			$location.search('lang', '');
   	}
   });
