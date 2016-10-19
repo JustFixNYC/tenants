@@ -42,7 +42,7 @@
     "activityTitle": "actions.contact311.activityTitle",
     "content": "actions.contact311.content",
     "key": "contact311",
-    "addIf": ["hasEmergencyIssues"],
+    "addIf": ["initial"],
     "type": "recurring",
     "cta": {
       "type": "call",
