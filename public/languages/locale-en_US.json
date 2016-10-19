@@ -136,7 +136,7 @@
   		"views": {
   			"listActions": {
   				"title": "Take Action",
-  				"headerDescription": "Here are some actions you can take to build out your case.",
+  				"headerDescription": "Here are some actions you can take to build out your case. <b>New resources will appear as you complete these actions!</b>",
   				"toDoHeader": "Things To Do",
   				"outreachHeader": "Outreach",
   				"legalHeader": "Legal Actions",

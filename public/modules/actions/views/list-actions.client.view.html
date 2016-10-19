@@ -2,7 +2,7 @@
     <div class="page-header">
         <img src="/modules/core/img/sections/action.svg" alt="Take Action" />
         <h1>{{ 'modules.actions.views.listActions.title' | translate }}</h1>
-        <p>{{'modules.actions.views.listActions.headerDescription' | translate}}</p>
+        <p ng-bind-html="'modules.actions.views.listActions.headerDescription' | trustTranslate" compile-template></p>
     </div>
     <div ng-if="onceActions.length">
       <div class="section-header">
@@ -40,9 +40,9 @@
         <to-do-item data-ng-repeat="action in legalActions"></to-do-item>
       </div>
     </div>
-    <div class="alert alert-warning text-center" 
-    	data-ng-bind-html="::'modules.actions.views.listActions.empty' | trustTranslate" 
-    	compile-template 
+    <div class="alert alert-warning text-center"
+    	data-ng-bind-html="::'modules.actions.views.listActions.empty' | trustTranslate"
+    	compile-template
     	data-ng-show="onceActions.length === 0"> <!--  -->
     </div>
-</section>  
+</section>

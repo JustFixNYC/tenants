@@ -139,7 +139,7 @@
   		"views": {
   			"listActions": {
   				"title": "Tomar acción",
-  				"headerDescription": "Estas son algunas de las acciones que puede tomar para fortalecer su caso.",
+  				"headerDescription": "Estas son algunas de las acciones que puede tomar para fortalecer su caso. <b>¡Aparecerán nuevos recursos cuando se complete estas acciones!</b>",
   				"toDoHeader": "Qué hacer",
   				"outreachHeader": "Alcance",
   				"legalHeader": "Acciones legales",
