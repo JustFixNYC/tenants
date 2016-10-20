@@ -4,8 +4,11 @@
  * Module dependencies.
  */
 var passport = require('passport'),
+  Identity = require('mongoose').model('Identity'),
+  Tenant = require('mongoose').model('Tenant'),
   User = require('mongoose').model('User'),
   path = require('path'),
+  rollbar = require('rollbar'),
   config = require('./config');
 
 /**
@@ -14,15 +17,36 @@ var passport = require('passport'),
 module.exports = function() {
   // Serialize sessions
   passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    console.log('Serialize', user);
+    console.log('id', user.id);
+    console.log('_id', user._id);
+    console.log('_iden', user._identity);
+    console.log('iden', user.identity);
+    done(null, user.identity);
   });
 
   // Deserialize sessions
   passport.deserializeUser(function(id, done) {
-    User.findOne({
+    Identity.findOne({
       _id: id
-    }, '-salt -password', function(err, user) {
-      done(err, user);
+    }, '-salt -password', function(err, identity) {
+
+      if(err) {
+        rollbar.handleError(err);
+        done(err, null);
+      } else {
+        Tenant.findOne({
+          _identity: identity._id
+        }, function(err, tenant) {
+          if(err) {
+            rollbar.handleError(err);
+            done(err, null);
+          } else {
+            var user = _.merge(identity, tenant);
+            done(err, user);
+          }
+        });
+      }
     });
   });
 

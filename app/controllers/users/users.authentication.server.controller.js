@@ -12,25 +12,46 @@ var _ = require('lodash'),
   mongoose = require('mongoose'),
   passport = require('passport'),
   rollbar = require('rollbar'),
-  User = mongoose.model('User');
+  User = mongoose.model('User'),
+  Identity = mongoose.model('Identity'),
+  Tenant = mongoose.model('Tenant');
 
-var saveUser = function(req, user) {
+var saveNewUser = function(req, identity, tenant) {
 
   var saved = Q.defer();
 
-  user.save(function(err) {
+  identity.save(function(err) {
     if (err) {
       saved.reject(errorHandler.getErrorMessage(err));
-    } else {
+    }
+    else {
       // Remove sensitive data before login
-      user.password = undefined;
-      user.salt = undefined;
+      identity.password = undefined;
+      identity.salt = undefined;
 
-      req.login(user, function(err) {
+      // Save reference to identity
+      tenant._identity = identity._id;
+
+      // Save tenant document, then login
+      tenant.save(function (err) {
         if (err) {
           saved.reject(errorHandler.getErrorMessage(err));
-        } else {
-          saved.resolve(user);
+        }
+        else {
+
+          // create new "user" object from both identity and tenant objects
+          // note: overlap values like _id & phone in `identity` will be overwritten
+          var user = _.merge(identity, tenant);
+
+          console.log('new user', user);
+
+          req.login(user, function(err) {
+            if (err) {
+              saved.reject(errorHandler.getErrorMessage(err));
+            } else {
+              saved.resolve(user);
+            }
+          });
         }
       });
     }
@@ -39,38 +60,32 @@ var saveUser = function(req, user) {
   return saved.promise;
 };
 
+
 /**
  * Signup
  */
 exports.signup = function(req, res) {
   // For security measurement we remove the roles from the req.body object
+  // This is so the user can't set their own roles, duh
   delete req.body.roles;
 
   // Init Variables
-  var user = new User(req.body);
+  // Mongoose will just take what it needs for each model
+  var identity = new Identity(req.body);
+  var tenant = new Tenant(req.body);
+  // var user = new User(req.body);
+
   var message = null;
 
-  var save = function() {
-    saveUser(req, user)
-      .then(function (user) {
-        rollbar.reportMessage("New User Signup!", "info", req);
-        res.json(user);
-      })
-      .fail(function (err) {
-        rollbar.handleError(errorHandler.getErrorMessage(err), req);
-        res.status(400).send(errorHandler.getErrorMessage(err));
-      });
-  };
-
   // Add missing user fields
-  user.provider = 'local';
-  user.actionFlags.push('initial');
+  identity.provider = 'local';
+  tenant.actionFlags.push('initial');
 
   // new user enabled sharing, so create a key
   // **actually, just create a key regardless**
   // if(user.sharing.enabled) {
     profileHandler.createPublicView().then(function(newUrl) {
-      user.sharing.key = newUrl;
+      tenant.sharing.key = newUrl;
     });
   // }
 
@@ -78,31 +93,24 @@ exports.signup = function(req, res) {
   var acctCreatedDate = new Date();
   acctCreatedDate.setSeconds(acctCreatedDate.getSeconds() - 60);
 
-  user.activity.push({
+  tenant.activity.push({
     key: 'createAcount',
     title: 'modules.activity.other.created',
     createdDate: acctCreatedDate,
     startDate: acctCreatedDate
   });
 
-  // // check some address stuff
-  // addressHandler.requestGeoclient(user.borough, user.address)
-  //   .then(function (geo) {
-  //     user.geo = geo;
-  //     // check for tenant harassment hotline
-  //     if(addressHandler.harassmentHelp(user.geo.zip)) user.actionFlags.push('isHarassmentElligible');
-  //     return addressHandler.requestRentStabilized(geo.bbl, geo.lat, geo.lon);
-  //   })
-  //   .then(function (rs) {
-  //     if(rs) user.actionFlags.push('isRentStabilized');
-  //     save();
-  //   })
-  //   .fail(function (e) {
-  //     console.log('[GEO]', e);
-  //     save();
-  //   });
+  saveNewUser(req, identity, tenant)
+    .then(function (user) {
+      // console.log('new user', user);
+      rollbar.reportMessage("New User Signup!", "info", req);
+      res.json(user);
+    })
+    .fail(function (err) {
+      rollbar.handleError(errorHandler.getErrorMessage(err), req);
+      res.status(400).send(errorHandler.getErrorMessage(err));
+    });
 
-  save();
 
 };
 
@@ -110,22 +118,36 @@ exports.signup = function(req, res) {
  * Signin after passport authentication
  */
 exports.signin = function(req, res, next) {
-  passport.authenticate('local', function(err, user, info) {
-    if (err || !user) {
+  passport.authenticate('local', function(err, identity, info) {
+    if (err || !identity) {
       rollbar.handleError(info, req);
       res.status(400).send(info);
     } else {
       // Remove sensitive data before login
-      user.password = undefined;
-      user.salt = undefined;
+      identity.password = undefined;
+      identity.salt = undefined;
 
-      req.login(user, function(err) {
-        if (err) {
+      Tenant.findOne({
+        _identity: identity._id
+      }, function(err, tenant) {
+        if(err) {
+          rollbar.reportMessage("Tenant/Identity mismatch?", "error", req);
           rollbar.handleError(err, req);
           res.status(400).send(err);
         } else {
-          rollbar.reportMessage("User Sign In", "info", req);
-          res.json(user);
+
+          var user = _.merge(identity, tenant);
+
+          req.login(user, function(err) {
+            if (err) {
+              rollbar.handleError(err, req);
+              res.status(400).send(err);
+            } else {
+              rollbar.reportMessage("User Sign In", "info", req);
+              res.json(user);
+            }
+          });
+
         }
       });
     }
