@@ -48,12 +48,10 @@ exports.hasAuthorization = function(roles) {
 			if (_.intersection(req.user.roles, roles).length) {
 				return next();
 			} else {
-				// [TODO] reset this.
 				rollbar.handleError('User is not authorized', req);
 				return res.status(403).send({
 					message: 'User is not authorized'
-				});/*
-				return next();*/
+				});
 			}
 		});
 	};
