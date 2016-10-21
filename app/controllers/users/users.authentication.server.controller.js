@@ -29,6 +29,14 @@ var saveNewUser = function(req, identity, tenant) {
       identity.password = undefined;
       identity.salt = undefined;
 
+      // req.login(identity, function(err) {
+      //   if (err) {
+      //     saved.reject(errorHandler.getErrorMessage(err));
+      //   } else {
+      //     saved.resolve(user);
+      //   }
+      // });
+
       // Save reference to identity
       tenant._identity = identity._id;
 
@@ -41,9 +49,10 @@ var saveNewUser = function(req, identity, tenant) {
 
           // create new "user" object from both identity and tenant objects
           // note: overlap values like _id & phone in `identity` will be overwritten
-          var user = _.merge(identity, tenant);
+          // need to use mongoose `toObject()` here as well
+          var user = _.merge(identity.toObject(), tenant.toObject());
 
-          console.log('new user', user);
+          console.log('merge', user);
 
           req.login(user, function(err) {
             if (err) {
@@ -136,7 +145,7 @@ exports.signin = function(req, res, next) {
           res.status(400).send(err);
         } else {
 
-          var user = _.merge(identity, tenant);
+          var user = _.merge(identity.toObject(), tenant.toObject());
 
           req.login(user, function(err) {
             if (err) {
