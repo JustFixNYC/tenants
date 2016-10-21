@@ -3,7 +3,8 @@
 /**
  * Module dependencies.
  */
-var passport = require('passport'),
+var _ = require('lodash'),
+  passport = require('passport'),
   Identity = require('mongoose').model('Identity'),
   Tenant = require('mongoose').model('Tenant'),
   User = require('mongoose').model('User'),
@@ -17,12 +18,7 @@ var passport = require('passport'),
 module.exports = function() {
   // Serialize sessions
   passport.serializeUser(function(user, done) {
-    console.log('Serialize', user);
-    console.log('id', user.id);
-    console.log('_id', user._id);
-    console.log('_iden', user._identity);
-    console.log('iden', user.identity);
-    done(null, user.identity);
+    done(null, user._identity);
   });
 
   // Deserialize sessions
@@ -42,7 +38,7 @@ module.exports = function() {
             rollbar.handleError(err);
             done(err, null);
           } else {
-            var user = _.merge(identity, tenant);
+            var user = _.merge(identity.toObject(), tenant.toObject());
             done(err, user);
           }
         });
