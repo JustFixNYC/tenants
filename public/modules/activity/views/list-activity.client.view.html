@@ -21,7 +21,7 @@
             </a>
           </div>
           <div class="col-xs-6">
-            <a class="btn btn-success btn-block pull-right" ng-if="!isDesktop" ng-class="{ 'disabled' : !authentication.user.sharing.enabled }" sms-message phone="{{authentication.user.referral.phone}}" type="share">
+            <a class="btn btn-success btn-block pull-right" ng-if="!isDesktop" ng-class="{ 'disabled' : !authentication.user.sharing.enabled }" sms-message type="share">
                 {{'modules.activity.views.listActivity.text' | translate}}
             </a>
             <button class="btn btn-success btn-block pull-right" ng-if="isDesktop" print-button>

@@ -16,7 +16,7 @@ var ReferralSchema = new Schema({
     default: 'Community Group'
   },
   phone: {
-    type: Number,
+    type: String,
     default: 7777777777
   },
   email: {

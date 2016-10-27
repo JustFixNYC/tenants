@@ -2242,9 +2242,15 @@ angular.module('core').filter('tel', function () {
   return function (tel) {
 
     if (!tel) { return ''; }
-    
+
     var value = tel.toString().trim().replace(/^\+/, '');
-    
+
+    // handle extensions
+    if(value.charAt(10) === ',') {
+      var ext = value.split(',')[1];
+      value = value.split(',')[0];
+    }
+
     if (value.match(/[^0-9]/)) { return tel; }
 
     var country, city, number;
@@ -2267,6 +2273,12 @@ angular.module('core').filter('tel', function () {
       else {
         number = number;
       }
+
+      var phone = '(' + city + ') ' + number;
+
+      if(ext) return (phone  + ' ext. ' + ext).trim();
+      else return (phone).trim();
+
       return ('(' + city + ') ' + number).trim();
     }
     else {
@@ -2274,6 +2286,7 @@ angular.module('core').filter('tel', function () {
     }
   };
 });
+
 'use strict';
 
 angular.module('core').filter('titlecase', function() {
