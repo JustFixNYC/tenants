@@ -15,7 +15,7 @@ module.exports = function(app) {
 	app.route('/api/users/me').get(users.me);
 	app.route('/api/users').put(users.update);
 	app.route('/api/users/checklist').put(problems.updateActivitiesFromChecklist, users.update);
-	app.route('/api/users/list').get(users.hasAuthorization(['admin']), users.list);
+	// app.route('/api/users/list').get(users.hasAuthorization(['admin']), users.list);
 	//app.route('/users/accounts').delete(users.removeOAuthProvider);
 
 	// Public URLs
@@ -40,5 +40,5 @@ module.exports = function(app) {
 	app.route('/api/auth/signout').get(users.signout);
 
 	// Finish by binding the user middleware
-	app.param('userId', users.userByID);
+	// app.param('userId', users.userByID);
 };

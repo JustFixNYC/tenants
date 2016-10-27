@@ -38,7 +38,7 @@ module.exports = function() {
             rollbar.handleError(err);
             done(err, null);
           } else {
-            var user = _.merge(identity.toObject(), tenant.toObject());
+            var user = _.extend(identity.toObject(), tenant.toObject());
             done(err, user);
           }
         });

@@ -9,49 +9,60 @@ var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
 	rollbar = require('rollbar'),
-	User = mongoose.model('User');
+	// User = mongoose.model('User');
+	Identity = mongoose.model('Identity'),
+	Tenant = mongoose.model('Tenant');
 
 /**
  * Update user details
  */
-exports.update = function(req, res) {
+exports.updateTenantUser = function(req, res) {
+
 	// Init Variables
-	var user = req.user;
 	var message = null;
 
 	// For security measurement we remove the roles from the req.body object
 	delete req.body.roles;
 
-	if (user) {
-		// Merge existing user
-		user = _.extend(user, req.body);
+	if(req.user) {
 
-		user.updated = Date.now();
+		Tenant.findOne({ _id: req.user._id }, function(err, tenant) {
 
-		user.save(function(err) {
-			if (err) {
+			if (!err) {
+				// Merge existing user
+				tenant = _.extend(tenant, req.body);
+				tenant.updated = Date.now();
+
+				// Save tenant
+				tenant.save(function(err) {
+					if (!err) {
+						req.login(user, function(err) {
+							if (err) {
+								rollbar.handleError(err, req);
+								res.status(400).send(err);
+							} else {
+								res.json(user);
+								res.end(); // important to update session
+							}
+						});
+					} else {																														// error w tenant.save
+						rollbar.handleError(errorHandler.getErrorMessage(err), req);
+						return res.status(400).send({
+							message: errorHandler.getErrorMessage(err)
+						});
+					}
+				});
+			} else {																																// error w tenant.findOne
 				rollbar.handleError(errorHandler.getErrorMessage(err), req);
 				return res.status(400).send({
 					message: errorHandler.getErrorMessage(err)
 				});
-			} else {
-				req.login(user, function(err) {
-					if (err) {
-						rollbar.handleError(err, req);
-						res.status(400).send(err);
-					} else {
-						res.json(user);
-						res.end(); // important to update session
-					}
-				});
 			}
-		});
-
-	} else {
-		res.status(400).send({
-			message: 'User is not signed in'
-		});
-	}
+		} else {
+			res.status(400).send({
+				message: 'User is not signed in'
+			});
+		}
 
 };
 
@@ -132,15 +143,15 @@ exports.togglePublicView = function(req, res, next) {
 /**
  *  Return all users. This probably shouldn't be here - using authorization middleware
  */
-exports.list = function(req, res) {
-	User.find({}, function(err, users) {
-		if(err) {
-			res.status(400).send(err);
-		} else {
-			res.json(users);
-		}
-	});
-};
+// exports.list = function(req, res) {
+// 	User.find({}, function(err, users) {
+// 		if(err) {
+// 			res.status(400).send(err);
+// 		} else {
+// 			res.json(users);
+// 		}
+// 	});
+// };
 
 
 /**
