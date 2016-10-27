@@ -2,19 +2,19 @@
 
   <status-update></status-update>
 
-  <alert 
-  			data-ng-show="$root.dashboardSuccess" 
-  			type="success" 
+  <alert
+  			data-ng-show="$root.dashboardSuccess"
+  			type="success"
   			close="$root.dashboardSuccess = false"
   			ng-bind-html="'modules.core.views.home.success' | trustTranslate"
   			compile-template>
   </alert>
-  <alert 
-  			data-ng-show="$root.dashboardError" 
-  			type="danger" 
+  <alert
+  			data-ng-show="$root.dashboardError"
+  			type="danger"
   			close="$root.dashboardError = false"
   			ng-bind-html="'modules.core.views.home.error' | trustTranslate"
-  			compile-template>				
+  			compile-template>
   </alert>
 
 
@@ -63,7 +63,7 @@
       </h2>
       <div class="row share-controls">
         <a class="btn btn-success btn-block" ng-href="tel:{{authentication.user.referral.phone}}">
-            Call {{ ::authentication.user.referral.name | firstname }}
+            {{'modules.core.views.home.call' | translate}} {{ ::authentication.user.referral.name | firstname }}
         </a>
       </div>
     </div>
