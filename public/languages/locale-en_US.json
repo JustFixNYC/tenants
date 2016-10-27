@@ -355,11 +355,11 @@
 				},
 				"onboardingCode": {
 					"title": "Welcome to<br/>JustFix.nyc!",
-					"enterText": "Please enter the access code provided by your advocate so you can gain access to the website.",
-					"accessCode": "Access Code",
+					"enterText": "JustFix.nyc is a free mobile app that will assist you in building your case and getting repairs in your home. <br /><br /> If you received an advocate code, please enter it below:",
+					"accessCode": "Advocate Code (optional)",
 					"placeholder": "Starts with...",
 					"continue": "@:repeating.continue",
-					"getHelp": "I don't have an access code!",
+					"getHelp": "Continue Without Code",
 					"errorSubmit": "There was an error submitting this code. Please <a ui-sref=\"contact\">Contact Us</a> if you need assistance.",
 					"errorCode": "Sorry! This access code does not match anything in our database - please double check that you entered the correct code. Please <a ui-sref=\"contact\">Contact Us</a> if you need assistance."
 				},

@@ -3,25 +3,26 @@
 		<img src="/modules/core/img/brand/icon_only.svg" alt="JustFix.nyc" />
 		<h1 ng-bind-html="'modules.onboarding.partials.onboardingCode.title' | trustTranslate" compile-template></h1>
 	</div>
-	<p>{{'modules.onboarding.partials.onboardingCode.enterText'| translate}}</p>
+	<p ng-bind-html="'modules.onboarding.partials.onboardingCode.enterText' | trustTranslate"></p>
 	<div class="error-text alert alert-danger" ng-show="majorError">Whoa, looks like we're having some trouble on our end. Please refresh this page and try again.</div>
 	<form>
 	  <div class="form-group" ng-class="{ 'has-error': codeWrong }">
 	    <label class="control-label">{{'modules.onboarding.partials.onboardingCode.accessCode' | translate}}</label>
 	    <input class="form-control" type="text" placeholder="{{'modules.onboarding.partials.onboardingCode.placeholder' | translate}}" ng-model="accessCode.value">
 	  </div>
-	  <div class="form-group">
-	    <button class="btn btn-primary btn-block" ng-click="validateCode()" go-to-top>{{'modules.onboarding.partials.onboardingCode.continue' | translate}}</button>
-	    <a class="btn btn-link btn-block" ui-sref="contact">{{'modules.onboarding.partials.onboardingCode.getHelp' | translate}}</a>
+	  <div class="form-group form-group-center">
+	    <button ng-if="accessCode.value" class="btn btn-primary btn-block" ng-click="validateCode()" go-to-top>{{'modules.onboarding.partials.onboardingCode.continue' | translate}}</button>
+			<button ng-if="!accessCode.value" class="btn btn-primary" ui-sref="onboarding.problems" go-to-top>{{'modules.onboarding.partials.onboardingCode.getHelp' | translate}}</button>
+	    <!-- <a class="btn btn-link btn-block" ui-sref="contact">{{'modules.onboarding.partials.onboardingCode.getHelp' | translate}}</a> -->
 	  </div>
 	</form>
-	<div class="error-text alert alert-danger" 
-				ng-if="!codeErrorMessage.length" 
+	<div class="error-text alert alert-danger"
+				ng-if="!codeErrorMessage.length"
 				ng-show="codeError"
 				ng-bind-html="'modules.onboarding.partials.onboardingCode.errorSubmit' | trustTranslate" compile-template>
 	</div>
-	<div class="error-text alert alert-warning" 
+	<div class="error-text alert alert-warning"
 				ng-show="codeWrong"
 				ng-bind-html="'modules.onboarding.partials.onboardingCode.errorCode' | trustTranslate" compile-template>
-		
+
 	</div>

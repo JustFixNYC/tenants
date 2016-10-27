@@ -358,11 +358,11 @@
 				},
 				"onboardingCode": {
 					"title": "¡Bienvenidos a<br/>JustFix.nyc!",
-					"enterText": "Introduzca el código de acceso que le dio su defensor para poder acceder al sitio web.",
-					"accessCode": "Código de acceso",
+					"enterText": "JustFix.nyc es una aplicación móvil gratuita que ayudará a fortalecer su caso y obtener reparaciones en su hogar. <br /><br /> Si ha recibido un código defensor, lo introduzcan abajo:",
+					"accessCode": "Código defensor (opcional)",
 					"placeholder": "Empieza con...",
 					"continue": "@:repeating.continue",
-					"getHelp": "¡No tengo un código de acceso!",
+					"getHelp": "Continuar sin código",
 					"errorSubmit": "Hubo un error con la introducción de este código. <a ui-sref=\"contact\">Contáctenos</a> si necesita asistencia.",
 					"errorCode": "¡Lo sentimos! Este código de acceso no compagina con nada en nuestra base de datos – asegúrese de haber introducido el código correcto. <a ui-sref=\"contact\">Contáctenos</a> si necesita asistencia."
 				},

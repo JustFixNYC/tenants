@@ -8,12 +8,16 @@
 </div>
 <div class="form-group">
     <div class="row">
-        <!-- <div class="col-xs-4">
-            <a href="" class="btn btn-block btn-default">
+        <div class="col-xs-4">
+            <!-- should go to either success or access code page  -->
+            <a ng-if="!newUser.referral" ui-sref="onboarding.accessCode" class="btn btn-block btn-default">
               {{'modules.onboarding.partials.onboardingProblems.back' | translate}}
             </a>
-        </div> -->
-        <div class="col-xs-8 col-xs-offset-4">
+            <a ng-if="newUser.referral" ui-sref="onboarding.success" class="btn btn-block btn-default">
+              {{'modules.onboarding.partials.onboardingProblems.back' | translate}}
+            </a>
+        </div>
+        <div class="col-xs-8">
             <a ui-sref="onboarding.details" class="btn btn-primary btn-block pull-right">
               <span ng-if="newUser.problems.length">
               {{'modules.onboarding.partials.onboardingProblems.continue' | translate}}</span>
