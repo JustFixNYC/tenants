@@ -6,21 +6,22 @@
 var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	rollbar = require('rollbar'),
-	User = mongoose.model('User');
+	// User = mongoose.model('User'),
+	Tenant = mongoose.model('Tenant');
 
 /**
  * User middleware
  */
-exports.userByID = function(req, res, next, id) {
-	User.findOne({
-		_id: id
-	}).exec(function(err, user) {
-		if (err) return next(err);
-		if (!user) return next(new Error('Failed to load User ' + id));
-		req.profile = user;
-		next();
-	});
-};
+// exports.userByID = function(req, res, next, id) {
+// 	User.findOne({
+// 		_id: id
+// 	}).exec(function(err, user) {
+// 		if (err) return next(err);
+// 		if (!user) return next(new Error('Failed to load User ' + id));
+// 		req.profile = user;
+// 		next();
+// 	});
+// };
 
 /**
  * Require login routing middleware
@@ -66,7 +67,7 @@ exports.hasPublicView = function(req, res, next) {
 	// allow for either /:key or ?key=
 	var key = req.params.key || req.query.key;
 
-	User.findOne({
+	Tenant.findOne({
 		'sharing.key' : key
 	}).exec(function(err, user) {
 		if (err) {
