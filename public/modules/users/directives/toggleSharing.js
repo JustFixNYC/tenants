@@ -11,6 +11,13 @@ angular.module('core').directive('toggleSharing', ['Users', 'Authentication',
           elm[0].querySelector('input').checked = true;
         }
 
+        if(scope.$parent.newUser) {
+          scope.$watch('$parent.newUser', function (newUser) {
+            if(newUser.sharing.enabled) elm[0].querySelector('input').checked = true;
+            else elm[0].querySelector('input').checked = false;
+          });
+        }
+
         elm.bind('touchstart click', function(event) {
           event.stopPropagation();
           event.preventDefault();

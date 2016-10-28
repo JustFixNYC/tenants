@@ -410,7 +410,7 @@
 					"subtitle": "We've connected you to the advocate working with your building! Their contact information will be stored in your account, so you can connect with them at any time.",
 					"share": "Share My Case:",
 					"shareEnabled": "Sharing (on):",
-					"shareDesc": "This allows your advocate to view the evidence you upload to the site; it does not give access to the rest of your account. You can opt in later or disable at any time.",
+					"shareDesc": "This allows your advocate to view the evidence you upload to the site; it does not give access to the rest of your account. You can opt out later or disable at any time.",
 					"back": "@:repeating.back",
 					"continue": "@:repeating.continue"
 				}

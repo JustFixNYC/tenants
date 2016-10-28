@@ -3120,6 +3120,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 		          $scope.accessCode.valueEntered = $scope.accessCode.value;
 		          $scope.newUser.referral = success.referral;
 							$scope.newUser.referral.code = $scope.accessCode.value;
+							$scope.newUser.sharing.enabled = true;
 							$location.path('/onboarding/success');
 							$scope.codeError = false;
 							$scope.codeWrong = false;
@@ -4068,6 +4069,13 @@ angular.module('core').directive('toggleSharing', ['Users', 'Authentication',
 
         if(Authentication.user && Authentication.user.sharing.enabled) {
           elm[0].querySelector('input').checked = true;
+        }
+
+        if(scope.$parent.newUser) {
+          scope.$watch('$parent.newUser', function (newUser) {
+            if(newUser.sharing.enabled) elm[0].querySelector('input').checked = true;
+            else elm[0].querySelector('input').checked = false;
+          });
         }
 
         elm.bind('touchstart click', function(event) {

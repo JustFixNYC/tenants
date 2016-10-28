@@ -57,6 +57,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 		          $scope.accessCode.valueEntered = $scope.accessCode.value;
 		          $scope.newUser.referral = success.referral;
 							$scope.newUser.referral.code = $scope.accessCode.value;
+							$scope.newUser.sharing.enabled = true;
 							$location.path('/onboarding/success');
 							$scope.codeError = false;
 							$scope.codeWrong = false;
