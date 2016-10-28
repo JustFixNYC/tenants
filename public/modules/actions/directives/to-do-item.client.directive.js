@@ -35,8 +35,8 @@ angular.module('actions')
         scope.followUpSubmitted = false;
 
         // scope.completed = false;
-        scope.action.completed = false;
-        // if(!scope.action.completed) scope.action.completed = false;
+        // scope.action.completed = false;
+        if(!scope.action.completed) scope.action.completed = false;
 
         scope.newActivity = {
           title: scope.action.activityTitle,
@@ -122,7 +122,12 @@ angular.module('actions')
 
           if(url && type === 'tel') window.location.href = url;
           else if(url && type === 'link') window.open(url, '_blank');
-         };
+        };
+
+        scope.completeAction = function() {
+          scope.action.completed = true;
+          scope.action.closeAlert = false;
+        };
 
         scope.cancelFollowUp = function() {
           scope.action.$followUp({ type: 'remove' });
@@ -167,8 +172,7 @@ angular.module('actions')
 
               Authentication.user = response;
               $rootScope.loading = false;
-              scope.action.completed = true;
-              scope.action.closeAlert = false;
+              scope.completeAction();
 
               // load new actions
               // var idx = scope.$index;
@@ -182,7 +186,8 @@ angular.module('actions')
                     section.push(action);
                     // scope.actions.splice(++idx, 0, action);
                   });
-                });
+                }
+              );
 
             }, function(errorResponse) {
               $rootScope.loading = false;
