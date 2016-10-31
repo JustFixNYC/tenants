@@ -120,7 +120,7 @@
   				"description": "Añada una breve descripción.",
   				"tagTitle": "Etiquetar el asunto",
   				"addCase": "@:repeating.add",
-  				"success": "<strong>¡Felicitaciones!</strong> Hemos añadido <em>{{ newActivity.title }}</em> a su <a ui-sref=\"listActivity\">Historial del Caso</a>.",
+  				"success": "<strong>¡Felicitaciones!</strong> Hemos añadido <em>Actualizacion de Estatos</em> a su <a ui-sref=\"listActivity\">Historial del Caso</a>.",
   				"error": "Lo sentimos, ¡pero algo no funcionó! <a ui-sref=\"contact\">Contáctenos</a> para reportar el problema."
   			},
   			"toDoItem": {
@@ -195,7 +195,8 @@
 	  	"other": {
 		    "added": "Añadí asuntos nuevos a la Lista de revisión",
 		    "removed": "Quité asuntos de la Lista de revisión",
-		    "created": "He creado una cuenta en on JustFix.nyc"
+		    "created": "He creado una cuenta en on JustFix.nyc",
+        "statusUpdate": "Actualizacion de estatos"
 	  	}
   	},
   	"admin": {

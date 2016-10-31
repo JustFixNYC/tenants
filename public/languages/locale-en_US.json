@@ -118,7 +118,7 @@
   				"description": "Please add a brief description.",
   				"tagTitle": "Tag Issue",
   				"addCase": "@:repeating.add",
-  				"success": "<strong>Well done!</strong> We've added <em>{{ newActivity.title }}</em> to your <a ui-sref=\"listActivity\">Case History</a>.",
+  				"success": "<strong>Well done!</strong> We've added <em>Status Update</em> to your <a ui-sref=\"listActivity\">Case History</a>.",
   				"error": "We're sorry, something went wrong! Please <a ui-sref=\"contact\">Contact Us</a> to report this issue."
   			},
   			"toDoItem": {
@@ -192,7 +192,8 @@
 	  	"other": {
 		    "added": "Added new issues to checklist",
 		    "removed": "Removed issues from checklist",
-		    "created": "Created an account on JustFix.nyc"
+		    "created": "Created an account on JustFix.nyc",
+        "statusUpdate": "Status Update"
 	  	}
   	},
   	"admin": {

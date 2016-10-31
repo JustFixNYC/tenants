@@ -28,7 +28,7 @@ angular.module('actions')
 
         scope.newActivity = {
           date: '',
-          title: 'Status Update',
+          title: 'modules.activity.other.statusUpdate',
           key: 'statusUpdate',
           relatedProblems: [],
           photos: []
@@ -103,7 +103,7 @@ angular.module('actions')
               scope.status.expanded = false;
               scope.newActivity = {
                 date: '',
-                title: 'Status Update',
+                title: 'modules.activity.other.statusUpdate',
                 key: 'statusUpdate',
                 relatedProblems: [],
                 photos: []
