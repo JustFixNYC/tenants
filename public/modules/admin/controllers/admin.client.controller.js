@@ -1,14 +1,15 @@
 'use strict';
 
 angular.module('admin')
-  .controller('AdminController', ['$scope', '$q', '$modal', 'Referrals',
-    function($scope, $q, $modal, Referrals) {
+  .controller('AdminController', ['$scope', '$q', '$modal', 'Referrals', 'Passwords',
+    function($scope, $q, $modal, Referrals, Passwords) {
 
       $scope.list = function() {
         $scope.referrals = Referrals.query();
       };
 
       $scope.newReferral = {};
+      $scope.newTempPassword = {};
       // $scope.newReferral = {
       //   name: 'Dan Kass',
       //   phone: '8459781262',
@@ -57,6 +58,17 @@ angular.module('admin')
         //     $scope.list();
         //   });
         // });
+      };
+
+      $scope.createTempPassword = function() {
+        var newPassword = new Passwords($scope.newTempPassword);
+        newPassword.$create(function(success) {
+          $scope.tempPasswordError = false;
+          $scope.tempPasswordMessage = "Success!";
+        }, function(error) {
+          $scope.tempPasswordError = true;
+          $scope.tempPasswordMessage = error.data.message;
+        });
       };
 
 }]);

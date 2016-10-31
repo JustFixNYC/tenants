@@ -29,6 +29,7 @@ module.exports = function(app) {
 	app.route('/api/users/password').post(users.changePassword);
 	app.route('/api/users/verify-password').post(users.verifyPassword);
 	app.route('/api/auth/forgot').post(users.forgot);
+	app.route('/api/auth/temp-password').post(users.hasAuthorization(['admin']), users.newTempPassword);
 	app.route('/api/auth/reset/:token').get(users.validateResetToken);
 	app.route('/api/auth/reset/:token').post(users.reset);
 

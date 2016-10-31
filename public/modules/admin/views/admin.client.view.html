@@ -74,6 +74,18 @@
       </form>
 
     </tab>
+    <tab heading="Temp Passwords">
+        <div class="form-group">
+          <label class="control-label">Phone Number</label><br/>
+          <input class="form-control" type="text" name="Phone" ng-model="newTempPassword.phone" phone-input>
+        </div>
+        <div class="form-group clearfix">
+          <div class="pull-left" ng-class="tempPasswordError ? 'text-danger' : 'text-success'">{{ tempPasswordMessage }}</div>
+          <input class="btn btn-primary pull-right" type="submit" value="Submit" ng-click="createTempPassword()">
+        </div>
+      </form>
+
+    </tab>
   </tabset>
 
   <!-- <h3>List Referrals:</h3>

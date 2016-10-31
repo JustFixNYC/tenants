@@ -69,7 +69,7 @@ exports.forgot = function(req, res, next) {
 			var smtpTransport = nodemailer.createTransport(config.mailer.options);
 			console.log(smtpTransport);
 			var mailOptions = {
-				to: user.email,
+				to: 'dan@justfix.nyc',
 				from: config.mailer.from,
 				subject: 'Password Reset',
 				html: emailHTML
@@ -185,6 +185,45 @@ exports.reset = function(req, res, next) {
 		if (err) return next(err);
 	});
 };
+
+/**
+ * Change Password
+ */
+exports.newTempPassword = function(req, res) {
+	// Init Variables
+	// var passwordDetails = req.body;
+	User.findOne({ phone: req.body.phone }, function(err, user) {
+		if (!err && user) {
+
+					user.password = config.tempPassword;
+
+					user.save(function(err) {
+						if (err) {
+							return res.status(400).send({
+								message: errorHandler.getErrorMessage(err)
+							});
+						} else {
+							req.login(user, function(err) {
+								if (err) {
+									res.status(400).send(err);
+								} else {
+									res.send({
+										message: 'Password changed successfully'
+									});
+								}
+							});
+						}
+					});
+		} else {
+			res.status(400).send({
+				message: 'User is not found'
+			});
+		}
+	});
+};
+
+
+
 
 /**
  * Change Password
