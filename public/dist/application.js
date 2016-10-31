@@ -3913,6 +3913,23 @@ angular.module('users').controller('AuthenticationController', ['$rootScope', '$
         $scope.error = response.message;
       });
     };
+
+    $scope.forgotPassword = {};
+    $scope.pwError = false;
+    $scope.pwSuccess = false;
+    $scope.requestPassword = function() {
+      if(!$scope.forgotPassword.phone) {
+        $scope.pwError = true;
+        $scope.pwSuccess = false;
+      } else {
+        $scope.pwError = false;
+        $scope.pwSuccess = true;
+
+        Rollbar.info("Forgot Password", { phone: $scope.forgotPassword.phone });
+      }
+
+    };
+
   }
 ]);
 

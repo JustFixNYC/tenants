@@ -470,8 +470,10 @@
 				"password": {
 					"forgot": {
 						"title": "Restore your password",
-						"enterUser": "Enter your account username.",
-						"submit": "@:repeating.submit"
+            "forgotText": "Enter your phone number and a JustFix.nyc representative will send you a new temporary password shortly:",
+						"submit": "@:repeating.submit",
+            "error": "Please enter your phone number",
+            "success": "Thank you - we will be in touch soon"
 					},
 					"resetInvalid": {
 						"title": "Password reset is invalid",
