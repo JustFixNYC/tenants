@@ -9,6 +9,7 @@ module.exports = {
     phone: process.env.SUPERUSERPHONE,
     pwd: process.env.SUPERUSERPASS
   },
+  tempPassword: process.env.TEMPPASS,
   assets: {
     lib: {
       css: [
