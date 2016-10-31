@@ -23,12 +23,12 @@ module.exports = function() {
 				}
 				if (!user) {
 					return done(null, false, {
-						message: 'Unknown user or invalid password'
+						message: 'Sorry! This phone number was not found. Check that you are using the same one you used to register'
 					});
 				}
 				if (!user.authenticate(password)) {
 					return done(null, false, {
-						message: 'Unknown user or invalid password'
+						message: 'Wrong password - remember that they are case sensitive!'
 					});
 				}
 

@@ -124,6 +124,7 @@ exports.signin = function(req, res, next) {
           rollbar.handleError(err, req);
           res.status(400).send(err);
         } else {
+          rollbar.reportMessage("User Sign In", "info", req);
           res.json(user);
         }
       });

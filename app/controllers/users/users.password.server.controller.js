@@ -246,7 +246,6 @@ exports.changePassword = function(req, res) {
 	}
 };
 
-
 /**
  * Verfiy password Password
  */
