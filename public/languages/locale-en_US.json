@@ -175,6 +175,7 @@
 	  		},
 	  		"listActivity": {
 	  			"title": "@:repeating.caseHistory",
+          "loggedOn": "Logged on",
 	  			"description": "This is a record of all the actions you’ve taken in resolving your housing issues.",
 	  			"share": "Share My Case",
 	  			"email": "Email",

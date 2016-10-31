@@ -178,6 +178,7 @@
 	  		},
 	  		"listActivity": {
 	  			"title": "@:repeating.caseHistory",
+          "loggedOn": "En sesión",
 	  			"description": "Este es un registro de todas las acciones que usted ha tomado para resolver sus problemas de vivienda.",
 	  			"share": "Compartir mi caso",
 	  			"email": "Enviar email",
