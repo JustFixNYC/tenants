@@ -170,7 +170,7 @@ angular.module('actions')
 
               console.log('create activity post save', response);
 
-              Authentication.user = response;
+              // Authentication.user = response;
               $rootScope.loading = false;
               scope.completeAction();
 

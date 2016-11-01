@@ -20,8 +20,6 @@ angular.module('problems').controller('ProblemsController', ['$rootScope', '$sco
 
 			    $rootScope.loading = false;
 					$rootScope.dashboardSuccess = true;
-
-			    Authentication.user = response;
 			    $state.go(toState);
 
 				}, function(response) {

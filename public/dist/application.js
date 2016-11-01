@@ -846,7 +846,7 @@ angular.module('actions')
 
               console.log('create activity post save', response);
 
-              Authentication.user = response;
+              // Authentication.user = response;
               $rootScope.loading = false;
               scope.completeAction();
 
@@ -1247,8 +1247,8 @@ angular.module('activity').filter('activityTemplate', function() {
 'use strict';
 
 //Issues service used to communicate Issues REST endpoints
-angular.module('activity').factory('Activity', ['$resource',
-  function($resource) {
+angular.module('activity').factory('Activity', ['$resource', 'UpdateUserInterceptor',
+  function($resource, UpdateUserInterceptor) {
 
     // taken from https://gist.github.com/ghinda/8442a57f22099bdb2e34
     //var transformRequest = function(data, headersGetter) { if (data === undefined) return data;var fd = new FormData();angular.forEach(data, function(value, key) { if (value instanceof FileList) { if (value.length == 1) { fd.append(key, value[0]);} else {angular.forEach(value, function(file, index) {fd.append(key + '_' + index, file);});}} else {if (value !== null && typeof value === 'object'){fd.append(key, JSON.stringify(value)); } else {fd.append(key, value);}}});return fd;}
@@ -1308,7 +1308,8 @@ angular.module('activity').factory('Activity', ['$resource',
           transformRequest: formDataTransform,
           headers: {
             'Content-Type': undefined
-          }
+          },
+          interceptor: UpdateUserInterceptor
       },
       public: {
         method: 'GET',
@@ -3389,8 +3390,6 @@ angular.module('problems').controller('ProblemsController', ['$rootScope', '$sco
 
 			    $rootScope.loading = false;
 					$rootScope.dashboardSuccess = true;
-
-			    Authentication.user = response;
 			    $state.go(toState);
 
 				}, function(response) {
@@ -4055,7 +4054,7 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 					// If successful we assign the response to the global user model
 
 					$rootScope.loading = false;
-					$scope.user = Authentication.user = response;
+					$scope.user = Authentication.user;
 
 					$state.go('settings.profile');
 	    		$scope.passwordVerified = false;
@@ -4161,11 +4160,25 @@ angular.module('users').factory('Authentication', [
 'use strict';
 
 // Users service used for communicating with the users REST endpoint
-angular.module('users').factory('Users', ['$resource',
-	function($resource) {
+angular.module('users').factory('UpdateUserInterceptor', ['Authentication',
+	function (Authentication) {
+    //Code
+    return {
+        response: function(res) {
+					Authentication.user = res.resource;
+          // console.log(res);
+        }
+		};
+	}
+]);
+
+
+angular.module('users').factory('Users', ['$resource', 'UpdateUserInterceptor',
+	function($resource, UpdateUserInterceptor) {
 		return $resource('api/users', {}, {
 			update: {
-				method: 'PUT'
+				method: 'PUT',
+				interceptor: UpdateUserInterceptor
 			},
 			toggleSharing: {
 				method: 'GET',
@@ -4173,7 +4186,8 @@ angular.module('users').factory('Users', ['$resource',
 			},
 			updateChecklist: {
 				method: 'PUT',
-				url: 'api/users/checklist'
+				url: 'api/users/checklist',
+				interceptor: UpdateUserInterceptor
 			}
       // ,
       // getIssues: {
