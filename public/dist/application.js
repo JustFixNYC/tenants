@@ -4166,6 +4166,7 @@ angular.module('users').factory('UpdateUserInterceptor', ['Authentication',
     return {
         response: function(res) {
 					Authentication.user = res.resource;
+					return res;
           // console.log(res);
         }
 		};
