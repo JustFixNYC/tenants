@@ -2,6 +2,7 @@
 
 var _ = require('lodash'),
     Q = require('q'),
+    ExifImage = require('exif').ExifImage,
     errorHandler = require('./errors.server.controller'),
     s3Handler = require('../services/s3.server.service'),
     mongoose = require('mongoose'),
@@ -19,34 +20,134 @@ var list = function(req, res) {
   }
 };
 
-var s3upload = function(file) {
+// GPS processing helper function
+var convertDMSToDD = function(degrees, minutes, seconds, direction) {
+    var dd = degrees + minutes/60 + seconds/(60*60);
+    if (direction == "S" || direction == "W") {
+        dd = dd * -1;
+    } // Don't do anything for N or E
+    return dd;
+};
+
+var convertDegToDirection = function(deg) {
+  if(deg >= 337.5 || deg < 22.5) {
+    return 'N';
+  } else if (deg >= 22.5 && deg < 67.5) {
+    return 'NE';
+  } else if (deg >= 67.5 && deg < 112.5) {
+    return 'E';
+  } else if (deg >= 112.5 && deg < 157.5) {
+    return 'SE';
+  } else if (deg >= 157.5 && deg < 202.5) {
+    return 'S';
+  } else if (deg >= 202.5 && deg < 247.5) {
+    return 'SW';
+  } else if (deg >= 247.5 && deg < 292.5) {
+    return 'W';
+  } else if (deg >= 292.5 && deg < 337.5) {
+    return 'NW';
+  } else {
+    return '';
+  }
+
+};
+
+var getExifData = function(path) {
+
+  var extracted = Q.defer();
+
+  try {
+      new ExifImage({ image : path }, function (error, exifData) {
+          if (error) {
+            extracted.resolve({ exif: undefined, error: error.toString() });
+          } else {
+            extracted.resolve({ exif: exifData, error: undefined });
+          }
+      });
+  } catch (error) {
+      extracted.resolve({ exif: undefined, error: error.toString() });
+  }
+
+  return extracted.promise;
+};
+
+
+
+var s3Upload = function(file) {
 
   var uploaded = Q.defer();
+
+  var type = file.originalFilename.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[0];
+
+  s3Handler.uploadFile(file.path, type)
+    .then(function (data) {
+      var url = data.Location;
+      var resizedUrl = url.replace( /justfix/i, 'justfixresized' );
+
+      uploaded.resolve({ url: url, thumb: resizedUrl });
+    }).fail(function (err) {
+      uploaded.reject(err);
+    });
+
+  return uploaded.promise;
+};
+
+
+
+var processAndSavePhoto = function(file) {
+
+  var processed = Q.defer();
 
   // this is mainly for user friendliness. this field can be freely tampered by attacker.
   // if (!/^image\/(jpe?g|png|gif)$/i.test(file.type)) {
   //     return uploaded.reject('images only');
   // }
 
-  if(!file) uploaded.reject('no file?');
+  if(!file) processed.reject('no file?');
 
-  // console.log('file', file);
-  // console.log('origname', file.originalFilename);
+  // try to get EXIF for metadata and orientation
+  getExifData(file.path).then(function (result) {
 
-  var type = file.originalFilename.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[0];
+    var _exif = {};
 
-  s3Handler.uploadFile(file.path, type)
-    .then(function (data) {
-      console.log('s3 file success!', data);
-      var url = data.Location;
-      var resizedUrl = url.replace( /justfix/i, 'justfixresized' );
+    // if theres no error
+    if(!result.error) {
 
-      uploaded.resolve({ url: data.Location, thumb: resizedUrl });
-    }).fail(function (err) {
-      uploaded.reject(err);
+      var exif = result.exif;
+
+      if(exif.gps) {
+        _exif.lat = convertDMSToDD(exif.gps.GPSLatitude[0],exif.gps.GPSLatitude[1],exif.gps.GPSLatitude[2],exif.gps.GPSLatitudeRef);
+        _exif.lng = convertDMSToDD(exif.gps.GPSLongitude[0],exif.gps.GPSLongitude[1],exif.gps.GPSLongitude[2],exif.gps.GPSLongitudeRef);
+        _exif.dir = convertDegToDirection(exif.gps.GPSImgDirection);
+      }
+      if(exif.exif) {
+        _exif.created = exif.exif.CreateDate;
+        _exif.lens = exif.exif.LensModel;
+      }
+      if(exif.image) {
+        _exif.make = exif.image.Make;
+        _exif.model = exif.image.Model;
+        _exif.orientation = exif.image.Orientation;
+      }
+
+    } else {
+
+      // exif error (doesn't mean that it found anything)
+      processed.reject(result.error);
+    }
+
+    // upload to s3
+    s3Upload(file).then(function(urls) {
+      processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
+    }).fail(function(err) {
+      processed.reject(err);
     });
 
-  return uploaded.promise;
+
+  });
+
+
+  return processed.promise;
 
 };
 
@@ -80,7 +181,7 @@ var create = function(req, res, next) {
     // init photos queue
     var uploadQueue = [];
 
-    for(var file in files) uploadQueue.push(s3upload(files[file]));
+    for(var file in files) uploadQueue.push(processAndSavePhoto(files[file]));
 
     Q.allSettled(uploadQueue).then(function (results) {
 
@@ -91,7 +192,8 @@ var create = function(req, res, next) {
 
         activity.photos.push({
           url: r.value.url,
-          thumb: r.value.thumb
+          thumb: r.value.thumb,
+          exif: r.value.exif
         });
       });
 
@@ -102,6 +204,8 @@ var create = function(req, res, next) {
         prob.description = activity.description;
         prob.photos = activity.photos;
       }
+
+      console.log('new activity', activity);
 
       // add activity object
       user.activity.push(activity);

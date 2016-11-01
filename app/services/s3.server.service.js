@@ -22,6 +22,8 @@ function uploadFile(path, type) {
 
   var destFileName = '10000' + parseInt(Math.random() * 10000000);
 
+  console.log(path);
+
   photoBucket
       .upload({
           ACL: 'public-read',
@@ -36,6 +38,9 @@ function uploadFile(path, type) {
         if(err) {
           uploaded.reject(err);
         }
+
+        // delete temp file?
+        fs.unlinkSync(path);
         uploaded.resolve(data);
       });
 
