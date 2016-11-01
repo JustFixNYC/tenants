@@ -40,7 +40,7 @@ function uploadFile(path, type) {
         }
 
         // delete temp file?
-        fs.unlinkSync(path);
+        // fs.unlinkSync(path);
         uploaded.resolve(data);
       });
 
