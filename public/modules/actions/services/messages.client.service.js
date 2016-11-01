@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$location', 'Authentication',
-  function Issues($http, $q, $filter, $location, Authentication) {
+angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$location', 'Authentication', '$translate',
+  function Issues($http, $q, $filter, $location, Authentication, $translate) {
 
     var user = Authentication.user;
     var request = function(url) {
@@ -16,6 +16,8 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
 
       return deferred.promise;
     };
+
+    var language = $translate.use();
 
     var getShareMessage = function(type) {
 
@@ -46,19 +48,22 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
     };
 
     var getLandlordEmailMessage = function() {
+    	var language = $translate.use();
+
+    	$translate.use('en_US');
 
       var message = 'To whom it may regard, \n\n' +
         'I am requesting the following repairs in my apartment referenced below [and/or] in the public areas of the building:\n\n';
 
       var problemsContent = '';
 
-      for(var i = 0; i < user.problems.length; i++) {
+      for(var i = 0; i < user.problems.length; i++) { 
 
         var prob = user.problems[i];
 
-        problemsContent += prob.title + ':\n';
+        problemsContent += $translate.instant(prob.title) + ':\n';
         for(var j = 0; j < prob.issues.length; j++) {
-          problemsContent += ' - ' + prob.issues[j].key;
+          problemsContent += ' - ' + $translate.instant(prob.issues[j].key);
           if(prob.issues[j].emergency) problemsContent += ' (FIX IMMEDIATELY)';
           problemsContent += '\n';
         }
@@ -116,6 +121,8 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
                   'Apt. ' + user.unit + '\n' +
                   user.borough + ', NY ' + '\n' +
                   $filter('tel')(user.phone);
+
+      $translate.use(language);
 
       return message;
     };

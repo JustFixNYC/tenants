@@ -1,11 +1,14 @@
 'use strict';
 
-angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$filter',
-  function Pdf($http, $q, Authentication, $filter) {
+angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$filter', '$translate',
+  function Pdf($http, $q, Authentication, $filter, $translate) {
 
     var user = Authentication.user;
 
   	var assemble = function(landlordName, landlordAddr) {
+  		var language = $translate.use();
+
+  		$translate.use('en_US');
 
   		// This block assembles our issues list PhantomJS
   		var assembledObject = {
@@ -23,7 +26,7 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
   		// Kick off assembly of obj sent to PDF service
 			assembledObject.tenantInfo = {
-  			'phone': user.phone,
+  			'phone': $filter('tel')(user.phone),
   			'name': user.fullName,
   			'address': user.address + ' ' + user.unit +
   								' <br> ' + user.borough +
@@ -38,7 +41,10 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
       	var problemPush = angular.copy(user.problems[i]);
 
+      	problemPush.title = $translate.instant(problemPush.title);
+
       	problemPush.issues.map(function(curr, idx, arr) {
+      		curr.key = $translate.instant(curr.key);
       		if(curr.emergency === true) {
       			assembledObject.emergency = true;
       		}
