@@ -133,7 +133,7 @@ var processAndSavePhoto = function(file) {
     } else {
 
       // exif error (doesn't mean that it found anything)
-      processed.reject(result.error);
+      console.error(result.error);
     }
 
     // upload to s3
@@ -186,6 +186,9 @@ var create = function(req, res, next) {
     Q.allSettled(uploadQueue).then(function (results) {
 
       results.forEach(function (r) {
+
+        console.log('results', r);
+
         if(r.state !== 'fulfilled') {
           res.status(500).send({ message: "Photo is not fulfilled" });
         }
