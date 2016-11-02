@@ -3,24 +3,22 @@
 //Start by defining the main module and adding the module dependencies
 angular.module(ApplicationConfiguration.applicationModuleName, ApplicationConfiguration.applicationModuleVendorDependencies);
 
-// Extend $santize to accomidate for ui-sref
-// NEEDED: this has to be in the angular-translate module
-// https://github.com/angular/angular.js/pull/6252/files
+angular.module(ApplicationConfiguration.applicationModuleName).factory(
+	'customLoader', function($q, $http) {
+		return function(opts) {
+			var deferred = $q.deferred;
 
-/*var $sanitizeExtFactory = function() {
-  return {
+			$http.get('/languages/locale-es_US.json')
+				.then(function(data){
+					deferred.resolve(data);
+				}, function(err){
+					deferred.reject(err);
+				});
 
-    addSafeElements: function(elements) {
-      var map = makeMap(elements);
-      angular.extend(blockElements, map);
-      angular.extend(validElements, map);
-    },
-
-    addSafeAttributes: function(attrs) {
-      angular.extend(validAttrs, makeMap(attrs));
-    }
-  };
-};*/
+			return deferred.promise;
+		}
+	}
+);
 
 angular.module(ApplicationConfiguration.applicationModuleName)
   // Setting HTML5 Location Mode
@@ -46,6 +44,170 @@ angular.module(ApplicationConfiguration.applicationModuleName)
   .config(function ($translateProvider, $translateSanitizationProvider) {
   	// enable logging for missing IDs
     $translateProvider.useMissingTranslationHandlerLog();
+
+    $translateProvider.translations('special', {
+	    	"checklist": {
+		  	"bedrooms": {
+		  		"title": "Bedrooms",
+		      "paint": "Peeling Paint",
+		      "cracked": "Cracked Walls",
+		      "mold": "Mold on Walls",
+		      "water": "Water Damage",
+		      "loose": "Loose Floor",
+		      "windowGlass": "Window Glass Broken",
+		      "windowFrame": "Window Frame Defective",
+		      "door": "Door Broken",
+		      "radiators": "Radiators/Risers Defective",
+		      "ceilingFall": "Ceiling Falling/Fell",
+		      "ceilingLeaking": "Ceiling Leaking",
+		      "electricity": "Electricity defective",
+		      "electricExposed": "Electric wiring exposed",
+		      "outlets": "Outlets defective"
+		  	},
+		  	"kitchen":{
+		  		"title": "Kitchen",
+		  		"paint": "@:checklist.bedrooms.paint",
+		      "cracked": "@:checklist.bedrooms.cracked",
+		      "mold": "@:checklist.bedrooms.mold",
+		      "water": "@:checklist.bedrooms.water",
+		      "loose": "@:checklist.bedrooms.loose",
+		      "baseboards": "Baseboards Defective",
+		      "windowGlass": "@:checklist.bedrooms.windowGlass",
+		      "windowFrame": "@:checklist.bedrooms.windowFrame",
+		      "door": "@:checklist.bedrooms.door",
+		      "radiators": "@:checklist.bedrooms.radiators",
+		      "ceilingFall": "@:checklist.bedrooms.ceilingFall",
+		      "ceilingLeaking": "@:checklist.bedrooms.ceilingLeaking",
+		      "electricity": "@:checklist.bedrooms.electricity",
+		      "electricExposed": "@:checklist.bedrooms.electricExposed",
+		      "outlets": "@:checklist.bedrooms.outlets",
+		      "sink": "Cracked Sink (Sink)",
+		      "leakyFaucet": "Leaky Faucet (Sink)",
+		      "noFaucet": "Faucets not installed (Sink)",
+		      "brokenFaucet": "Faucets not working (Sink)",
+		      "pipesLeaking": "Pipes Leaking (Sink)",
+		      "drainBlock": "Drain Stoppage (Sink)",
+		      "fridgeDefective": "Refrigerator Defective",
+		      "fridgeBroken": "Refrigerator Broken",
+		      "stoveDefective": "Stove Defective",
+		      "stoveBroken": "Stove Broken"
+		    },
+		    "livingRoom": {
+		    	"title": "Living Room",
+		  		"paint": "@:checklist.bedrooms.paint",
+		      "cracked": "@:checklist.bedrooms.cracked",
+		      "mold": "@:checklist.bedrooms.mold",
+		      "water": "@:checklist.bedrooms.water",
+		      "loose": "@:checklist.bedrooms.loose",
+		      "baseboards": "Baseboards Defective",
+		      "windowGlass": "@:checklist.bedrooms.windowGlass",
+		      "windowFrame": "@:checklist.bedrooms.windowFrame",
+		      "door": "@:checklist.bedrooms.door",
+		      "radiators": "@:checklist.bedrooms.radiators",
+		      "ceilingFall": "@:checklist.bedrooms.ceilingFall",
+		      "ceilingLeaking": "@:checklist.bedrooms.ceilingLeaking",
+		      "electricity": "@:checklist.bedrooms.electricity",
+		      "electricExposed": "@:checklist.bedrooms.electricExposed",
+		      "outlets": "@:checklist.bedrooms.outlets"
+		    },
+		    "bathroom": {
+		    	"title": "Bathroom",
+		  		"paint": "@:checklist.bedrooms.paint",
+		      "cracked": "@:checklist.bedrooms.cracked",
+		      "mold": "@:checklist.bedrooms.mold",
+		      "water": "@:checklist.bedrooms.water",
+		      "loose": "@:checklist.bedrooms.loose",
+		      "baseboards": "Baseboards Defective",
+		      "windowGlass": "@:checklist.bedrooms.windowGlass",
+		      "windowFrame": "@:checklist.bedrooms.windowFrame",
+		      "door": "@:checklist.bedrooms.door",
+		      "radiators": "@:checklist.bedrooms.radiators",
+		      "ceilingFall": "@:checklist.bedrooms.ceilingFall",
+		      "ceilingLeaking": "@:checklist.bedrooms.ceilingLeaking",
+		      "electricity": "@:checklist.bedrooms.electricity",
+		      "electricExposed": "@:checklist.bedrooms.electricExposed",
+		      "outlets": "@:checklist.bedrooms.outlets",
+		      "toiletBroken": "Toilet not working (Toilet)",
+		      "toiletLeaking": "Toilet leaking (Toilet)",
+		      "waterPressureToilet": "Inadequate Water pressure (Toilet)",
+		      "sink": "Cracked Sink (Sink)",
+		      "leakyFaucet": "Leaky Faucet (Sink)",
+		      "noFaucet": "Faucets not installed (Sink)",
+		      "brokenFaucet": "Faucets not working (Sink)",
+		      "pipesLeaking": "Pipes Leaking (Sink)",
+		      "crackedTub": "Cracked Tub (Bathtub)",
+		      "leakyFaucetB": "Leaky Faucet (Bathtub)",
+		      "noFaucetB": "Faucets not installed (Bathtub)",
+		      "faucetsNotWorkingB": "Faucets not working (Bathtub)",
+		      "pipesLeakingB": "Pipes Leaking (Bathtub)",
+		      "notWorkingShower": "Not working (Shower)",
+		      "WaterPressureShower": "Inadequate Water pressure (Shower)",
+		      "leakyShowerHead": "Leaky shower head (Shower)",
+		      "wallTiles": "Wall tiles cracked (Shower)",
+		      "wallTilesMissing": "Wall tiles missing (Shower)",
+		      "drainStoppage": "Drain Stoppage (Shower)"
+		    },
+		    "entireHome": {
+		    	"title": "Entire Home",
+		      "mice": "Mice",
+		      "rats": "Rats",
+		      "cockroaches": "Cockroaches",
+		      "hotWater": "No Hot water",
+		      "coldWater": "No Cold water",
+		      "heat": "No heat",
+		      "frontDoorDefective": "Front door defective",
+		      "frontDoorBroken": "Front door broken",
+		      "doorLockDefective": "Door lock defective",
+		      "doorLockBroken": "Door lock broken",
+		      "doorbellDefective": "Doorbell defective",
+		      "doorbellBroken": "Doorbell broken",
+		      "buzzerDefective": "Buzzer defective",
+		      "buzzerBroken": "Buzzer broken",
+		      "smoke": "No Smoke detector",
+		      "smokeDefective": "Smoke detector defective",
+		      "floorSags": "Floor sags",
+		      "apartmentPainting": "Apartment needs painting"
+		    },
+		    "publicAreas": {
+		    	"title": "Public Areas",
+		      "paintOverdue": "Painting overdue (3 years)",
+		      "peelingFlaking": "Peeling/flaking paint",
+		      "heat": "@:checklist.entireHome.heat",
+		      "hotWater": "@:checklist.entireHome.hotWater",
+		      "waterPressure": "Inadequate water pressure",
+		      "rusty": "Rusty water",
+		      "electricExposed": "@:checklist.bedrooms.electricExposed",
+		      "electricWeak": "Weak electrical current (lights dim)",
+		      "windowGuards": "Window guards missing",
+		      "smokeCO2": "Missing/broken smoke/Co2 detector",
+		      "fumesSmoke": "Fumes/smoke entering apartment",
+		      "ratsMice": "Rats/Mice",
+		      "bug": "Bug Infestation",
+		      "illegalImpartments": "Illegal apartments in basement",
+		      "noReceipts": "No rent receipts given",
+		      "incompleteReceipts": "Rent receipts incomplete (no date/ NYC address for landlord, etc.)",
+		      "inadequateSuper": "Inadequate / no super service"
+		    },
+		    "landlordIssues": {
+		    	"title": "Landlord Issues",
+		    	"noReceipts": "@:checklist.publicAreas.noReceipts",
+		      "noReciepts": "@:checklist.publicAreas.noReceipts",
+		      "noLease": "No lease",
+		      "falseDocuments": "False documents",
+		      "illegalConstruction": "Illegal construction",
+		      "repeatedMci": "Repeated MCI",
+		      "overcharging": "Overcharging",
+		      "holdover": "Holdover cases",
+		      "useForce": "Using force or threats of force",
+		      "stopInterrupt": "Stopping or interrupting essential services",
+		      "stealing": "Removing possessions from unit",
+		      "changeLocks": "Changing locks without supplying a new key",
+		      "retaliation": "Retaliation for seeking repairs",
+		      "buyout": "Constant buyout demands",
+		      "falseEviction": "Threatening eviction on false claims"
+		    }
+		  }
+		});
 
     $translateProvider.useStaticFilesLoader({
         prefix: 'languages/locale-',// path to translations files
