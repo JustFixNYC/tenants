@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$location', 'Authentication', '$translate',
-  function Issues($http, $q, $filter, $location, Authentication, $translate) {
+angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$location', 'Authentication', '$translate', 'LocaleService',
+  function Issues($http, $q, $filter, $location, Authentication, $translate, LocaleService) {
 
     var user = Authentication.user;
     var request = function(url) {
@@ -17,7 +17,17 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
       return deferred.promise;
     };
 
-    var language = $translate.use();
+    var language = function() {
+    	var deferred = $q.defer;
+    	$http.get('languages/locale-en_US.json')
+	    	.then(function(res){
+	    		deferred.resolve(res);	
+	    	}, function(err) {
+	    		deferred.reject();
+	    	});
+
+	    	return deferred.promise;
+    };
 
     var getShareMessage = function(type) {
 
@@ -48,9 +58,6 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
     };
 
     var getLandlordEmailMessage = function() {
-    	var language = $translate.use();
-
-    	$translate.use('en_US');
 
       var message = 'To whom it may regard, \n\n' +
         'I am requesting the following repairs in my apartment referenced below [and/or] in the public areas of the building:\n\n';
@@ -61,48 +68,15 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
 
         var prob = user.problems[i];
 
-        problemsContent += $translate.instant(prob.title) + ':\n';
+        problemsContent += $translate.instant(prob.title, undefined, undefined, 'special') + ':\n';
         for(var j = 0; j < prob.issues.length; j++) {
-          problemsContent += ' - ' + $translate.instant(prob.issues[j].key);
+          problemsContent += ' - ' + $translate.instant(prob.issues[j].key, undefined, undefined, 'special');
           if(prob.issues[j].emergency) problemsContent += ' (FIX IMMEDIATELY)';
           problemsContent += '\n';
         }
         problemsContent += '\n';
 
       }
-
-      // for(var issue in user.issues) {
-      //   var key = issue,
-      //       title = $filter('areaTitle')(key),
-      //       vals = user.issues[issue];
-      //
-      //   if(vals.length) {
-      //
-      //     var activityIdx = user.activity.map(function(i) { return i.key; }).indexOf(key);
-      //     if(activityIdx !== -1) var activity = user.activity[activityIdx];
-      //
-      //     issuesContent += title + ':\n';
-      //     vals.forEach(function(v) {
-      //       issuesContent += ' - ' + v.title;
-      //       if(v.emergency) issuesContent += ' (FIX IMMEDIATELY)';
-      //       issuesContent += '\n';
-      //     });
-      //
-      //     issuesContent += '\n   First Appeared: ';
-      //     if(activity) {
-      //       issuesContent += $filter('date')(activity.date, 'longDate');
-      //       issuesContent += '\n   Additional Information:';
-      //       issuesContent += '\n   ' + activity.description;
-      //       issuesContent += '\n';
-      //       activity = undefined;
-      //     } else {
-      //       issuesContent += '\n   Additional Information:';
-      //     }
-      //
-      //     issuesContent += '\n';
-      //   }
-      // }
-      //
       message += problemsContent + '\n\n';
 
       var superContactIdx = user.activity.map(function(i) { return i.key; }).indexOf('contactSuper');
@@ -122,9 +96,8 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
                   user.borough + ', NY ' + '\n' +
                   $filter('tel')(user.phone);
 
-      $translate.use(language);
-
       return message;
+
     };
 
     var getLandlordEmailSubject = function() {

@@ -6,9 +6,6 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
     var user = Authentication.user;
 
   	var assemble = function(landlordName, landlordAddr) {
-  		var language = $translate.use();
-
-  		$translate.use('en_US');
 
   		// This block assembles our issues list PhantomJS
   		var assembledObject = {
@@ -41,10 +38,10 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
       	var problemPush = angular.copy(user.problems[i]);
 
-      	problemPush.title = $translate.instant(problemPush.title);
+      	problemPush.title = $translate.instant(problemPush.title, undefined, undefined, 'en_US');
 
       	problemPush.issues.map(function(curr, idx, arr) {
-      		curr.key = $translate.instant(curr.key);
+      		curr.key = $translate.instant(curr.key, undefined, undefined, 'en_US');
       		if(curr.emergency === true) {
       			assembledObject.emergency = true;
       		}
@@ -54,7 +51,6 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
       }
 
       return assembledObject;
-
   	};
 
     var createComplaint = function(landlord, accessDates) {
