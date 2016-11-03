@@ -219,7 +219,7 @@ var processAndSavePhoto = function(file) {
       // rollbar.handleError(result.error, req);
       console.log(result.error);
       console.log(result.error.toString());
-      rollbar.reportMessage(result.error.toString, "debug");
+      rollbar.reportMessage(result.error.toString(), "debug");
 
       console.time("s3PathUpload");
 
