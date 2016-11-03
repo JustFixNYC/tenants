@@ -4,21 +4,21 @@
 angular.module(ApplicationConfiguration.applicationModuleName, ApplicationConfiguration.applicationModuleVendorDependencies);
 
 angular.module(ApplicationConfiguration.applicationModuleName).factory(
-	'customLoader', function($q, $http) {
-		return function(opts) {
-			var deferred = $q.deferred;
+	'getEnglish', [ '$q', '$http', function($q, $http) {
 
-			$http.get('/languages/locale-es_US.json')
+		return function(opts) {
+			deferred = $q.defer();
+	
+			$http.get('/languages/locale-en_US.json')
 				.then(function(data){
 					deferred.resolve(data);
 				}, function(err){
 					deferred.reject(err);
 				});
-
+	
 			return deferred.promise;
 		}
-	}
-);
+	}]);
 
 angular.module(ApplicationConfiguration.applicationModuleName)
   // Setting HTML5 Location Mode
@@ -44,6 +44,8 @@ angular.module(ApplicationConfiguration.applicationModuleName)
   .config(function ($translateProvider, $translateSanitizationProvider) {
   	// enable logging for missing IDs
     $translateProvider.useMissingTranslationHandlerLog();
+
+    $translateProvider.useLoader('getEnglish');
 
     $translateProvider.translations('special', {
 	    	"checklist": {
@@ -215,9 +217,9 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     });
 
     $translateProvider.preferredLanguage('en_US');// is applied on first load
-    $translateProvider.useLocalStorage();// saves selected language to localStorage
+    // $translateProvider.useLocalStorage();// saves selected language to localStorage
     // NOTE: This shit causes all sorts of issues with our UI-SREF attribute. Not recognized in any sanitizer module, and causes it to break
-    $translateProvider.useSanitizeValueStrategy(null); // Prevent XSS
+    // $translateProvider.useSanitizeValueStrategy(null); // Prevent XSS
   })
   // location of the locale settings
   .config(function (tmhDynamicLocaleProvider) {

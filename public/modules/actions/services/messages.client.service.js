@@ -59,6 +59,8 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
 
     var getLandlordEmailMessage = function() {
 
+    	console.log($translate.getAvailableLanguageKeys());
+
       var message = 'To whom it may regard, \n\n' +
         'I am requesting the following repairs in my apartment referenced below [and/or] in the public areas of the building:\n\n';
 
