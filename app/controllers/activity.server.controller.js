@@ -110,111 +110,126 @@ var s3Upload = function(pathOrBuff, type, isBuff) {
   return uploaded.promise;
 };
 
-
-
 var processAndSavePhoto = function(file) {
 
   var processed = Q.defer();
-
-  // this is mainly for user friendliness. this field can be freely tampered by attacker.
-  // if (!/^image\/(jpe?g|png|gif)$/i.test(file.type)) {
-  //     return uploaded.reject('images only');
-  // }
 
   if(!file) processed.reject('no file?');
 
   var fileType = file.originalFilename.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[0];
 
-  // try to get EXIF for metadata and orientation
-  getExifData(file.path).then(function (result) {
-
-    var _exif = {};
-
-    // if theres no error
-    if(!result.error) {
-
-      var exif = result.exif;
-
-      if(exif.gps) {
-        _exif.lat = convertDMSToDD(exif.gps.GPSLatitude[0],exif.gps.GPSLatitude[1],exif.gps.GPSLatitude[2],exif.gps.GPSLatitudeRef);
-        _exif.lng = convertDMSToDD(exif.gps.GPSLongitude[0],exif.gps.GPSLongitude[1],exif.gps.GPSLongitude[2],exif.gps.GPSLongitudeRef);
-        _exif.dir = convertDegToDirection(exif.gps.GPSImgDirection);
-      }
-      if(exif.exif) {
-
-        // format to JS readable date
-        var tmp = exif.exif.CreateDate.split(" ");
-        tmp[0] = tmp[0].split(":").join("-");
-        _exif.created = tmp[0] + "T" + tmp[1];
-
-        _exif.lens = exif.exif.LensModel;
-      }
-      if(exif.image) {
-        _exif.make = exif.image.Make;
-        _exif.model = exif.image.Model;
-        _exif.orientation = exif.image.Orientation;
-      }
-
-      // console.time("buffSave");
-      console.time("pathSave");
-
-      // gm(file.path)
-      //   .autoOrient()
-      //   .toBuffer(function (err, buffer) {
-      //     if (err) console.log('aaw, shucks', err);
-      //
-      //     // upload to s3
-      //     s3Upload(buffer, fileType, true).then(function(urls) {
-      //       console.timeEnd("buffSave");
-      //       processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
-      //     }).fail(function(err) {
-      //       processed.reject(err);
-      //     });
-      //
-      //   });
-
-      gm(file.path)
-        .autoOrient()
-        .write(file.path, function (err) {
-          if (err) {
-            processed.reject(err);
-            console.log('aaw, shucks', err);
-          }
-
-          // upload to s3
-          s3Upload(file.path, fileType, false).then(function(urls) {
-            console.timeEnd("pathSave");
-            processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
-          }).fail(function(err) {
-            processed.reject(err);
-          });
-
-        });
-
-    } else {
-
-      // exif error (doesn't mean that it found anything)
-      // rollbar.handleError(result.error, req);
-      // console.log(result.error);
-      rollbar.reportMessage(result.error.toString, "debug");
-
-      // upload to s3
-      s3Upload(file.path, fileType, false).then(function(urls) {
-        processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
-      }).fail(function(err) {
-        processed.reject(err);
-      });
-
-    }
-
-
-
+  s3Upload(file.path, fileType, false).then(function(urls) {
+    processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
+  }).fail(function(err) {
+    processed.reject(err);
   });
 
-
   return processed.promise;
-
 };
+
+// var processAndSavePhoto = function(file) {
+//
+//   var processed = Q.defer();
+//
+//   // this is mainly for user friendliness. this field can be freely tampered by attacker.
+//   // if (!/^image\/(jpe?g|png|gif)$/i.test(file.type)) {
+//   //     return uploaded.reject('images only');
+//   // }
+//
+//   if(!file) processed.reject('no file?');
+//
+//   var fileType = file.originalFilename.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[0];
+//
+//   // try to get EXIF for metadata and orientation
+//   getExifData(file.path).then(function (result) {
+//
+//     var _exif = {};
+//
+//     // if theres no error
+//     if(!result.error) {
+//
+//       var exif = result.exif;
+//
+//       if(exif.gps) {
+//         _exif.lat = convertDMSToDD(exif.gps.GPSLatitude[0],exif.gps.GPSLatitude[1],exif.gps.GPSLatitude[2],exif.gps.GPSLatitudeRef);
+//         _exif.lng = convertDMSToDD(exif.gps.GPSLongitude[0],exif.gps.GPSLongitude[1],exif.gps.GPSLongitude[2],exif.gps.GPSLongitudeRef);
+//         _exif.dir = convertDegToDirection(exif.gps.GPSImgDirection);
+//       }
+//       if(exif.exif) {
+//
+//         // format to JS readable date
+//         var tmp = exif.exif.CreateDate.split(" ");
+//         tmp[0] = tmp[0].split(":").join("-");
+//         _exif.created = tmp[0] + "T" + tmp[1];
+//
+//         _exif.lens = exif.exif.LensModel;
+//       }
+//       if(exif.image) {
+//         _exif.make = exif.image.Make;
+//         _exif.model = exif.image.Model;
+//         _exif.orientation = exif.image.Orientation;
+//       }
+//
+//       // console.time("buffSave");
+//       console.time("pathSave");
+//
+//       // gm(file.path)
+//       //   .autoOrient()
+//       //   .toBuffer(function (err, buffer) {
+//       //     if (err) console.log('aaw, shucks', err);
+//       //
+//       //     // upload to s3
+//       //     s3Upload(buffer, fileType, true).then(function(urls) {
+//       //       console.timeEnd("buffSave");
+//       //       processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
+//       //     }).fail(function(err) {
+//       //       processed.reject(err);
+//       //     });
+//       //
+//       //   });
+//
+//       gm(file.path)
+//         .autoOrient()
+//         .write(file.path, function (err) {
+//           if (err) {
+//             processed.reject(err);
+//             console.log('aaw, shucks', err);
+//           }
+//
+//           // upload to s3
+//           s3Upload(file.path, fileType, false).then(function(urls) {
+//             console.timeEnd("pathSave");
+//             processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
+//           }).fail(function(err) {
+//             processed.reject(err);
+//           });
+//
+//         });
+//
+//     } else {
+//
+//       // exif error (doesn't mean that it found anything)
+//       // rollbar.handleError(result.error, req);
+//       // console.log(result.error);
+//       rollbar.reportMessage(result.error.toString, "debug");
+//
+//       // upload to s3
+//       s3Upload(file.path, fileType, false).then(function(urls) {
+//         processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
+//       }).fail(function(err) {
+//         processed.reject(err);
+//       });
+//
+//     }
+//
+//
+//
+//   });
+//
+//
+//   return processed.promise;
+//
+// };
 
 var create = function(req, res, next) {
   var user = req.user;
