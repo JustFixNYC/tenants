@@ -210,7 +210,8 @@ var processAndSavePhoto = function(file) {
 
       // exif error (doesn't mean that it found anything)
       // rollbar.handleError(result.error, req);
-      // console.log(result.error);
+      console.log(result.error);
+      console.log(result.error.toString());
       rollbar.reportMessage(result.error.toString, "debug");
 
       // upload to s3
