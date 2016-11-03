@@ -174,7 +174,7 @@ var processAndSavePhoto = function(file) {
         _exif.orientation = exif.image.Orientation;
       }
 
-      console.time("buffSave");
+      console.time("buffCreate");
       // console.time("pathSave");
 
       gm(file.path)
@@ -182,9 +182,12 @@ var processAndSavePhoto = function(file) {
         .toBuffer(function (err, buffer) {
           if (err) console.log('aaw, shucks', err);
 
+          console.timeEnd("buffCreate");
+          console.time("s3buffUpload");
+
           // upload to s3
           s3Upload(buffer, fileType, true).then(function(urls) {
-            console.timeEnd("buffSave");
+            console.timeEnd("s3buffUpload");
             processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
           }).fail(function(err) {
             processed.reject(err);
@@ -218,8 +221,11 @@ var processAndSavePhoto = function(file) {
       console.log(result.error.toString());
       rollbar.reportMessage(result.error.toString, "debug");
 
+      console.time("s3PathUpload");
+
       // upload to s3
       s3Upload(file.path, fileType, false).then(function(urls) {
+        console.timeEnd("s3PathUpload");
         processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
       }).fail(function(err) {
         processed.reject(err);
