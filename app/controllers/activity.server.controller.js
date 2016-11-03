@@ -119,7 +119,7 @@ var processAndSavePhoto = function(file) {
   var fileType = file.originalFilename.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[0];
 
   s3Upload(file.path, fileType, false).then(function(urls) {
-    processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
+    processed.resolve({ url: urls.url, thumb: urls.thumb, exif: {} });
   }).fail(function(err) {
     processed.reject(err);
   });
