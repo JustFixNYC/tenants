@@ -65,8 +65,8 @@ angular.module('actions')
 
           if(file) {
             scope.newActivity.photos.push(file);
-            console.log(file);
-            console.log(file.lastModifiedDate);
+            // console.log(file);
+            // console.log(file.lastModifiedDate);
             if(file.lastModifiedDate) scope.newActivity.date = file.lastModifiedDate;
           }
 
@@ -83,7 +83,9 @@ angular.module('actions')
           if(isValid) {
             $rootScope.loading = true;
 
-            console.log('create activity pre creation', scope.newActivity);
+            console.time("statusUpdate");
+
+            // console.log('create activity pre creation', scope.newActivity);
 
             // [TODO] have an actual section for the 'area' field in the activity log
             // if(scope.newActivity.description && scope.newActivity.area) scope.newActivity.description = scope.newActivity.area + ' - ' + scope.newActivity.description;
@@ -91,12 +93,13 @@ angular.module('actions')
 
             var activity = new Activity(scope.newActivity);
 
-            console.log('create activity post creation', scope.newActivity);
+            // console.log('create activity post creation', scope.newActivity);
 
             activity.$save(function(response) {
 
-              console.log('create activity post save', response);
-
+              // console.log('create activity post save', response);
+              var c = console.timeEnd("statusUpdate");
+              
               $rootScope.loading = false;
               scope.status.completed = true;
               scope.status.formSubmitted = false;
