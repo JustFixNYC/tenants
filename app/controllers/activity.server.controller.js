@@ -93,10 +93,8 @@ var s3Upload = function(pathOrBuff, type, isBuff) {
   } else {
 
     console.log('from path');
-    console.time("pathSave");
     s3Handler.uploadFileFromPath(pathOrBuff, type)
       .then(function (data) {
-        console.timeEnd("pathSave");
         var url = data.Location;
         var resizedUrl = url.replace( /justfix/i, 'justfixresized' );
         uploaded.resolve({ url: url, thumb: resizedUrl });

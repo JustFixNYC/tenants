@@ -98,8 +98,8 @@ angular.module('actions')
             activity.$save(function(response) {
 
               // console.log('create activity post save', response);
-              var c = console.timeEnd("statusUpdate");
-              
+              console.timeEnd("statusUpdate");
+
               $rootScope.loading = false;
               scope.status.completed = true;
               scope.status.formSubmitted = false;
