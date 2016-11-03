@@ -110,22 +110,22 @@ var s3Upload = function(pathOrBuff, type, isBuff) {
   return uploaded.promise;
 };
 
-// var processAndSavePhoto = function(file) {
-//
-//   var processed = Q.defer();
-//
-//   if(!file) processed.reject('no file?');
-//
-//   var fileType = file.originalFilename.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[0];
-//
-//   s3Upload(file.path, fileType, false).then(function(urls) {
-//     processed.resolve({ url: urls.url, thumb: urls.thumb, exif: {} });
-//   }).fail(function(err) {
-//     processed.reject(err);
-//   });
-//
-//   return processed.promise;
-// };
+var processAndSavePhotoAlt = function(file) {
+
+  var processed = Q.defer();
+
+  if(!file) processed.reject('no file?');
+
+  var fileType = file.originalFilename.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[0];
+
+  s3Upload(file.path, fileType, false).then(function(urls) {
+    processed.resolve({ url: urls.url, thumb: urls.thumb, exif: {} });
+  }).fail(function(err) {
+    processed.reject(err);
+  });
+
+  return processed.promise;
+};
 
 var processAndSavePhoto = function(file) {
 
@@ -262,7 +262,7 @@ var create = function(req, res, next) {
     // init photos queue
     var uploadQueue = [];
 
-    for(var file in files) uploadQueue.push(processAndSavePhoto(files[file]));
+    for(var file in files) uploadQueue.push(processAndSavePhotoAlt(files[file]));
 
     Q.allSettled(uploadQueue).then(function (results) {
 
