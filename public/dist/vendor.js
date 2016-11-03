@@ -51124,3 +51124,111 @@ L.mapboxGL = function (options) {
  * Licensed under the MIT License.
  */
 (function(e,t){"use strict";if(typeof define==="function"&&define.amd){define([],t)}else if(typeof exports==="object"){module.exports=t()}else{e.DeepDiff=t()}})(this,function(e){"use strict";var t,n,a=[];if(typeof global==="object"&&global){t=global}else if(typeof window!=="undefined"){t=window}else{t={}}n=t.DeepDiff;if(n){a.push(function(){if("undefined"!==typeof n&&t.DeepDiff===p){t.DeepDiff=n;n=e}})}function r(e,t){e.super_=t;e.prototype=Object.create(t.prototype,{constructor:{value:e,enumerable:false,writable:true,configurable:true}})}function i(e,t){Object.defineProperty(this,"kind",{value:e,enumerable:true});if(t&&t.length){Object.defineProperty(this,"path",{value:t,enumerable:true})}}function f(e,t,n){f.super_.call(this,"E",e);Object.defineProperty(this,"lhs",{value:t,enumerable:true});Object.defineProperty(this,"rhs",{value:n,enumerable:true})}r(f,i);function u(e,t){u.super_.call(this,"N",e);Object.defineProperty(this,"rhs",{value:t,enumerable:true})}r(u,i);function l(e,t){l.super_.call(this,"D",e);Object.defineProperty(this,"lhs",{value:t,enumerable:true})}r(l,i);function s(e,t,n){s.super_.call(this,"A",e);Object.defineProperty(this,"index",{value:t,enumerable:true});Object.defineProperty(this,"item",{value:n,enumerable:true})}r(s,i);function h(e,t,n){var a=e.slice((n||t)+1||e.length);e.length=t<0?e.length+t:t;e.push.apply(e,a);return e}function c(e){var t=typeof e;if(t!=="object"){return t}if(e===Math){return"math"}else if(e===null){return"null"}else if(Array.isArray(e)){return"array"}else if(e instanceof Date){return"date"}else if(/^\/.*\//.test(e.toString())){return"regexp"}return"object"}function o(t,n,a,r,i,p,b){i=i||[];var d=i.slice(0);if(typeof p!=="undefined"){if(r&&r(d,p,{lhs:t,rhs:n})){return}d.push(p)}var v=typeof t;var y=typeof n;if(v==="undefined"){if(y!=="undefined"){a(new u(d,n))}}else if(y==="undefined"){a(new l(d,t))}else if(c(t)!==c(n)){a(new f(d,t,n))}else if(t instanceof Date&&n instanceof Date&&t-n!==0){a(new f(d,t,n))}else if(v==="object"&&t!==null&&n!==null){b=b||[];if(b.indexOf(t)<0){b.push(t);if(Array.isArray(t)){var k,m=t.length;for(k=0;k<t.length;k++){if(k>=n.length){a(new s(d,k,new l(e,t[k])))}else{o(t[k],n[k],a,r,d,k,b)}}while(k<n.length){a(new s(d,k,new u(e,n[k++])))}}else{var g=Object.keys(t);var w=Object.keys(n);g.forEach(function(i,f){var u=w.indexOf(i);if(u>=0){o(t[i],n[i],a,r,d,i,b);w=h(w,u)}else{o(t[i],e,a,r,d,i,b)}});w.forEach(function(t){o(e,n[t],a,r,d,t,b)})}b.length=b.length-1}}else if(t!==n){if(!(v==="number"&&isNaN(t)&&isNaN(n))){a(new f(d,t,n))}}}function p(t,n,a,r){r=r||[];o(t,n,function(e){if(e){r.push(e)}},a);return r.length?r:e}function b(e,t,n){if(n.path&&n.path.length){var a=e[t],r,i=n.path.length-1;for(r=0;r<i;r++){a=a[n.path[r]]}switch(n.kind){case"A":b(a[n.path[r]],n.index,n.item);break;case"D":delete a[n.path[r]];break;case"E":case"N":a[n.path[r]]=n.rhs;break}}else{switch(n.kind){case"A":b(e[t],n.index,n.item);break;case"D":e=h(e,t);break;case"E":case"N":e[t]=n.rhs;break}}return e}function d(e,t,n){if(e&&t&&n&&n.kind){var a=e,r=-1,i=n.path?n.path.length-1:0;while(++r<i){if(typeof a[n.path[r]]==="undefined"){a[n.path[r]]=typeof n.path[r]==="number"?[]:{}}a=a[n.path[r]]}switch(n.kind){case"A":b(n.path?a[n.path[r]]:a,n.index,n.item);break;case"D":delete a[n.path[r]];break;case"E":case"N":a[n.path[r]]=n.rhs;break}}}function v(e,t,n){if(n.path&&n.path.length){var a=e[t],r,i=n.path.length-1;for(r=0;r<i;r++){a=a[n.path[r]]}switch(n.kind){case"A":v(a[n.path[r]],n.index,n.item);break;case"D":a[n.path[r]]=n.lhs;break;case"E":a[n.path[r]]=n.lhs;break;case"N":delete a[n.path[r]];break}}else{switch(n.kind){case"A":v(e[t],n.index,n.item);break;case"D":e[t]=n.lhs;break;case"E":e[t]=n.lhs;break;case"N":e=h(e,t);break}}return e}function y(e,t,n){if(e&&t&&n&&n.kind){var a=e,r,i;i=n.path.length-1;for(r=0;r<i;r++){if(typeof a[n.path[r]]==="undefined"){a[n.path[r]]={}}a=a[n.path[r]]}switch(n.kind){case"A":v(a[n.path[r]],n.index,n.item);break;case"D":a[n.path[r]]=n.lhs;break;case"E":a[n.path[r]]=n.lhs;break;case"N":delete a[n.path[r]];break}}}function k(e,t,n){if(e&&t){var a=function(a){if(!n||n(e,t,a)){d(e,t,a)}};o(e,t,a)}}Object.defineProperties(p,{diff:{value:p,enumerable:true},observableDiff:{value:o,enumerable:true},applyDiff:{value:k,enumerable:true},applyChange:{value:d,enumerable:true},revertChange:{value:y,enumerable:true},isConflict:{value:function(){return"undefined"!==typeof n},enumerable:true},noConflict:{value:function(){if(a){a.forEach(function(e){e()});a=null}return p},enumerable:true}});return p});
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define([], factory)
+  } else if (typeof exports === 'object') {
+    module.exports = factory()
+  } else {
+    root.exifOrient = factory()
+  }
+}(this, function () {
+
+  /**
+   * Orients an image based on Exif orientation and draws it on a canvas.
+   * @param {HTMLImageElement | HTMLCanvasElement | String} img - image, canvas, base64 string or URL.
+   * @param {Number} orientation - the Exif orientation: 1-8.
+   * @param {Function} cb (optional) - the callback function.
+   * @return {HTMLCanvasElement} a canvas object.
+   */
+  return function exifOrient(img, orientation, cb) {
+    if (typeof img !== 'string' && !(img instanceof HTMLImageElement) && !(img instanceof HTMLCanvasElement)) {
+      return cb(new Error('img must be a string, an HTMLImageElement or an HTMLCanvasElement'))
+    }
+    if (typeof orientation !== 'number' || orientation < 1 || orientation > 8) {
+      return cb(new Error('orientation must be a number from 1 to 8'))
+    }
+
+    cb = cb || Function()
+
+    if (typeof img === 'string') {
+      var _img = new Image()
+      _img.src = img
+      _img.onerror = cb
+      _img.onload = function () {
+        orient(_img, orientation, cb)
+      }
+    }
+    else {
+      orient(img, orientation, cb)
+    }
+  }
+
+  function orient(img, orientation, cb) {
+    /*    1        2       3      4         5            6           7          8
+     * 888888  888888      88  88      8888888888  88                  88  8888888888
+     * 88          88      88  88      88  88      88  88          88  88      88  88
+     * 8888      8888    8888  8888    88          8888888888  8888888888          88
+     * 88          88      88  88
+     * 88          88  888888  888888
+     * source: http://sylvana.net/jpegcrop/exif_orientation.html
+     */
+    var transforms = [
+    // [flip-x, flip-y, deg]
+      [false, false, 0],   // 1
+      [true,  false, 0],   // 2
+      [false, false, 180], // 3
+      [false, true,  0],   // 4
+      [true,  false, 90],  // 5
+      [false, false, 90],  // 6
+      [true,  false, -90], // 7
+      [false, false, -90]  // 8
+    ]
+
+    var transform = transforms[orientation - 1]
+    var flipX = transform[0]
+    var flipY = transform[1]
+    var deg = transform[2]
+
+    var canvas = document.createElement('canvas')
+    var ctx = canvas.getContext('2d')
+    var width = img.naturalWidth || img.width
+    var height = img.naturalHeight || img.height
+
+    canvas.width = Math.abs(deg) === 90 ? height : width
+    canvas.height = Math.abs(deg) === 90 ? width : height
+
+    if (flipX || flipY) {
+      flip(canvas, ctx, flipX, flipY)
+    }
+
+    if (deg) {
+      rotate(canvas, ctx, deg)
+    }
+
+    ctx.drawImage(img, 0, 0)
+    cb(null, canvas)
+  }
+
+  function flip(canvas, ctx, flipX, flipY) {
+    ctx.translate(
+      flipX ? canvas.width : 0,
+      flipY ? canvas.height : 0)
+    ctx.scale(
+      flipX ? -1 : 1,
+      flipY ? -1 : 1)
+  }
+
+  function rotate(canvas, ctx, deg) {
+    var width = canvas.width
+    var height = canvas.height
+
+    ctx.translate(width / 2, height / 2)
+    ctx.rotate(deg * (Math.PI / 180))
+    ctx.translate(-width / 2, -height / 2)
+
+    if (Math.abs(deg) === 90) {
+      ctx.translate((width - height) / 2, -(width - height) / 2)
+    }
+  }
+}));

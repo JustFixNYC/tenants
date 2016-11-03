@@ -29,8 +29,8 @@
     </div>
 
     <!-- image -->
-    <img ng-if="!Lightbox.isVideo(Lightbox.image)"
-        lightbox-src="{{Lightbox.imageUrl}}">
+    <img ng-if="!Lightbox.isVideo(Lightbox.image)" lightbox-src="{{Lightbox.imageUrl}}">
+    <!-- <img ng-if="!Lightbox.isVideo(Lightbox.image)" ng-src="{{Lightbox.imageUrl}}" image-orient="{{Lightbox.image.exif.orientation}}"> -->
 
     <!-- video -->
     <div ng-if="Lightbox.isVideo(Lightbox.image)"
@@ -54,11 +54,17 @@
     </div>
 
     <div ng-if="Lightbox.image.exif">
-      <meta-map lat="{{ Lightbox.image.exif.lat }}" lng="{{ Lightbox.image.exif.lng }}"></meta-map>
-      <p><b>Phone Make/Model:</b> {{ Lightbox.image.exif.make }} / {{ Lightbox.image.exif.model }}</p>
-      <p><b>Date Captured:</b> {{ Lightbox.image.exif.created | date:'short' }}</p>
-      <p><b>Facing Direction:</b> {{ Lightbox.image.exif.dir }}</p>
-      <p><b>Latitude/Longitude:</b> {{ Lightbox.image.exif.lat }} {{ Lightbox.image.exif.lng }}</p>
+      <div class="row">
+        <div class="col-sm-4">
+          <meta-map lat="{{ Lightbox.image.exif.lat }}" lng="{{ Lightbox.image.exif.lng }}"></meta-map>
+        </div>
+        <div class="col-sm-8">
+          <p><b>Phone Make/Model:</b> {{ Lightbox.image.exif.make }} / {{ Lightbox.image.exif.model }}</p>
+          <p><b>Date Captured:</b> {{ Lightbox.image.exif.created | date:'short' }}</p>
+          <p><b>Facing Direction (approx.):</b> {{ Lightbox.image.exif.dir }}</p>
+          <p><b>Latitude/Longitude:</b> {{ Lightbox.image.exif.lat }} {{ Lightbox.image.exif.lng }}</p>
+        </div>
+      </div>
     </div>
   </div>
 

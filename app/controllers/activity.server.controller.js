@@ -3,6 +3,7 @@
 var _ = require('lodash'),
     Q = require('q'),
     ExifImage = require('exif').ExifImage,
+    gm = require('gm'),
     errorHandler = require('./errors.server.controller'),
     s3Handler = require('../services/s3.server.service'),
     mongoose = require('mongoose'),
@@ -59,13 +60,13 @@ var getExifData = function(path) {
   try {
       new ExifImage({ image : path }, function (error, exifData) {
           if (error) {
-            extracted.resolve({ exif: undefined, error: error.toString() });
+            extracted.resolve({ exif: undefined, error: error });
           } else {
             extracted.resolve({ exif: exifData, error: undefined });
           }
       });
   } catch (error) {
-      extracted.resolve({ exif: undefined, error: error.toString() });
+      extracted.resolve({ exif: undefined, error: error });
   }
 
   return extracted.promise;
@@ -73,21 +74,38 @@ var getExifData = function(path) {
 
 
 
-var s3Upload = function(file) {
+var s3Upload = function(pathOrBuff, type, isBuff) {
 
   var uploaded = Q.defer();
 
-  var type = file.originalFilename.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[0];
+  if(isBuff) {
 
-  s3Handler.uploadFile(file.path, type)
-    .then(function (data) {
-      var url = data.Location;
-      var resizedUrl = url.replace( /justfix/i, 'justfixresized' );
+    console.log('from buff');
 
-      uploaded.resolve({ url: url, thumb: resizedUrl });
-    }).fail(function (err) {
-      uploaded.reject(err);
-    });
+    s3Handler.uploadFileFromBuff(pathOrBuff, type)
+      .then(function (data) {
+        var url = data.Location;
+        var resizedUrl = url.replace( /justfix/i, 'justfixresized' );
+        uploaded.resolve({ url: url, thumb: resizedUrl });
+      }).fail(function (err) {
+        uploaded.reject(err);
+      });
+  } else {
+
+    console.log('from path');
+    console.time("pathSave");
+    s3Handler.uploadFileFromPath(pathOrBuff, type)
+      .then(function (data) {
+        console.timeEnd("pathSave");
+        var url = data.Location;
+        var resizedUrl = url.replace( /justfix/i, 'justfixresized' );
+        uploaded.resolve({ url: url, thumb: resizedUrl });
+      }).fail(function (err) {
+        uploaded.reject(err);
+      });
+  }
+
+
 
   return uploaded.promise;
 };
@@ -105,6 +123,8 @@ var processAndSavePhoto = function(file) {
 
   if(!file) processed.reject('no file?');
 
+  var fileType = file.originalFilename.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[0];
+
   // try to get EXIF for metadata and orientation
   getExifData(file.path).then(function (result) {
 
@@ -121,7 +141,12 @@ var processAndSavePhoto = function(file) {
         _exif.dir = convertDegToDirection(exif.gps.GPSImgDirection);
       }
       if(exif.exif) {
-        _exif.created = exif.exif.CreateDate;
+
+        // format to JS readable date
+        var tmp = exif.exif.CreateDate.split(" ");
+        tmp[0] = tmp[0].split(":").join("-");
+        _exif.created = tmp[0] + "T" + tmp[1];
+
         _exif.lens = exif.exif.LensModel;
       }
       if(exif.image) {
@@ -130,18 +155,57 @@ var processAndSavePhoto = function(file) {
         _exif.orientation = exif.image.Orientation;
       }
 
+      // console.time("buffSave");
+      console.time("pathSave");
+
+      // gm(file.path)
+      //   .autoOrient()
+      //   .toBuffer(function (err, buffer) {
+      //     if (err) console.log('aaw, shucks', err);
+      //
+      //     // upload to s3
+      //     s3Upload(buffer, fileType, true).then(function(urls) {
+      //       console.timeEnd("buffSave");
+      //       processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
+      //     }).fail(function(err) {
+      //       processed.reject(err);
+      //     });
+      //
+      //   });
+
+      gm(file.path)
+        .autoOrient()
+        .write(file.path, function (err) {
+          if (err) {
+            processed.reject(err);
+            console.log('aaw, shucks', err);
+          }
+
+          // upload to s3
+          s3Upload(file.path, fileType, false).then(function(urls) {
+            console.timeEnd("pathSave");
+            processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
+          }).fail(function(err) {
+            processed.reject(err);
+          });
+
+        });
+
     } else {
 
       // exif error (doesn't mean that it found anything)
+      // rollbar.handleError(result.error, req);
       console.error(result.error);
+
+      // upload to s3
+      s3Upload(file.path, fileType, false).then(function(urls) {
+        processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
+      }).fail(function(err) {
+        processed.reject(err);
+      });
+
     }
 
-    // upload to s3
-    s3Upload(file).then(function(urls) {
-      processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
-    }).fail(function(err) {
-      processed.reject(err);
-    });
 
 
   });
@@ -187,9 +251,9 @@ var create = function(req, res, next) {
 
       results.forEach(function (r) {
 
-        console.log('results', r);
-
         if(r.state !== 'fulfilled') {
+          console.log(r.reason);
+          rollbar.handleError(r.reason, req);
           res.status(500).send({ message: "Photo is not fulfilled" });
         }
 
