@@ -140,8 +140,12 @@ var processAndSavePhoto = function(file) {
 
   var fileType = file.originalFilename.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[0];
 
+  console.time("exif");
+
   // try to get EXIF for metadata and orientation
   getExifData(file.path).then(function (result) {
+
+    console.timeEnd("exif");
 
     var _exif = {};
 
@@ -170,41 +174,41 @@ var processAndSavePhoto = function(file) {
         _exif.orientation = exif.image.Orientation;
       }
 
-      // console.time("buffSave");
-      console.time("pathSave");
-
-      // gm(file.path)
-      //   .autoOrient()
-      //   .toBuffer(function (err, buffer) {
-      //     if (err) console.log('aaw, shucks', err);
-      //
-      //     // upload to s3
-      //     s3Upload(buffer, fileType, true).then(function(urls) {
-      //       console.timeEnd("buffSave");
-      //       processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
-      //     }).fail(function(err) {
-      //       processed.reject(err);
-      //     });
-      //
-      //   });
+      console.time("buffSave");
+      // console.time("pathSave");
 
       gm(file.path)
         .autoOrient()
-        .write(file.path, function (err) {
-          if (err) {
-            processed.reject(err);
-            console.log('aaw, shucks', err);
-          }
+        .toBuffer(function (err, buffer) {
+          if (err) console.log('aaw, shucks', err);
 
           // upload to s3
-          s3Upload(file.path, fileType, false).then(function(urls) {
-            console.timeEnd("pathSave");
+          s3Upload(buffer, fileType, true).then(function(urls) {
+            console.timeEnd("buffSave");
             processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
           }).fail(function(err) {
             processed.reject(err);
           });
 
         });
+
+      // gm(file.path)
+      //   .autoOrient()
+      //   .write(file.path, function (err) {
+      //     if (err) {
+      //       processed.reject(err);
+      //       console.log('aaw, shucks', err);
+      //     }
+      //
+      //     // upload to s3
+      //     s3Upload(file.path, fileType, false).then(function(urls) {
+      //       console.timeEnd("pathSave");
+      //       processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
+      //     }).fail(function(err) {
+      //       processed.reject(err);
+      //     });
+      //
+      //   });
 
     } else {
 
@@ -289,7 +293,7 @@ var create = function(req, res, next) {
         prob.photos = activity.photos;
       }
 
-      console.log('new activity', activity);
+      // console.log('new activity', activity);
 
       // add activity object
       user.activity.push(activity);
