@@ -266,7 +266,7 @@ var create = function(req, res, next) {
     // init photos queue
     var uploadQueue = [];
 
-    for(var file in files) uploadQueue.push(processAndSavePhotoAlt(files[file]));
+    for(var file in files) uploadQueue.push(processAndSavePhoto(files[file]));
 
     Q.allSettled(uploadQueue).then(function (results) {
 
