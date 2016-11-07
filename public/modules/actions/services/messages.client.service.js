@@ -70,9 +70,9 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
 
         var prob = user.problems[i];
 
-        problemsContent += $translate.instant(prob.title, undefined, undefined, 'special') + ':\n';
+        problemsContent += $translate.instant(prob.title, undefined, undefined, 'en_US') + ':\n';
         for(var j = 0; j < prob.issues.length; j++) {
-          problemsContent += ' - ' + $translate.instant(prob.issues[j].key, undefined, undefined, 'special');
+          problemsContent += ' - ' + $translate.instant(prob.issues[j].key, undefined, undefined, 'en_US');
           if(prob.issues[j].emergency) problemsContent += ' (FIX IMMEDIATELY)';
           problemsContent += '\n';
         }
