@@ -152,13 +152,12 @@ var processAndSavePhoto = function(file) {
 
       var exif = result.exif;
 
-      if(exif.gps) {
+      if(exif.gps && !_.isEmpty(exif.gps)) {
         _exif.lat = convertDMSToDD(exif.gps.GPSLatitude[0],exif.gps.GPSLatitude[1],exif.gps.GPSLatitude[2],exif.gps.GPSLatitudeRef);
         _exif.lng = convertDMSToDD(exif.gps.GPSLongitude[0],exif.gps.GPSLongitude[1],exif.gps.GPSLongitude[2],exif.gps.GPSLongitudeRef);
         _exif.dir = convertDegToDirection(exif.gps.GPSImgDirection);
       }
-      if(exif.exif) {
-
+      if(exif.exif && !_.isEmpty(exif.gps)) {
         // format to JS readable date
         var tmp = exif.exif.CreateDate.split(" ");
         tmp[0] = tmp[0].split(":").join("-");
@@ -166,33 +165,32 @@ var processAndSavePhoto = function(file) {
 
         _exif.lens = exif.exif.LensModel;
       }
-      if(exif.image) {
+      if(exif.image && !_.isEmpty(exif.gps)) {
         _exif.make = exif.image.Make;
         _exif.model = exif.image.Model;
         _exif.orientation = exif.image.Orientation;
       }
 
       console.time("buffCreate");
-      console.log("time for gm...");
       // console.time("pathSave");
-      // 
-      // gm(file.path)
-      //   .autoOrient()
-      //   .toBuffer(function (err, buffer) {
-      //     if (err) console.log('aaw, shucks', err);
-      //
-      //     console.timeEnd("buffCreate");
-      //     console.time("s3buffUpload");
-      //
-      //     // upload to s3
-      //     s3Upload(buffer, fileType, true).then(function(urls) {
-      //       console.timeEnd("s3buffUpload");
-      //       processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
-      //     }).fail(function(err) {
-      //       processed.reject(err);
-      //     });
-      //
-      //   });
+
+      gm(file.path)
+        .autoOrient()
+        .toBuffer(function (err, buffer) {
+          if (err) console.log('aaw, shucks', err);
+
+          console.timeEnd("buffCreate");
+          console.time("s3buffUpload");
+
+          // upload to s3
+          s3Upload(buffer, fileType, true).then(function(urls) {
+            console.timeEnd("s3buffUpload");
+            processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
+          }).fail(function(err) {
+            processed.reject(err);
+          });
+
+        });
 
       // gm(file.path)
       //   .autoOrient()
@@ -214,13 +212,13 @@ var processAndSavePhoto = function(file) {
 
 
       // upload to s3
-      console.time("s3PathUpload");
-      s3Upload(file.path, fileType, false).then(function(urls) {
-        console.timeEnd("s3PathUpload");
-        processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
-      }).fail(function(err) {
-        processed.reject(err);
-      });
+      // console.time("s3PathUpload");
+      // s3Upload(file.path, fileType, false).then(function(urls) {
+      //   console.timeEnd("s3PathUpload");
+      //   processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
+      // }).fail(function(err) {
+      //   processed.reject(err);
+      // });
 
     } else {
 
