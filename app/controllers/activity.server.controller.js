@@ -173,6 +173,7 @@ var processAndSavePhoto = function(file) {
       }
 
       console.time("buffCreate");
+      console.log("time for gm...");
       // console.time("pathSave");
 
       gm(file.path)
