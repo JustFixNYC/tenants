@@ -3,23 +3,6 @@
 //Start by defining the main module and adding the module dependencies
 angular.module(ApplicationConfiguration.applicationModuleName, ApplicationConfiguration.applicationModuleVendorDependencies);
 
-angular.module(ApplicationConfiguration.applicationModuleName).factory(
-	'getEnglish', [ '$q', '$http', function($q, $http) {
-
-		return function(opts) {
-			deferred = $q.defer();
-	
-			$http.get('/languages/locale-en_US.json')
-				.then(function(data){
-					deferred.resolve(data);
-				}, function(err){
-					deferred.reject(err);
-				});
-	
-			return deferred.promise;
-		}
-	}]);
-
 angular.module(ApplicationConfiguration.applicationModuleName)
   // Setting HTML5 Location Mode
   .config(['$locationProvider', function($locationProvider) {
@@ -100,7 +83,6 @@ angular.module(ApplicationConfiguration.applicationModuleName)
           break;
       };
     };
-    // setHeaderState('landing');
 
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
 
