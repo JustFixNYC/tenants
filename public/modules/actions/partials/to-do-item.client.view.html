@@ -5,12 +5,12 @@
     </h3> -->
     <h3 class="panel-title">
       <span ng-if="action.cta.type == 'initialContent'" class="glyphicon-addl" ng-class="action.key"></span>
-      <span data-ng-bind-html="filterTitleHTML()"></span>
+      <span data-ng-bind-html="filterTitleHTML | trustTranslate" compile-template></span>
       {{ action.isFollowUp ? 'modules.actions.partials.toDoItem.followUp' : '' | translate}}
     </h3>
   </div>
   <div class="panel-body" data-ng-if="!action.isFollowUp">
-    <div class="panel-content" data-ng-bind-html="filterContentHTML()" compile-template></div>
+    <div class="panel-content" data-ng-bind-html="filterContentHTML | trustTranslate" compile-template></div>
     <div class="row">
       <div class="col-xs-6">
         <a  class="btn btn-default btn-block pull-left"
@@ -24,7 +24,8 @@
                 data-ng-if="isModal()"
                 data-ng-class="!action.hasFollowUp ? 'initial' : 'regular'"
                 data-ng-click="openModal()"
-                data-ng-bind-html="filterButtonTitleHTML()">
+                data-ng-bind-html="filterButtonTitleHTML | trustTranslate" 
+                compile-template>
         </button>
         <a  class="btn btn-success btn-block pull-right"
             data-ng-if="action.cta.type === 'call'"
