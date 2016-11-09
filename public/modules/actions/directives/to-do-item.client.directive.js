@@ -9,22 +9,10 @@ angular.module('actions')
       controller: function($scope, $element, $attrs) {
 
       	$scope.user = Authentication.user;
-
-      	$translate($scope.action.title).then(function(title) {
-      		$scope.filterTitleHTML = function() { return $sce.trustAsHtml(title); };
-      	});
-        // $scope.filterTitleHTML = function() { return $sce.trustAsHtml($scope.action.title); };
-        $translate($scope.action.content).then(function(content) {
-	        if(content.indexOf('user.borough') > -1) {
-	        	content = content.replace('user.borough', $scope.user.borough);
-	        }
-      		$scope.filterContentHTML = function() { return $sce.trustAsHtml(content); };
-      	});
-        // $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
-        $translate($scope.action.cta.buttonTitle).then(function(btn) {
-      		$scope.filterButtonTitleHTML = function() { return $sce.trustAsHtml(btn); };
-      	});
-        // $scope.filterButtonTitleHTML = function() { return $sce.trustAsHtml($scope.action.cta.buttonTitle); };
+      	
+        $scope.filterTitleHTML = $scope.action.title;
+        $scope.filterContentHTML =  $scope.action.content;
+        $scope.filterButtonTitleHTML = $scope.action.cta.buttonTitle;
         $scope.closeErrorAlert = true;
       },
       link: function (scope, element, attrs) {
