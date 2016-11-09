@@ -67,15 +67,13 @@
 			data-ng-if="status.completed"
 			data-ng-show="!status.closeAlert"
 			type="success"
-			close="closeAlert()"
-      ng-bind-html="'modules.actions.partials.statusUpdate.success' | trustTranslate">
-  <!-- <span ></span> -->
+			close="closeAlert()">
+  <span ng-bind-html="'modules.actions.partials.statusUpdate.success' | trustTranslate"></span>
 </alert>
 <alert
 			data-ng-show="!status.closeErrorAlert"
 			type="danger"
-			close="status.closeErrorAlert = true"
-      ng-bind-html="'modules.actions.partials.statusUpdate.error' | trustTranslate">
-  <!-- <span ></span> -->
+			close="status.closeErrorAlert = true">
+  <span ng-bind-html="'modules.actions.partials.statusUpdate.error' | trustTranslate"></span>
 </alert>
 <!-- <alert data-ng-if="error.length" data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert> -->

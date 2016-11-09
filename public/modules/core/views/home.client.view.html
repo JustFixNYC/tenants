@@ -5,16 +5,14 @@
   <alert
         data-ng-show="$root.dashboardSuccess"
   			type="success"
-  			close="$root.dashboardSuccess = false"
-        ng-bind-html="'modules.core.views.home.success' | trustTranslate">
-    <!-- <span ></span> -->
+  			close="$root.dashboardSuccess = false">
+    <span ng-bind-html="'modules.core.views.home.success' | trustTranslate"></span>
   </alert>
   <alert
   			data-ng-show="$root.dashboardError"
   			type="danger"
-  			close="$root.dashboardError = false"
-        ng-bind-html="'modules.core.views.home.error' | trustTranslate">
-    <!-- <span ></span> -->
+  			close="$root.dashboardError = false">
+    <span ng-bind-html="'modules.core.views.home.error' | trustTranslate" ></span>
   </alert>
 
 
