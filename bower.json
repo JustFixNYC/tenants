@@ -14,6 +14,7 @@
     "Bootflat": "latest",
     "ng-device-detector": "~1.1.8",
     "ng-file-upload-shim": "~6.1.2",
+    "ng-file-upload": "12.2.12",
     "angular-bootstrap-lightbox": "~0.8.0",
     "angular-touch": "1.4.7",
     "fastclick": "~1.0.6",
