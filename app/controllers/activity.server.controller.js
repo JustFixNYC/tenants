@@ -24,7 +24,7 @@ var list = function(req, res) {
 // GPS processing helper function
 var convertDMSToDD = function(degrees, minutes, seconds, direction) {
     var dd = degrees + minutes/60 + seconds/(60*60);
-    if (direction == "S" || direction == "W") {
+    if (direction === 'S' || direction === 'W') {
         dd = dd * -1;
     } // Don't do anything for N or E
     return dd;
@@ -151,6 +151,8 @@ var processAndSavePhoto = function(file) {
     if(!result.error) {
 
       var exif = result.exif;
+
+      console.log("found exif", exif);
 
       if(exif.gps && !_.isEmpty(exif.gps)) {
         _exif.lat = convertDMSToDD(exif.gps.GPSLatitude[0],exif.gps.GPSLatitude[1],exif.gps.GPSLatitude[2],exif.gps.GPSLatitudeRef);

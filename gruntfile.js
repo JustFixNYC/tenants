@@ -169,8 +169,7 @@ module.exports = function(grunt) {
 		wiredep: {
 			sass: {
 				src: ['app/styles/{,*/}*.{scss,sass}'],
-				ignorePath: /^(\.\.\/)+/
-				,
+				ignorePath: /^(\.\.\/)+/,
 				options: {
 					fileTypes: {
 							scss: {
@@ -193,7 +192,6 @@ module.exports = function(grunt) {
 		  			'public/lib/bootstrap-sass-official/assets/stylesheets',
 		  			'public/lib/Bootflat/bootflat/scss'
 		  		],
-		  		update: true,
 		  		sourceMap: false
 		  	},
 		    files: {
