@@ -8,16 +8,18 @@ angular.module('actions').directive('compileTemplate', ['$compile', '$parse', '$
 	function($compile, $parse, $sce, $translate){
     return {
         link: function(scope, element, attr){
+
             var parsed = $parse(attr.ngBindHtml);
-            
+
             var getStringValue = function() { return (parsed(scope) || '').toString(); }
+
             //Recompile if the template changes
             scope.$watch(getStringValue, function(val) {
             	// Check if our translation service has failed
             	if(val.indexOf('modules') !== -1) {
             		$translate(val).then(function(newVal){
 	            		element.html(newVal);
-	            		$compile(element, null, -9999)(scope);	
+	            		$compile(element, null, -9999)(scope);
             		});
             	} else {
             		element.html(val);
