@@ -29,9 +29,10 @@
       <div class="status-update-controls" ng-class="{ 'tagging' : status.tagging }">
         <div  ngf-select="addPhoto($file)"
               ngf-select-disabled="newActivity.photos.length >= 3"
-              ngf-capture="'camera'" accept="image/*"
+              ngf-accept="'image/*'"
               name="photos"
               class="pull-left select-photos">
+              <!-- ngf-capture="'camera'" accept="image/*" -->
           <span class="glyphicon glyphicon-camera"></span>
         </div>
         <div class="tag-issue-toggle pull-right" ng-click="toggleTagging()" ng-class="{ 'active' : newActivity.problems.length }" ng-if="problems.length">

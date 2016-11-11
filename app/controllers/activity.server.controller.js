@@ -155,22 +155,26 @@ var processAndSavePhoto = function(file) {
       console.log("found exif", exif);
 
       if(exif.gps && !_.isEmpty(exif.gps)) {
-        _exif.lat = convertDMSToDD(exif.gps.GPSLatitude[0],exif.gps.GPSLatitude[1],exif.gps.GPSLatitude[2],exif.gps.GPSLatitudeRef);
-        _exif.lng = convertDMSToDD(exif.gps.GPSLongitude[0],exif.gps.GPSLongitude[1],exif.gps.GPSLongitude[2],exif.gps.GPSLongitudeRef);
-        _exif.dir = convertDegToDirection(exif.gps.GPSImgDirection);
-      }
-      if(exif.exif && !_.isEmpty(exif.gps)) {
-        // format to JS readable date
-        var tmp = exif.exif.CreateDate.split(" ");
-        tmp[0] = tmp[0].split(":").join("-");
-        _exif.created = tmp[0] + "T" + tmp[1];
 
-        _exif.lens = exif.exif.LensModel;
+        if(_.has(exif.gps, 'GPSLatitude')) _exif.lat = convertDMSToDD(exif.gps.GPSLatitude[0],exif.gps.GPSLatitude[1],exif.gps.GPSLatitude[2],exif.gps.GPSLatitudeRef);
+        if(_.has(exif.gps, 'GPSLongitude')) _exif.lng = convertDMSToDD(exif.gps.GPSLongitude[0],exif.gps.GPSLongitude[1],exif.gps.GPSLongitude[2],exif.gps.GPSLongitudeRef);
+        if(_.has(exif.gps, 'GPSImgDirection')) _exif.dir = convertDegToDirection(exif.gps.GPSImgDirection);
       }
-      if(exif.image && !_.isEmpty(exif.gps)) {
-        _exif.make = exif.image.Make;
-        _exif.model = exif.image.Model;
-        _exif.orientation = exif.image.Orientation;
+      if(exif.exif && !_.isEmpty(exif.exif)) {
+
+        if(_.has(exif.exif, 'CreateDate')) {
+          // format to JS readable date
+          var tmp = exif.exif.CreateDate.split(" ");
+          tmp[0] = tmp[0].split(":").join("-");
+          _exif.created = tmp[0] + "T" + tmp[1];
+        }
+
+        if(_.has(exif.exif, 'LensModel')) _exif.lens = exif.exif.LensModel;
+      }
+      if(exif.image && !_.isEmpty(exif.image)) {
+        if(_.has(exif.image, 'Make')) _exif.make = exif.image.Make;
+        if(_.has(exif.image, 'Model')) _exif.model = exif.image.Model;
+        if(_.has(exif.image, 'Orientation')) _exif.orientation = exif.image.Orientation;
       }
 
       console.time("buffCreate");
@@ -276,7 +280,7 @@ var create = function(req, res, next) {
 
     var files = req.files['photos'];
 
-    // console.log('files', files);
+    console.log('files', req.files);
 
     // init photos queue
     var uploadQueue = [];

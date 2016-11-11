@@ -56,13 +56,16 @@
     <div ng-if="Lightbox.image.exif">
       <div class="row">
         <div class="col-sm-4">
-          <meta-map lat="{{ Lightbox.image.exif.lat }}" lng="{{ Lightbox.image.exif.lng }}"></meta-map>
+          <div ng-if="Lightbox.image.exif.lat">
+            <meta-map lat="{{ Lightbox.image.exif.lat }}" lng="{{ Lightbox.image.exif.lng }}"></meta-map>
+          </div>
         </div>
         <div class="col-sm-8">
-          <p><b>Phone Make/Model:</b> {{ Lightbox.image.exif.make }} / {{ Lightbox.image.exif.model }}</p>
-          <p><b>Date Captured:</b> {{ Lightbox.image.exif.created | date:'short' }}</p>
-          <p><b>Facing Direction (approx.):</b> {{ Lightbox.image.exif.dir }}</p>
-          <p><b>Latitude/Longitude:</b> {{ Lightbox.image.exif.lat }} {{ Lightbox.image.exif.lng }}</p>
+          <p ng-if="Lightbox.image.exif.make"><b>Phone Make/Model:</b> {{ Lightbox.image.exif.make }} / {{ Lightbox.image.exif.model }}</p>
+          <p ng-if="Lightbox.image.exif.created"><b>Date Captured:</b> {{ Lightbox.image.exif.created | date:'short' }}</p>
+          <p ng-if="Lightbox.image.exif.dir"><b>Facing Direction (approx.):</b> {{ Lightbox.image.exif.dir }}</p>
+          <p ng-if="Lightbox.image.exif.lat"><b>Latitude/Longitude:</b> {{ Lightbox.image.exif.lat }} {{ Lightbox.image.exif.lng }}</p>
+          <p ng-if="!Lightbox.image.exif.lat"><em>No location data available for this photo.</em></p>
         </div>
       </div>
     </div>
