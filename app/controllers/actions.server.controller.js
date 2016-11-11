@@ -113,25 +113,22 @@ var generateActions = function(user) {
     // var reject = user.actionFlags.indexOf(action.key) !== -1 && action.type == 'once';
     var reject = _.contains(user.actionFlags, action.key) && action.type == 'once';
 
-    actions.push(action);
+    if(add && !reject) {
+      if(action.followUp) action.hasFollowUp = true;
+      else action.hasFollowUp = false;
 
+      // checks if action is a followup or not
+      var followUpKeys = _.pluck(user.followUpFlags, 'key');
 
-    // if(add && !reject) {
-    //   if(action.followUp) action.hasFollowUp = true;
-    //   else action.hasFollowUp = false;
-    //
-    //   // checks if action is a followup or not
-    //   var followUpKeys = _.pluck(user.followUpFlags, 'key');
-    //
-    //   if(_.contains(followUpKeys, action.key)) {
-    //     // console.log('found', _.find(user.followUpFlags, { key: action.key}).startDate);
-    //     action.isFollowUp = true;
-    //     action.startDate = _.find(user.followUpFlags, { key: action.key}).startDate;
-    //   }
-    //   else action.isFollowUp = false;
-    //
-    //   actions.push(action);
-    // }
+      if(_.contains(followUpKeys, action.key)) {
+        // console.log('found', _.find(user.followUpFlags, { key: action.key}).startDate);
+        action.isFollowUp = true;
+        action.startDate = _.find(user.followUpFlags, { key: action.key}).startDate;
+      }
+      else action.isFollowUp = false;
+
+      actions.push(action);
+    }
 
   });
 
