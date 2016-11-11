@@ -18,6 +18,11 @@ angular.module('activity').config(['$stateProvider', '$urlRouterProvider',
 				url: '/share/:key',
 				templateUrl: 'modules/activity/views/list-activity-public.client.view.html',
 				data: { disableBack: true }
+			})
+			.state('print', {
+				url: '/print',
+				templateUrl: 'modules/activity/views/print.client.view.html',
+				data: {disableBack: true}
 			});
 
 	}
