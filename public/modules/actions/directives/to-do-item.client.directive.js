@@ -141,6 +141,8 @@ angular.module('actions')
 
           if(isValid) {
 
+
+
             // if(addDOA && compareDates(scope.newActivity.startDate, new Date())) {
             if(addDOA) {
               scope.newActivity.fields.unshift({ title: 'modules.actions.partials.toDoItem.occurredDate', value: $filter('date')(scope.newActivity.startDate, 'longDate') });
@@ -148,17 +150,22 @@ angular.module('actions')
 
             $rootScope.loading = true;
 
-            console.log('create activity pre creation', scope.newActivity);
+            console.time("toDoItem");
+
+            // console.log('create activity pre creation', scope.newActivity);
 
             var activity = new Activity(scope.newActivity);
 
-            console.log('create activity post creation', activity);
+            // console.log('create activity post creation', activity);
 
             activity.$save(function(response) {
 
-              console.log('create activity post save', response);
+              // console.log('create activity post save', response);
 
               // Authentication.user = response;
+
+              console.timeEnd("toDoItem");
+
               $rootScope.loading = false;
               scope.completeAction();
 
