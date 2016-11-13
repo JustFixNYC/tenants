@@ -179,6 +179,14 @@ exports.updateActivitiesFromChecklist = function(req, res, next) {
         removed = checkProblems(req.body, _prblms, prblms);
 
     createProblemActivities(req.body, added, removed);
+
+    // only take relevant properties
+    // for (var prop in req.body) {
+    //   if (req.body.hasOwnProperty(prop) && !(prop == 'problems' || prop == 'activity')) {
+    //     delete req.body[prop];
+    //   }
+    // }
+
     // console.log(_user);
     next();
   }

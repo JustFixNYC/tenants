@@ -1,8 +1,10 @@
 'use strict';
 
 //Setting up route
-angular.module('activity').config(['$stateProvider', '$urlRouterProvider',
-	function($stateProvider, $urlRouterProvider) {
+angular.module('activity').config(['$stateProvider', '$urlRouterProvider', 'LightboxProvider',
+	function($stateProvider, $urlRouterProvider, LightboxProvider) {
+
+		LightboxProvider.templateUrl = 'modules/activity/partials/lightbox-template.html';
 
 		// Jump to first child state
 		//$urlRouterProvider.when('/issues/create', '/issues/create/checklist');

@@ -19,6 +19,9 @@ var db = mongoose.connect(config.db, function(err) {
     var user = new User({
       firstName: "Just",
       lastName: "Fix",
+			address: "654 Park Place",
+			borough: "Brooklyn",
+			provider: "local",
       phone: config.superuser.phone,
       password: config.superuser.pwd
     });

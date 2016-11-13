@@ -120,7 +120,7 @@
   				"description": "Añada una breve descripción.",
   				"tagTitle": "Etiquetar el asunto",
   				"addCase": "@:repeating.add",
-  				"success": "<strong>¡Felicitaciones!</strong> Hemos añadido <em>{{ newActivity.title }}</em> a su <a ui-sref=\"listActivity\">Historial del Caso</a>.",
+  				"success": "<strong>¡Felicitaciones!</strong> Hemos añadido <em>Actualizacion de Estatos</em> a su <a ui-sref=\"listActivity\">Historial del Caso</a>.",
   				"error": "Lo sentimos, ¡pero algo no funcionó! <a ui-sref=\"contact\">Contáctenos</a> para reportar el problema."
   			},
   			"toDoItem": {
@@ -195,7 +195,8 @@
 	  	"other": {
 		    "added": "Añadí asuntos nuevos a la Lista de revisión",
 		    "removed": "Quité asuntos de la Lista de revisión",
-		    "created": "He creado una cuenta en on JustFix.nyc"
+		    "created": "He creado una cuenta en on JustFix.nyc",
+        "statusUpdate": "Actualizacion de estatos"
 	  	}
   	},
   	"admin": {
@@ -465,7 +466,6 @@
 						"password": "Contraseña",
 						"forgot": "Olvidé mi contraseña.",
 						"signIn": "@:repeating.signIn",
-						"signUp": "Don’t have an account yet? Sign up now!",
 						"signUp": "¿No tiene cuenta? ¡Regístrese ahora!",
             "contactText": "Contáctenos",
 						"contactUsFinal": " si necesita asistencia u olividó su contraseña."
@@ -474,8 +474,10 @@
 				"password": {
 					"forgot": {
 						"title": "Restaurar su contraseña",
-						"enterUser": "Introduzca el nombre de usuario para su cuenta.",
-						"submit": "@:repeating.submit"
+            "forgotText": "Introduzca su número de teléfono y un representante JustFix.nyc le enviará una nueva contraseña temporal pronto.",
+						"submit": "@:repeating.submit",
+            "error": "Por favor, introduzca su número de teléfono",
+            "success": "Gracias - estaremos en contacto pronto"
 					},
 					"resetInvalid": {
 						"title": "El intento para restablecer la contraseña no es válido",

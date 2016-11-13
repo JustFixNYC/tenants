@@ -34,6 +34,10 @@ var ActivitySchema = new Schema({
     photos: [{
       url : { type : String}, 
       thumb : { type : String}, 
+      exif: {
+        type: Schema.Types.Mixed,
+        default: {}
+      },
       created : { type : Date, default : Date.now }
     }],
     fields: [{

@@ -72,7 +72,7 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 					// If successful we assign the response to the global user model
 
 					$rootScope.loading = false;
-					$scope.user = Authentication.user = response;
+					$scope.user = Authentication.user;
 
 					$state.go('settings.profile');
 	    		$scope.passwordVerified = false;

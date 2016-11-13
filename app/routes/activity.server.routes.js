@@ -6,7 +6,9 @@
 var users = require('../../app/controllers/users.server.controller'),
 	activity = require('../../app/controllers/activity.server.controller'),
   multipart = require('connect-multiparty'),
+  // multipartMiddleware = multipart({ maxFieldsSize: 4 * 1024 * 1024 });
   multipartMiddleware = multipart();
+	// raising max to 4mb for higher-end smartphone
   //multer = require('multer');
   // upload = require('multer')({
   //   dest: 'uploads/',

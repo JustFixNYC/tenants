@@ -7,7 +7,8 @@ public/lib
 app/tests/coverage/
 .bower-*/
 .idea/
-app/mongodb
+app/mongodb/
+app/mongodb/*
 uploads
 config/env/development.js
 public/styles/*

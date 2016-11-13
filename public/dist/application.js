@@ -579,7 +579,7 @@ angular.module('actions')
 
         scope.newActivity = {
           date: '',
-          title: 'Status Update',
+          title: 'modules.activity.other.statusUpdate',
           key: 'statusUpdate',
           relatedProblems: [],
           photos: []
@@ -616,8 +616,8 @@ angular.module('actions')
 
           if(file) {
             scope.newActivity.photos.push(file);
-            console.log(file);
-            console.log(file.lastModifiedDate);
+            // console.log(file);
+            // console.log(file.lastModifiedDate);
             if(file.lastModifiedDate) scope.newActivity.date = file.lastModifiedDate;
           }
 
@@ -634,7 +634,9 @@ angular.module('actions')
           if(isValid) {
             $rootScope.loading = true;
 
-            console.log('create activity pre creation', scope.newActivity);
+            console.time("statusUpdate");
+
+            // console.log('create activity pre creation', scope.newActivity);
 
             // [TODO] have an actual section for the 'area' field in the activity log
             // if(scope.newActivity.description && scope.newActivity.area) scope.newActivity.description = scope.newActivity.area + ' - ' + scope.newActivity.description;
@@ -642,11 +644,12 @@ angular.module('actions')
 
             var activity = new Activity(scope.newActivity);
 
-            console.log('create activity post creation', scope.newActivity);
+            // console.log('create activity post creation', scope.newActivity);
 
             activity.$save(function(response) {
 
-              console.log('create activity post save', response);
+              // console.log('create activity post save', response);
+              console.timeEnd("statusUpdate");
 
               $rootScope.loading = false;
               scope.status.completed = true;
@@ -654,7 +657,7 @@ angular.module('actions')
               scope.status.expanded = false;
               scope.newActivity = {
                 date: '',
-                title: 'Status Update',
+                title: 'modules.activity.other.statusUpdate',
                 key: 'statusUpdate',
                 relatedProblems: [],
                 photos: []
@@ -829,6 +832,8 @@ angular.module('actions')
 
           if(isValid) {
 
+
+
             // if(addDOA && compareDates(scope.newActivity.startDate, new Date())) {
             if(addDOA) {
               scope.newActivity.fields.unshift({ title: 'modules.actions.partials.toDoItem.occurredDate', value: $filter('date')(scope.newActivity.startDate, 'longDate') });
@@ -836,17 +841,22 @@ angular.module('actions')
 
             $rootScope.loading = true;
 
-            console.log('create activity pre creation', scope.newActivity);
+            console.time("toDoItem");
+
+            // console.log('create activity pre creation', scope.newActivity);
 
             var activity = new Activity(scope.newActivity);
 
-            console.log('create activity post creation', activity);
+            // console.log('create activity post creation', activity);
 
             activity.$save(function(response) {
 
-              console.log('create activity post save', response);
+              // console.log('create activity post save', response);
 
-              Authentication.user = response;
+              // Authentication.user = response;
+
+              console.timeEnd("toDoItem");
+
               $rootScope.loading = false;
               scope.completeAction();
 
@@ -1121,8 +1131,10 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 'use strict';
 
 //Setting up route
-angular.module('activity').config(['$stateProvider', '$urlRouterProvider',
-	function($stateProvider, $urlRouterProvider) {
+angular.module('activity').config(['$stateProvider', '$urlRouterProvider', 'LightboxProvider',
+	function($stateProvider, $urlRouterProvider, LightboxProvider) {
+
+		LightboxProvider.templateUrl = 'modules/activity/partials/lightbox-template.html';
 
 		// Jump to first child state
 		//$urlRouterProvider.when('/issues/create', '/issues/create/checklist');
@@ -1224,6 +1236,90 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
 
 'use strict';
 
+angular.module('activity').directive('metaMap', ['$rootScope', 'CartoDB', function ($rootScope, CartoDB) {
+    return {
+      restrict: 'E',
+      template: '<div id="map" class="meta-map"></div>',
+      scope: false,
+      link: function postLink(scope, element, attrs) {
+
+        var photoLat = attrs.lat;
+        var photoLng = attrs.lng;
+
+        /*** init map ***/
+        var map = L.map('map', {
+          scrollWheelZoom: false,
+          zoomControl: false,
+          // center: [40.6462615921222, -73.96270751953125],
+          center: [photoLat, photoLng],
+          zoom: 15
+        });
+
+        // L.control.attribution.addAttribution('© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>');
+        L.Icon.Default.imagePath = "/modules/core/img/leaflet";
+
+        // L.tileLayer('https://{s}.tiles.mapbox.com/v4/dan-kass.pcd8n3dl/{z}/{x}/{y}.png?access_token={token}', {
+        //     attribution: '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        //     subdomains: ['a','b','c','d'],
+        //     token: 'pk.eyJ1IjoiZGFuLWthc3MiLCJhIjoiY2lsZTFxemtxMGVpdnVoa3BqcjI3d3Q1cCJ9.IESJdCy8fmykXbb626NVEw'
+        // }).addTo(map);
+
+        // https://github.com/mapbox/mapbox-gl-leaflet
+        var gl = L.mapboxGL({
+          accessToken: 'pk.eyJ1IjoiZGFuLWthc3MiLCJhIjoiY2lsZTFxemtxMGVpdnVoa3BqcjI3d3Q1cCJ9.IESJdCy8fmykXbb626NVEw',
+          style: 'mapbox://styles/dan-kass/cilljc5nu004d9vkngyozkhzb',
+          attributionControl: true
+        }).addTo(map);
+
+        // map.attributionControl.removeFrom(map);
+        // map.attributionControl.setPrefix('');
+        // var credits = L.control.attribution().addTo(map);
+        // credits.addAttribution("© <a href='https://www.mapbox.com/map-feedback/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>");
+
+        // map.on('click', function(e) {
+        //     var tempLat = scope.user.lat = e.latlng.lat;
+        //     var tempLng = scope.user.lng = e.latlng.lng;
+        //     scope.updateCartoMap(tempLat, tempLng, scope.user.byBorough);
+        //     scope.updateCartoList(tempLat, tempLng, scope.user.byBorough);
+        // });
+
+        var mainSublayer;
+        var userMarker;
+
+        /*** init carto layers ***/
+        // var layerSource = {
+        //   user_name: 'dan-kass',
+        //   type: 'cartodb',
+        //
+        //   sublayers: [{
+        //     sql: "SELECT * FROM nyc_cbos_locations",
+        //     cartocss: "#nyc_cbos_locations{marker-fill-opacity:.9;marker-line-color:#FFF;marker-line-width:1;marker-line-opacity:1;marker-placement:point;marker-type:ellipse;marker-width:10;marker-fill:#F60;marker-allow-overlap:true}"
+        //   }]
+        // };
+        //
+        // cartodb.createLayer(map, layerSource)
+        //   .addTo(map)
+        //   .done(function(layer) {
+        //     mainSublayer = layer.getSubLayer(0);
+        //     scope.init();
+        //     // do stuff
+        //     //console.log("Layer has " + layer.getSubLayerCount() + " layer(s).");
+        //   })
+        //   .error(function(err) {
+        //     // report error
+        //     Rollbar.error("Carto Map Error", err);
+        //     console.log("An error occurred: " + err);
+        //   });
+
+        userMarker = L.marker([photoLat,photoLng]);
+        userMarker.addTo(map);
+
+    }
+  };
+}]);
+
+'use strict';
+
 angular.module('activity').filter('activityTemplate', function() {
   return function(input) {
 
@@ -1247,8 +1343,8 @@ angular.module('activity').filter('activityTemplate', function() {
 'use strict';
 
 //Issues service used to communicate Issues REST endpoints
-angular.module('activity').factory('Activity', ['$resource',
-  function($resource) {
+angular.module('activity').factory('Activity', ['$resource', 'UpdateUserInterceptor',
+  function($resource, UpdateUserInterceptor) {
 
     // taken from https://gist.github.com/ghinda/8442a57f22099bdb2e34
     //var transformRequest = function(data, headersGetter) { if (data === undefined) return data;var fd = new FormData();angular.forEach(data, function(value, key) { if (value instanceof FileList) { if (value.length == 1) { fd.append(key, value[0]);} else {angular.forEach(value, function(file, index) {fd.append(key + '_' + index, file);});}} else {if (value !== null && typeof value === 'object'){fd.append(key, JSON.stringify(value)); } else {fd.append(key, value);}}});return fd;}
@@ -1308,7 +1404,8 @@ angular.module('activity').factory('Activity', ['$resource',
           transformRequest: formDataTransform,
           headers: {
             'Content-Type': undefined
-          }
+          },
+          interceptor: UpdateUserInterceptor
       },
       public: {
         method: 'GET',
@@ -1881,6 +1978,54 @@ angular.module('core').directive('goToTop', ["$document", function($document) {
         }
     };
 }]);
+
+'use strict';
+
+angular.module('core').directive('imageOrient', ['$timeout', function ($timeout) {
+    return {
+      restrict: 'A',
+      // scope: {
+      //   dir: "@"
+      // },
+      link: function (scope, element, attr) {
+
+
+        attr.$observe('imageOrient', function(value) {
+          if(value) {
+
+            var width = element[0].naturalWidth || element[0].width;
+            var height = element[0].naturalHeight || element[0].height;
+
+            console.log(width, height);
+
+            console.log(element[0]);
+
+
+            value = parseInt(value, 10);
+
+            value = 6;
+
+            exifOrient(element[0], value, function (err, canvas) {
+              if(err) {
+                console.error(err);
+              } else {
+                console.log(canvas);
+                element[0].src = canvas.toDataURL();
+              }
+
+
+
+            });
+          }
+          // var orient = scope.dir;
+
+        });
+
+
+
+      }
+    };
+  }]);
 
 'use strict';
 
@@ -3389,8 +3534,6 @@ angular.module('problems').controller('ProblemsController', ['$rootScope', '$sco
 
 			    $rootScope.loading = false;
 					$rootScope.dashboardSuccess = true;
-
-			    Authentication.user = response;
 			    $state.go(toState);
 
 				}, function(response) {
@@ -3913,6 +4056,23 @@ angular.module('users').controller('AuthenticationController', ['$rootScope', '$
         $scope.error = response.message;
       });
     };
+
+    $scope.forgotPassword = {};
+    $scope.pwError = false;
+    $scope.pwSuccess = false;
+    $scope.requestPassword = function() {
+      if(!$scope.forgotPassword.phone) {
+        $scope.pwError = true;
+        $scope.pwSuccess = false;
+      } else {
+        $scope.pwError = false;
+        $scope.pwSuccess = true;
+
+        Rollbar.info("Forgot Password", { phone: $scope.forgotPassword.phone });
+      }
+
+    };
+
   }
 ]);
 
@@ -4038,7 +4198,7 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 					// If successful we assign the response to the global user model
 
 					$rootScope.loading = false;
-					$scope.user = Authentication.user = response;
+					$scope.user = Authentication.user;
 
 					$state.go('settings.profile');
 	    		$scope.passwordVerified = false;
@@ -4144,11 +4304,25 @@ angular.module('users').factory('Authentication', [
 'use strict';
 
 // Users service used for communicating with the users REST endpoint
-angular.module('users').factory('Users', ['$resource',
-	function($resource) {
+angular.module('users').factory('UpdateUserInterceptor', ['Authentication',
+	function (Authentication) {
+    //Code
+    return {
+        response: function(res) {
+					Authentication.user = res.resource;
+					return res;
+        }
+		};
+	}
+]);
+
+
+angular.module('users').factory('Users', ['$resource', 'UpdateUserInterceptor',
+	function($resource, UpdateUserInterceptor) {
 		return $resource('api/users', {}, {
 			update: {
-				method: 'PUT'
+				method: 'PUT',
+				interceptor: UpdateUserInterceptor
 			},
 			toggleSharing: {
 				method: 'GET',
@@ -4156,7 +4330,8 @@ angular.module('users').factory('Users', ['$resource',
 			},
 			updateChecklist: {
 				method: 'PUT',
-				url: 'api/users/checklist'
+				url: 'api/users/checklist',
+				interceptor: UpdateUserInterceptor
 			}
       // ,
       // getIssues: {

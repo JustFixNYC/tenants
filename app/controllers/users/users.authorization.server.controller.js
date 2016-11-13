@@ -64,27 +64,28 @@ exports.hasAuthorization = function(roles) {
  */
 exports.hasPublicView = function(req, res, next) {
 
+	var _this = this;
+
 	// allow for either /:key or ?key=
 	var key = req.params.key || req.query.key;
 
 	Tenant.findOne({
 		'sharing.key' : key
 	}).exec(function(err, user) {
-		if (err) {
+		if (err || !user) {
 			return res.status(500).send({ message: 'Error in checking authorization' });
-		}
-		else if(!user || !user.sharing.enabled) {
-			// [TODO] make this an adequate response page
-			rollbar.handleError('Unauthorized request', req);
-			return res.status(403).send({ message: 'Unauthorized request.' });
-		}
-		else {
+		// allow admins to view all
+		} else if( (req.user && _.intersection(req.user.roles, ['admin']).length) || user.sharing.enabled ) {
 			req.tempUser = {
 				fullName: user.fullName,
 				phone: user.phone,
 				activity: user.activity
 			};
 			next();
+		} else {
+			// [TODO] make this an adequate response page
+			rollbar.handleError('Unauthorized request', req);
+			return res.status(403).send({ message: 'Unauthorized request.' });
 		}
 	});
 

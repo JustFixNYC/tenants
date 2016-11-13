@@ -24,15 +24,36 @@
           <div class="controls">
             <div class="no-gutter">
               <div class="col-xs-4">
-                 <button ngf-select ngf-capture="'camera'" accept="image/*" ng-model="newActivity.photos[0]" name="photos" id="photos" class="btn btn-default btn-block">{{'modules.actions.partials.modals.addDetails.photoWord' | translate}} 1</button>
+                 <button ngf-select
+                         ngf-accept="'image/*'"
+                         ng-model="newActivity.photos[0]"
+                         name="photos"
+                         id="photos"
+                         class="btn btn-default btn-block">
+                    {{'modules.actions.partials.modals.addDetails.photoWord' | translate}} 1
+                </button>
                 <img ngf-src="newActivity.photos[0]" class="img-thumbnail">
               </div>
               <div class="col-xs-4">
-                 <button ngf-select ngf-capture="'camera'" accept="image/*" ng-model="newActivity.photos[1]" name="photos" id="photos" class="btn btn-default btn-block">{{'modules.actions.partials.modals.addDetails.photoWord' | translate}} 2</button>
-                <img ngf-src="newActivity.photos[1]" class="img-thumbnail">
+                <button ngf-select
+                        ngf-accept="'image/*'"
+                        ng-model="newActivity.photos[1]"
+                        name="photos"
+                        id="photos"
+                        class="btn btn-default btn-block">
+                   {{'modules.actions.partials.modals.addDetails.photoWord' | translate}} 2
+               </button>
+               <img ngf-src="newActivity.photos[1]" class="img-thumbnail">
               </div>
               <div class="col-xs-4">
-                 <button ngf-select ngf-capture="'camera'" accept="image/*" ng-model="newActivity.photos[2]" name="photos" id="photos" class="btn btn-default btn-block">{{'modules.actions.partials.modals.addDetails.photoWord' | translate}} 3</button>
+                <button ngf-select
+                        ngf-accept="'image/*'"
+                        ng-model="newActivity.photos[2]"
+                        name="photos"
+                        id="photos"
+                        class="btn btn-default btn-block">
+                   {{'modules.actions.partials.modals.addDetails.photoWord' | translate}} 3
+                </button>
                 <img ngf-src="newActivity.photos[2]" class="img-thumbnail">
               </div>
             </div>
