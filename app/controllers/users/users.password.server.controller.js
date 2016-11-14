@@ -9,6 +9,7 @@ var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
 	Identity = mongoose.model('Identity'),
+	User = mongoose.model('User'),
 	config = require('../../../config/config'),
 	// nodemailer = require('nodemailer'),
 	// async = require('async'),
@@ -41,7 +42,6 @@ exports.newTempPassword = function(req, res) {
 
 
 
-
 /**
  * Change Password
  */
@@ -59,26 +59,6 @@ exports.changePassword = function(req, res) {
 
 							identity.password = passwordDetails.newPassword;
 
-							identity.save()
-								.then(function (identity) {
-
-									// just need req.user because only password (hidden) is changed
-									req.login(req.user, function(err) {
-										if (err) {
-											res.status(400).send(err);
-										} else {
-											res.send({
-												message: 'Password changed successfully'
-											});
-										}
-									});
-								})
-								.catch(function (err) {
-									return res.status(400).send({
-										message: errorHandler.getErrorMessage(err)
-									});
-								});
-
 						} else {
 							res.status(400).send({
 								message: 'Passwords do not match'
@@ -90,6 +70,23 @@ exports.changePassword = function(req, res) {
 						});
 					}
 
+					return identity.save();
+				})
+				.then(function (identity) {
+					// need the User document to pass back to req.login (serialize)
+					return User.findOne({ _identity: identity._id });
+				})
+				.then(function (user) {
+					// only password (hidden) is changed, but we need to reserialize
+					req.login(user, function(err) {
+						if (err) {
+							res.status(400).send(err);
+						} else {
+							res.send({
+								message: 'Password changed successfully'
+							});
+						}
+					});
 				})
 				.catch(function (err) {
 					res.status(400).send({
@@ -118,8 +115,13 @@ exports.verifyPassword = function(req, res) {
 	// console.log(passwordDetails);
 	// console.log(req.user);
 
+	// console.log('verify', req.user);
+
 	Identity.findById(req.user._identity)
 		.then(function (identity) {
+
+			console.log('identity', identity)
+
 			if (identity.authenticate(passwordDetails.password)) {
 				res.send('message correct');
 			} else {

@@ -1,37 +1,45 @@
 'use strict';
 
 /**
+ * NOTES:
+ *  Everything in this doc should be *agnostic* to the type of user
+ *
+ */
+
+/**
  * Module dependencies.
  */
 var _ = require('lodash'),
   Q = require('q'),
   errorHandler = require('../errors.server.controller'),
-  actionsHandler = require('../actions.server.controller'),
-  addressHandler = require('../../services/address.server.service'),
-  profileHandler = require('./users.profile.server.controller'),
   mongoose = require('mongoose'),
   passport = require('passport'),
   rollbar = require('rollbar'),
   User = mongoose.model('User'),
-  Identity = mongoose.model('Identity'),
-  Tenant = mongoose.model('Tenant');
+  Identity = mongoose.model('Identity');
 
 mongoose.Promise = require('q').Promise;
 
 /**
  * Take a populated User model and flatten it for the api response
+ *
+ * identity and userdata should be mongoose objects
  */
-var formatUserForClient = exports.formatUserForClient = function(identity, tenant) {
-  
+var formatUserForClient = exports.formatUserForClient = function(identity, userdata) {
+
   // save reference to identity _id;
   var _identity = identity._id;
 
-  // create new "user" object from both identity and tenant objects
+  // create new "user" object from both identity and userdata objects
   // this is the data that will be sent back to the page
   // note: overlap values like _id & phone in `identity` will be overwritten
   // need to use mongoose `toObject()` here as well
-  var userObject = _.extend(identity.toObject(), tenant.toObject());
+  var userObject = _.extend(identity.toObject(), userdata.toObject());
   userObject._identity = _identity;
+
+  // Remove sensitive data
+  // userObject.password = undefined;
+  // userObject.salt = undefined;
 
   return userObject;
 };
@@ -39,42 +47,37 @@ var formatUserForClient = exports.formatUserForClient = function(identity, tenan
 /**
  * Save prepared user documents and create a new User
  */
-var saveNewUser = function(req, identity, tenant, user) {
+var saveNewUser = exports.saveNewUser = function(req, identity, userdata, user) {
 
   var saved = Q.defer();
   var _this = this;
 
-  // save both identity and tenant documents
+  // save both identity and userdata documents
   // mongoose is configured to run on q promises
-  Q.allSettled([identity.save(), tenant.save()])
-    .spread(function (identity, tenant) {
+  Q.allSettled([identity.save(), userdata.save()])
+    .spread(function (identity, userdata) {
 
       if(identity.state === 'rejected') {
         saved.reject(errorHandler.getErrorMessage(identity.reason));
       }
-      if(tenant.state === 'rejected') {
-        saved.reject(errorHandler.getErrorMessage(tenant.reason));
+      if(userdata.state === 'rejected') {
+        saved.reject(errorHandler.getErrorMessage(userdata.reason));
       }
 
       // save the ObjectID references of the two documents
       user._identity = identity.value._id;
-      user._userdata = tenant.value._id;
+      user._userdata = userdata.value._id;
 
       // save new User
       user.save()
         .then(function (user) {
 
           // see above
-          var userObject = formatUserForClient(identity.value, tenant.value);
-
-          // Remove sensitive data before login
-          userObject.password = undefined;
-          userObject.salt = undefined;
-
-          console.log(userObject);
+          var userObject = formatUserForClient(identity.value, userdata.value);
 
           // passport login, serializes the user
           // unfortunately not configured for q promises
+          // req.login (serialize) should be sent an *unpopulated* User document
           req.login(user, function(err) {
             if (err) {
               saved.reject(errorHandler.getErrorMessage(err));
@@ -98,63 +101,15 @@ var saveNewUser = function(req, identity, tenant, user) {
 
 
 /**
- * Signup
+ * Signup should be specific to the type of user, so look in their
+ * appropriate authentication controller
  */
-exports.signup = function(req, res) {
-  // For security measurement we remove the roles from the req.body object
-  // This is so the user can't set their own roles, duh
-  delete req.body.roles;
-
-  // Init Variables
-  // Mongoose will just take what it needs for each model
-  var identity = new Identity(req.body);
-  var tenant = new Tenant(req.body);
-  var user = new User();
-  // var user = new User(req.body);
-
-  var message = null;
-
-  // Add missing user fields
-  identity.provider = 'local';
-  tenant.actionFlags.push('initial');
-
-  // new user enabled sharing, so create a key
-  // **actually, just create a key regardless**
-  // if(user.sharing.enabled) {
-    profileHandler.createPublicView().then(function(newUrl) {
-      tenant.sharing.key = newUrl;
-    });
-  // }
-
-  // make sure this comes before the 'added to checklist card'
-  var acctCreatedDate = new Date();
-  acctCreatedDate.setSeconds(acctCreatedDate.getSeconds() - 60);
-
-  // self-explanatory?
-  tenant.activity.push({
-    key: 'createAcount',
-    title: 'modules.activity.other.created',
-    createdDate: acctCreatedDate,
-    startDate: acctCreatedDate
-  });
-
-  // save the user, do a bunch of mongoose things
-  // returns a prepared user object
-  saveNewUser(req, identity, tenant, user)
-    .then(function (user) {
-      rollbar.reportMessage("New User Signup!", "info", req);
-      res.json(user);
-    })
-    .fail(function (err) {
-      rollbar.handleError(errorHandler.getErrorMessage(err), req);
-      res.status(400).send(errorHandler.getErrorMessage(err));
-    });
-
-
-};
 
 /**
  * Signin after passport authentication
+ *
+ * This looks/feels wonky bc we want to make sure that the unpopulated User
+ * is what actually gets sent to req.login
  */
 exports.signin = function(req, res, next) {
 
@@ -167,23 +122,26 @@ exports.signin = function(req, res, next) {
 
       // get User document
       User.findOne({ _identity: identity._id })
-        .populate('_identity _userdata', '-salt -password')
-        .then(function(user) {
-
-          // format for the res
-          var userObject = formatUserForClient(user._identity, user._userdata);
+        .then(function (user) {
 
           // log in, serializes the user
+          // ensure that *unpopulated* User is what is always sent to req.login (serialize)
           req.login(user, function(err) {
             if (err) {
               rollbar.handleError(err, req);
               res.status(400).send(err);
             } else {
-              rollbar.reportMessage("User Sign In", "info", req);
-              res.json(userObject);
+
+              // Now we can actually populate in order to send data back
+              user.populate('_identity _userdata', '-salt -password')
+                .execPopulate()
+                .then(function (populatedUser) {
+                  var userObject = formatUserForClient(populatedUser._identity, populatedUser._userdata);
+                  rollbar.reportMessage("User Sign In", "info", req);
+                  res.json(userObject);
+                });
             }
           });
-
         })
         .catch(function (err) {
           rollbar.handleError(err);

@@ -18,7 +18,12 @@ var UserSchema = new Schema({
   },
   _userdata: {
     type: Schema.Types.ObjectId,
-    ref: 'Tenant'
+    refPath: 'kind'
+  },
+  // only allow one type of user, for the time being
+  kind: {
+    type: String,
+    enum: ['Tenant', 'Advocate', 'Admin']
   },
   // updated: {
   //   type: Date

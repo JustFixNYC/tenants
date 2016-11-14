@@ -5,11 +5,12 @@
  */
 var _ = require('lodash'),
 	errorHandler = require('../errors.server.controller.js'),
+	authHandler = require('./users.authentication.server.controller'),
 	Q = require('q'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
 	rollbar = require('rollbar'),
-	// User = mongoose.model('User');
+	User = mongoose.model('User'),
 	Identity = mongoose.model('Identity'),
 	Tenant = mongoose.model('Tenant');
 
@@ -32,20 +33,8 @@ var updatePhoneNumber = function(req) {
 
 	if(req.user) {
 
-		Tenant.findOne({ _id: req.user._id })
-			.then(function (tenant) {
-
-				// Update tenant phone
-				tenant.phone = req.body.phone;
-				tenant.updated = Date.now();
-
-				return tenant.save();
-			})
-			.then(function (tenant) {
-
-				// Get identity
-				return Identity.findOne({ _id: req.user._identity });
-			})
+		// Get identity
+		Identity.findOne({ _id: req.user._identity })
 			.then(function (identity) {
 
 				// Update identity phone
@@ -56,18 +45,42 @@ var updatePhoneNumber = function(req) {
 			})
 			.then(function (identity) {
 
-				// And finally...
-				req.user.phone = req.body.phone;
+				// need the User document to pass back to req.login (serialize)
+				// as well as get the userdata without needing to know which model it is
+				User.findOne({ _identity: identity._id })
+					.then(function (user) {
 
-				// login, serializes user
-				req.login(req.user, function(err) {
-					if (err) {
-						updated.reject(err);
-					} else {
-						console.log(req.user);
-						updated.resolve(req.user);
-					}
-				});
+						// Get userdata (agnostic) to update phone there
+						user.populate('_userdata')
+							.execPopulate()
+							.then(function (user) {
+
+								// remember that this doesn't return the userdata, but the populated user
+								user._userdata.phone = req.body.phone;
+								user._userdata.updated = Date.now();
+
+								// save just the userdata document
+								return user._userdata.save();
+							})
+							.then(function (userdata) {
+
+								// build new userObject
+								var userObject =  authHandler.formatUserForClient(identity, userdata);
+
+								// just to be clean
+								user.depopulate('_userdata');
+
+								// login, serializes user
+								req.login(user, function(err) {
+									if (err) {
+										updated.reject(err);
+									} else {
+										updated.resolve(userObject);
+									}
+								});
+
+							});
+					});
 			})
 			.catch(function (err) {
 				updated.reject(err);

@@ -100,10 +100,14 @@ module.exports = function(db) {
 	// CookieParser should be above session
 	app.use(cookieParser());
 
+	// Setting the app router and static folder
+	// Keep this above sessions and passport
+	// https://github.com/jaredhanson/passport/issues/14
+	app.use(express.static(path.resolve('./public')));
+
 	// Express MongoDB session storage
 	// [TODO] this is still causing issues (see https://github.com/meanjs/mean/issues/224)
 	// this is inconsistent, be wary of it...
-
 	app.use(session({
 		saveUninitialized: false,
 		resave: true,
@@ -132,9 +136,6 @@ module.exports = function(db) {
 	app.use(helmet.nosniff());
 	app.use(helmet.ienoopen());
 	app.disable('x-powered-by');
-
-	// Setting the app router and static folder
-	app.use(express.static(path.resolve('./public')));
 
 	// Globbing routing files
 	config.getGlobbedFiles('./app/routes/**/*.js').forEach(function(routePath) {

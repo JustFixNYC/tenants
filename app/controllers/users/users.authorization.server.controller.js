@@ -6,8 +6,7 @@
 var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	rollbar = require('rollbar'),
-	Identity = mongoose.model('Identity'),
-	Tenant = mongoose.model('Tenant');
+	Identity = mongoose.model('Identity');
 
 /**
  * User middleware
@@ -46,6 +45,9 @@ exports.hasAuthorization = function(roles) {
 
 	return function(req, res, next) {
 		_this.requiresLogin(req, res, function() {
+
+			console.log('authorized?', req.user);
+
 			if (_.intersection(req.user.roles, roles).length) {
 				return next();
 			} else {
@@ -56,37 +58,4 @@ exports.hasAuthorization = function(roles) {
 			}
 		});
 	};
-};
-
-
-/**
- * User public view routing middleware
- */
-exports.hasPublicView = function(req, res, next) {
-
-	var _this = this;
-
-	// allow for either /:key or ?key=
-	var key = req.params.key || req.query.key;
-
-	Tenant.findOne({
-		'sharing.key' : key
-	}).exec(function(err, user) {
-		if (err || !user) {
-			return res.status(500).send({ message: 'Error in checking authorization' });
-		// allow admins to view all
-		} else if( (req.user && _.intersection(req.user.roles, ['admin']).length) || user.sharing.enabled ) {
-			req.tempUser = {
-				fullName: user.fullName,
-				phone: user.phone,
-				activity: user.activity
-			};
-			next();
-		} else {
-			// [TODO] make this an adequate response page
-			rollbar.handleError('Unauthorized request', req);
-			return res.status(403).send({ message: 'Unauthorized request.' });
-		}
-	});
-
 };

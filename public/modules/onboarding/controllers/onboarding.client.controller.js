@@ -111,7 +111,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 				$scope.userError = false;
 				$rootScope.loading = true;
 
-				$http.post('/api/auth/signup', $scope.newUser).success(function(response) {
+				$http.post('/api/tenants/signup', $scope.newUser).success(function(response) {
 
 					// If successful we assign the response to the global user model
 					$rootScope.loading = false;

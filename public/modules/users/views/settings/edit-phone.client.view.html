@@ -12,7 +12,7 @@
 		<div class="clearfix"></div>
 	</form>
 
-	<form name="passwordConfirmation" class="form group" ng-if="passwordVerified" data-ng-submit="updateUserPhone(passwordConfirmation.$valid)">
+	<form name="passwordConfirmation" class="form-group col-xs-12 col-md-12" ng-if="passwordVerified" data-ng-submit="updateUserPhone(passwordConfirmation.$valid)">
 
 		<div class="form-group" ng-class="{ 'has-error' : passwordConfirmation.$submitted && passwordConfirmation.phone.$invalid }">
 			<label class="control-label" for="phone">{{'modules.users.views.settings.editPhone.phone' | translate}} <span ng-bind-html="'modules.users.views.settings.editPhone.phoneExt' | trustTranslate"></span></label>

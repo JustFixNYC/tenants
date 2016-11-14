@@ -81,9 +81,12 @@ var IdentitySchema = new Schema({
  */
 IdentitySchema.pre('save', function(next) {
 
-  // this.fullName = this.firstName + ' ' + this.lastName;
+  console.log('pre save?');
+
 
   if (this.password && this.password.length > 6) {
+
+    console.log('PASSWORD', this.password);
     this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
     this.password = this.hashPassword(this.password);
   }
@@ -107,6 +110,9 @@ IdentitySchema.methods.hashPassword = function(password) {
  * Create instance method for authenticating user
  */
 IdentitySchema.methods.authenticate = function(password) {
+
+  console.log(this.password);
+
   return this.password === this.hashPassword(password);
 };
 
