@@ -11,7 +11,7 @@ var _ = require('lodash'),
 	rollbar = require('rollbar'),
 	// User = mongoose.model('User');
 	Identity = mongoose.model('Identity'),
-	Tenant = mongoose.model('Tenant');
+	User = mongoose.model('User');
 
 mongoose.Promise = require('q').Promise;
 
@@ -31,29 +31,35 @@ var updateUser = function(req) {
 
 	if(req.user) {
 
-		Tenant.findOne({ _id: req.user._id })
-			.then(function (tenant) {
+		User.findOne({ _userdata: req.user._userdata })
+			.then(function (user) {
+				return user.populate('_userdata').execPopulate();
+			})
+			.then(function (user) {
+				var userdata = user._userdata;
 
 				// Merge existing user
-				tenant = _.extend(tenant, req.body);
-				tenant.updated = Date.now();
+				userdata = _.extend(userdata, req.body);
+				userdata.updated = Date.now();
 
-				return tenant.save();
-			})
-			.then(function (tenant) {
+				userdata.save()
+					.then(function (userdata) {
 
-				var user = _.extend(req.user, tenant.toObject());
-				console.log('updated', user);
+						var userObject = _.extend(req.user, userdata.toObject());
 
-				// login, serializes user
-				req.login(user, function(err) {
-					if (err) {
-						updated.reject(err);
-					} else {
-						updated.resolve(user);
-					}
-				});
-			})
+						// just to be clean
+						user.depopulate('_userdata');
+
+						// login, serializes user
+						req.login(user, function(err) {
+							if (err) {
+								updated.reject(err);
+							} else {
+								updated.resolve(userObject);
+							}
+						});
+					});		// end of userdata.save
+			})	// end of user.populate
 			.catch(function (err) {
 				updated.reject(err);
 			});
@@ -81,93 +87,6 @@ exports.updateUserData = function(req, res) {
 			});
 		});
 };
-
-var makeNewURL = function(deferred) {
-
-  if(!deferred) var deferred = Q.defer();
-
-	var CHARS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	var URL_LENGTH = 10;
-
-  // generate rando code
-  var newUrl = '';
-  for(var j = URL_LENGTH; j > 0; --j) newUrl += CHARS[Math.floor(Math.random() * CHARS.length)];
-
-	// console.log(newUrl);
-
-  // check if url already exists
-  Tenant.find({ 'sharing.key': newUrl }, function(err, referrals) {
-    if(referrals.length) makeNewUrl(deferred);
-    else deferred.resolve(newUrl);
-  });
-
-  return deferred.promise;
-};
-
-
-exports.createPublicView = function() {
-
- 	var deferred = Q.defer();
-
-	makeNewURL().then(function (newUrl) {
-		deferred.resolve(newUrl);
-	});
-
-	return deferred.promise;
-};
-
-
-/**
- * Toggle user public view
- */
-exports.togglePublicView = function(req, res, next) {
-
-	var user = req.user;
-
-	if(user) {
-
-		var _sharing = user.sharing;
-
-
-		// because the key is made on signup, this first case should never happen
-		if(!_sharing.enabled && !_sharing.key) {			// key doesn't exist
-			_sharing.enabled = true;
-			makeNewURL().then(function (newUrl) {
-				_sharing.key = newUrl;
-				req.body = { sharing: _sharing };
-				next();
-			});
-		} else if(!_sharing.enabled) {									// key already exists
-			_sharing.enabled = true;
-			req.body = { sharing: _sharing };
-			next();
-		}	else {																			// disable but keep key
-			_sharing.enabled = false;
-			req.body = { sharing: _sharing };
-			next();
-		}
-
-	} else {
-		res.status(400).send({
-			message: 'User is not signed in'
-		});
-	}
-};
-
-
-/**
- *  Return all users. This probably shouldn't be here - using authorization middleware
- */
-// exports.list = function(req, res) {
-// 	User.find({}, function(err, users) {
-// 		if(err) {
-// 			res.status(400).send(err);
-// 		} else {
-// 			res.json(users);
-// 		}
-// 	});
-// };
-
 
 /**
  * Send User

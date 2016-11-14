@@ -22,17 +22,11 @@ mongoose.Promise = require('q').Promise;
 module.exports = function() {
   // Serialize sessions
   passport.serializeUser(function(user, done) {
-
-    console.log('serialize', user);
-
     done(null, user._id);
   });
 
   // Deserialize sessions
   passport.deserializeUser(function(id, done) {
-
-    console.log('deserialize', id);
-
     User.findOne({ _id: id })
       .populate('_identity _userdata', '-salt -password')
       .then(function(user) {

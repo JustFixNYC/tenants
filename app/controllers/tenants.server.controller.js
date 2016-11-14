@@ -10,8 +10,6 @@ var _ = require('lodash');
  */
 module.exports = _.extend(
 	require('./tenants/tenants.authentication.server.controller'),
-	require('./tenants/tenants.authorization.server.controller')
-	// require('./tenants/tenants.phone.server.controller'),
-	// require('./tenants/tenants.password.server.controller'),
-	// require('./tenants/tenants.profile.server.controller')
+	require('./tenants/tenants.authorization.server.controller'),
+	require('./tenants/tenants.profile.server.controller')
 );

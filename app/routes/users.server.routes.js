@@ -18,13 +18,6 @@ module.exports = function(app) {
 	// app.route('/api/users/list').get(users.hasAuthorization(['admin']), users.list);
 	//app.route('/users/accounts').delete(users.removeOAuthProvider);
 
-	// Public URLs
-	app.route('/api/users/public').get(users.togglePublicView, users.updateUserData);
-	// app.route('/share/:key').get(function(req, res) {
-  //   res.redirect('/#!/share?key=' + encodeURIComponent(req.params.key));
-	// });
-
-
 	// Updating the users phone number
 	app.route('/api/users/phone').put(users.updatePhoneNumber);
 

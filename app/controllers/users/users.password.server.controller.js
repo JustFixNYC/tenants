@@ -119,9 +119,6 @@ exports.verifyPassword = function(req, res) {
 
 	Identity.findById(req.user._identity)
 		.then(function (identity) {
-
-			console.log('identity', identity)
-
 			if (identity.authenticate(passwordDetails.password)) {
 				res.send('message correct');
 			} else {

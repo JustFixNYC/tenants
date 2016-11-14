@@ -29,6 +29,7 @@ var formatUserForClient = exports.formatUserForClient = function(identity, userd
 
   // save reference to identity _id;
   var _identity = identity._id;
+  var _userdata = userdata._id;
 
   // create new "user" object from both identity and userdata objects
   // this is the data that will be sent back to the page
@@ -36,10 +37,11 @@ var formatUserForClient = exports.formatUserForClient = function(identity, userd
   // need to use mongoose `toObject()` here as well
   var userObject = _.extend(identity.toObject(), userdata.toObject());
   userObject._identity = _identity;
+  userObject._userdata = _userdata;         // could probably just use _id, but lets be safe
 
   // Remove sensitive data
-  // userObject.password = undefined;
-  // userObject.salt = undefined;
+  userObject.password = undefined;
+  userObject.salt = undefined;
 
   return userObject;
 };

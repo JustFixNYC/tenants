@@ -73,7 +73,16 @@ var IdentitySchema = new Schema({
   }
 });
 
+/**
+ * Only re-salt password if its actually changed
+ */
+IdentitySchema.path('password').set(function (newVal) {
 
+  if (this.password == '' || this.password !== this.hashPassword(newVal)) {
+    this._passwordChanged = true;
+  }
+  return newVal;
+});
 
 /**
  * Hook a pre save method to hash the password, and do user updating things
@@ -81,12 +90,7 @@ var IdentitySchema = new Schema({
  */
 IdentitySchema.pre('save', function(next) {
 
-  console.log('pre save?');
-
-
-  if (this.password && this.password.length > 6) {
-
-    console.log('PASSWORD', this.password);
+  if (this._passwordChanged && this.password.length > 6) {
     this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
     this.password = this.hashPassword(this.password);
   }
@@ -110,32 +114,8 @@ IdentitySchema.methods.hashPassword = function(password) {
  * Create instance method for authenticating user
  */
 IdentitySchema.methods.authenticate = function(password) {
-
-  console.log(this.password);
-
   return this.password === this.hashPassword(password);
 };
 
-/**
- * Find possible not used username
- */
-// IdentitySchema.statics.findUniqueUsername = function(username, suffix, callback) {
-//   var _this = this;
-//   var possibleUsername = username + (suffix || '');
-//
-//   _this.findOne({
-//     username: possibleUsername
-//   }, function(err, user) {
-//     if (!err) {
-//       if (!user) {
-//         callback(possibleUsername);
-//       } else {
-//         return _this.findUniqueUsername(username, (suffix || 0) + 1, callback);
-//       }
-//     } else {
-//       callback(null);
-//     }
-//   });
-// };
 
 mongoose.model('Identity', IdentitySchema);

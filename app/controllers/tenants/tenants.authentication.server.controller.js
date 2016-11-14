@@ -8,7 +8,7 @@ var _ = require('lodash'),
   errorHandler = require('../errors.server.controller'),
   actionsHandler = require('../actions.server.controller'),
   addressHandler = require('../../services/address.server.service'),
-  profileHandler = require('../users/users.profile.server.controller'),
+  tenantProfileHandler = require('./tenants.profile.server.controller'),
   userAuthHandler = require('../users/users.authentication.server.controller'),
   mongoose = require('mongoose'),
   passport = require('passport'),
@@ -45,7 +45,7 @@ exports.signup = function(req, res) {
   // new user enabled sharing, so create a key
   // **actually, just create a key regardless**
   // if(user.sharing.enabled) {
-    profileHandler.createPublicView().then(function(newUrl) {
+    tenantProfileHandler.createPublicView().then(function(newUrl) {
       tenant.sharing.key = newUrl;
     });
   // }

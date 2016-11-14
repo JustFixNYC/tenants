@@ -17,7 +17,7 @@ module.exports = function(app) {
 	// app.route('/api/users/checklist').put(problems.updateActivitiesFromChecklist, users.updateUserData);
 
 	// Public URLs
-	// app.route('/api/users/public').get(users.togglePublicView, users.updateUserData);
+	app.route('/api/tenants/public').get(tenants.togglePublicView, users.updateUserData);
 
 	// Updating the users phone number
 	// app.route('/api/users/phone').put(users.updatePhoneNumber);

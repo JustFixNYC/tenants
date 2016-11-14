@@ -28,7 +28,7 @@ angular.module('users').factory('Users', ['$resource', 'UpdateUserInterceptor',
 			},
 			toggleSharing: {
 				method: 'GET',
-				url: 'api/users/public'
+				url: 'api/tenants/public'
 			},
 			updateChecklist: {
 				method: 'PUT',
