@@ -61,23 +61,31 @@ var saveNewUser = function(req, identity, tenant, user) {
       user._userdata = tenant.value._id;
 
       // save new User
-      return user.save();
-    })
-    .then(function (user) {
+      user.save()
+        .then(function (user) {
 
-      // see above
-      var userObject = formatUserForClient(identity, tenant);
+          // see above
+          var userObject = formatUserForClient(identity.value, tenant.value);
 
-      // passport login, serializes the user
-      // unfortunately not configured for q promises
-      req.login(user, function(err) {
-        if (err) {
-          saved.reject(errorHandler.getErrorMessage(err));
-        } else {
-          // pass this json for the res
-          saved.resolve(userObject);
-        }
-      });
+          // Remove sensitive data before login
+          userObject.password = undefined;
+          userObject.salt = undefined;
+
+          console.log(userObject);
+
+          // passport login, serializes the user
+          // unfortunately not configured for q promises
+          req.login(user, function(err) {
+            if (err) {
+              saved.reject(errorHandler.getErrorMessage(err));
+            } else {
+              // pass this json for the res
+              saved.resolve(userObject);
+            }
+          });
+
+        });
+
 
     })
     .catch(function (err) {
