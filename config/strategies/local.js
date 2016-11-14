@@ -15,6 +15,7 @@ module.exports = function() {
 			passwordField: 'password'
 		},
 		function(phone, password, done) {
+
 			Identity.findOne({
 				phone: phone
 			},

@@ -20,7 +20,7 @@ module.exports = function(app) {
 	app.route('/api/activity')
 		.get(activity.list)
     //.post(users.requiresLogin, upload.array('photos'), activity.create);
-    .post(users.requiresLogin, multipartMiddleware, activity.create, users.update);
+    .post(users.requiresLogin, multipartMiddleware, activity.create, users.updateUserData);
 
 	app.route('/api/activity/public').get(users.hasPublicView, function(req, res) {
 		res.json(req.tempUser);

@@ -16,7 +16,7 @@ var fs = require('fs'),
 	cookieParser = require('cookie-parser'),
 	helmet = require('helmet'),
 	passport = require('passport'),
-	mongoStore = require('connect-mongo')({
+	mongoStore = require('connect-mongo/es5')({
 		session: session
 	}),
 	flash = require('connect-flash'),
@@ -68,7 +68,7 @@ module.exports = function(db) {
 	// Environment dependent middleware
 	if (process.env.NODE_ENV === 'development') {
 		// Enable logger (morgan)
-		app.use(morgan('dev'));
+		// app.use(morgan('dev'));
 
 		// Disable views cache
 		app.set('view cache', false);
@@ -103,15 +103,15 @@ module.exports = function(db) {
 	// Express MongoDB session storage
 	// [TODO] this is still causing issues (see https://github.com/meanjs/mean/issues/224)
 	// this is inconsistent, be wary of it...
+
 	app.use(session({
 		saveUninitialized: false,
 		resave: true,
 		secret: config.sessionSecret,
 		cookie: { maxAge: 14 * 24 * 60 * 60 * 1000 },		// 14 days
 		store: new mongoStore({
-			db: db.connection.db,
-			collection: config.sessionCollection,
-			auto_reconnect: true												// this only works for connect-mongo < 0.5
+			mongooseConnection: db.connection,
+			collection: config.sessionCollection
 		})
 	}));
 

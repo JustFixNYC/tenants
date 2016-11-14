@@ -20,10 +20,10 @@
     "fastclick": "~1.0.6",
     "angular-lazy-img": "~1.1.0",
     "angular-scroll": "~0.7.2",
-    "angular-translate": "~2.7.1",
-    "angular-translate-loader-static-files": "~2.7.1",
-    "angular-translate-storage-local": "~2.7.1",
-    "angular-translate-handler-log": "~2.7.1",
+    "angular-translate": "~2.13.0",
+    "angular-translate-loader-static-files": "~2.13.0",
+    "angular-translate-storage-local": "~2.13.0",
+    "angular-translate-handler-log": "~2.13.0",
     "angular-dynamic-locale": "~0.1.27",
     "angular-i18n": "1.4.7",
     "ui-select": "angular-ui-select#~0.13.2",
@@ -34,7 +34,9 @@
   "resolutions": {
     "angular-bootstrap": "^0.13.3",
     "angular": "1.4.7",
-    "ng-file-upload": "11.2.2"
+    "ng-file-upload": "11.2.2",
+    "angular-translate-storage-cookie": "~2.13.0",
+    "angular-translate": "~2.13.0"
   },
   "overrides": {
     "bootstrap-sass-official": {

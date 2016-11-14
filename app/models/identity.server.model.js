@@ -53,9 +53,9 @@ var IdentitySchema = new Schema({
   roles: {
     type: [{
       type: String,
-      enum: ['user', 'admin']
+      enum: ['tenant', 'advocate', 'admin']
     }],
-    default: ['user']
+    default: ['tenant']
   },
   updated: {
     type: Date
