@@ -22,7 +22,7 @@ mongoose.Promise = require('q').Promise;
  * Take a populated User model and flatten it for the api response
  */
 var formatUserForClient = exports.formatUserForClient = function(identity, tenant) {
-
+  
   // save reference to identity _id;
   var _identity = identity._id;
 
