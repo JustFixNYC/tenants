@@ -22,12 +22,20 @@ $grey: #E0E0E0;
 	margin: auto;
 	max-width: $screen-sm-min;
 
-	.apt-field {
-		width: 40%;
+	.more-info {
+		position: relative;
+		top: -10px;
 	}
 
 	.pw-check-field {
 		margin-bottom: 30px;
+	}
+
+	.row {
+
+		& > .form-group + .form-group {
+			padding-left: 0;
+		}
 	}
 
 	form {
@@ -41,6 +49,8 @@ $grey: #E0E0E0;
 				width: 50%;
 			}
 		}
+
+
 	}
 }
 
