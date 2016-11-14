@@ -5,12 +5,16 @@
  */
 var _ = require('lodash'),
   passport = require('passport'),
+  mongoose = require('mongoose'),
   Identity = require('mongoose').model('Identity'),
   Tenant = require('mongoose').model('Tenant'),
   User = require('mongoose').model('User'),
+  authHandler = require('../app/controllers/users/users.authentication.server.controller'),
   path = require('path'),
   rollbar = require('rollbar'),
   config = require('./config');
+
+mongoose.Promise = require('q').Promise;
 
 /**
  * Module init function.
@@ -23,27 +27,17 @@ module.exports = function() {
 
   // Deserialize sessions
   passport.deserializeUser(function(id, done) {
-    Identity.findOne({
-      _id: id
-    }, '-salt -password', function(err, identity) {
 
-      if(err) {
+    User.findOne({ _identity: id })
+      .populate('_identity _userdata', '-salt -password')
+      .then(function(user) {
+        var userObject = authHandler.formatUserForClient(user._identity, user._userdata);
+        done(null, userObject);
+      })
+      .catch(function (err) {
         rollbar.handleError(err);
         done(err, null);
-      } else {
-        Tenant.findOne({
-          _identity: identity._id
-        }, function(err, tenant) {
-          if(err) {
-            rollbar.handleError(err);
-            done(err, null);
-          } else {
-            var user = _.extend(identity.toObject(), tenant.toObject());
-            done(err, user);
-          }
-        });
-      }
-    });
+      });
   });
 
   // Initialize strategies

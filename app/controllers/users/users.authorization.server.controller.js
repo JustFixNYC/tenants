@@ -6,7 +6,7 @@
 var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	rollbar = require('rollbar'),
-	// User = mongoose.model('User'),
+	Identity = mongoose.model('Identity'),
 	Tenant = mongoose.model('Tenant');
 
 /**

@@ -13,10 +13,15 @@ var _ = require('lodash'),
 	Identity = mongoose.model('Identity'),
 	Tenant = mongoose.model('Tenant');
 
+mongoose.Promise = require('q').Promise;
+
 /**
  * Update user details
+ *
  */
-exports.updateTenantUser = function(req, res) {
+var updateUser = function(req) {
+
+	var updated = Q.defer();
 
 	// Init Variables
 	var message = null;
@@ -26,46 +31,56 @@ exports.updateTenantUser = function(req, res) {
 
 	if(req.user) {
 
-		Tenant.findOne({ _id: req.user._id }, function(err, tenant) {
+		Tenant.findOne({ _id: req.user._id })
+			.then(function (tenant) {
 
-			if (!err) {
 				// Merge existing user
 				tenant = _.extend(tenant, req.body);
 				tenant.updated = Date.now();
 
-				// Save tenant
-				tenant.save(function(err) {
-					if (!err) {
-						req.login(user, function(err) {
-							if (err) {
-								rollbar.handleError(err, req);
-								res.status(400).send(err);
-							} else {
-								res.json(user);
-								res.end(); // important to update session
-							}
-						});
-					} else {																														// error w tenant.save
-						rollbar.handleError(errorHandler.getErrorMessage(err), req);
-						return res.status(400).send({
-							message: errorHandler.getErrorMessage(err)
-						});
+				return tenant.save();
+			})
+			.then(function (tenant) {
+
+				var user = _.extend(req.user, tenant.toObject());
+				console.log('updated', user);
+
+				// login, serializes user
+				req.login(user, function(err) {
+					if (err) {
+						updated.reject(err);
+					} else {
+						updated.resolve(user);
 					}
 				});
-			} else {																																// error w tenant.findOne
-				rollbar.handleError(errorHandler.getErrorMessage(err), req);
-				return res.status(400).send({
-					message: errorHandler.getErrorMessage(err)
-				});
-			}
-		} else {
-			res.status(400).send({
-				message: 'User is not signed in'
+			})
+			.catch(function (err) {
+				updated.reject(err);
 			});
-		}
 
+
+	} else {
+		updated.reject('User is not signed in');
+	}
+
+	return updated.promise;
 };
 
+
+exports.updateUserData = function(req, res) {
+
+	updateUser(req)
+		.then(function (user) {
+			res.json(user);
+			res.end(); // important to update session
+		})
+		.catch(function (err) {
+			rollbar.handleError(errorHandler.getErrorMessage(err), req);
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		});
+};
 
 var makeNewURL = function(deferred) {
 
@@ -81,7 +96,7 @@ var makeNewURL = function(deferred) {
 	// console.log(newUrl);
 
   // check if url already exists
-  User.find({ 'sharing.key': newUrl }, function(err, referrals) {
+  Tenant.find({ 'sharing.key': newUrl }, function(err, referrals) {
     if(referrals.length) makeNewUrl(deferred);
     else deferred.resolve(newUrl);
   });
