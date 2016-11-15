@@ -32,6 +32,7 @@ exports.signup = function(req, res) {
 
   // this is an advocate user
   user.kind = 'Advocate';
+  identity.roles = ['advocate'];
 
   var message = null;
 

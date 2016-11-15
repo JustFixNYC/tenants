@@ -6,7 +6,7 @@
 var passport = require('passport');
 // User Routes
 var users = require('../../app/controllers/users.server.controller'),
-		advocates = require('../../app/controllers/tenants.server.controller');
+		advocates = require('../../app/controllers/advocates.server.controller');
 
 module.exports = function(app) {
 

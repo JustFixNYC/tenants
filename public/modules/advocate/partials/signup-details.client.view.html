@@ -1,0 +1,83 @@
+<div class="page-header">
+	<h3>(Step 1 of 2)</h3>
+	<h1>Account Information</h1>
+</div>
+<form name="createAdvocateUserForm" class="create-user-form" ng-submit="toReferralStep(createAdvocateUserForm.$valid)" novalidate>
+
+	<div class="row">
+		<div class="form-group col-xs-6" ng-class="{ 'has-error' : createAdvocateUserForm.$submitted && createAdvocateUserForm.firstName.$invalid }">
+			<label class="control-label" for="firstName">{{'modules.onboarding.partials.onboardingDetails.firstName' | translate}}</label>
+			<input class="form-control" type="text" placeholder="{{'modules.onboarding.partials.onboardingDetails.firstName' | translate}}" name="firstName" ng-model="newAdvocateUser.firstName" required>
+			<div ng-show="createAdvocateUserForm.$submitted || createAdvocateUserForm.firstName.$touched">
+				<p ng-show="createAdvocateUserForm.firstName.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.firstNameError' | translate}}</p>
+			</div>
+		</div>
+
+		<div class="form-group col-xs-6" ng-class="{ 'has-error' : createAdvocateUserForm.$submitted && createAdvocateUserForm.lastName.$invalid }">
+			<label class="control-label" for="lastName">{{'modules.onboarding.partials.onboardingDetails.lastName' | translate}}</label>
+			<input class="form-control" type="text" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.lastName' | translate}}" name="lastName" ng-model="newAdvocateUser.lastName" required>
+			<div ng-show="createAdvocateUserForm.$submitted || createAdvocateUserForm.lastName.$touched">
+				<p ng-show="createAdvocateUserForm.lastName.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.lastNameError' | translate}}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group" ng-class="{ 'has-error' : createAdvocateUserForm.$submitted && createAdvocateUserForm.phone.$invalid }">
+		<label class="control-label" for="phone">Phone Number <em>(this will be used to log in - not publicly available!)</em></label>
+		<input class="form-control" type="tel" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.phoneNumber' | translate}}" name="phone" ng-model="newAdvocateUser.phone" name="phone" required phone-input>
+		<div ng-show="createAdvocateUserForm.$submitted || createAdvocateUserForm.phone.$touched">
+			<p ng-show="createAdvocateUserForm.phone.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.phoneError' | translate}}</p>
+		</div>
+	</div>
+
+	<div class="form-group" ng-class="{ 'has-error' : createAdvocateUserForm.$submitted && createAdvocateUserForm.pw.$invalid }">
+		<label class="control-label" for="pw" ng-bind-html="'modules.onboarding.partials.onboardingDetails.password' | trustTranslate"></label>
+		<input class="form-control" type="password" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.wrongPassword' | translate}}" id="pw1" name="pw" ng-model="newAdvocateUser.password" ng-minlength="6" required>
+		<div ng-show="createAdvocateUserForm.$submitted || createAdvocateUserForm.pw.$touched">
+			<p ng-show="createAdvocateUserForm.pw.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.wrongPassword' | translate}}</p>
+			<p ng-show="createAdvocateUserForm.pw.$error.minlength" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.shortPassword' | translate}}</p>
+		</div>
+	</div>
+
+	<div class="form-group pw-check-field" ng-class="{ 'has-error' : createAdvocateUserForm.$submitted && createAdvocateUserForm.pw2.$invalid }">
+		<label class="control-label" for="pw2">{{'modules.onboarding.partials.onboardingDetails.verify' | translate}}</label>
+		<input class="form-control" ng-model="pw2" type="password" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.verify' | translate}}" name="pw2" pw-check="pw1" ng-minlength="6" required>
+		<div ng-show="createAdvocateUserForm.$submitted || createAdvocateUserForm.pw2.$touched">
+			<p ng-show="createAdvocateUserForm.pw2.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.verifyEmpty' | translate}}</p>
+			<p ng-show="createAdvocateUserForm.pw2.$error.pwmatch" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.verifyWrong' | translate}}</p>
+		</div>
+	</div>
+
+	<div class="form-group form-submit-field">
+		<fieldset>
+				<div data-ng-show="error.errors" class="alert alert-danger">
+						<strong data-ng-repeat="err in error.errors">
+							<p data-ng-bind="err.message"></p>
+							<span ng-bind-html="'modules.onboarding.partials.onboardingDetails.errorMsg' | trustTranslate" compile-template></span>
+						</strong>
+				</div>
+				<div data-ng-show="error && !error.errors" class="alert alert-danger">
+						<strong>
+							<p data-ng-bind="error"></p>
+							<span ng-bind-html="'modules.onboarding.partials.onboardingDetails.errorMsg' | trustTranslate" compile-template></span>
+						</strong>
+				</div>
+				<div data-ng-show="userError" class="alert alert-danger">
+						<strong>
+							{{'modules.onboarding.partials.onboardingDetails.notComplete' | translate}}
+						</strong>
+				</div>
+		</fieldset>
+
+    <div class="row">
+			<div class="col-xs-4">
+				<a ui-sref="advocateSignup.info" class="btn btn-block btn-default">
+					{{'modules.onboarding.partials.onboardingDetails.back' | translate}}
+				</a>
+			</div>
+      <div class="col-xs-8">
+        <input type="submit" class="btn btn-primary btn-block pull-right" value="Next">
+      </div>
+    </div>
+	</div>
+</form>

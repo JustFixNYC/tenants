@@ -7,10 +7,7 @@ var _ = require('lodash'),
     mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     crypto = require('crypto'),
-    addressHandler = require('../services/address.server.service'),
     rollbar = require('rollbar'),
-    ActivitySchema = require('./activity.server.model.js'),
-    ProblemSchema = require('./problem.server.model.js'),
     IdentitySchema = require('./identity.server.model.js');
 
 /**
@@ -48,6 +45,35 @@ var AdvocateSchema = new Schema({
     default: '',
     validate: [validateLocalStrategyProperty, 'Please fill in your phone number'],
     match: [/[0-9]{7}/, 'Please fill a valid phone number'],
+    required: true
+  },
+  code: {
+    type: String,
+    unique: true,
+    trim: true,
+    default: '',
+    validate: [validateLocalStrategyProperty, 'Please add an advocate code.'],
+    required: true
+  },
+  email: {
+    type: String,
+    trim: true,
+    default: '',
+    validate: [validateLocalStrategyProperty, 'Please add an email address.'],
+    required: true
+  },
+  organization: {
+    type: String,
+    trim: true,
+    default: '',
+    validate: [validateLocalStrategyProperty, 'Please add an organization name.'],
+    required: true
+  },
+  contactPhone: {
+    type: String,
+    trim: true,
+    default: '',
+    validate: [validateLocalStrategyProperty, 'Please add a contact phone number.'],
     required: true
   },
   updated: {

@@ -1,0 +1,91 @@
+<div class="page-header">
+	<h3>(Step 2 of 2)</h3>
+	<h1>Referral Information</h1>
+	<p>This is how you will connect with your clients! Information here will be made available to them once they are linked to your account.</p>
+</div>
+<form name="createAdvocateUserForm" class="create-user-form" ng-submit="createAdvocate(createAdvocateUserForm.$valid)" novalidate>
+
+	<div class="form-group" ng-class="{ 'has-error' : createAdvocateUserForm.$submitted && createAdvocateUserForm.code.$invalid }">
+		<label class="control-label" for="code">Your Advocate Code</label>
+		<p><em>This is what your client will enter to connect and share information with you.</em></p>
+		<input class="form-control" placeholder="Ex: janedoe" name="code" ng-model="newAdvocateUser.code" required>
+		<div ng-show="createAdvocateUserForm.$submitted || createAdvocateUserForm.code.$touched">
+			<p ng-show="createAdvocateUserForm.code.$error.required" class="text-danger">Please enter an advocate code.</p>
+		</div>
+	</div>
+
+	<div class="form-group" ng-class="{ 'has-error' : createAdvocateUserForm.$submitted && createAdvocateUserForm.email.$invalid }">
+		<label class="control-label" for="email">Contact Email Address</label>
+		<input class="form-control" placeholder="Email Address" name="email" type="email" ng-model="newAdvocateUser.email" required>
+		<div ng-show="createAdvocateUserForm.$submitted || createAdvocateUserForm.email.$touched">
+			<p ng-show="createAdvocateUserForm.email.$error.required" class="text-danger">Please enter an email address.</p>
+			<p ng-show="createAdvocateUserForm.email.$error.email" class="text-danger">Please enter a valid email address.</p>
+		</div>
+	</div>
+
+	<div class="row">
+
+		<div class="form-group col-xs-9" ng-class="{ 'has-error' : createAdvocateUserForm.$submitted && createAdvocateUserForm.contactPhone.$invalid }">
+			<label class="control-label" for="contactPhone">Contact Phone</label>
+			<!-- <p><em>If you use an extension, such as <b>(212) 555-8000 ext. 12</b> enter it as <b>2125558000,12</b></em></p> -->
+			<input class="form-control" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.phoneNumber' | translate}}" name="contactPhone" type="tel" ng-model="newAdvocateUser.contactPhone" required phone-input>
+		</div>
+
+		<div class="form-group col-xs-3" ng-class="{ 'has-error' : createAdvocateUserForm.$submitted && createAdvocateUserForm.ext.$invalid }">
+			<label class="control-label" for="ext">Ext.</label>
+			<!-- <p><em>If you use an extension, such as <b>(212) 555-8000 ext. 12</b> enter it as <b>2125558000,12</b></em></p> -->
+			<input class="form-control" placeholder="Ext. (optional)" name="ext" ng-model="newAdvocateUser.ext">
+		</div>
+
+		<div ng-show="createAdvocateUserForm.$submitted || createAdvocateUserForm.contactPhone.$touched">
+			<p ng-show="createAdvocateUserForm.contactPhone.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.phoneError' | translate}}</p>
+		</div>
+
+		<!-- <div ng-show="createAdvocateUserForm.$submitted || createAdvocateUserForm.contactPhone.$touched">
+			<p ng-show="createAdvocateUserForm.contactPhone.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.phoneError' | translate}}</p>
+		</div> -->
+
+	</div>
+
+
+	<div class="form-group" ng-class="{ 'has-error' : createAdvocateUserForm.$submitted && createAdvocateUserForm.organization.$invalid }">
+		<label class="control-label" for="organization">Name of your Organization</label>
+		<input class="form-control" placeholder="Organization Name" name="organization" ng-model="newAdvocateUser.organization" required>
+		<div ng-show="createAdvocateUserForm.$submitted || createAdvocateUserForm.organization.$touched">
+			<p ng-show="createAdvocateUserForm.organization.$error.required" class="text-danger">Please enter the name of your organization.</p>
+		</div>
+	</div>
+
+	<div class="form-group form-submit-field">
+		<fieldset>
+				<div data-ng-show="error.errors" class="alert alert-danger">
+						<strong data-ng-repeat="err in error.errors">
+							<p data-ng-bind="err.message"></p>
+							<span ng-bind-html="'modules.onboarding.partials.onboardingDetails.errorMsg' | trustTranslate" compile-template></span>
+						</strong>
+				</div>
+				<div data-ng-show="error && !error.errors" class="alert alert-danger">
+						<strong>
+							<p data-ng-bind="error"></p>
+							<span ng-bind-html="'modules.onboarding.partials.onboardingDetails.errorMsg' | trustTranslate" compile-template></span>
+						</strong>
+				</div>
+				<div data-ng-show="userError" class="alert alert-danger">
+						<strong>
+							{{'modules.onboarding.partials.onboardingDetails.notComplete' | translate}}
+						</strong>
+				</div>
+		</fieldset>
+
+    <div class="row">
+			<div class="col-xs-4">
+        <a ui-sref="advocateSignup.details" class="btn btn-block btn-default">
+          {{'modules.onboarding.partials.onboardingDetails.back' | translate}}
+        </a>
+      </div>
+      <div class="col-xs-8">
+        <input type="submit"  class="btn btn-primary btn-block pull-right" value="Create Account">
+      </div>
+    </div>
+	</div>
+</form>
