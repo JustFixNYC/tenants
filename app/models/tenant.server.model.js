@@ -41,10 +41,6 @@ var validateGeoclientAddress = function(address, callback) {
  * Tenant Schema
  */
 var TenantSchema = new Schema({
-  _identity: {
-    type: Schema.Types.ObjectId,
-    ref: 'Identity'
-  },
   firstName: {
     type: String,
     trim: true,

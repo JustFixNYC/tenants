@@ -14,7 +14,6 @@ module.exports = function(app) {
 	// Setting up the users profile api
 	app.route('/api/users/me').get(users.me);
 	app.route('/api/users').put(users.updateUserData);
-	app.route('/api/users/checklist').put(problems.updateActivitiesFromChecklist, users.updateUserData);
 	// app.route('/api/users/list').get(users.hasAuthorization(['admin']), users.list);
 	//app.route('/users/accounts').delete(users.removeOAuthProvider);
 

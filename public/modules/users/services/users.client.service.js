@@ -32,7 +32,7 @@ angular.module('users').factory('Users', ['$resource', 'UpdateUserInterceptor',
 			},
 			updateChecklist: {
 				method: 'PUT',
-				url: 'api/users/checklist',
+				url: 'api/tenants/checklist',
 				interceptor: UpdateUserInterceptor
 			}
       // ,
