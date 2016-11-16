@@ -41,6 +41,14 @@ var validateGeoclientAddress = function(address, callback) {
  * Tenant Schema
  */
 var TenantSchema = new Schema({
+  // referral: {
+  //   type: Schema.Types.Mixed,
+  //   default: {}
+  // },
+  advocate: {
+    type: Schema.Types.ObjectId,
+    ref: 'Advocate'
+  },
   firstName: {
     type: String,
     trim: true,
@@ -119,10 +127,6 @@ var TenantSchema = new Schema({
       type : String,
       default: ''
     }
-  },
-  referral: {
-    type: Schema.Types.Mixed,
-    default: {}
   },
   /* For reset password */
   resetPasswordToken: {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('advocate').controller('AdvocateSignupController', ['$rootScope', '$scope', '$state', '$location', '$filter', 'Authentication', 'Referrals', '$http', '$modal',
+angular.module('advocates').controller('AdvocateSignupController', ['$rootScope', '$scope', '$state', '$location', '$filter', 'Authentication', 'Referrals', '$http', '$modal',
 	function($rootScope, $scope, $state, $location, $filter, Authentication, Referrals, $http, $modal) {
 
 		$scope.authentication = Authentication;

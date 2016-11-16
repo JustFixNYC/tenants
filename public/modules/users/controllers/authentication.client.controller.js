@@ -24,8 +24,22 @@ angular.module('users').controller('AuthenticationController', ['$rootScope', '$
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;
 
-        // console.log($scope.authentication.user);
-        $state.go('home');
+        switch(response.roles[0]) {
+          case "admin":
+            $state.go('admin');
+            break;
+          case "advocate":
+            $state.go('advocateHome');
+            break;
+          case "tenant":
+            $state.go('home');
+            break;
+          default:
+            $state.go('home');
+            break;
+        }
+
+
       }).error(function(response) {
         $scope.error = response.message;
       });

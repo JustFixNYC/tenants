@@ -140,7 +140,9 @@ exports.signin = function(req, res, next) {
                 .then(function (populatedUser) {
                   var userObject = formatUserForClient(populatedUser._identity, populatedUser._userdata);
                   rollbar.reportMessage("User Sign In", "info", req);
-                  res.json(userObject);
+                  res.locals.userObject = userObject;
+                  next();
+                  // res.json(userObject);
                 });
             }
           });

@@ -62,17 +62,48 @@ exports.signup = function(req, res) {
     startDate: acctCreatedDate
   });
 
-  // save the user, do a bunch of mongoose things
-  // returns a prepared user object
-  userAuthHandler.saveNewUser(req, identity, tenant, user)
-    .then(function (user) {
-      rollbar.reportMessage("New User Signup!", "info", req);
-      res.json(user);
-    })
-    .fail(function (err) {
-      rollbar.handleError(errorHandler.getErrorMessage(err), req);
-      res.status(400).send(errorHandler.getErrorMessage(err));
-    });
+  // populate advocate information
+  if(tenant.advocate) {
+    Tenant.populate(tenant, {
+        path: 'advocate',
+        select: '-phone -firstName -lastName -created'
+      })
+      .then(function (tenant) {
+        return userAuthHandler.saveNewUser(req, identity, tenant, user);
+      })
+      .then(function (userObject) {
+        rollbar.reportMessage("New User Signup!", "info", req);
+        res.json(userObject);
+      })
+      .catch(function (err) {
+        rollbar.handleError(errorHandler.getErrorMessage(err), req);
+        res.status(400).send(errorHandler.getErrorMessage(err));
+      });
 
+  // no advocate population
+  } else {
+    userAuthHandler.saveNewUser(req, identity, tenant, user)
+      .then(function (userObject) {
+        rollbar.reportMessage("New User Signup!", "info", req);
+        res.json(userObject);
+      })
+      .catch(function (err) {
+        rollbar.handleError(errorHandler.getErrorMessage(err), req);
+        res.status(400).send(errorHandler.getErrorMessage(err));
+      });
+  }
 
+};
+
+/**
+ * Signin for tenants
+ *
+ * If we're here then everything has been authenticated,
+ * and we have a flattened userObject to work with
+ *
+ * Maybe in the future we can flatten it ourselves here?
+ */
+exports.signin = function(req, res) {
+
+  console.log(res.locals.userObject);
 };

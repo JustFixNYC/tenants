@@ -1,7 +1,7 @@
 'use strict';
 
 //Setting up route
-angular.module('advocate').config(['$stateProvider', '$urlRouterProvider',
+angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 	function($stateProvider, $urlRouterProvider) {
 
 		// Jump to first child state
@@ -11,7 +11,7 @@ angular.module('advocate').config(['$stateProvider', '$urlRouterProvider',
 		$stateProvider
 			.state('advocateSignup', {
 				url: '/advocate/signup',
-				templateUrl: 'modules/advocate/views/signup.client.view.html',
+				templateUrl: 'modules/advocates/views/signup.client.view.html',
 				controller: 'AdvocateSignupController',
 				abstract: true,
 				data: {
@@ -20,20 +20,20 @@ angular.module('advocate').config(['$stateProvider', '$urlRouterProvider',
 			})
 			.state('advocateSignup.info', {
 				url: '',
-				templateUrl: 'modules/advocate/partials/signup-info.client.view.html',
+				templateUrl: 'modules/advocates/partials/signup-info.client.view.html',
 				globalStyles: 'white-bg'
 			})
 			.state('advocateSignup.details', {
 				url: '/create',
-				templateUrl: 'modules/advocate/partials/signup-details.client.view.html'
+				templateUrl: 'modules/advocates/partials/signup-details.client.view.html'
 			})
 			.state('advocateSignup.referral', {
 				url: '/referral',
-				templateUrl: 'modules/advocate/partials/signup-referral.client.view.html'
+				templateUrl: 'modules/advocates/partials/signup-referral.client.view.html'
 			})
 			.state('advocateHome', {
 				url: '/advocate',
-				templateUrl: 'modules/advocate/views/home.client.view.html',
+				templateUrl: 'modules/advocates/views/home.client.view.html',
 				controller: 'AdvocateController',
 				data: {
 					disableBack: true

@@ -44,7 +44,7 @@
     </a>
   </div>
 
-  <div ng-if="authentication.user.referral">
+  <div ng-if="authentication.user.advocate">
     <!-- <div class="section-header" ng-click="shareCollapsed = !shareCollapsed"> -->
     <div class="section-header">
       <h2>{{'modules.core.views.home.advocate' | translate}}
@@ -54,14 +54,14 @@
     <!-- <div class="share-section" collapse="shareCollapsed"> -->
     <div class="share-section">
       <h2>
-        {{ ::authentication.user.referral.name }}<br />
-        {{ ::authentication.user.referral.organization }}<br />
-        {{ ::authentication.user.referral.phone | tel }}<br />
-        {{ ::authentication.user.referral.email }}
+        {{ ::authentication.user.advocate.fullName }}<br />
+        {{ ::authentication.user.advocate.organization }}<br />
+        {{ ::authentication.user.advocate.contactPhone | tel }}<br />
+        {{ ::authentication.user.advocate.email }}
       </h2>
       <div class="row share-controls">
-        <a class="btn btn-success btn-block" ng-href="tel:{{authentication.user.referral.phone}}">
-            {{'modules.core.views.home.call' | translate}} {{ ::authentication.user.referral.name | firstname }}
+        <a class="btn btn-success btn-block" ng-href="tel:{{authentication.user.advocate.contactPhone}}">
+            {{'modules.core.views.home.call' | translate}} {{ ::authentication.user.advocate.fullName | firstname }}
         </a>
       </div>
     </div>

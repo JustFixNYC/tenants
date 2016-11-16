@@ -13,12 +13,12 @@
 	<p>{{user.unit}}</p>
 	<p>{{user.borough}}, NY  {{user.geo.zip}}</p>
 	<br/>
-	<div ng-if="user.referral">
+	<div ng-if="user.advocate">
 		<p><strong>{{'modules.users.views.settings.landing.advocateInfo' | translate}}</strong></p>
-		<p>{{user.referral.name}}</p>
-		<p>{{user.referral.organization}}</p>
-		<p><a ng-href="tel:{{user.referral.phone}}" class="text-link">{{user.referral.phone | tel}}</a></p>
-		<p><a ng-href="mailto:{{user.referral.email}}" class="text-link">{{user.referral.email}}</a></p>
+		<p>{{user.advocate.fullName}}</p>
+		<p>{{user.advocate.organization}}</p>
+		<p><a ng-href="tel:{{user.advocate.contactPhone}}" class="text-link">{{user.advocate.contactPhone | tel}}</a></p>
+		<p><a ng-href="mailto:{{user.advocate.email}}" class="text-link">{{user.advocate.email}}</a></p>
 		<br/>
 	</div>
 	<div class="user-container">

@@ -50,13 +50,16 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			if(!$scope.accessCode.valueEntered || $scope.accessCode.valueEntered !== $scope.accessCode.value) {
 
 				var referral = new Referrals();
-		    referral.$validate({ code: $scope.accessCode.value },
+		    referral.$validateNewUser({ code: $scope.accessCode.value },
 		      function(success) {
-		        if(success.referral) {
+
+						console.log(success);
+
+		        if(success.advocate) {
 		          $scope.accessCode.valid = $rootScope.validated = true;
 		          $scope.accessCode.valueEntered = $scope.accessCode.value;
-		          $scope.newUser.referral = success.referral;
-							$scope.newUser.referral.code = $scope.accessCode.value;
+							$scope.newUser.advocate = success.advocate;
+		          $scope.referral = success.referral;
 							$scope.newUser.sharing.enabled = true;
 							$location.path('/onboarding/success');
 							$scope.codeError = false;

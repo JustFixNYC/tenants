@@ -1,15 +1,15 @@
 'use strict';
 
 // Users service used for communicating with the users REST endpoint
-angular.module('admin').factory('Referrals', ['$resource',
+angular.module('advocates').factory('Referrals', ['$resource',
 	function($resource) {
 		return $resource('api/referrals', {}, {
-			update: {
-				method: 'PUT'
-			},
-			validate: {
+			// update: {
+			// 	method: 'PUT'
+			// },
+			validateNewUser: {
 				method: 'GET',
-				url: '/api/referrals/validate'
+				url: '/api/advocates/validate/new'
 			}
       // ,
       // getIssues: {
