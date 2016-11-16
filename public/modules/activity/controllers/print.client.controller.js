@@ -1,13 +1,22 @@
 'use strict';
 
 
-angular.module('activity').controller('PrintController', ['$scope', '$stateParams', '$state', '$filter', 'Activity', 'Lightbox', 'Authentication', '$window',
-  function($scope, $stateParams, $state, $filter, Activity, Lightbox, Authentication, $window) {
+angular.module('activity').controller('PrintController', ['$scope', '$rootScope', '$filter', 'Activity', 'Lightbox', 'Authentication', '$window',
+  function($scope, $rootScope, $filter, Activity, Lightbox, Authentication, $window) {
 
     $scope.list = function() {
       $scope.activities = Activity.query();
-      console.log($scope.activities);
+
+      var fixPrint = function(){
+      	console.log('huh?');
+			  var printContents = document.documentElement.outerHTML;
+      }
+
+
+      fixPrint();
     };
+
+    $rootScope.headerLightBG = true;
 
     $scope.user = Authentication.user;
 
@@ -21,13 +30,5 @@ angular.module('activity').controller('PrintController', ['$scope', '$stateParam
       return startDate !== createdDate;
     }
 
-    $scope.print = function() {
-		  var printContents = document.getElementsByTagName('html').innerHTML;
-		  console.log(printContents);
-		  // var popupWin = window.open('', '_blank', 'width=300,height=300');
-		  // popupWin.document.open();
-		  // popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="style.css" /></head><body onload="window.print()">' + printContents + '</body></html>');
-		  // popupWin.document.close();
-    }
 	}
 ]);

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('core')
-  .directive('printButton', ['deviceDetector', '$window',
-  function (deviceDetector, $window) {
+  .directive('printButton', ['deviceDetector', '$window', '$http',
+  function (deviceDetector, $window, $http) {
     return {
       restrict: 'A',
       scope: false,
@@ -14,9 +14,15 @@ angular.module('core')
           element.addClass("print-button");
         }
 
+        var printPg = document.createElement('iframe');
+        printPg.src = '/print';
+        printPg.width = 0;
+        printPg.height = 0;
+        printPg.name = 'frame';
+        document.body.appendChild(printPg);
 
         element.on('click', function (event) {
-          $window.print();
+			    window.frames['frame'].print();
         });
 
 

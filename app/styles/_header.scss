@@ -141,6 +141,22 @@ header {
   }
 }
 
+.clear-nav {
+	#header-wrapper.inner {
+		display: none;
+
+		#header {
+			background-color: transparent;
+		}
+
+		.header-brand > .logo > svg *,
+		.header-btn {
+	    fill: $darkgray-dark;
+	    color: $darkgray-dark;
+	  }
+	}
+}
+
 // #header-wrapper.light-bg {
 //
 //   .header-brand > .logo > svg * {

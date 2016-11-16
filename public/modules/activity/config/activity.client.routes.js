@@ -1,4 +1,4 @@
-'use strict';
+;'use strict';
 
 //Setting up route
 angular.module('activity').config(['$stateProvider', '$urlRouterProvider', 'LightboxProvider',
@@ -24,7 +24,8 @@ angular.module('activity').config(['$stateProvider', '$urlRouterProvider', 'Ligh
 			.state('print', {
 				url: '/print',
 				templateUrl: 'modules/activity/views/print.client.view.html',
-				data: {disableBack: true}
+				data: {disableBack: true},
+				globalStyles: 'clear-nav'
 			});
 
 	}

@@ -24,18 +24,19 @@
         lightbox-src="{{Lightbox.imageUrl}}"
         ng-href="{{Lightbox.imageUrl}}"
         iframe-id="lightbox-video"
-        class="embed-responsive-item">test
+        class="embed-responsive-item">
       <a ng-href="{{Lightbox.imageUrl}}">Watch video</a>
     </embed-video>
   </div>
-
-  <div ng-if="activity.photos[0].exif">
-    <div class="row">
+	
+	<h3>{{ activity.title | translate }}</h3>
+  <div ng-if="activity.photos[0].exif" class="exifdata">
+    <div class="row"><!-- 
       <div class="col-sm-4">
         <div ng-if="activity.photos[0].exif.lat">
           <meta-map lat="{{ activity.photos[0].exif.lat }}" lng="{{ activity.photos[0].exif.lng }}"></meta-map>
         </div>
-      </div>
+      </div> -->
       <div class="col-smactivity.photos[0]-8">
         <p ng-if="activity.photos[0].exif.make"><b>Phone Make/Model:</b> {{ activity.photos[0].exif.make }} / {{ activity.photos[0].exif.model }}</p>
         <p ng-if="activity.photos[0].exif.created"><b>Date Captured:</b> {{ activity.photos[0].exif.created | date:'short' }}</p>
@@ -44,8 +45,5 @@
         <p ng-if="!activity.photos[0].exif.lat"><em>No location data available for this photo.</em></p>
       </div>
     </div>
-  </div>
-  <div ng-if="!Lightbox.image.exif">
-      <p class="text-center"><em>(image metadata not available for this photo)</em></p>
   </div>
 </div>
