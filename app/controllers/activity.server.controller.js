@@ -256,6 +256,7 @@ var processAndSavePhoto = function(file) {
 };
 
 var create = function(req, res, next) {
+	console.log(req);
   var user = req.user;
   var activity = req.body;
 

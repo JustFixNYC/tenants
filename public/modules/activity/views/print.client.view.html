@@ -1,4 +1,4 @@
-<section ng-controller="PrintController" ng-init="list()">
+<section class="print" ng-controller="PrintController" ng-init="list()">
 
 	<div class="page-header">
       <img src="/modules/core/img/sections/history.svg" alt="Case History" />
@@ -6,7 +6,7 @@
       <p class="text-center">{{'modules.activity.views.listActivityPublic.contact' | translate}} {{ user.phone | tel }}</p>
       <p class="text-danger text-center">{{'modules.activity.views.listActivityPublic.alert' | translate}}</p>
   </div>
-  <button class="btn btn-primary btn-block" print-button>
+  <button class="btn btn-primary btn-block" print-button ng-click="print">
     {{'modules.activity.views.listActivityPublic.print' | translate}}  
   </button>
   <div class="section-header">
@@ -20,12 +20,24 @@
           </div>
           <div class="panel-body">
 
-            <div ng-include="activityTemplate(activity.key)"></div>
+          {{activity | json}}
 
-              <!-- <p><b>{{ activity.key | areaTitle }} {{ activity.title === 'Text/Photos' ? 'Details' : activity.title }}</b></p> -->
+          	<div class="image-share" ng-show="activity.key == 'statusUpdate'">
+							
+							<div ng-include="'/modules/activity/partials/print-image-template.html'"></div>
+
+          	</div>
+
+          	<div class="other-share" ng-show="activity.key != 'statusUpdate'">
+
+	            <div ng-include="activityTemplate(activity.key)"></div>
+
+              <p><b>{{ activity.title | translate }}</b></p>
 
 
               <span class="pull-right activity-logged-date"><i>{{'modules.activity.views.listActivityPublic.loggedOn' | translate}} {{ activity.createdDate | date:'short' }}</i></span>
+
+            </div>
 
           </div>
       </div>

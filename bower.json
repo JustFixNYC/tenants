@@ -34,8 +34,6 @@
   "resolutions": {
     "angular-bootstrap": "^0.13.3",
     "angular": "1.4.7",
-    "angular-translate-storage-cookie": "~2.13.0",
-    "angular-translate": "~2.13.0",
     "ng-file-upload": "11.2.2"
   },
   "overrides": {
