@@ -6,6 +6,9 @@ angular.module('users').factory('UpdateUserInterceptor', ['Authentication',
     //Code
     return {
         response: function(res) {
+
+					console.log('new res', res);
+
 					Authentication.user = res.resource;
 					return res;
         }

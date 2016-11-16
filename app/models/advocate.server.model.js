@@ -3,12 +3,15 @@
 /**
  * Module dependencies.
  */
-var _ = require('lodash'),
+var Q = require('q'),
+    _ = require('lodash'),
     mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     crypto = require('crypto'),
     rollbar = require('rollbar'),
     IdentitySchema = require('./identity.server.model.js');
+
+mongoose.Promise = require('q').Promise;
 
 /**
  * A Validation function for local strategy properties
@@ -85,6 +88,20 @@ var AdvocateSchema = new Schema({
   }
 });
 
+
+/**
+ * Can call this to perform additional functions after its populated as userdata
+ */
+AdvocateSchema.methods.build = function() {
+
+    var built = Q.defer();
+
+    console.log('build', this);
+
+    built.resolve();
+
+    return built.promise;
+};
 
 /**
  * Hook a pre save method to hash the password, and do user updating things

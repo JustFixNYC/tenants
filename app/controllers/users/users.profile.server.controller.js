@@ -5,6 +5,7 @@
  */
 var _ = require('lodash'),
 	errorHandler = require('../errors.server.controller.js'),
+	authHandler = require('./users.authentication.server.controller'),
 	Q = require('q'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
@@ -29,14 +30,17 @@ var updateUser = function(req) {
 	// For security measurement we remove the roles from the req.body object
 	delete req.body.roles;
 
+	// console.log(req.user);
+
 	if(req.user) {
 
 		User.findOne({ _userdata: req.user._userdata })
 			.then(function (user) {
-				return user.populate('_userdata').execPopulate();
+				return user.populate('_identity _userdata', '-salt -password').execPopulate();
 			})
 			.then(function (user) {
 				var userdata = user._userdata;
+				var identity = user._identity;
 
 				// Merge existing user
 				userdata = _.extend(userdata, req.body);
@@ -44,11 +48,13 @@ var updateUser = function(req) {
 
 				userdata.save()
 					.then(function (userdata) {
-
-						var userObject = _.extend(req.user, userdata.toObject());
+						return authHandler.formatUserForClient(identity, userdata);
+					})
+					.then(function (userObject) {
 
 						// just to be clean
 						user.depopulate('_userdata');
+						user.depopulate('_identity');
 
 						// login, serializes user
 						req.login(user, function(err) {
@@ -58,7 +64,7 @@ var updateUser = function(req) {
 								updated.resolve(userObject);
 							}
 						});
-					});		// end of userdata.save
+					});  // end of userdata.save
 			})	// end of user.populate
 			.catch(function (err) {
 				updated.reject(err);

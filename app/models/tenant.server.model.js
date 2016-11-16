@@ -3,7 +3,8 @@
 /**
  * Module dependencies.
  */
-var _ = require('lodash'),
+var Q = require('q'),
+    _ = require('lodash'),
     mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     crypto = require('crypto'),
@@ -12,6 +13,8 @@ var _ = require('lodash'),
     ActivitySchema = require('./activity.server.model.js'),
     ProblemSchema = require('./problem.server.model.js'),
     IdentitySchema = require('./identity.server.model.js');
+
+mongoose.Promise = require('q').Promise;
 
 /**
  * A Validation function for local strategy properties
@@ -149,6 +152,36 @@ TenantSchema.path('address').set(function (newVal) {
   return newVal;
 });
 
+/**
+ * Can call this to perform additional functions after its populated as userdata
+ */
+TenantSchema.methods.build = function() {
+
+  var built = Q.defer();
+  var _this = this;
+
+  // populate advocate information
+  if(this.advocate) {
+    this.populate({
+        path: 'advocate',
+        select: '-phone -firstName -lastName -created'
+      })
+      .execPopulate()
+      .then(function (populatedTenant) {
+        _this.advocate = populatedTenant.advocate;
+        built.resolve(_this);
+      })
+      .catch(function (err) {
+        built.reject(err);
+      });
+  } else {
+    built.resolve(this);
+  }
+
+  // built.resolve();
+
+  return built.promise;
+};
 
 /**
  * Hook a pre save method to hash the password, and do user updating things

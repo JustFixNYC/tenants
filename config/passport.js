@@ -30,7 +30,9 @@ module.exports = function() {
     User.findOne({ _id: id })
       .populate('_identity _userdata', '-salt -password')
       .then(function(user) {
-        var userObject = authHandler.formatUserForClient(user._identity, user._userdata);
+        return authHandler.formatUserForClient(user._identity, user._userdata);
+      })
+      .then(function (userObject) {
         done(null, userObject);
       })
       .catch(function (err) {

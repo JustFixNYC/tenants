@@ -27,23 +27,36 @@ mongoose.Promise = require('q').Promise;
  */
 var formatUserForClient = exports.formatUserForClient = function(identity, userdata) {
 
+  var formatted = Q.defer();
+
   // save reference to identity _id;
   var _identity = identity._id;
   var _userdata = userdata._id;
 
-  // create new "user" object from both identity and userdata objects
-  // this is the data that will be sent back to the page
-  // note: overlap values like _id & phone in `identity` will be overwritten
-  // need to use mongoose `toObject()` here as well
-  var userObject = _.extend(identity.toObject(), userdata.toObject());
-  userObject._identity = _identity;
-  userObject._userdata = _userdata;         // could probably just use _id, but lets be safe
+  // build userdata document. This allows for custom actions to be done
+  // which are specific to the type of user
+  userdata.build()
+    .then(function (userdata) {
 
-  // Remove sensitive data
-  userObject.password = undefined;
-  userObject.salt = undefined;
+      // create new "user" object from both identity and userdata objects
+      // this is the data that will be sent back to the page
+      // note: overlap values like _id & phone in `identity` will be overwritten
+      // need to use mongoose `toObject()` here as well
+      var userObject = _.extend(identity.toObject(), userdata.toObject());
+      userObject._identity = _identity;
+      userObject._userdata = _userdata;         // could probably just use _id, but lets be safe
 
-  return userObject;
+      // Remove sensitive data
+      userObject.password = undefined;
+      userObject.salt = undefined;
+
+      formatted.resolve(userObject);
+    })
+    .catch(function (err) {
+      formatted.reject(err);
+    });
+
+    return formatted.promise;
 };
 
 /**
@@ -74,24 +87,27 @@ var saveNewUser = exports.saveNewUser = function(req, identity, userdata, user) 
       user.save()
         .then(function (user) {
 
-          // see above
-          var userObject = formatUserForClient(identity.value, userdata.value);
+          // this is nested because we'll need user for the req.login
+          formatUserForClient(identity.value, userdata.value)
+            .then(function (userObject) {
+              console.log('save new', userObject);
 
-          // passport login, serializes the user
-          // unfortunately not configured for q promises
-          // req.login (serialize) should be sent an *unpopulated* User document
-          req.login(user, function(err) {
-            if (err) {
+              // passport login, serializes the user
+              // unfortunately not configured for q promises
+              // req.login (serialize) should be sent an *unpopulated* User document
+              req.login(user, function(err) {
+                if (err) {
+                  saved.reject(errorHandler.getErrorMessage(err));
+                } else {
+                  // pass this json for the res
+                  saved.resolve(userObject);
+                }
+              });
+            })
+            .catch(function (err) {
               saved.reject(errorHandler.getErrorMessage(err));
-            } else {
-              // pass this json for the res
-              saved.resolve(userObject);
-            }
-          });
-
+            });
         });
-
-
     })
     .catch(function (err) {
       console.log('err', err);
@@ -138,11 +154,12 @@ exports.signin = function(req, res, next) {
               user.populate('_identity _userdata', '-salt -password')
                 .execPopulate()
                 .then(function (populatedUser) {
-                  var userObject = formatUserForClient(populatedUser._identity, populatedUser._userdata);
+                  return formatUserForClient(populatedUser._identity, populatedUser._userdata);
+                })
+                .then(function (userObject) {
                   rollbar.reportMessage("User Sign In", "info", req);
-                  res.locals.userObject = userObject;
-                  next();
-                  // res.json(userObject);
+                  res.json(userObject);
+                  res.end();
                 });
             }
           });
