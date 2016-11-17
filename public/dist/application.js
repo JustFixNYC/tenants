@@ -1207,7 +1207,7 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
       	data.reverse();
       	for(var i = 0; i < data.length; i++) {
       		if(data[i].photos.length) {
-      			data[i].photos = true;
+      			data[i].photosExist = true;
       			for (var j = 0; j < data[i].photos.length; j ++) {
       				data[i].photos[j].order = photoOrder;
       				photoOrder++;
