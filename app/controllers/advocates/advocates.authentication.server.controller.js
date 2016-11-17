@@ -44,6 +44,8 @@ exports.signup = function(req, res) {
   userAuthHandler.saveNewUser(req, identity, advocate, user)
     .then(function (user) {
       rollbar.reportMessage("New Advocate Signup!", "info", req);
+      console.log(user);
+
       res.json(user);
     })
     .fail(function (err) {

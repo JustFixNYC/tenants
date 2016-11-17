@@ -79,6 +79,11 @@ var AdvocateSchema = new Schema({
     validate: [validateLocalStrategyProperty, 'Please add a contact phone number.'],
     required: true
   },
+  contactPhoneExt: {
+    type: String,
+    trim: true,
+    default: '',
+  },
   updated: {
     type: Date
   },
@@ -96,20 +101,37 @@ AdvocateSchema.methods.build = function() {
 
     var built = Q.defer();
 
-    console.log('build', this);
-
     built.resolve(this);
 
     return built.promise;
 };
 
+AdvocateSchema.path('code').validate(function (value, done) {
+
+  var _this = this;
+
+  mongoose.models['Advocate'].findOne({ code: value }, function(err, advocate) {
+      if(err) {
+          done(err);
+      } else if(advocate) {
+          _this.invalidate("code", "Advocate code is already registered!");
+          done(new Error("Advocate code is already registered!"));
+      } else {
+          done();
+      }
+  });
+});
+
 /**
  * Hook a pre save method to hash the password, and do user updating things
  * This is pretty nice to have in one spot!
  */
-AdvocateSchema.pre('save', function(next) {
+AdvocateSchema.pre('save', function(next, done) {
+
+  var _this = this;
 
   this.fullName = this.firstName + ' ' + this.lastName;
+
 
   next();
 

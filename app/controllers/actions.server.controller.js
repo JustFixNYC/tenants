@@ -169,13 +169,21 @@ var list = function(req, res) {
   }
 };
 
-
+/**
+ *
+ *      TODO: decouple this from req.user and updating tenant directly
+ *
+ */
 var followUp = function(req, res) {
 
   var userdata = req.user._userdata,
       key = req.body.key,
       startDate = req.body.startDate;       // this might be undefined - mongoose assigns the default value
   var query;
+
+  // var oldBody = _.clone(req.body);
+  // req.body = {};                          // building this to send to users.update
+
 
   if(req.query.type === 'add') {
     query = Tenant.update({ '_id': userdata }, {$addToSet: { 'followUpFlags': { key: key, startDate: startDate } }});

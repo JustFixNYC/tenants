@@ -84,6 +84,22 @@ IdentitySchema.path('password').set(function (newVal) {
   return newVal;
 });
 
+IdentitySchema.path('phone').validate(function (value, done) {
+
+  var _this = this;
+
+  mongoose.models['Identity'].findOne({ phone: value }, function(err, identity) {
+      if(err) {
+          done(err);
+      } else if(identity) {
+          _this.invalidate("phone", "Phone number is already registered!");
+          done(new Error("Phone number is already registered!"));
+      } else {
+          done();
+      }
+  });
+});
+
 /**
  * Hook a pre save method to hash the password, and do user updating things
  * This is pretty nice to have in one spot!

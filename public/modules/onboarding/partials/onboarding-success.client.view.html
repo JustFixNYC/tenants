@@ -9,7 +9,7 @@
 	<h2 class="text-center">
 		{{ referral.name }}<br />
 		{{ referral.organization }}<br />
-		{{ referral.contactPhone | tel }}<br />
+		{{ referral.contactPhone + (referral.contactPhoneExt ? (',' + referral.contactPhoneExt) : '') | tel }}<br />
 		{{ referral.email }}
 	</h2>
 	<div class="share-section">

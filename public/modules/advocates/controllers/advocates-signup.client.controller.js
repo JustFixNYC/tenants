@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('advocates').controller('AdvocateSignupController', ['$rootScope', '$scope', '$state', '$location', '$filter', 'Authentication', 'Referrals', '$http', '$modal',
-	function($rootScope, $scope, $state, $location, $filter, Authentication, Referrals, $http, $modal) {
+angular.module('advocates').controller('AdvocateSignupController', ['$rootScope', '$scope', '$state', '$location', '$filter', 'Authentication', '$http', '$modal',
+	function($rootScope, $scope, $state, $location, $filter, Authentication, $http, $modal) {
 
 		$scope.authentication = Authentication;
 		$scope.newAdvocateUser = {};
@@ -22,7 +22,7 @@ angular.module('advocates').controller('AdvocateSignupController', ['$rootScope'
 				code: "janedoe",
 				email: "jane@westsidetenants.org",
 				contactPhone: "8459781262",
-				ext: "12",
+				// contactPhoneExt: "12",
 				organization: "Westside Tenants"
 			};
 
@@ -45,10 +45,6 @@ angular.module('advocates').controller('AdvocateSignupController', ['$rootScope'
 			if(typeof DEBUG !== 'undefined' && DEBUG == true) console.log('create account pre save', $scope.newAdvocateUser);
 
 			if(isValid) {
-
-				if($scope.newAdvocateUser.ext) {
-					$scope.newAdvocateUser.contactPhone += ',' + $scope.newAdvocateUser.ext;
-				}
 
 				$scope.newAdvocateUser.firstName = $filter('titlecase')($scope.newAdvocateUser.firstName);
 				$scope.newAdvocateUser.lastName = $filter('titlecase')($scope.newAdvocateUser.lastName);

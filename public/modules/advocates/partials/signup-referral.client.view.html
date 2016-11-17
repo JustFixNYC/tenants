@@ -34,7 +34,7 @@
 		<div class="form-group col-xs-3" ng-class="{ 'has-error' : createAdvocateUserForm.$submitted && createAdvocateUserForm.ext.$invalid }">
 			<label class="control-label" for="ext">Ext.</label>
 			<!-- <p><em>If you use an extension, such as <b>(212) 555-8000 ext. 12</b> enter it as <b>2125558000,12</b></em></p> -->
-			<input class="form-control" placeholder="Ext. (optional)" name="ext" ng-model="newAdvocateUser.ext">
+			<input class="form-control" placeholder="Ext. (optional)" name="ext" ng-model="newAdvocateUser.contactPhoneExt">
 		</div>
 
 		<div ng-show="createAdvocateUserForm.$submitted || createAdvocateUserForm.contactPhone.$touched">

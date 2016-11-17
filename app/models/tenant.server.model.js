@@ -52,6 +52,11 @@ var TenantSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Advocate'
   },
+  advocateRole: {
+    type: String,
+    enum: ['linked', 'managed', 'none'],
+    default: 'none'
+  },
   firstName: {
     type: String,
     trim: true,
@@ -146,10 +151,26 @@ var TenantSchema = new Schema({
  */
 TenantSchema.path('address').set(function (newVal) {
 
-  if (this.address == '' || this.address != newVal) {
+  if (this.address === '' || this.address !== newVal) {
     this._addressChanged = true;
   }
   return newVal;
+});
+
+TenantSchema.path('phone').validate(function (value, done) {
+
+  var _this = this;
+
+  mongoose.models['Tenant'].findOne({ phone: value }, function(err, tenant) {
+      if(err) {
+          done(err);
+      } else if(tenant) {
+          _this.invalidate("phone", "Phone number is already registered!");
+          done(new Error("Phone number is already registered!"));
+      } else {
+          done();
+      }
+  });
 });
 
 /**

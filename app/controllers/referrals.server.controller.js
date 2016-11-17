@@ -56,9 +56,11 @@ exports.validateNewUser = function(req, res) {
 
         res.json({
           advocate: advocate._id,
+          advocateRole: 'linked',
           referral: {                                   // this is just for display purposes
             email: advocate.email,
             contactPhone: advocate.contactPhone,
+            contactPhoneExt: advocate.contactPhoneExt,
             organization: advocate.organization,
             name: advocate.fullName,
             code: advocate.code
@@ -91,12 +93,32 @@ exports.listTenants = function(req, res) {
 
   Tenant.find({ advocate: req.user._userdata })
     .then(function (tenants) {
+
+      tenants = _.map(tenants, function(t) {
+
+        if(t.advocateRole !== 'managed') {
+          t.activity = undefined;
+          t.actionFlags = undefined;
+          t.followUpFlags = undefined;
+          t.problems = undefined;
+        }
+        // else if (t.advocateRole === 'none') {
+        //   rollbar.handleError("Tenant/advocate mismatch", req);
+        //   res.status(500).send({ message: "This shouldn\'t happen." });
+        // }
+
+        return t;
+
+      });
+
+      console.log(tenants);
       res.json(tenants);
       res.end();
     })
     .catch(function (err) {
+      rollbar.handleError("Error in finding advocate\'s tenants", req);
       res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-    })
+    });
 
   //
   // Tenants.find({ advocate: })

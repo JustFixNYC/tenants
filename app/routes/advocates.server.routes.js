@@ -22,6 +22,6 @@ module.exports = function(app) {
 
 	app.route('/api/advocates/validate/new').get(referrals.validateNewUser);
 
-	app.route('/api/advocates').get(users.requiresLogin, users.hasAuthorization(['advocate']), referrals.listTenants);
+	app.route('/api/advocates').get(users.hasAuthorization(['advocate']), referrals.listTenants);
 
 };
