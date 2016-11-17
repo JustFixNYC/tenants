@@ -6,8 +6,10 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
 
     $scope.list = function() {
     	var photoOrder = 0;
+
       $scope.activities = Activity.query({}, function(data){
       	data.reverse();
+
       	for(var i = 0; i < data.length; i++) {
       		if(data[i].photos.length) {
       			data[i].photosExist = true;
@@ -17,6 +19,7 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
       			}
       		}
       	}
+
       }, function(data) {
 
       });
