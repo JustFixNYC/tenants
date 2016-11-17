@@ -30,7 +30,7 @@
     </div>
   </div>
   <div class="appendix">
-		<div class="items" ng-repeat="activity in activities | orderBy:'createdDate':true" ng-if="activity.key == 'statusUpdate'">
+		<div class="items" ng-repeat="activity in activities | orderBy:'createdDate':true" ng-if="activity.key == 'statusUpdate' || activity.photos == true">
 			<div ng-repeat="photo in activity.photos" class="photo-wrap">
 				<h3>Appendix {{photo.order + 1}}</h3>
 				<img ng-src="{{photo.url}}" />

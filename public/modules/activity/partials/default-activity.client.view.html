@@ -25,6 +25,7 @@
 
   <div class="row thumb-list">
       <div data-ng-repeat="photo in activity.photos" class="col-xs-4">
+      		<h2 class="print-title">See Appendix {{order + 1}}</h2>
           <a ng-click="openLightboxModal(activity.photos, $index)">
               <img ng-src="{{ activity.photos[$index].thumb }}" alt="{{ activity.key }}" class="img-thumbnail" />
           </a>

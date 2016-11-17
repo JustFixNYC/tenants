@@ -5,12 +5,20 @@
 	}
 }
 
+.print-title {
+	display: none;
+}
+
 .print {
 	position: relative;
 	display: block;
 
 	h2 {
 		margin-top: 0px;
+
+		&.print-title {
+			display: block;
+		}
 	}
 
 	.activity-list {
