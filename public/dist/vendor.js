@@ -29579,11 +29579,11 @@ angular.module('ngResource', ['ng']).
 })(window, window.angular);
 
 /**
- * @license AngularJS v1.4.14
- * (c) 2010-2015 Google, Inc. http://angularjs.org
+ * @license AngularJS v1.5.8
+ * (c) 2010-2016 Google, Inc. http://angularjs.org
  * License: MIT
  */
-(function(window, angular, undefined) {'use strict';
+(function(window, angular) {'use strict';
 
 /**
  * @ngdoc module
@@ -33832,7 +33832,7 @@ angular.module('ngAnimate', [])
 
 /**
  * State-based routing for AngularJS
- * @version v0.2.18
+ * @version v0.2.17
  * @link http://angular-ui.github.com/
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -34355,7 +34355,7 @@ function $Resolve(  $q,    $injector) {
    * propagated immediately. Once the `$resolve` promise has been rejected, no 
    * further invocables will be called.
    * 
-   * Cyclic dependencies between invocables are not permitted and will cause `$resolve`
+   * Cyclic dependencies between invocables are not permitted and will caues `$resolve`
    * to throw an error. As a special case, an injectable can depend on a parameter 
    * with the same name as the injectable, which will be fulfilled from the `parent` 
    * injectable of the same name. This allows inherited values to be decorated. 
@@ -35102,7 +35102,7 @@ function $UrlMatcherFactory() {
   function valFromString(val) { return val != null ? val.toString().replace(/~2F/g, "/").replace(/~~/g, "~") : val; }
 
   var $types = {}, enqueue = true, typeQueue = [], injector, defaultTypes = {
-    "string": {
+    string: {
       encode: valToString,
       decode: valFromString,
       // TODO: in 1.0, make string .is() return false if value is undefined/null by default.
@@ -35110,19 +35110,19 @@ function $UrlMatcherFactory() {
       is: function(val) { return val == null || !isDefined(val) || typeof val === "string"; },
       pattern: /[^/]*/
     },
-    "int": {
+    int: {
       encode: valToString,
       decode: function(val) { return parseInt(val, 10); },
       is: function(val) { return isDefined(val) && this.decode(val.toString()) === val; },
       pattern: /\d+/
     },
-    "bool": {
+    bool: {
       encode: function(val) { return val ? 1 : 0; },
       decode: function(val) { return parseInt(val, 10) !== 0; },
       is: function(val) { return val === true || val === false; },
       pattern: /0|1/
     },
-    "date": {
+    date: {
       encode: function (val) {
         if (!this.is(val))
           return undefined;
@@ -35141,14 +35141,14 @@ function $UrlMatcherFactory() {
       pattern: /[0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[1-2][0-9]|3[0-1])/,
       capture: /([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/
     },
-    "json": {
+    json: {
       encode: angular.toJson,
       decode: angular.fromJson,
       is: angular.isObject,
       equals: angular.equals,
       pattern: /[^/]*/
     },
-    "any": { // does not encode/decode
+    any: { // does not encode/decode
       encode: angular.identity,
       decode: angular.identity,
       equals: angular.equals,
@@ -35890,6 +35890,12 @@ function $UrlRouterProvider(   $locationProvider,   $urlMatcherFactory) {
       return listener;
     }
 
+    rules.sort(function(ruleA, ruleB) {
+      var aLength = ruleA.prefix ? ruleA.prefix.length : 0;
+      var bLength = ruleB.prefix ? ruleB.prefix.length : 0;
+      return bLength - aLength;
+    });
+
     if (!interceptDeferred) listen();
 
     return {
@@ -36092,8 +36098,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
 
     // Derive parameters for this state and ensure they're a super-set of parent's parameters
     params: function(state) {
-      var ownParams = pick(state.ownParams, state.ownParams.$$keys());
-      return state.parent && state.parent.params ? extend(state.parent.params.$$new(), ownParams) : new $$UMFP.ParamSet();
+      return state.parent && state.parent.params ? extend(state.parent.params.$$new(), state.ownParams) : new $$UMFP.ParamSet();
     },
 
     // If there is no explicit multi-view configuration, make one up so we don't have
@@ -37585,8 +37590,6 @@ function $ViewScrollProvider() {
 
 angular.module('ui.router.state').provider('$uiViewScroll', $ViewScrollProvider);
 
-var ngMajorVer = angular.version.major;
-var ngMinorVer = angular.version.minor;
 /**
  * @ngdoc directive
  * @name ui.router.state.directive:ui-view
@@ -37610,9 +37613,6 @@ var ngMinorVer = angular.version.minor;
  * when a view is populated. By default, $anchorScroll is overridden by ui-router's custom scroll
  * service, {@link ui.router.state.$uiViewScroll}. This custom service let's you
  * scroll ui-view elements into view when they are populated during a state activation.
- *
- * @param {string=} noanimation If truthy, the non-animated renderer will be selected (no animations
- * will be applied to the ui-view)
  *
  * *Note: To revert back to old [`$anchorScroll`](http://docs.angularjs.org/api/ng.$anchorScroll)
  * functionality, call `$uiViewScrollProvider.useAnchorScroll()`.*
@@ -37725,35 +37725,24 @@ function $ViewDirective(   $state,   $injector,   $uiViewScroll,   $interpolate)
   // Returns a set of DOM manipulation functions based on which Angular version
   // it should use
   function getRenderer(attrs, scope) {
-    var statics = {
-      enter: function (element, target, cb) { target.after(element); cb(); },
-      leave: function (element, cb) { element.remove(); cb(); }
+    var statics = function() {
+      return {
+        enter: function (element, target, cb) { target.after(element); cb(); },
+        leave: function (element, cb) { element.remove(); cb(); }
+      };
     };
 
-    if (!!attrs.noanimation) return statics;
-
-    function animEnabled(element) {
-      if (ngMajorVer === 1 && ngMinorVer >= 4) return !!$animate.enabled(element);
-      if (ngMajorVer === 1 && ngMinorVer >= 2) return !!$animate.enabled();
-      return (!!$animator);
-    }
-
-    // ng 1.2+
     if ($animate) {
       return {
         enter: function(element, target, cb) {
-          if (!animEnabled(element)) {
-            statics.enter(element, target, cb);
-          } else if (angular.version.minor > 2) {
+          if (angular.version.minor > 2) {
             $animate.enter(element, null, target).then(cb);
           } else {
             $animate.enter(element, null, target, cb);
           }
         },
         leave: function(element, cb) {
-          if (!animEnabled(element)) {
-            statics.leave(element, cb);
-          } else if (angular.version.minor > 2) {
+          if (angular.version.minor > 2) {
             $animate.leave(element).then(cb);
           } else {
             $animate.leave(element, cb);
@@ -37762,7 +37751,6 @@ function $ViewDirective(   $state,   $injector,   $uiViewScroll,   $interpolate)
       };
     }
 
-    // ng 1.1.5
     if ($animator) {
       var animate = $animator && $animator(scope, attrs);
 
@@ -37772,7 +37760,7 @@ function $ViewDirective(   $state,   $injector,   $uiViewScroll,   $interpolate)
       };
     }
 
-    return statics;
+    return statics();
   }
 
   var directive = {
@@ -38117,7 +38105,7 @@ function $StateRefDynamicDirective($state, $timeout) {
         def.state = group[0]; def.params = group[1]; def.options = group[2];
         def.href = $state.href(def.state, def.params, def.options);
 
-        if (active) active.$$addStateInfo(def.state, def.params);
+        if (active) active.$$addStateInfo(ref.state, def.params);
         if (def.href) attrs.$set(type.attr, def.href);
       }
 
@@ -46292,9 +46280,10 @@ var duScrollDefaultEasing=function(e){"use strict";return.5>e?Math.pow(2*e,2)/2:
 !function(n){"use strict";n.module("ng.deviceDetector",["reTree"]).constant("BROWSERS",{CHROME:"chrome",FIREFOX:"firefox",SAFARI:"safari",OPERA:"opera",IE:"ie",MS_EDGE:"ms-edge",PS4:"ps4",VITA:"vita",UNKNOWN:"unknown"}).constant("DEVICES",{ANDROID:"android",I_PAD:"ipad",IPHONE:"iphone",I_POD:"ipod",BLACKBERRY:"blackberry",FIREFOX_OS:"firefox-os",CHROME_BOOK:"chrome-book",WINDOWS_PHONE:"windows-phone",PS4:"ps4",VITA:"vita",UNKNOWN:"unknown"}).constant("OS",{WINDOWS:"windows",MAC:"mac",IOS:"ios",ANDROID:"android",LINUX:"linux",UNIX:"unix",FIREFOX_OS:"firefox-os",CHROME_OS:"chrome-os",WINDOWS_PHONE:"windows-phone",PS4:"ps4",VITA:"vita",UNKNOWN:"unknown"}).constant("OS_VERSIONS",{WINDOWS_3_11:"windows-3-11",WINDOWS_95:"windows-95",WINDOWS_ME:"windows-me",WINDOWS_98:"windows-98",WINDOWS_CE:"windows-ce",WINDOWS_2000:"windows-2000",WINDOWS_XP:"windows-xp",WINDOWS_SERVER_2003:"windows-server-2003",WINDOWS_VISTA:"windows-vista",WINDOWS_7:"windows-7",WINDOWS_8_1:"windows-8-1",WINDOWS_8:"windows-8",WINDOWS_10:"windows-10",WINDOWS_PHONE_7_5:"windows-phone-7-5",WINDOWS_PHONE_10:"windows-phone-10",WINDOWS_NT_4_0:"windows-nt-4-0",UNKNOWN:"unknown"}).service("detectUtils",["deviceDetector","DEVICES","BROWSERS","OS",function(n,o,e,O){var i=n;this.isMobile=function(){return"unknown"!==i.device},this.isAndroid=function(){return i.device===o.ANDROID||i.OS===O.ANDROID},this.isIOS=function(){return i.os===O.IOS||i.device===o.I_POD||i.device===o.IPHONE}}]).factory("deviceDetector",["$window","DEVICES","BROWSERS","OS","OS_VERSIONS","reTree",function(n,o,e,O,i,W){var N={WINDOWS:{and:[{or:[/\bWindows|(Win\d\d)\b/,/\bWin 9x\b/]},{not:/\bWindows Phone\b/}]},MAC:/\bMac OS\b/,IOS:{or:[/\biPad\b/,/\biPhone\b/,/\biPod\b/]},ANDROID:{and:[/\bAndroid\b/,{not:/Windows Phone/}]},LINUX:/\bLinux\b/,UNIX:/\bUNIX\b/,FIREFOX_OS:{and:[/\bFirefox\b/,/Mobile\b/]},CHROME_OS:/\bCrOS\b/,WINDOWS_PHONE:{or:[/\bIEMobile\b/,/\bWindows Phone\b/]},PS4:/\bMozilla\/5.0 \(PlayStation 4\b/,VITA:/\bMozilla\/5.0 \(Play(S|s)tation Vita\b/},r={CHROME:{and:[{or:[/\bChrome\b/,/\bCriOS\b/]},{not:{or:[/\bOPR\b/,/\bEdge\b/]}}]},FIREFOX:/\bFirefox\b/,SAFARI:{and:[/^((?!CriOS).)*\Safari\b.*$/,{not:{or:[/\bOPR\b/,/\bEdge\b/]}}]},OPERA:{or:[/Opera\b/,/\bOPR\b/]},IE:{or:[/\bMSIE\b/,/\bTrident\b/]},MS_EDGE:{or:[/\bEdge\b/]},PS4:/\bMozilla\/5.0 \(PlayStation 4\b/,VITA:/\bMozilla\/5.0 \(Play(S|s)tation Vita\b/},I={ANDROID:{and:[/\bAndroid\b/,{not:/Windows Phone/}]},I_PAD:/\biPad\b/,IPHONE:/\biPhone\b/,I_POD:/\biPod\b/,BLACKBERRY:/\bblackberry\b/,FIREFOX_OS:{and:[/\bFirefox\b/,/\bMobile\b/]},CHROME_BOOK:/\bCrOS\b/,WINDOWS_PHONE:{or:[/\bIEMobile\b/,/\bWindows Phone\b/]},PS4:/\bMozilla\/5.0 \(PlayStation 4\b/,VITA:/\bMozilla\/5.0 \(Play(S|s)tation Vita\b/},S={WINDOWS_3_11:/Win16/,WINDOWS_95:/(Windows 95|Win95|Windows_95)/,WINDOWS_ME:/(Win 9x 4.90|Windows ME)/,WINDOWS_98:/(Windows 98|Win98)/,WINDOWS_CE:/Windows CE/,WINDOWS_2000:/(Windows NT 5.0|Windows 2000)/,WINDOWS_XP:/(Windows NT 5.1|Windows XP)/,WINDOWS_SERVER_2003:/Windows NT 5.2/,WINDOWS_VISTA:/Windows NT 6.0/,WINDOWS_7:/(Windows 7|Windows NT 6.1)/,WINDOWS_8_1:/(Windows 8.1|Windows NT 6.3)/,WINDOWS_8:/(Windows 8|Windows NT 6.2)/,WINDOWS_10:/(Windows NT 10.0)/,WINDOWS_PHONE_7_5:/(Windows Phone OS 7.5)/,WINDOWS_PHONE_10:/(Windows Phone 10)/,WINDOWS_NT_4_0:{and:[/(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/,{not:/Windows NT 10.0/}]}},b={CHROME:/\bChrome\/([\d\.]+)\b/,FIREFOX:/\bFirefox\/([\d\.]+)\b/,SAFARI:/\bVersion\/([\d\.]+)\b/,OPERA:[/\bVersion\/([\d\.]+)\b/,/\bOPR\/([\d\.]+)\b/],IE:[/\bMSIE ([\d\.]+\w?)\b/,/\brv:([\d\.]+\w?)\b/],MS_EDGE:/\bEdge\/([\d\.]+)\b/},s=Object.keys(b).reduce(function(n,o){return n[e[o]]=b[o],n},{}),d=n.navigator.userAgent,t={raw:{userAgent:d,os:{},browser:{},device:{}}};if(t.raw.os=Object.keys(O).reduce(function(n,o){return n[O[o]]=W.test(d,N[o]),n},{}),t.raw.browser=Object.keys(e).reduce(function(n,o){return n[e[o]]=W.test(d,r[o]),n},{}),t.raw.device=Object.keys(o).reduce(function(n,e){return n[o[e]]=W.test(d,I[e]),n},{}),t.raw.os_version=Object.keys(i).reduce(function(n,o){return n[i[o]]=W.test(d,S[o]),n},{}),t.os=[O.WINDOWS,O.IOS,O.MAC,O.ANDROID,O.LINUX,O.UNIX,O.FIREFOX_OS,O.CHROME_OS,O.WINDOWS_PHONE,O.PS4,O.VITA].reduce(function(n,o){return n===O.UNKNOWN&&t.raw.os[o]?o:n},O.UNKNOWN),t.browser=[e.CHROME,e.FIREFOX,e.SAFARI,e.OPERA,e.IE,e.MS_EDGE,e.PS4,e.VITA].reduce(function(n,o){return n===e.UNKNOWN&&t.raw.browser[o]?o:n},e.UNKNOWN),t.device=[o.ANDROID,o.I_PAD,o.IPHONE,o.I_POD,o.BLACKBERRY,o.FIREFOX_OS,o.CHROME_BOOK,o.WINDOWS_PHONE,o.PS4,o.VITA].reduce(function(n,e){return n===o.UNKNOWN&&t.raw.device[e]?e:n},o.UNKNOWN),t.os_version=[i.WINDOWS_3_11,i.WINDOWS_95,i.WINDOWS_ME,i.WINDOWS_98,i.WINDOWS_CE,i.WINDOWS_2000,i.WINDOWS_XP,i.WINDOWS_SERVER_2003,i.WINDOWS_VISTA,i.WINDOWS_7,i.WINDOWS_8_1,i.WINDOWS_8,i.WINDOWS_10,i.WINDOWS_PHONE_7_5,i.WINDOWS_PHONE_10,i.WINDOWS_NT_4_0].reduce(function(n,o){return n===i.UNKNOWN&&t.raw.os_version[o]?o:n},i.UNKNOWN),t.browser_version="0",t.browser!==e.UNKNOWN){var _=s[t.browser],D=W.exec(d,_);D&&(t.browser_version=D[1])}return t.isMobile=function(){return[o.ANDROID,o.I_PAD,o.IPHONE,o.I_POD,o.BLACKBERRY,o.FIREFOX_OS,o.CHROME_BOOK,o.WINDOWS_PHONE,o.VITA].some(function(n){return t.device==n})},t.isTablet=function(){return[o.I_PAD,o.FIREFOX_OS,o.CHROME_BOOK].some(function(n){return t.device==n})},t.isDesktop=function(){return[o.PS4,o.UNKNOWN].some(function(n){return t.device==n})},t}]).directive("deviceDetector",["deviceDetector",function(n){return{restrict:"A",link:function(o,e){e.addClass("os-"+n.os),e.addClass("browser-"+n.browser),e.addClass("device-"+n.device)}}}])}(angular);
 /*! 6.1.2 */
 !function(){function a(a,b){window.XMLHttpRequest.prototype[a]=b(window.XMLHttpRequest.prototype[a])}function b(a,b,c){try{Object.defineProperty(a,b,{get:c})}catch(d){}}if(window.FileAPI||(window.FileAPI={}),FileAPI.shouldLoad=window.XMLHttpRequest&&!window.FormData||FileAPI.forceLoad,FileAPI.shouldLoad){var c=function(a){if(!a.__listeners){a.upload||(a.upload={}),a.__listeners=[];var b=a.upload.addEventListener;a.upload.addEventListener=function(c,d){a.__listeners[c]=d,b&&b.apply(this,arguments)}}};a("open",function(a){return function(b,d,e){c(this),this.__url=d;try{a.apply(this,[b,d,e])}catch(f){f.message.indexOf("Access is denied")>-1&&(this.__origError=f,a.apply(this,[b,"_fix_for_ie_crossdomain__",e]))}}}),a("getResponseHeader",function(a){return function(b){return this.__fileApiXHR&&this.__fileApiXHR.getResponseHeader?this.__fileApiXHR.getResponseHeader(b):null==a?null:a.apply(this,[b])}}),a("getAllResponseHeaders",function(a){return function(){return this.__fileApiXHR&&this.__fileApiXHR.getAllResponseHeaders?this.__fileApiXHR.getAllResponseHeaders():null==a?null:a.apply(this)}}),a("abort",function(a){return function(){return this.__fileApiXHR&&this.__fileApiXHR.abort?this.__fileApiXHR.abort():null==a?null:a.apply(this)}}),a("setRequestHeader",function(a){return function(b,d){if("__setXHR_"===b){c(this);var e=d(this);e instanceof Function&&e(this)}else this.__requestHeaders=this.__requestHeaders||{},this.__requestHeaders[b]=d,a.apply(this,arguments)}}),a("send",function(a){return function(){var c=this;if(arguments[0]&&arguments[0].__isFileAPIShim){var d=arguments[0],e={url:c.__url,jsonp:!1,cache:!0,complete:function(a,d){c.__completed=!0,!a&&c.__listeners.load&&c.__listeners.load({type:"load",loaded:c.__loaded,total:c.__total,target:c,lengthComputable:!0}),!a&&c.__listeners.loadend&&c.__listeners.loadend({type:"loadend",loaded:c.__loaded,total:c.__total,target:c,lengthComputable:!0}),"abort"===a&&c.__listeners.abort&&c.__listeners.abort({type:"abort",loaded:c.__loaded,total:c.__total,target:c,lengthComputable:!0}),void 0!==d.status&&b(c,"status",function(){return 0===d.status&&a&&"abort"!==a?500:d.status}),void 0!==d.statusText&&b(c,"statusText",function(){return d.statusText}),b(c,"readyState",function(){return 4}),void 0!==d.response&&b(c,"response",function(){return d.response});var e=d.responseText||(a&&0===d.status&&"abort"!==a?a:void 0);b(c,"responseText",function(){return e}),b(c,"response",function(){return e}),a&&b(c,"err",function(){return a}),c.__fileApiXHR=d,c.onreadystatechange&&c.onreadystatechange(),c.onload&&c.onload()},progress:function(a){if(a.target=c,c.__listeners.progress&&c.__listeners.progress(a),c.__total=a.total,c.__loaded=a.loaded,a.total===a.loaded){var b=this;setTimeout(function(){c.__completed||(c.getAllResponseHeaders=function(){},b.complete(null,{status:204,statusText:"No Content"}))},FileAPI.noContentTimeout||1e4)}},headers:c.__requestHeaders};e.data={},e.files={};for(var f=0;f<d.data.length;f++){var g=d.data[f];null!=g.val&&null!=g.val.name&&null!=g.val.size&&null!=g.val.type?e.files[g.key]=g.val:e.data[g.key]=g.val}setTimeout(function(){if(!FileAPI.hasFlash)throw'Adode Flash Player need to be installed. To check ahead use "FileAPI.hasFlash"';c.__fileApiXHR=FileAPI.upload(e)},1)}else{if(this.__origError)throw this.__origError;a.apply(c,arguments)}}}),window.XMLHttpRequest.__isFileAPIShim=!0,window.FormData=FormData=function(){return{append:function(a,b,c){b.__isFileAPIBlobShim&&(b=b.data[0]),this.data.push({key:a,val:b,name:c})},data:[],__isFileAPIShim:!0}},window.Blob=Blob=function(a){return{data:a,__isFileAPIBlobShim:!0}}}}(),function(){function a(a){return"input"===a[0].tagName.toLowerCase()&&a.attr("type")&&"file"===a.attr("type").toLowerCase()}function b(){try{var a=new ActiveXObject("ShockwaveFlash.ShockwaveFlash");if(a)return!0}catch(b){if(void 0!==navigator.mimeTypes["application/x-shockwave-flash"])return!0}return!1}function c(a){var b=0,c=0;if(window.jQuery)return jQuery(a).offset();if(a.offsetParent)do b+=a.offsetLeft-a.scrollLeft,c+=a.offsetTop-a.scrollTop,a=a.offsetParent;while(a);return{left:b,top:c}}if(FileAPI.shouldLoad){if(FileAPI.forceLoad&&(FileAPI.html5=!1),!FileAPI.upload){var d,e,f,g,h,i=document.createElement("script"),j=document.getElementsByTagName("script");if(window.FileAPI.jsUrl)d=window.FileAPI.jsUrl;else if(window.FileAPI.jsPath)e=window.FileAPI.jsPath;else for(f=0;f<j.length;f++)if(h=j[f].src,g=h.search(/\/ng\-file\-upload[\-a-zA-z0-9\.]*\.js/),g>-1){e=h.substring(0,g+1);break}null==FileAPI.staticPath&&(FileAPI.staticPath=e),i.setAttribute("src",d||e+"FileAPI.min.js"),document.getElementsByTagName("head")[0].appendChild(i),FileAPI.hasFlash=b()}FileAPI.ngfFixIE=function(d,e,f,g){if(!b())throw'Adode Flash Player need to be installed. To check ahead use "FileAPI.hasFlash"';var h=function(){if(d.attr("disabled"))d.$$ngfRefElem.removeClass("js-fileapi-wrapper");else{var b=d.$$ngfRefElem;b?f(d.$$ngfRefElem):(b=d.$$ngfRefElem=e(),b.addClass("js-fileapi-wrapper"),!a(d),setTimeout(function(){b.bind("mouseenter",h)},10),b.bind("change",function(a){i.apply(this,[a]),g.apply(this,[a])})),a(d)||b.css("position","absolute").css("top",c(d[0]).top+"px").css("left",c(d[0]).left+"px").css("width",d[0].offsetWidth+"px").css("height",d[0].offsetHeight+"px").css("filter","alpha(opacity=0)").css("display",d.css("display")).css("overflow","hidden").css("z-index","900000").css("visibility","visible")}};d.bind("mouseenter",h);var i=function(a){for(var b=FileAPI.getFiles(a),c=0;c<b.length;c++)void 0===b[c].size&&(b[c].size=0),void 0===b[c].name&&(b[c].name="file"),void 0===b[c].type&&(b[c].type="undefined");a.target||(a.target={}),a.target.files=b,a.target.files!==b&&(a.__files_=b),(a.__files_||a.target.files).item=function(b){return(a.__files_||a.target.files)[b]||null}}},FileAPI.disableFileInput=function(a,b){b?a.removeClass("js-fileapi-wrapper"):a.addClass("js-fileapi-wrapper")}}}(),window.FileReader||(window.FileReader=function(){var a=this,b=!1;this.listeners={},this.addEventListener=function(b,c){a.listeners[b]=a.listeners[b]||[],a.listeners[b].push(c)},this.removeEventListener=function(b,c){a.listeners[b]&&a.listeners[b].splice(a.listeners[b].indexOf(c),1)},this.dispatchEvent=function(b){var c=a.listeners[b.type];if(c)for(var d=0;d<c.length;d++)c[d].call(a,b)},this.onabort=this.onerror=this.onload=this.onloadstart=this.onloadend=this.onprogress=null;var c=function(b,c){var d={type:b,target:a,loaded:c.loaded,total:c.total,error:c.error};return null!=c.result&&(d.target.result=c.result),d},d=function(d){b||(b=!0,a.onloadstart&&a.onloadstart(c("loadstart",d)));var e;"load"===d.type?(a.onloadend&&a.onloadend(c("loadend",d)),e=c("load",d),a.onload&&a.onload(e),a.dispatchEvent(e)):"progress"===d.type?(e=c("progress",d),a.onprogress&&a.onprogress(e),a.dispatchEvent(e)):(e=c("error",d),a.onerror&&a.onerror(e),a.dispatchEvent(e))};this.readAsArrayBuffer=function(a){FileAPI.readAsBinaryString(a,d)},this.readAsBinaryString=function(a){FileAPI.readAsBinaryString(a,d)},this.readAsDataURL=function(a){FileAPI.readAsDataURL(a,d)},this.readAsText=function(a){FileAPI.readAsText(a,d)}});
-/*! 11.2.2 */
-!window.XMLHttpRequest||window.FileAPI&&FileAPI.shouldLoad||(window.XMLHttpRequest.prototype.setRequestHeader=function(a){return function(b,c){if("__setXHR_"===b){var d=c(this);d instanceof Function&&d(this)}else a.apply(this,arguments)}}(window.XMLHttpRequest.prototype.setRequestHeader));var ngFileUpload=angular.module("ngFileUpload",[]);ngFileUpload.version="11.2.2",ngFileUpload.service("UploadBase",["$http","$q","$timeout",function(a,b,c){function d(d){function e(a){j.notify&&j.notify(a),k.progressFunc&&c(function(){k.progressFunc(a)})}function h(a){return null!=d._start&&g?{loaded:a.loaded+d._start,total:d._file&&d._file.size||a.total,type:a.type,config:d,lengthComputable:!0,target:a.target}:a}function i(){a(d).then(function(a){g&&d._chunkSize&&!d._finished&&d._file?(e({loaded:d._end,total:d._file&&d._file.size,config:d,type:"progress"}),f.upload(d,!0)):(d._finished&&delete d._finished,j.resolve(a))},function(a){j.reject(a)},function(a){j.notify(a)})}d.method=d.method||"POST",d.headers=d.headers||{};var j=d._deferred=d._deferred||b.defer(),k=j.promise;return d.disableProgress||(d.headers.__setXHR_=function(){return function(a){a&&(d.__XHR=a,d.xhrFn&&d.xhrFn(a),a.upload.addEventListener("progress",function(a){a.config=d,e(h(a))},!1),a.upload.addEventListener("load",function(a){a.lengthComputable&&(a.config=d,e(h(a)))},!1))}}),g?d._chunkSize&&d._end&&!d._finished?(d._start=d._end,d._end+=d._chunkSize,i()):d.resumeSizeUrl?a.get(d.resumeSizeUrl).then(function(a){d._start=d.resumeSizeResponseReader?d.resumeSizeResponseReader(a.data):parseInt((null==a.data.size?a.data:a.data.size).toString()),d._chunkSize&&(d._end=d._start+d._chunkSize),i()},function(a){throw a}):d.resumeSize?d.resumeSize().then(function(a){d._start=a,i()},function(a){throw a}):(d._chunkSize&&(d._start=0,d._end=d._start+d._chunkSize),i()):i(),k.success=function(a){return k.then(function(b){a(b.data,b.status,b.headers,d)}),k},k.error=function(a){return k.then(null,function(b){a(b.data,b.status,b.headers,d)}),k},k.progress=function(a){return k.progressFunc=a,k.then(null,null,function(b){a(b)}),k},k.abort=k.pause=function(){return d.__XHR&&c(function(){d.__XHR.abort()}),k},k.xhr=function(a){return d.xhrFn=function(b){return function(){b&&b.apply(k,arguments),a.apply(k,arguments)}}(d.xhrFn),k},f.promisesCount++,k["finally"](function(){f.promisesCount--}),k}function e(a){var b={};for(var c in a)a.hasOwnProperty(c)&&(b[c]=a[c]);return b}var f=this;f.promisesCount=0,this.isResumeSupported=function(){return window.Blob&&window.Blob instanceof Function&&(new window.Blob).slice};var g=this.isResumeSupported();this.isUploadInProgress=function(){return f.promisesCount>0},this.rename=function(a,b){return a.ngfName=b,a},this.jsonBlob=function(a){null==a||angular.isString(a)||(a=JSON.stringify(a));var b=new window.Blob([a],{type:"application/json"});return b._ngfBlob=!0,b},this.json=function(a){return angular.toJson(a)},this.isFile=function(a){return null!=a&&(a instanceof window.Blob||a.flashId&&a.name&&a.size)},this.upload=function(a,b){function c(b,c){if(b._ngfBlob)return b;if(a._file=a._file||b,null!=a._start&&g){a._end&&a._end>=b.size&&(a._finished=!0,a._end=b.size);var d=b.slice(a._start,a._end||b.size);return d.name=b.name,d.ngfName=b.ngfName,a._chunkSize&&(c.append("_chunkSize",a._chunkSize),c.append("_currentChunkSize",a._end-a._start),c.append("_chunkNumber",Math.floor(a._start/a._chunkSize)),c.append("_totalSize",a._file.size)),d}return b}function h(b,d,e){if(void 0!==d)if(angular.isDate(d)&&(d=d.toISOString()),angular.isString(d))b.append(e,d);else if(f.isFile(d)){var g=c(d,b),i=e.split(",");i[1]&&(g.ngfName=i[1].replace(/^\s+|\s+$/g,""),e=i[0]),a._fileKey=a._fileKey||e,b.append(e,g,g.ngfName||g.name)}else if(angular.isObject(d)){if(d.$$ngfCircularDetection)throw"ngFileUpload: Circular reference in config.data. Make sure specified data for Upload.upload() has no circular reference: "+e;d.$$ngfCircularDetection=!0;try{for(var j in d)if(d.hasOwnProperty(j)&&"$$ngfCircularDetection"!==j){var k=null==a.objectKey?"[i]":a.objectKey;d.length&&parseInt(j)>-1&&(k=null==a.arrayKey?k:a.arrayKey),h(b,d[j],e+k.replace(/[ik]/g,j))}}finally{delete d.$$ngfCircularDetection}}else b.append(e,d)}function i(){a._chunkSize=f.translateScalars(a.resumeChunkSize),a._chunkSize=a._chunkSize?parseInt(a._chunkSize.toString()):null,a.headers=a.headers||{},a.headers["Content-Type"]=void 0,a.transformRequest=a.transformRequest?angular.isArray(a.transformRequest)?a.transformRequest:[a.transformRequest]:[],a.transformRequest.push(function(b){var c,d=new window.FormData;b=b||a.fields||{},a.file&&(b.file=a.file);for(c in b)if(b.hasOwnProperty(c)){var e=b[c];a.formDataAppender?a.formDataAppender(d,c,e):h(d,e,c)}return d})}return b||(a=e(a)),a._isDigested||(a._isDigested=!0,i()),d(a)},this.http=function(b){return b=e(b),b.transformRequest=b.transformRequest||function(b){return window.ArrayBuffer&&b instanceof window.ArrayBuffer||b instanceof window.Blob?b:a.defaults.transformRequest[0].apply(this,arguments)},b._chunkSize=f.translateScalars(b.resumeChunkSize),b._chunkSize=b._chunkSize?parseInt(b._chunkSize.toString()):null,d(b)},this.translateScalars=function(a){if(angular.isString(a)){if(a.search(/kb/i)===a.length-2)return parseFloat(1e3*a.substring(0,a.length-2));if(a.search(/mb/i)===a.length-2)return parseFloat(1e6*a.substring(0,a.length-2));if(a.search(/gb/i)===a.length-2)return parseFloat(1e9*a.substring(0,a.length-2));if(a.search(/b/i)===a.length-1)return parseFloat(a.substring(0,a.length-1));if(a.search(/s/i)===a.length-1)return parseFloat(a.substring(0,a.length-1));if(a.search(/m/i)===a.length-1)return parseFloat(60*a.substring(0,a.length-1));if(a.search(/h/i)===a.length-1)return parseFloat(3600*a.substring(0,a.length-1))}return a},this.urlToBlob=function(c){var d=b.defer();return a({url:c,method:"get",responseType:"arraybuffer"}).then(function(a){var b=new Uint8Array(a.data),c=a.headers("content-type")||"image/WebP",e=new window.Blob([b],{type:c});d.resolve(e)},function(a){d.reject(a)}),d.promise},this.setDefaults=function(a){this.defaults=a||{}},this.defaults={},this.version=ngFileUpload.version}]),ngFileUpload.service("Upload",["$parse","$timeout","$compile","$q","UploadExif",function(a,b,c,d,e){function f(a,b,c){var e=[i.emptyPromise()];return angular.forEach(a,function(d,f){0===d.type.indexOf("image/jpeg")&&i.attrGetter("ngfFixOrientation",b,c,{$file:d})&&e.push(i.happyPromise(i.applyExifRotation(d),d).then(function(b){a.splice(f,1,b)}))}),d.all(e)}function g(a,b,c){var e=i.attrGetter("ngfResize",b,c);if(!(e&&angular.isObject(e)&&i.isResizeSupported()&&a.length))return i.emptyPromise();var f=[i.emptyPromise()];return angular.forEach(a,function(d,g){if(0===d.type.indexOf("image")){if(e.pattern&&!i.validatePattern(d,e.pattern))return;var h=i.resize(d,e.width,e.height,e.quality,e.type,e.ratio,e.centerCrop,function(a,e){return i.attrGetter("ngfResizeIf",b,c,{$width:a,$height:e,$file:d})},e.restoreExif!==!1);f.push(h),h.then(function(b){a.splice(g,1,b)},function(a){d.$error="resize",d.$errorParam=(a?(a.message?a.message:a)+": ":"")+(d&&d.name)})}}),d.all(f)}function h(a,b,c,d){var e=[],f=i.attrGetter("ngfKeep",c,d);if(f){var g=!1;if("distinct"===f||i.attrGetter("ngfKeepDistinct",c,d)===!0){var h=b.length;if(a)for(var j=0;j<a.length;j++){for(var k=0;h>k;k++)if(a[j].name===b[k].name){e.push(a[j]);break}k===h&&(b.push(a[j]),g=!0)}a=b}else a=b.concat(a||[])}return{files:a,dupFiles:e,keep:f}}var i=e;return i.getAttrWithDefaults=function(a,b){if(null!=a[b])return a[b];var c=i.defaults[b];return null==c?c:angular.isString(c)?c:JSON.stringify(c)},i.attrGetter=function(b,c,d,e){var f=this.getAttrWithDefaults(c,b);if(!d)return f;try{return e?a(f)(d,e):a(f)(d)}catch(g){if(b.search(/min|max|pattern/i))return f;throw g}},i.shouldUpdateOn=function(a,b,c){var d=i.attrGetter("ngModelOptions",b,c);return d&&d.updateOn?d.updateOn.split(" ").indexOf(a)>-1:!0},i.emptyPromise=function(){var a=d.defer(),c=arguments;return b(function(){a.resolve.apply(a,c)}),a.promise},i.rejectPromise=function(){var a=d.defer(),c=arguments;return b(function(){a.reject.apply(a,c)}),a.promise},i.happyPromise=function(a,c){var e=d.defer();return a.then(function(a){e.resolve(a)},function(a){b(function(){throw a}),e.resolve(c)}),e.promise},i.updateModel=function(c,d,e,j,k,l,m){function n(f,g,h,k,m){var n=f&&f.length?f[0]:null;c&&(i.applyModelValidation(c,f),c.$setViewValue(m?n:f)),j&&a(j)(e,{$files:f,$file:n,$newFiles:h,$duplicateFiles:k,$invalidFiles:g,$event:l});var o=i.attrGetter("ngfModelInvalid",d);o&&b(function(){a(o).assign(e,g)}),b(function(){})}function o(){var a=[];angular.forEach(k,function(b){b.$error?v.push(b):a.push(b)}),k=a}var p=k,q=c&&c.$modelValue&&(angular.isArray(c.$modelValue)?c.$modelValue:[c.$modelValue]);q=(q||d.$$ngfPrevFiles||[]).slice(0);var r=h(k,q,d,e);k=r.files;var s=r.dupFiles,t=!i.attrGetter("ngfMultiple",d,e)&&!i.attrGetter("multiple",d)&&!r.keep;if(d.$$ngfPrevFiles=k,!r.keep||p&&p.length){i.attrGetter("ngfBeforeModelChange",d,e,{$files:k,$file:k&&k.length?k[0]:null,$duplicateFiles:s,$event:l});var u=i.attrGetter("ngfValidateAfterResize",d,e),v=[];i.validate(p,c,d,e).then(function(){if(m)n(k,[],p,s,t);else{var a=i.attrGetter("ngModelOptions",d,e);a&&a.allowInvalid||u||o();var h=i.emptyPromise(k);i.attrGetter("ngfFixOrientation",d,e)&&i.isExifSupported()&&(h=f(k,d,e)),h.then(function(){function f(){b(function(){n(k,v,p,s,t)},a&&a.debounce?a.debounce.change||a.debounce:0)}g(k,d,e).then(function(){u?i.validate(k,c,d,e).then(function(){o(),f()}):f()},function(a){throw"Could not resize files "+a})})}});for(var w=q.length;w--;){var x=q[w];window.URL&&x.blobUrl&&(URL.revokeObjectURL(x.blobUrl),delete x.blobUrl)}}},i}]),ngFileUpload.directive("ngfSelect",["$parse","$timeout","$compile","Upload",function(a,b,c,d){function e(a){var b=a.match(/Android[^\d]*(\d+)\.(\d+)/);if(b&&b.length>2){var c=d.defaults.androidFixMinorVersion||4;return parseInt(b[1])<4||parseInt(b[1])===c&&parseInt(b[2])<c}return-1===a.indexOf("Chrome")&&/.*Windows.*Safari.*/.test(a)}function f(a,b,c,d,f,h,i,j){function k(){return"input"===b[0].tagName.toLowerCase()&&c.type&&"file"===c.type.toLowerCase()}function l(){return t("ngfChange")||t("ngfSelect")}function m(b){if(j.shouldUpdateOn("change",c,a)){for(var e=b.__files_||b.target&&b.target.files,f=[],g=0;g<e.length;g++)f.push(e[g]);j.updateModel(d,c,a,l(),f.length?f:null,b)}}function n(a){if(b!==a)for(var c=0;c<b[0].attributes.length;c++){var d=b[0].attributes[c];"type"!==d.name&&"class"!==d.name&&"style"!==d.name&&((null==d.value||""===d.value)&&("required"===d.name&&(d.value="required"),"multiple"===d.name&&(d.value="multiple")),a.attr(d.name,"id"===d.name?"ngf-"+d.value:d.value))}}function o(){if(k())return b;var a=angular.element('<input type="file">');n(a);var c=angular.element("<label>upload</label>");return c.css("visibility","hidden").css("position","absolute").css("overflow","hidden").css("width","0px").css("height","0px").css("border","none").css("margin","0px").css("padding","0px").attr("tabindex","-1"),g.push({el:b,ref:c}),document.body.appendChild(c.append(a)[0]),a}function p(c){if(b.attr("disabled"))return!1;if(!t("ngfSelectDisabled",a)){var d=q(c);if(null!=d)return d;r(c);try{k()||document.body.contains(w[0])||(g.push({el:b,ref:w.parent()}),document.body.appendChild(w[0].parent()),w.bind("change",m))}catch(f){}return e(navigator.userAgent)?setTimeout(function(){w[0].click()},0):w[0].click(),!1}}function q(a){var b=a.changedTouches||a.originalEvent&&a.originalEvent.changedTouches;if("touchstart"===a.type)return v=b?b[0].clientY:0,!0;if(a.stopPropagation(),a.preventDefault(),"touchend"===a.type){var c=b?b[0].clientY:0;if(Math.abs(c-v)>20)return!1}}function r(b){j.shouldUpdateOn("click",c,a)&&w.val()&&(w.val(null),j.updateModel(d,c,a,l(),null,b,!0))}function s(a){if(w&&!w.attr("__ngf_ie10_Fix_")){if(!w[0].parentNode)return void(w=null);a.preventDefault(),a.stopPropagation(),w.unbind("click");var b=w.clone();return w.replaceWith(b),w=b,w.attr("__ngf_ie10_Fix_","true"),w.bind("change",m),w.bind("click",s),w[0].click(),!1}w.removeAttr("__ngf_ie10_Fix_")}var t=function(a,b){return j.attrGetter(a,c,b)};j.registerModelChangeValidator(d,c,a);var u=[];u.push(a.$watch(t("ngfMultiple"),function(){w.attr("multiple",t("ngfMultiple",a))})),u.push(a.$watch(t("ngfCapture"),function(){w.attr("capture",t("ngfCapture",a))})),u.push(a.$watch(t("ngfAccept"),function(){w.attr("accept",t("ngfAccept",a))})),c.$observe("accept",function(){w.attr("accept",t("accept"))}),u.push(function(){c.$$observers&&delete c.$$observers.accept});var v=0,w=b;k()||(w=o()),w.bind("change",m),k()?b.bind("click",r):b.bind("click touchstart touchend",p),-1!==navigator.appVersion.indexOf("MSIE 10")&&w.bind("click",s),d&&d.$formatters.push(function(a){return(null==a||0===a.length)&&w.val()&&w.val(null),a}),a.$on("$destroy",function(){k()||w.parent().remove(),angular.forEach(u,function(a){a()})}),h(function(){for(var a=0;a<g.length;a++){var b=g[a];document.body.contains(b.el[0])||(g.splice(a,1),b.ref.remove())}}),window.FileAPI&&window.FileAPI.ngfFixIE&&window.FileAPI.ngfFixIE(b,w,m)}var g=[];return{restrict:"AEC",require:"?ngModel",link:function(e,g,h,i){f(e,g,h,i,a,b,c,d)}}}]),function(){function a(a){return"img"===a.tagName.toLowerCase()?"image":"audio"===a.tagName.toLowerCase()?"audio":"video"===a.tagName.toLowerCase()?"video":/./}function b(b,c,d,e,f,g,h,i){function j(a){var g=b.attrGetter("ngfNoObjectUrl",f,d);b.dataUrl(a,g)["finally"](function(){c(function(){var b=(g?a.$ngfDataUrl:a.$ngfBlobUrl)||a.$ngfDataUrl;i?e.css("background-image","url('"+(b||"")+"')"):e.attr("src",b),b?e.removeClass("ng-hide"):e.addClass("ng-hide")})})}c(function(){var c=d.$watch(f[g],function(c){var d=h;if("ngfThumbnail"===g&&(d||(d={width:e[0].clientWidth,height:e[0].clientHeight}),0===d.width&&window.getComputedStyle)){var f=getComputedStyle(e[0]);d={width:parseInt(f.width.slice(0,-2)),height:parseInt(f.height.slice(0,-2))}}return angular.isString(c)?(e.removeClass("ng-hide"),i?e.css("background-image","url('"+c+"')"):e.attr("src",c)):void(!c||!c.type||0!==c.type.search(a(e[0]))||i&&0!==c.type.indexOf("image")?e.addClass("ng-hide"):d&&b.isResizeSupported()?b.resize(c,d.width,d.height,d.quality).then(function(a){j(a)},function(a){throw a}):j(c))});d.$on("$destroy",function(){c()})})}ngFileUpload.service("UploadDataUrl",["UploadBase","$timeout","$q",function(a,b,c){var d=a;return d.base64DataUrl=function(a){if(angular.isArray(a)){var b=c.defer(),e=0;return angular.forEach(a,function(c){d.dataUrl(c,!0)["finally"](function(){if(e++,e===a.length){var c=[];angular.forEach(a,function(a){c.push(a.$ngfDataUrl)}),b.resolve(c,a)}})}),b.promise}return d.dataUrl(a,!0)},d.dataUrl=function(a,e){if(!a)return d.emptyPromise(a,a);if(e&&null!=a.$ngfDataUrl||!e&&null!=a.$ngfBlobUrl)return d.emptyPromise(e?a.$ngfDataUrl:a.$ngfBlobUrl,a);var f=e?a.$$ngfDataUrlPromise:a.$$ngfBlobUrlPromise;if(f)return f;var g=c.defer();return b(function(){if(window.FileReader&&a&&(!window.FileAPI||-1===navigator.userAgent.indexOf("MSIE 8")||a.size<2e4)&&(!window.FileAPI||-1===navigator.userAgent.indexOf("MSIE 9")||a.size<4e6)){var c=window.URL||window.webkitURL;if(c&&c.createObjectURL&&!e){var d;try{d=c.createObjectURL(a)}catch(f){return void b(function(){a.$ngfBlobUrl="",g.reject()})}b(function(){a.$ngfBlobUrl=d,d&&g.resolve(d,a)})}else{var h=new FileReader;h.onload=function(c){b(function(){a.$ngfDataUrl=c.target.result,g.resolve(c.target.result,a)})},h.onerror=function(){b(function(){a.$ngfDataUrl="",g.reject()})},h.readAsDataURL(a)}}else b(function(){a[e?"dataUrl":"blobUrl"]="",g.reject()})}),f=e?a.$$ngfDataUrlPromise=g.promise:a.$$ngfBlobUrlPromise=g.promise,f["finally"](function(){delete a[e?"$$ngfDataUrlPromise":"$$ngfBlobUrlPromise"]}),f},d}]),ngFileUpload.directive("ngfSrc",["Upload","$timeout",function(a,c){return{restrict:"AE",link:function(d,e,f){b(a,c,d,e,f,"ngfSrc",a.attrGetter("ngfResize",f,d),!1)}}}]),ngFileUpload.directive("ngfBackground",["Upload","$timeout",function(a,c){return{restrict:"AE",link:function(d,e,f){b(a,c,d,e,f,"ngfBackground",a.attrGetter("ngfResize",f,d),!0)}}}]),ngFileUpload.directive("ngfThumbnail",["Upload","$timeout",function(a,c){return{restrict:"AE",link:function(d,e,f){var g=a.attrGetter("ngfSize",f,d);b(a,c,d,e,f,"ngfThumbnail",g,a.attrGetter("ngfAsBackground",f,d))}}}]),ngFileUpload.config(["$compileProvider",function(a){a.imgSrcSanitizationWhitelist&&a.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|local|file|data|blob):/),a.aHrefSanitizationWhitelist&&a.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|local|file|data|blob):/)}]),ngFileUpload.filter("ngfDataUrl",["UploadDataUrl","$sce",function(a,b){return function(c,d,e){if(angular.isString(c))return b.trustAsResourceUrl(c);var f=c&&((d?c.$ngfDataUrl:c.$ngfBlobUrl)||c.$ngfDataUrl);return c&&!f?(!c.$ngfDataUrlFilterInProgress&&angular.isObject(c)&&(c.$ngfDataUrlFilterInProgress=!0,a.dataUrl(c,d)),""):(c&&delete c.$ngfDataUrlFilterInProgress,(c&&f?e?b.trustAsResourceUrl(f):f:c)||"")}}])}(),ngFileUpload.service("UploadValidate",["UploadDataUrl","$q","$timeout",function(a,b,c){function d(a){var b="",c=[];if(a.length>2&&"/"===a[0]&&"/"===a[a.length-1])b=a.substring(1,a.length-1);else{var e=a.split(",");if(e.length>1)for(var f=0;f<e.length;f++){var g=d(e[f]);g.regexp?(b+="("+g.regexp+")",f<e.length-1&&(b+="|")):c=c.concat(g.excludes)}else 0===a.indexOf("!")?c.push("^((?!"+d(a.substring(1)).regexp+").)*$"):(0===a.indexOf(".")&&(a="*"+a),b="^"+a.replace(new RegExp("[.\\\\+*?\\[\\^\\]$(){}=!<>|:\\-]","g"),"\\$&")+"$",b=b.replace(/\\\*/g,".*").replace(/\\\?/g,"."))}return{regexp:b,excludes:c}}function e(a,b){null==b||a.$dirty||(a.$setDirty?a.$setDirty():a.$dirty=!0)}var f=a;return f.validatePattern=function(a,b){if(!b)return!0;var c=d(b),e=!0;if(c.regexp&&c.regexp.length){var f=new RegExp(c.regexp,"i");e=null!=a.type&&f.test(a.type)||null!=a.name&&f.test(a.name)}for(var g=c.excludes.length;g--;){var h=new RegExp(c.excludes[g],"i");e=e&&(null==a.type||h.test(a.type))&&(null==a.name||h.test(a.name))}return e},f.ratioToFloat=function(a){var b=a.toString(),c=b.search(/[x:]/i);return b=c>-1?parseFloat(b.substring(0,c))/parseFloat(b.substring(c+1)):parseFloat(b)},f.registerModelChangeValidator=function(a,b,c){a&&a.$formatters.push(function(d){a.$dirty&&(angular.isArray(d)||(d=[d]),f.validate(d,a,b,c).then(function(){f.applyModelValidation(a,d)}))})},f.applyModelValidation=function(a,b){e(a,b),angular.forEach(a.$ngfValidations,function(b){a.$setValidity(b.name,b.valid)})},f.getValidationAttr=function(a,b,c,d,e){var g="ngf"+c[0].toUpperCase()+c.substr(1),h=f.attrGetter(g,a,b,{$file:e});if(null==h&&(h=f.attrGetter("ngfValidate",a,b,{$file:e}))){var i=(d||c).split(".");h=h[i[0]],i.length>1&&(h=h&&h[i[1]])}return h},f.validate=function(a,c,d,e){function g(b,g,h){if(a){for(var i=a.length,j=null;i--;){var k=a[i];if(k){var l=f.getValidationAttr(d,e,b,g,k);null!=l&&(h(k,l)||(k.$error=b,k.$errorParam=l,a.splice(i,1),j=!1))}}null!==j&&c.$ngfValidations.push({name:b,valid:j})}}function h(g,h,j,k,l){function m(a,b,c){null!=c?k(b,c).then(function(d){l(d,c)?a.resolve():(b.$error=g,b.$errorParam=c,a.reject())},function(){i("ngfValidateForce",{$file:b})?(b.$error=g,b.$errorParam=c,a.reject()):a.resolve()}):a.resolve()}var n=[f.emptyPromise()];return a?(a=void 0===a.length?[a]:a,angular.forEach(a,function(a){var c=b.defer();return n.push(c.promise),!j||null!=a.type&&0===a.type.search(j)?void("dimensions"===g&&null!=f.attrGetter("ngfDimensions",d)?f.imageDimensions(a).then(function(b){m(c,a,i("ngfDimensions",{$file:a,$width:b.width,$height:b.height}))},function(){c.reject()}):"duration"===g&&null!=f.attrGetter("ngfDuration",d)?f.mediaDuration(a).then(function(b){m(c,a,i("ngfDuration",{$file:a,$duration:b}))},function(){c.reject()}):m(c,a,f.getValidationAttr(d,e,g,h,a))):void c.resolve()}),b.all(n).then(function(){c.$ngfValidations.push({name:g,valid:!0})},function(){c.$ngfValidations.push({name:g,valid:!1})})):void 0}c=c||{},c.$ngfValidations=c.$ngfValidations||[],angular.forEach(c.$ngfValidations,function(a){a.valid=!0});var i=function(a,b){return f.attrGetter(a,d,e,b)};if(null==a||0===a.length)return f.emptyPromise(c);a=void 0===a.length?[a]:a.slice(0);var j=a.length;g("maxFiles",null,function(a,b){return b>=j}),g("pattern",null,f.validatePattern),g("minSize","size.min",function(a,b){return a.size>=f.translateScalars(b)}),g("maxSize","size.max",function(a,b){return a.size<=f.translateScalars(b)});var k=0;if(g("maxTotalSize",null,function(b,c){return k+=b.size,k>f.translateScalars(c)?(a.splice(0,a.length),!1):!0}),g("validateFn",null,function(a,b){return b===!0||null===b||""===b}),!a.length)return f.emptyPromise(c,c.$ngfValidations);var l=b.defer(),m=[];return m.push(f.happyPromise(h("maxHeight","height.max",/image/,this.imageDimensions,function(a,b){return a.height<=b}))),m.push(f.happyPromise(h("minHeight","height.min",/image/,this.imageDimensions,function(a,b){return a.height>=b}))),m.push(f.happyPromise(h("maxWidth","width.max",/image/,this.imageDimensions,function(a,b){return a.width<=b}))),m.push(f.happyPromise(h("minWidth","width.min",/image/,this.imageDimensions,function(a,b){return a.width>=b}))),m.push(f.happyPromise(h("dimensions",null,/image/,function(a,b){return f.emptyPromise(b)},function(a){return a}))),m.push(f.happyPromise(h("ratio",null,/image/,this.imageDimensions,function(a,b){for(var c=b.toString().split(","),d=!1,e=0;e<c.length;e++)Math.abs(a.width/a.height-f.ratioToFloat(c[e]))<1e-4&&(d=!0);return d}))),m.push(f.happyPromise(h("maxRatio","ratio.max",/image/,this.imageDimensions,function(a,b){return a.width/a.height-f.ratioToFloat(b)<1e-4}))),m.push(f.happyPromise(h("minRatio","ratio.min",/image/,this.imageDimensions,function(a,b){return a.width/a.height-f.ratioToFloat(b)>-1e-4}))),m.push(f.happyPromise(h("maxDuration","duration.max",/audio|video/,this.mediaDuration,function(a,b){return a<=f.translateScalars(b)}))),m.push(f.happyPromise(h("minDuration","duration.min",/audio|video/,this.mediaDuration,function(a,b){return a>=f.translateScalars(b)}))),m.push(f.happyPromise(h("duration",null,/audio|video/,function(a,b){return f.emptyPromise(b)},function(a){return a}))),m.push(f.happyPromise(h("validateAsyncFn",null,null,function(a,b){return b},function(a){return a===!0||null===a||""===a}))),b.all(m).then(function(){l.resolve(c,c.$ngfValidations)})},f.imageDimensions=function(a){if(a.$ngfWidth&&a.$ngfHeight){var d=b.defer();return c(function(){d.resolve({width:a.$ngfWidth,height:a.$ngfHeight})}),d.promise}if(a.$ngfDimensionPromise)return a.$ngfDimensionPromise;var e=b.defer();return c(function(){return 0!==a.type.indexOf("image")?void e.reject("not image"):void f.dataUrl(a).then(function(b){function d(){var b=h[0].clientWidth,c=h[0].clientHeight;h.remove(),a.$ngfWidth=b,a.$ngfHeight=c,e.resolve({width:b,height:c})}function f(){h.remove(),e.reject("load error")}function g(){c(function(){h[0].parentNode&&(h[0].clientWidth?d():i>10?f():g())},1e3)}var h=angular.element("<img>").attr("src",b).css("visibility","hidden").css("position","fixed");h.on("load",d),h.on("error",f);var i=0;g(),angular.element(document.getElementsByTagName("body")[0]).append(h)},function(){e.reject("load error")})}),a.$ngfDimensionPromise=e.promise,a.$ngfDimensionPromise["finally"](function(){delete a.$ngfDimensionPromise}),a.$ngfDimensionPromise},f.mediaDuration=function(a){if(a.$ngfDuration){var d=b.defer();return c(function(){d.resolve(a.$ngfDuration)}),d.promise}if(a.$ngfDurationPromise)return a.$ngfDurationPromise;var e=b.defer();return c(function(){return 0!==a.type.indexOf("audio")&&0!==a.type.indexOf("video")?void e.reject("not media"):void f.dataUrl(a).then(function(b){function d(){var b=h[0].duration;a.$ngfDuration=b,h.remove(),e.resolve(b)}function f(){h.remove(),e.reject("load error")}function g(){c(function(){h[0].parentNode&&(h[0].duration?d():i>10?f():g())},1e3)}var h=angular.element(0===a.type.indexOf("audio")?"<audio>":"<video>").attr("src",b).css("visibility","none").css("position","fixed");h.on("loadedmetadata",d),h.on("error",f);var i=0;g(),angular.element(document.body).append(h)},function(){e.reject("load error")})}),a.$ngfDurationPromise=e.promise,a.$ngfDurationPromise["finally"](function(){delete a.$ngfDurationPromise}),a.$ngfDurationPromise},f}]),ngFileUpload.service("UploadResize",["UploadValidate","$q",function(a,b){var c=a,d=function(a,b,c,d,e){var f=e?Math.max(c/a,d/b):Math.min(c/a,d/b);return{width:a*f,height:b*f,marginX:a*f-c,marginY:b*f-d}},e=function(a,e,f,g,h,i,j,k){var l=b.defer(),m=document.createElement("canvas"),n=document.createElement("img");return n.onload=function(){if(null!=k&&k(n.width,n.height)===!1)return void l.reject("resizeIf");try{if(i){var a=c.ratioToFloat(i),b=n.width/n.height;a>b?(e=n.width,f=e/a):(f=n.height,e=f*a)}e||(e=n.width),f||(f=n.height);var o=d(n.width,n.height,e,f,j);m.width=Math.min(o.width,e),m.height=Math.min(o.height,f);var p=m.getContext("2d");p.drawImage(n,Math.min(0,-o.marginX/2),Math.min(0,-o.marginY/2),o.width,o.height),l.resolve(m.toDataURL(h||"image/WebP",g||.934))}catch(q){l.reject(q)}},n.onerror=function(){l.reject()},n.src=a,l.promise};return c.dataUrltoBlob=function(a,b){for(var c=a.split(","),d=c[0].match(/:(.*?);/)[1],e=atob(c[1]),f=e.length,g=new Uint8Array(f);f--;)g[f]=e.charCodeAt(f);var h=new window.Blob([g],{type:d});return h.name=b,h},c.isResizeSupported=function(){var a=document.createElement("canvas");return window.atob&&a.getContext&&a.getContext("2d")},c.isResizeSupported()&&Object.defineProperty(window.Blob.prototype,"name",{get:function(){return this.$ngfName},set:function(a){this.$ngfName=a},configurable:!0}),c.resize=function(a,d,f,g,h,i,j,k,l){if(0!==a.type.indexOf("image"))return c.emptyPromise(a);var m=b.defer();return c.dataUrl(a,!0).then(function(b){e(b,d,f,g,h||a.type,i,j,k).then(function(d){if("image/jpeg"===a.type&&l)try{d=c.restoreExif(b,d)}catch(e){setTimeout(function(){throw e},1)}m.resolve(c.dataUrltoBlob(d,a.name))},function(b){"resizeIf"===b&&m.resolve(a),m.reject()})},function(){m.reject()}),m.promise},c}]),function(){function a(a,c,d,e,f,g,h,i,j,k){function l(){return c.attr("disabled")||r("ngfDropDisabled",a)}function m(b,c){i.updateModel(e,d,a,r("ngfChange")||r("ngfDrop"),b,c)}function n(b,c){var e;try{e=c&&c.getData&&c.getData("text/html")}catch(f){}if(!i.shouldUpdateOn(b,d,a)||!e)return i.rejectPromise([]);var g=[];e.replace(/<(img src|img [^>]* src) *=\"([^\"]*)\"/gi,function(a,b,c){g.push(c)});var h=[],j=[];if(g.length){angular.forEach(g,function(a){h.push(i.urlToBlob(a).then(function(a){j.push(a)}))});var l=k.defer();return k.all(h).then(function(){l.resolve(j)},function(a){l.reject(a)}),l.promise}}function o(a,b,c,d){var e=r("ngfDragOverClass",a,{$event:c}),f="dragover";if(angular.isString(e))f=e;else if(e&&(e.delay&&(v=e.delay),e.accept||e.reject)){var g=c.dataTransfer.items;if(null!=g&&g.length)for(var h=e.pattern||r("ngfPattern",a,{$event:c}),j=g.length;j--;){if(!i.validatePattern(g[j],h)){f=e.reject;break}f=e.accept}else f=e.accept}d(f)}function p(b,c,e){function f(a,b){var c=k.defer();if(null!=a)if(a.isDirectory){var d=[i.emptyPromise()];if(l){var e={type:"directory"};e.name=e.path=(b||"")+a.name+a.name,m.push(e)}var h=a.createReader(),o=[],p=function(){h.readEntries(function(e){try{e.length?(o=o.concat(Array.prototype.slice.call(e||[],0)),p()):(angular.forEach(o.slice(0),function(c){m.length<=g&&j>=n&&d.push(f(c,(b?b:"")+a.name+"/"))}),k.all(d).then(function(){c.resolve()},function(a){c.reject(a)}))}catch(h){c.reject(h)}},function(a){c.reject(a)})};p()}else a.file(function(a){try{a.path=(b?b:"")+a.name,l&&(a=i.rename(a,a.path)),m.push(a),n+=a.size,c.resolve()}catch(d){c.reject(d)}},function(a){c.reject(a)});return c.promise}var g=i.getValidationAttr(d,a,"maxFiles")||Number.MAX_VALUE,j=i.getValidationAttr(d,a,"maxTotalSize")||Number.MAX_VALUE,l=r("ngfIncludeDir",a),m=[],n=0,o=[i.emptyPromise()],p=b.dataTransfer.items;if(p&&p.length>0&&"file"!==h.protocol())for(var q=0;q<p.length;q++){if(p[q].webkitGetAsEntry&&p[q].webkitGetAsEntry()&&p[q].webkitGetAsEntry().isDirectory){var s=p[q].webkitGetAsEntry();if(s.isDirectory&&!c)continue;null!=s&&o.push(f(s))}else{var t=p[q].getAsFile();null!=t&&(m.push(t),n+=t.size)}if(m.length>g||n>j||!e&&m.length>0)break}else{var u=b.dataTransfer.files;if(null!=u)for(var v=0;v<u.length;v++){var w=u.item(v);if((w.type||w.size>0)&&(m.push(w),n+=w.size),m.length>g||n>j||!e&&m.length>0)break}}var x=k.defer();return k.all(o).then(function(){if(e)x.resolve(m);else{for(var a=0;m.length&&"directory"===m[a].type;)a++;x.resolve([m[a]])}},function(a){x.reject(a)}),x.promise}var q=b(),r=function(a,b,c){return i.attrGetter(a,d,b,c)};if(r("dropAvailable")&&g(function(){a[r("dropAvailable")]?a[r("dropAvailable")].value=q:a[r("dropAvailable")]=q}),!q)return void(r("ngfHideOnDropNotAvailable",a)===!0&&c.css("display","none"));null==r("ngfSelect")&&i.registerModelChangeValidator(e,d,a);var s,t=null,u=f(r("ngfStopPropagation")),v=1;c[0].addEventListener("dragover",function(b){if(!l()&&i.shouldUpdateOn("drop",d,a)){if(b.preventDefault(),u(a)&&b.stopPropagation(),navigator.userAgent.indexOf("Chrome")>-1){var e=b.dataTransfer.effectAllowed;b.dataTransfer.dropEffect="move"===e||"linkMove"===e?"move":"copy"}g.cancel(t),s||(s="C",o(a,d,b,function(d){s=d,c.addClass(s),r("ngfDrag",a,{$isDragging:!0,$class:s,$event:b})}))}},!1),c[0].addEventListener("dragenter",function(b){!l()&&i.shouldUpdateOn("drop",d,a)&&(b.preventDefault(),u(a)&&b.stopPropagation())},!1),c[0].addEventListener("dragleave",function(b){!l()&&i.shouldUpdateOn("drop",d,a)&&(b.preventDefault(),u(a)&&b.stopPropagation(),t=g(function(){s&&c.removeClass(s),s=null,r("ngfDrag",a,{$isDragging:!1,$event:b})},v||100))},!1),c[0].addEventListener("drop",function(b){!l()&&i.shouldUpdateOn("drop",d,a)&&(b.preventDefault(),u(a)&&b.stopPropagation(),s&&c.removeClass(s),s=null,p(b,r("ngfAllowDir",a)!==!1,r("multiple")||r("ngfMultiple",a)).then(function(a){a.length?m(a,b):n("dropUrl",b.dataTransfer).then(function(a){m(a,b)})}))},!1),c[0].addEventListener("paste",function(b){if(navigator.userAgent.toLowerCase().indexOf("firefox")>-1&&r("ngfEnableFirefoxPaste",a)&&b.preventDefault(),!l()&&i.shouldUpdateOn("paste",d,a)){var c=[],e=b.clipboardData||b.originalEvent.clipboardData;if(e&&e.items)for(var f=0;f<e.items.length;f++)-1!==e.items[f].type.indexOf("image")&&c.push(e.items[f].getAsFile());c.length?m(c,b):n("pasteUrl",e).then(function(a){m(a,b)})}},!1),navigator.userAgent.toLowerCase().indexOf("firefox")>-1&&r("ngfEnableFirefoxPaste",a)&&(c.attr("contenteditable",!0),c.on("keypress",function(a){a.metaKey||a.ctrlKey||a.preventDefault()}))}function b(){var a=document.createElement("div");return"draggable"in a&&"ondrop"in a&&!/Edge\/12./i.test(navigator.userAgent)}ngFileUpload.directive("ngfDrop",["$parse","$timeout","$location","Upload","$http","$q",function(b,c,d,e,f,g){return{restrict:"AEC",require:"?ngModel",link:function(h,i,j,k){a(h,i,j,k,b,c,d,e,f,g)}}}]),ngFileUpload.directive("ngfNoFileDrop",function(){return function(a,c){b()&&c.css("display","none")}}),ngFileUpload.directive("ngfDropAvailable",["$parse","$timeout","Upload",function(a,c,d){return function(e,f,g){if(b()){var h=a(d.attrGetter("ngfDropAvailable",g));c(function(){h(e),h.assign&&h.assign(e,!0)})}}}])}(),ngFileUpload.service("UploadExif",["UploadResize","$q",function(a,b){function c(a,b,c,d){switch(b){case 2:return a.transform(-1,0,0,1,c,0);case 3:return a.transform(-1,0,0,-1,c,d);case 4:return a.transform(1,0,0,-1,0,d);case 5:return a.transform(0,1,1,0,0,0);case 6:return a.transform(0,1,-1,0,d,0);case 7:return a.transform(0,-1,-1,0,d,c);case 8:return a.transform(0,-1,1,0,0,c)}}function d(a){for(var b="",c=new Uint8Array(a),d=c.byteLength,e=0;d>e;e++)b+=String.fromCharCode(c[e]);return window.btoa(b)}var e=a;return e.isExifSupported=function(){return window.FileReader&&(new FileReader).readAsArrayBuffer&&e.isResizeSupported()},e.readOrientation=function(a){
-var c=b.defer(),d=new FileReader,e=a.slice(0,65536);return d.readAsArrayBuffer(e),d.onerror=function(a){return c.reject(a)},d.onload=function(a){var b={orientation:1},d=new DataView(this.result);if(65496!==d.getUint16(0,!1))return c.resolve(b);for(var e=d.byteLength,f=2;e>f;){var g=d.getUint16(f,!1);if(f+=2,65505===g){if(1165519206!==d.getUint32(f+=2,!1))return c.resolve(b);var h=18761===d.getUint16(f+=6,!1);f+=d.getUint32(f+4,h);var i=d.getUint16(f,h);f+=2;for(var j=0;i>j;j++)if(274===d.getUint16(f+12*j,h)){var k=d.getUint16(f+12*j+8,h);return k>=2&&8>=k&&(d.setUint16(f+12*j+8,1,h),b.fixedArrayBuffer=a.target.result),b.orientation=k,c.resolve(b)}}else{if(65280!==(65280&g))break;f+=d.getUint16(f,!1)}}return c.resolve(b)},c.promise},e.applyExifRotation=function(a){if(0!==a.type.indexOf("image/jpeg"))return e.emptyPromise(a);var f=b.defer();return e.readOrientation(a).then(function(b){return b.orientation<2||b.orientation>8?f.resolve(a):void e.dataUrl(a,!0).then(function(g){var h=document.createElement("canvas"),i=document.createElement("img");i.onload=function(){try{h.width=b.orientation>4?i.height:i.width,h.height=b.orientation>4?i.width:i.height;var g=h.getContext("2d");c(g,b.orientation,i.width,i.height),g.drawImage(i,0,0);var j=h.toDataURL(a.type||"image/WebP",.934);j=e.restoreExif(d(b.fixedArrayBuffer),j);var k=e.dataUrltoBlob(j,a.name);f.resolve(k)}catch(l){return f.reject(l)}},i.onerror=function(){f.reject()},i.src=g},function(a){f.reject(a)})},function(a){f.reject(a)}),f.promise},e.restoreExif=function(a,b){var c={};return c.KEY_STR="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",c.encode64=function(a){var b,c,d,e,f,g="",h="",i="",j=0;do b=a[j++],c=a[j++],h=a[j++],d=b>>2,e=(3&b)<<4|c>>4,f=(15&c)<<2|h>>6,i=63&h,isNaN(c)?f=i=64:isNaN(h)&&(i=64),g=g+this.KEY_STR.charAt(d)+this.KEY_STR.charAt(e)+this.KEY_STR.charAt(f)+this.KEY_STR.charAt(i),b=c=h="",d=e=f=i="";while(j<a.length);return g},c.restore=function(a,b){a.match("data:image/jpeg;base64,")&&(a=a.replace("data:image/jpeg;base64,",""));var c=this.decode64(a),d=this.slice2Segments(c),e=this.exifManipulation(b,d);return"data:image/jpeg;base64,"+this.encode64(e)},c.exifManipulation=function(a,b){var c=this.getExifArray(b),d=this.insertExif(a,c);return new Uint8Array(d)},c.getExifArray=function(a){for(var b,c=0;c<a.length;c++)if(b=a[c],255===b[0]&225===b[1])return b;return[]},c.insertExif=function(a,b){var c=a.replace("data:image/jpeg;base64,",""),d=this.decode64(c),e=d.indexOf(255,3),f=d.slice(0,e),g=d.slice(e),h=f;return h=h.concat(b),h=h.concat(g)},c.slice2Segments=function(a){for(var b=0,c=[];;){if(255===a[b]&218===a[b+1])break;if(255===a[b]&216===a[b+1])b+=2;else{var d=256*a[b+2]+a[b+3],e=b+d+2,f=a.slice(b,e);c.push(f),b=e}if(b>a.length)break}return c},c.decode64=function(a){var b,c,d,e,f,g="",h="",i=0,j=[],k=/[^A-Za-z0-9\+\/\=]/g;k.exec(a)&&console.log("There were invalid base64 characters in the input text.\nValid base64 characters are A-Z, a-z, 0-9, NaNExpect errors in decoding."),a=a.replace(/[^A-Za-z0-9\+\/\=]/g,"");do d=this.KEY_STR.indexOf(a.charAt(i++)),e=this.KEY_STR.indexOf(a.charAt(i++)),f=this.KEY_STR.indexOf(a.charAt(i++)),h=this.KEY_STR.indexOf(a.charAt(i++)),b=d<<2|e>>4,c=(15&e)<<4|f>>2,g=(3&f)<<6|h,j.push(b),64!==f&&j.push(c),64!==h&&j.push(g),b=c=g="",d=e=f=h="";while(i<a.length);return j},c.restore(a,b)},e}]);
+/*! 11.2.3 */
+!window.XMLHttpRequest||window.FileAPI&&FileAPI.shouldLoad||(window.XMLHttpRequest.prototype.setRequestHeader=function(a){return function(b,c){if("__setXHR_"===b){var d=c(this);d instanceof Function&&d(this)}else a.apply(this,arguments)}}(window.XMLHttpRequest.prototype.setRequestHeader));var ngFileUpload=angular.module("ngFileUpload",[]);ngFileUpload.version="11.2.3",ngFileUpload.service("UploadBase",["$http","$q","$timeout",function(a,b,c){function d(d){function e(a){j.notify&&j.notify(a),k.progressFunc&&c(function(){k.progressFunc(a)})}function h(a){return null!=d._start&&g?{loaded:a.loaded+d._start,total:d._file&&d._file.size||a.total,type:a.type,config:d,lengthComputable:!0,target:a.target}:a}function i(){a(d).then(function(a){g&&d._chunkSize&&!d._finished&&d._file?(e({loaded:d._end,total:d._file&&d._file.size,config:d,type:"progress"}),f.upload(d,!0)):(d._finished&&delete d._finished,j.resolve(a))},function(a){j.reject(a)},function(a){j.notify(a)})}d.method=d.method||"POST",d.headers=d.headers||{};var j=d._deferred=d._deferred||b.defer(),k=j.promise;return d.disableProgress||(d.headers.__setXHR_=function(){return function(a){a&&(d.__XHR=a,d.xhrFn&&d.xhrFn(a),a.upload.addEventListener("progress",function(a){a.config=d,e(h(a))},!1),a.upload.addEventListener("load",function(a){a.lengthComputable&&(a.config=d,e(h(a)))},!1))}}),g?d._chunkSize&&d._end&&!d._finished?(d._start=d._end,d._end+=d._chunkSize,i()):d.resumeSizeUrl?a.get(d.resumeSizeUrl).then(function(a){d._start=d.resumeSizeResponseReader?d.resumeSizeResponseReader(a.data):parseInt((null==a.data.size?a.data:a.data.size).toString()),d._chunkSize&&(d._end=d._start+d._chunkSize),i()},function(a){throw a}):d.resumeSize?d.resumeSize().then(function(a){d._start=a,i()},function(a){throw a}):(d._chunkSize&&(d._start=0,d._end=d._start+d._chunkSize),i()):i(),k.success=function(a){return k.then(function(b){a(b.data,b.status,b.headers,d)}),k},k.error=function(a){return k.then(null,function(b){a(b.data,b.status,b.headers,d)}),k},k.progress=function(a){return k.progressFunc=a,k.then(null,null,function(b){a(b)}),k},k.abort=k.pause=function(){return d.__XHR&&c(function(){d.__XHR.abort()}),k},k.xhr=function(a){return d.xhrFn=function(b){return function(){b&&b.apply(k,arguments),a.apply(k,arguments)}}(d.xhrFn),k},f.promisesCount++,k["finally"](function(){f.promisesCount--}),k}function e(a){var b={};for(var c in a)a.hasOwnProperty(c)&&(b[c]=a[c]);return b}var f=this;f.promisesCount=0,this.isResumeSupported=function(){return window.Blob&&window.Blob instanceof Function&&(new window.Blob).slice};var g=this.isResumeSupported();this.isUploadInProgress=function(){return f.promisesCount>0},this.rename=function(a,b){return a.ngfName=b,a},this.jsonBlob=function(a){null==a||angular.isString(a)||(a=JSON.stringify(a));var b=new window.Blob([a],{type:"application/json"});return b._ngfBlob=!0,b},this.json=function(a){return angular.toJson(a)},this.isFile=function(a){return null!=a&&(a instanceof window.Blob||a.flashId&&a.name&&a.size)},this.upload=function(a,b){function c(b,c){if(b._ngfBlob)return b;if(a._file=a._file||b,null!=a._start&&g){a._end&&a._end>=b.size&&(a._finished=!0,a._end=b.size);var d=b.slice(a._start,a._end||b.size);return d.name=b.name,d.ngfName=b.ngfName,a._chunkSize&&(c.append("_chunkSize",a._chunkSize),c.append("_currentChunkSize",a._end-a._start),c.append("_chunkNumber",Math.floor(a._start/a._chunkSize)),c.append("_totalSize",a._file.size)),d}return b}function h(b,d,e){if(void 0!==d)if(angular.isDate(d)&&(d=d.toISOString()),angular.isString(d))b.append(e,d);else if(f.isFile(d)){var g=c(d,b),i=e.split(",");i[1]&&(g.ngfName=i[1].replace(/^\s+|\s+$/g,""),e=i[0]),a._fileKey=a._fileKey||e,b.append(e,g,g.ngfName||g.name)}else if(angular.isObject(d)){if(d.$$ngfCircularDetection)throw"ngFileUpload: Circular reference in config.data. Make sure specified data for Upload.upload() has no circular reference: "+e;d.$$ngfCircularDetection=!0;try{for(var j in d)if(d.hasOwnProperty(j)&&"$$ngfCircularDetection"!==j){var k=null==a.objectKey?"[i]":a.objectKey;d.length&&parseInt(j)>-1&&(k=null==a.arrayKey?k:a.arrayKey),h(b,d[j],e+k.replace(/[ik]/g,j))}}finally{delete d.$$ngfCircularDetection}}else b.append(e,d)}function i(){a._chunkSize=f.translateScalars(a.resumeChunkSize),a._chunkSize=a._chunkSize?parseInt(a._chunkSize.toString()):null,a.headers=a.headers||{},a.headers["Content-Type"]=void 0,a.transformRequest=a.transformRequest?angular.isArray(a.transformRequest)?a.transformRequest:[a.transformRequest]:[],a.transformRequest.push(function(b){var c,d=new window.FormData;b=b||a.fields||{},a.file&&(b.file=a.file);for(c in b)if(b.hasOwnProperty(c)){var e=b[c];a.formDataAppender?a.formDataAppender(d,c,e):h(d,e,c)}return d})}return b||(a=e(a)),a._isDigested||(a._isDigested=!0,i()),d(a)},this.http=function(b){return b=e(b),b.transformRequest=b.transformRequest||function(b){return window.ArrayBuffer&&b instanceof window.ArrayBuffer||b instanceof window.Blob?b:a.defaults.transformRequest[0].apply(this,arguments)},b._chunkSize=f.translateScalars(b.resumeChunkSize),b._chunkSize=b._chunkSize?parseInt(b._chunkSize.toString()):null,d(b)},this.translateScalars=function(a){if(angular.isString(a)){if(a.search(/kb/i)===a.length-2)return parseFloat(1e3*a.substring(0,a.length-2));if(a.search(/mb/i)===a.length-2)return parseFloat(1e6*a.substring(0,a.length-2));if(a.search(/gb/i)===a.length-2)return parseFloat(1e9*a.substring(0,a.length-2));if(a.search(/b/i)===a.length-1)return parseFloat(a.substring(0,a.length-1));if(a.search(/s/i)===a.length-1)return parseFloat(a.substring(0,a.length-1));if(a.search(/m/i)===a.length-1)return parseFloat(60*a.substring(0,a.length-1));if(a.search(/h/i)===a.length-1)return parseFloat(3600*a.substring(0,a.length-1))}return a},this.urlToBlob=function(c){var d=b.defer();return a({url:c,method:"get",responseType:"arraybuffer"}).then(function(a){var b=new Uint8Array(a.data),c=a.headers("content-type")||"image/WebP",e=new window.Blob([b],{type:c});d.resolve(e)},function(a){d.reject(a)}),d.promise},this.setDefaults=function(a){this.defaults=a||{}},this.defaults={},this.version=ngFileUpload.version}]),ngFileUpload.service("Upload",["$parse","$timeout","$compile","$q","UploadExif",function(a,b,c,d,e){function f(a,b,c){var e=[i.emptyPromise()];return angular.forEach(a,function(d,f){0===d.type.indexOf("image/jpeg")&&i.attrGetter("ngfFixOrientation",b,c,{$file:d})&&e.push(i.happyPromise(i.applyExifRotation(d),d).then(function(b){a.splice(f,1,b)}))}),d.all(e)}function g(a,b,c){var e=i.attrGetter("ngfResize",b,c);if(!(e&&angular.isObject(e)&&i.isResizeSupported()&&a.length))return i.emptyPromise();var f=[i.emptyPromise()];return angular.forEach(a,function(d,g){if(0===d.type.indexOf("image")){if(e.pattern&&!i.validatePattern(d,e.pattern))return;var h=i.resize(d,e.width,e.height,e.quality,e.type,e.ratio,e.centerCrop,function(a,e){return i.attrGetter("ngfResizeIf",b,c,{$width:a,$height:e,$file:d})},e.restoreExif!==!1);f.push(h),h.then(function(b){a.splice(g,1,b)},function(a){d.$error="resize",d.$errorParam=(a?(a.message?a.message:a)+": ":"")+(d&&d.name)})}}),d.all(f)}function h(a,b,c,d){var e=[],f=i.attrGetter("ngfKeep",c,d);if(f){var g=!1;if("distinct"===f||i.attrGetter("ngfKeepDistinct",c,d)===!0){var h=b.length;if(a)for(var j=0;j<a.length;j++){for(var k=0;h>k;k++)if(a[j].name===b[k].name){e.push(a[j]);break}k===h&&(b.push(a[j]),g=!0)}a=b}else a=b.concat(a||[])}return{files:a,dupFiles:e,keep:f}}var i=e;return i.getAttrWithDefaults=function(a,b){if(null!=a[b])return a[b];var c=i.defaults[b];return null==c?c:angular.isString(c)?c:JSON.stringify(c)},i.attrGetter=function(b,c,d,e){var f=this.getAttrWithDefaults(c,b);if(!d)return f;try{return e?a(f)(d,e):a(f)(d)}catch(g){if(b.search(/min|max|pattern/i))return f;throw g}},i.shouldUpdateOn=function(a,b,c){var d=i.attrGetter("ngModelOptions",b,c);return d&&d.updateOn?d.updateOn.split(" ").indexOf(a)>-1:!0},i.emptyPromise=function(){var a=d.defer(),c=arguments;return b(function(){a.resolve.apply(a,c)}),a.promise},i.rejectPromise=function(){var a=d.defer(),c=arguments;return b(function(){a.reject.apply(a,c)}),a.promise},i.happyPromise=function(a,c){var e=d.defer();return a.then(function(a){e.resolve(a)},function(a){b(function(){throw a}),e.resolve(c)}),e.promise},i.updateModel=function(c,d,e,j,k,l,m){function n(f,g,h,k,m){var n=f&&f.length?f[0]:null;c&&(i.applyModelValidation(c,f),c.$setViewValue(m?n:f)),j&&a(j)(e,{$files:f,$file:n,$newFiles:h,$duplicateFiles:k,$invalidFiles:g,$event:l});var o=i.attrGetter("ngfModelInvalid",d);o&&b(function(){a(o).assign(e,g)}),b(function(){})}function o(){var a=[];angular.forEach(k,function(b){b.$error?v.push(b):a.push(b)}),k=a}var p=k,q=c&&c.$modelValue&&(angular.isArray(c.$modelValue)?c.$modelValue:[c.$modelValue]);q=(q||d.$$ngfPrevFiles||[]).slice(0);var r=h(k,q,d,e);k=r.files;var s=r.dupFiles,t=!i.attrGetter("ngfMultiple",d,e)&&!i.attrGetter("multiple",d)&&!r.keep;if(d.$$ngfPrevFiles=k,!r.keep||p&&p.length){i.attrGetter("ngfBeforeModelChange",d,e,{$files:k,$file:k&&k.length?k[0]:null,$duplicateFiles:s,$event:l});var u=i.attrGetter("ngfValidateAfterResize",d,e),v=[];i.validate(p,c,d,e).then(function(){if(m)n(k,[],p,s,t);else{var a=i.attrGetter("ngModelOptions",d,e);a&&a.allowInvalid||u||o();var h=i.emptyPromise(k);i.attrGetter("ngfFixOrientation",d,e)&&i.isExifSupported()&&(h=f(k,d,e)),h.then(function(){function f(){b(function(){n(k,v,p,s,t)},a&&a.debounce?a.debounce.change||a.debounce:0)}g(k,d,e).then(function(){u?i.validate(k,c,d,e).then(function(){o(),f()}):f()},function(a){throw"Could not resize files "+a})})}});for(var w=q.length;w--;){var x=q[w];window.URL&&x.blobUrl&&(URL.revokeObjectURL(x.blobUrl),delete x.blobUrl)}}},i}]),ngFileUpload.directive("ngfSelect",["$parse","$timeout","$compile","Upload",function(a,b,c,d){function e(a){var b=a.match(/Android[^\d]*(\d+)\.(\d+)/);if(b&&b.length>2){var c=d.defaults.androidFixMinorVersion||4;return parseInt(b[1])<4||parseInt(b[1])===c&&parseInt(b[2])<c}return-1===a.indexOf("Chrome")&&/.*Windows.*Safari.*/.test(a)}function f(a,b,c,d,f,h,i,j){function k(){return"input"===b[0].tagName.toLowerCase()&&c.type&&"file"===c.type.toLowerCase()}function l(){return t("ngfChange")||t("ngfSelect")}function m(b){if(j.shouldUpdateOn("change",c,a)){for(var e=b.__files_||b.target&&b.target.files,f=[],g=0;g<e.length;g++)f.push(e[g]);j.updateModel(d,c,a,l(),f.length?f:null,b)}}function n(a){if(b!==a)for(var c=0;c<b[0].attributes.length;c++){var d=b[0].attributes[c];"type"!==d.name&&"class"!==d.name&&"style"!==d.name&&((null==d.value||""===d.value)&&("required"===d.name&&(d.value="required"),"multiple"===d.name&&(d.value="multiple")),a.attr(d.name,"id"===d.name?"ngf-"+d.value:d.value))}}function o(){if(k())return b;var a=angular.element('<input type="file">');n(a);var c=angular.element("<label>upload</label>");return c.css("visibility","hidden").css("position","absolute").css("overflow","hidden").css("width","0px").css("height","0px").css("border","none").css("margin","0px").css("padding","0px").attr("tabindex","-1"),g.push({el:b,ref:c}),document.body.appendChild(c.append(a)[0]),a}function p(c){if(b.attr("disabled"))return!1;if(!t("ngfSelectDisabled",a)){var d=q(c);if(null!=d)return d;r(c);try{k()||document.body.contains(w[0])||(g.push({el:b,ref:w.parent()}),document.body.appendChild(w[0].parent()),w.bind("change",m))}catch(f){}return e(navigator.userAgent)?setTimeout(function(){w[0].click()},0):w[0].click(),!1}}function q(a){var b=a.changedTouches||a.originalEvent&&a.originalEvent.changedTouches;if("touchstart"===a.type)return v=b?b[0].clientY:0,!0;if(a.stopPropagation(),a.preventDefault(),"touchend"===a.type){var c=b?b[0].clientY:0;if(Math.abs(c-v)>20)return!1}}function r(b){j.shouldUpdateOn("click",c,a)&&w.val()&&(w.val(null),j.updateModel(d,c,a,l(),null,b,!0))}function s(a){if(w&&!w.attr("__ngf_ie10_Fix_")){if(!w[0].parentNode)return void(w=null);a.preventDefault(),a.stopPropagation(),w.unbind("click");var b=w.clone();return w.replaceWith(b),w=b,w.attr("__ngf_ie10_Fix_","true"),w.bind("change",m),w.bind("click",s),w[0].click(),!1}w.removeAttr("__ngf_ie10_Fix_")}var t=function(a,b){return j.attrGetter(a,c,b)};j.registerModelChangeValidator(d,c,a);var u=[];u.push(a.$watch(t("ngfMultiple"),function(){w.attr("multiple",t("ngfMultiple",a))})),u.push(a.$watch(t("ngfCapture"),function(){w.attr("capture",t("ngfCapture",a))})),u.push(a.$watch(t("ngfAccept"),function(){w.attr("accept",t("ngfAccept",a))})),c.$observe("accept",function(){w.attr("accept",t("accept"))}),u.push(function(){c.$$observers&&delete c.$$observers.accept});var v=0,w=b;k()||(w=o()),w.bind("change",m),k()?b.bind("click",r):b.bind("click touchstart touchend",p),-1!==navigator.appVersion.indexOf("MSIE 10")&&w.bind("click",s),d&&d.$formatters.push(function(a){return(null==a||0===a.length)&&w.val()&&w.val(null),a}),a.$on("$destroy",function(){k()||w.parent().remove(),angular.forEach(u,function(a){a()})}),h(function(){for(var a=0;a<g.length;a++){var b=g[a];document.body.contains(b.el[0])||(g.splice(a,1),b.ref.remove())}}),window.FileAPI&&window.FileAPI.ngfFixIE&&window.FileAPI.ngfFixIE(b,w,m)}var g=[];return{restrict:"AEC",require:"?ngModel",link:function(e,g,h,i){f(e,g,h,i,a,b,c,d)}}}]),function(){function a(a){return"img"===a.tagName.toLowerCase()?"image":"audio"===a.tagName.toLowerCase()?"audio":"video"===a.tagName.toLowerCase()?"video":/./}function b(b,c,d,e,f,g,h,i){function j(a){var g=b.attrGetter("ngfNoObjectUrl",f,d);b.dataUrl(a,g)["finally"](function(){c(function(){var b=(g?a.$ngfDataUrl:a.$ngfBlobUrl)||a.$ngfDataUrl;i?e.css("background-image","url('"+(b||"")+"')"):e.attr("src",b),b?e.removeClass("ng-hide"):e.addClass("ng-hide")})})}c(function(){var c=d.$watch(f[g],function(c){var d=h;if("ngfThumbnail"===g&&(d||(d={width:e[0].clientWidth,height:e[0].clientHeight}),0===d.width&&window.getComputedStyle)){var f=getComputedStyle(e[0]);d={width:parseInt(f.width.slice(0,-2)),height:parseInt(f.height.slice(0,-2))}}return angular.isString(c)?(e.removeClass("ng-hide"),i?e.css("background-image","url('"+c+"')"):e.attr("src",c)):void(!c||!c.type||0!==c.type.search(a(e[0]))||i&&0!==c.type.indexOf("image")?e.addClass("ng-hide"):d&&b.isResizeSupported()?b.resize(c,d.width,d.height,d.quality).then(function(a){j(a)},function(a){throw a}):j(c))});d.$on("$destroy",function(){c()})})}ngFileUpload.service("UploadDataUrl",["UploadBase","$timeout","$q",function(a,b,c){var d=a;return d.base64DataUrl=function(a){if(angular.isArray(a)){var b=c.defer(),e=0;return angular.forEach(a,function(c){d.dataUrl(c,!0)["finally"](function(){if(e++,e===a.length){var c=[];angular.forEach(a,function(a){c.push(a.$ngfDataUrl)}),b.resolve(c,a)}})}),b.promise}return d.dataUrl(a,!0)},d.dataUrl=function(a,e){if(!a)return d.emptyPromise(a,a);if(e&&null!=a.$ngfDataUrl||!e&&null!=a.$ngfBlobUrl)return d.emptyPromise(e?a.$ngfDataUrl:a.$ngfBlobUrl,a);var f=e?a.$$ngfDataUrlPromise:a.$$ngfBlobUrlPromise;if(f)return f;var g=c.defer();return b(function(){if(window.FileReader&&a&&(!window.FileAPI||-1===navigator.userAgent.indexOf("MSIE 8")||a.size<2e4)&&(!window.FileAPI||-1===navigator.userAgent.indexOf("MSIE 9")||a.size<4e6)){var c=window.URL||window.webkitURL;if(c&&c.createObjectURL&&!e){var d;try{d=c.createObjectURL(a)}catch(f){return void b(function(){a.$ngfBlobUrl="",g.reject()})}b(function(){a.$ngfBlobUrl=d,d&&g.resolve(d,a)})}else{var h=new FileReader;h.onload=function(c){b(function(){a.$ngfDataUrl=c.target.result,g.resolve(c.target.result,a)})},h.onerror=function(){b(function(){a.$ngfDataUrl="",g.reject()})},h.readAsDataURL(a)}}else b(function(){a[e?"dataUrl":"blobUrl"]="",g.reject()})}),f=e?a.$$ngfDataUrlPromise=g.promise:a.$$ngfBlobUrlPromise=g.promise,f["finally"](function(){delete a[e?"$$ngfDataUrlPromise":"$$ngfBlobUrlPromise"]}),f},d}]),ngFileUpload.directive("ngfSrc",["Upload","$timeout",function(a,c){return{restrict:"AE",link:function(d,e,f){b(a,c,d,e,f,"ngfSrc",a.attrGetter("ngfResize",f,d),!1)}}}]),ngFileUpload.directive("ngfBackground",["Upload","$timeout",function(a,c){return{restrict:"AE",link:function(d,e,f){b(a,c,d,e,f,"ngfBackground",a.attrGetter("ngfResize",f,d),!0)}}}]),ngFileUpload.directive("ngfThumbnail",["Upload","$timeout",function(a,c){return{restrict:"AE",link:function(d,e,f){var g=a.attrGetter("ngfSize",f,d);b(a,c,d,e,f,"ngfThumbnail",g,a.attrGetter("ngfAsBackground",f,d))}}}]),ngFileUpload.config(["$compileProvider",function(a){a.imgSrcSanitizationWhitelist&&a.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|local|file|data|blob):/),a.aHrefSanitizationWhitelist&&a.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|local|file|data|blob):/)}]),ngFileUpload.filter("ngfDataUrl",["UploadDataUrl","$sce",function(a,b){return function(c,d,e){if(angular.isString(c))return b.trustAsResourceUrl(c);var f=c&&((d?c.$ngfDataUrl:c.$ngfBlobUrl)||c.$ngfDataUrl);return c&&!f?(!c.$ngfDataUrlFilterInProgress&&angular.isObject(c)&&(c.$ngfDataUrlFilterInProgress=!0,a.dataUrl(c,d)),""):(c&&delete c.$ngfDataUrlFilterInProgress,(c&&f?e?b.trustAsResourceUrl(f):f:c)||"")}}])}(),ngFileUpload.service("UploadValidate",["UploadDataUrl","$q","$timeout",function(a,b,c){function d(a){var b="",c=[];if(a.length>2&&"/"===a[0]&&"/"===a[a.length-1])b=a.substring(1,a.length-1);else{var e=a.split(",");if(e.length>1)for(var f=0;f<e.length;f++){var g=d(e[f]);g.regexp?(b+="("+g.regexp+")",f<e.length-1&&(b+="|")):c=c.concat(g.excludes)}else 0===a.indexOf("!")?c.push("^((?!"+d(a.substring(1)).regexp+").)*$"):(0===a.indexOf(".")&&(a="*"+a),b="^"+a.replace(new RegExp("[.\\\\+*?\\[\\^\\]$(){}=!<>|:\\-]","g"),"\\$&")+"$",b=b.replace(/\\\*/g,".*").replace(/\\\?/g,"."))}return{regexp:b,excludes:c}}function e(a,b){null==b||a.$dirty||(a.$setDirty?a.$setDirty():a.$dirty=!0)}var f=a;return f.validatePattern=function(a,b){if(!b)return!0;var c=d(b),e=!0;if(c.regexp&&c.regexp.length){var f=new RegExp(c.regexp,"i");e=null!=a.type&&f.test(a.type)||null!=a.name&&f.test(a.name)}for(var g=c.excludes.length;g--;){var h=new RegExp(c.excludes[g],"i");e=e&&(null==a.type||h.test(a.type))&&(null==a.name||h.test(a.name))}return e},f.ratioToFloat=function(a){var b=a.toString(),c=b.search(/[x:]/i);return b=c>-1?parseFloat(b.substring(0,c))/parseFloat(b.substring(c+1)):parseFloat(b)},f.registerModelChangeValidator=function(a,b,c){a&&a.$formatters.push(function(d){a.$dirty&&(d&&!angular.isArray(d)&&(d=[d]),f.validate(d,a,b,c).then(function(){f.applyModelValidation(a,d)}))})},f.applyModelValidation=function(a,b){e(a,b),angular.forEach(a.$ngfValidations,function(b){a.$setValidity(b.name,b.valid)})},f.getValidationAttr=function(a,b,c,d,e){var g="ngf"+c[0].toUpperCase()+c.substr(1),h=f.attrGetter(g,a,b,{$file:e});if(null==h&&(h=f.attrGetter("ngfValidate",a,b,{$file:e}))){var i=(d||c).split(".");h=h[i[0]],i.length>1&&(h=h&&h[i[1]])}return h},f.validate=function(a,c,d,e){function g(b,g,h){if(a){for(var i=a.length,j=null;i--;){var k=a[i];if(k){var l=f.getValidationAttr(d,e,b,g,k);null!=l&&(h(k,l)||(k.$error=b,k.$errorParam=l,a.splice(i,1),j=!1))}}null!==j&&c.$ngfValidations.push({name:b,valid:j})}}function h(g,h,j,k,l){function m(a,b,c){null!=c?k(b,c).then(function(d){l(d,c)?a.resolve():(b.$error=g,b.$errorParam=c,a.reject())},function(){i("ngfValidateForce",{$file:b})?(b.$error=g,b.$errorParam=c,a.reject()):a.resolve()}):a.resolve()}var n=[f.emptyPromise()];return a?(a=void 0===a.length?[a]:a,angular.forEach(a,function(a){var c=b.defer();return n.push(c.promise),!j||null!=a.type&&0===a.type.search(j)?void("dimensions"===g&&null!=f.attrGetter("ngfDimensions",d)?f.imageDimensions(a).then(function(b){m(c,a,i("ngfDimensions",{$file:a,$width:b.width,$height:b.height}))},function(){c.reject()}):"duration"===g&&null!=f.attrGetter("ngfDuration",d)?f.mediaDuration(a).then(function(b){m(c,a,i("ngfDuration",{$file:a,$duration:b}))},function(){c.reject()}):m(c,a,f.getValidationAttr(d,e,g,h,a))):void c.resolve()}),b.all(n).then(function(){c.$ngfValidations.push({name:g,valid:!0})},function(){c.$ngfValidations.push({name:g,valid:!1})})):void 0}c=c||{},c.$ngfValidations=c.$ngfValidations||[],angular.forEach(c.$ngfValidations,function(a){a.valid=!0});var i=function(a,b){return f.attrGetter(a,d,e,b)};if(null==a||0===a.length)return f.emptyPromise(c);a=void 0===a.length?[a]:a.slice(0);var j=a.length;g("maxFiles",null,function(a,b){return b>=j}),g("pattern",null,f.validatePattern),g("minSize","size.min",function(a,b){return a.size>=f.translateScalars(b)}),g("maxSize","size.max",function(a,b){return a.size<=f.translateScalars(b)});var k=0;if(g("maxTotalSize",null,function(b,c){return k+=b.size,k>f.translateScalars(c)?(a.splice(0,a.length),!1):!0}),g("validateFn",null,function(a,b){return b===!0||null===b||""===b}),!a.length)return f.emptyPromise(c,c.$ngfValidations);var l=b.defer(),m=[];return m.push(f.happyPromise(h("maxHeight","height.max",/image/,this.imageDimensions,function(a,b){return a.height<=b}))),m.push(f.happyPromise(h("minHeight","height.min",/image/,this.imageDimensions,function(a,b){return a.height>=b}))),m.push(f.happyPromise(h("maxWidth","width.max",/image/,this.imageDimensions,function(a,b){return a.width<=b}))),m.push(f.happyPromise(h("minWidth","width.min",/image/,this.imageDimensions,function(a,b){return a.width>=b}))),m.push(f.happyPromise(h("dimensions",null,/image/,function(a,b){return f.emptyPromise(b)},function(a){return a}))),m.push(f.happyPromise(h("ratio",null,/image/,this.imageDimensions,function(a,b){for(var c=b.toString().split(","),d=!1,e=0;e<c.length;e++)Math.abs(a.width/a.height-f.ratioToFloat(c[e]))<1e-4&&(d=!0);return d}))),m.push(f.happyPromise(h("maxRatio","ratio.max",/image/,this.imageDimensions,function(a,b){return a.width/a.height-f.ratioToFloat(b)<1e-4}))),m.push(f.happyPromise(h("minRatio","ratio.min",/image/,this.imageDimensions,function(a,b){return a.width/a.height-f.ratioToFloat(b)>-1e-4}))),m.push(f.happyPromise(h("maxDuration","duration.max",/audio|video/,this.mediaDuration,function(a,b){return a<=f.translateScalars(b)}))),m.push(f.happyPromise(h("minDuration","duration.min",/audio|video/,this.mediaDuration,function(a,b){return a>=f.translateScalars(b)}))),m.push(f.happyPromise(h("duration",null,/audio|video/,function(a,b){return f.emptyPromise(b)},function(a){return a}))),m.push(f.happyPromise(h("validateAsyncFn",null,null,function(a,b){return b},function(a){return a===!0||null===a||""===a}))),b.all(m).then(function(){l.resolve(c,c.$ngfValidations)})},f.imageDimensions=function(a){if(a.$ngfWidth&&a.$ngfHeight){var d=b.defer();return c(function(){d.resolve({width:a.$ngfWidth,height:a.$ngfHeight})}),d.promise}if(a.$ngfDimensionPromise)return a.$ngfDimensionPromise;var e=b.defer();return c(function(){return 0!==a.type.indexOf("image")?void e.reject("not image"):void f.dataUrl(a).then(function(b){function d(){var b=h[0].clientWidth,c=h[0].clientHeight;h.remove(),a.$ngfWidth=b,a.$ngfHeight=c,e.resolve({width:b,height:c})}function f(){h.remove(),e.reject("load error")}function g(){c(function(){h[0].parentNode&&(h[0].clientWidth?d():i>10?f():g())},1e3)}var h=angular.element("<img>").attr("src",b).css("visibility","hidden").css("position","fixed");h.on("load",d),h.on("error",f);var i=0;g(),angular.element(document.getElementsByTagName("body")[0]).append(h)},function(){e.reject("load error")})}),a.$ngfDimensionPromise=e.promise,a.$ngfDimensionPromise["finally"](function(){delete a.$ngfDimensionPromise}),a.$ngfDimensionPromise},f.mediaDuration=function(a){if(a.$ngfDuration){var d=b.defer();return c(function(){d.resolve(a.$ngfDuration)}),d.promise}if(a.$ngfDurationPromise)return a.$ngfDurationPromise;var e=b.defer();return c(function(){return 0!==a.type.indexOf("audio")&&0!==a.type.indexOf("video")?void e.reject("not media"):void f.dataUrl(a).then(function(b){function d(){var b=h[0].duration;a.$ngfDuration=b,h.remove(),e.resolve(b)}function f(){h.remove(),e.reject("load error")}function g(){c(function(){h[0].parentNode&&(h[0].duration?d():i>10?f():g())},1e3)}var h=angular.element(0===a.type.indexOf("audio")?"<audio>":"<video>").attr("src",b).css("visibility","none").css("position","fixed");h.on("loadedmetadata",d),h.on("error",f);var i=0;g(),angular.element(document.body).append(h)},function(){e.reject("load error")})}),a.$ngfDurationPromise=e.promise,a.$ngfDurationPromise["finally"](function(){delete a.$ngfDurationPromise}),a.$ngfDurationPromise},f}]),ngFileUpload.service("UploadResize",["UploadValidate","$q",function(a,b){var c=a,d=function(a,b,c,d,e){var f=e?Math.max(c/a,d/b):Math.min(c/a,d/b);return{width:a*f,height:b*f,marginX:a*f-c,marginY:b*f-d}},e=function(a,e,f,g,h,i,j,k){var l=b.defer(),m=document.createElement("canvas"),n=document.createElement("img");return n.onload=function(){if(null!=k&&k(n.width,n.height)===!1)return void l.reject("resizeIf");try{if(i){var a=c.ratioToFloat(i),b=n.width/n.height;a>b?(e=n.width,f=e/a):(f=n.height,e=f*a)}e||(e=n.width),f||(f=n.height);var o=d(n.width,n.height,e,f,j);m.width=Math.min(o.width,e),m.height=Math.min(o.height,f);var p=m.getContext("2d");p.drawImage(n,Math.min(0,-o.marginX/2),Math.min(0,-o.marginY/2),o.width,o.height),l.resolve(m.toDataURL(h||"image/WebP",g||.934))}catch(q){l.reject(q)}},n.onerror=function(){l.reject()},n.src=a,l.promise};return c.dataUrltoBlob=function(a,b){for(var c=a.split(","),d=c[0].match(/:(.*?);/)[1],e=atob(c[1]),f=e.length,g=new Uint8Array(f);f--;)g[f]=e.charCodeAt(f);var h=new window.Blob([g],{type:d});return h.name=b,h},c.isResizeSupported=function(){var a=document.createElement("canvas");return window.atob&&a.getContext&&a.getContext("2d")&&window.Blob},c.isResizeSupported()&&Object.defineProperty(window.Blob.prototype,"name",{get:function(){return this.$ngfName},set:function(a){this.$ngfName=a},configurable:!0}),c.resize=function(a,d,f,g,h,i,j,k,l){if(0!==a.type.indexOf("image"))return c.emptyPromise(a);var m=b.defer();return c.dataUrl(a,!0).then(function(b){e(b,d,f,g,h||a.type,i,j,k).then(function(d){if("image/jpeg"===a.type&&l)try{d=c.restoreExif(b,d)}catch(e){setTimeout(function(){throw e},1)}m.resolve(c.dataUrltoBlob(d,a.name))},function(b){"resizeIf"===b&&m.resolve(a),m.reject()})},function(){m.reject()}),m.promise},c}]),function(){function a(a,c,d,e,f,g,h,i,j,k){function l(){return c.attr("disabled")||r("ngfDropDisabled",a)}function m(b,c){i.updateModel(e,d,a,r("ngfChange")||r("ngfDrop"),b,c)}function n(b,c){var e;try{e=c&&c.getData&&c.getData("text/html")}catch(f){}if(!i.shouldUpdateOn(b,d,a)||!e)return i.rejectPromise([]);var g=[];e.replace(/<(img src|img [^>]* src) *=\"([^\"]*)\"/gi,function(a,b,c){g.push(c)});var h=[],j=[];if(g.length){angular.forEach(g,function(a){h.push(i.urlToBlob(a).then(function(a){j.push(a)}))});var l=k.defer();return k.all(h).then(function(){l.resolve(j)},function(a){l.reject(a)}),l.promise}}function o(a,b,c,d){var e=r("ngfDragOverClass",a,{$event:c}),f="dragover";if(angular.isString(e))f=e;else if(e&&(e.delay&&(v=e.delay),e.accept||e.reject)){var g=c.dataTransfer.items;if(null!=g&&g.length)for(var h=e.pattern||r("ngfPattern",a,{$event:c}),j=g.length;j--;){if(!i.validatePattern(g[j],h)){f=e.reject;break}f=e.accept}else f=e.accept}d(f)}function p(b,c,e){function f(a,b){var c=k.defer();if(null!=a)if(a.isDirectory){var d=[i.emptyPromise()];if(l){var e={type:"directory"};e.name=e.path=(b||"")+a.name+a.name,m.push(e)}var h=a.createReader(),o=[],p=function(){h.readEntries(function(e){try{e.length?(o=o.concat(Array.prototype.slice.call(e||[],0)),p()):(angular.forEach(o.slice(0),function(c){m.length<=g&&j>=n&&d.push(f(c,(b?b:"")+a.name+"/"))}),k.all(d).then(function(){c.resolve()},function(a){c.reject(a)}))}catch(h){c.reject(h)}},function(a){c.reject(a)})};p()}else a.file(function(a){try{a.path=(b?b:"")+a.name,l&&(a=i.rename(a,a.path)),m.push(a),n+=a.size,c.resolve()}catch(d){c.reject(d)}},function(a){c.reject(a)});return c.promise}var g=i.getValidationAttr(d,a,"maxFiles")||Number.MAX_VALUE,j=i.getValidationAttr(d,a,"maxTotalSize")||Number.MAX_VALUE,l=r("ngfIncludeDir",a),m=[],n=0,o=[i.emptyPromise()],p=b.dataTransfer.items;if(p&&p.length>0&&"file"!==h.protocol())for(var q=0;q<p.length;q++){if(p[q].webkitGetAsEntry&&p[q].webkitGetAsEntry()&&p[q].webkitGetAsEntry().isDirectory){var s=p[q].webkitGetAsEntry();if(s.isDirectory&&!c)continue;null!=s&&o.push(f(s))}else{var t=p[q].getAsFile();null!=t&&(m.push(t),n+=t.size)}if(m.length>g||n>j||!e&&m.length>0)break}else{var u=b.dataTransfer.files;if(null!=u)for(var v=0;v<u.length;v++){var w=u.item(v);if((w.type||w.size>0)&&(m.push(w),n+=w.size),m.length>g||n>j||!e&&m.length>0)break}}var x=k.defer();return k.all(o).then(function(){if(e)x.resolve(m);else{for(var a=0;m.length&&"directory"===m[a].type;)a++;x.resolve([m[a]])}},function(a){x.reject(a)}),x.promise}var q=b(),r=function(a,b,c){return i.attrGetter(a,d,b,c)};if(r("dropAvailable")&&g(function(){a[r("dropAvailable")]?a[r("dropAvailable")].value=q:a[r("dropAvailable")]=q}),!q)return void(r("ngfHideOnDropNotAvailable",a)===!0&&c.css("display","none"));null==r("ngfSelect")&&i.registerModelChangeValidator(e,d,a);var s,t=null,u=f(r("ngfStopPropagation")),v=1;c[0].addEventListener("dragover",function(b){if(!l()&&i.shouldUpdateOn("drop",d,a)){if(b.preventDefault(),u(a)&&b.stopPropagation(),navigator.userAgent.indexOf("Chrome")>-1){var e=b.dataTransfer.effectAllowed;b.dataTransfer.dropEffect="move"===e||"linkMove"===e?"move":"copy"}g.cancel(t),s||(s="C",o(a,d,b,function(d){s=d,c.addClass(s),r("ngfDrag",a,{$isDragging:!0,$class:s,$event:b})}))}},!1),c[0].addEventListener("dragenter",function(b){!l()&&i.shouldUpdateOn("drop",d,a)&&(b.preventDefault(),u(a)&&b.stopPropagation())},!1),c[0].addEventListener("dragleave",function(b){!l()&&i.shouldUpdateOn("drop",d,a)&&(b.preventDefault(),u(a)&&b.stopPropagation(),t=g(function(){s&&c.removeClass(s),s=null,r("ngfDrag",a,{$isDragging:!1,$event:b})},v||100))},!1),c[0].addEventListener("drop",function(b){!l()&&i.shouldUpdateOn("drop",d,a)&&(b.preventDefault(),u(a)&&b.stopPropagation(),s&&c.removeClass(s),s=null,p(b,r("ngfAllowDir",a)!==!1,r("multiple")||r("ngfMultiple",a)).then(function(a){a.length?m(a,b):n("dropUrl",b.dataTransfer).then(function(a){m(a,b)})}))},!1),c[0].addEventListener("paste",function(b){if(navigator.userAgent.toLowerCase().indexOf("firefox")>-1&&r("ngfEnableFirefoxPaste",a)&&b.preventDefault(),!l()&&i.shouldUpdateOn("paste",d,a)){var c=[],e=b.clipboardData||b.originalEvent.clipboardData;if(e&&e.items)for(var f=0;f<e.items.length;f++)-1!==e.items[f].type.indexOf("image")&&c.push(e.items[f].getAsFile());c.length?m(c,b):n("pasteUrl",e).then(function(a){m(a,b)})}},!1),navigator.userAgent.toLowerCase().indexOf("firefox")>-1&&r("ngfEnableFirefoxPaste",a)&&(c.attr("contenteditable",!0),c.on("keypress",function(a){a.metaKey||a.ctrlKey||a.preventDefault()}))}function b(){var a=document.createElement("div");return"draggable"in a&&"ondrop"in a&&!/Edge\/12./i.test(navigator.userAgent)}ngFileUpload.directive("ngfDrop",["$parse","$timeout","$location","Upload","$http","$q",function(b,c,d,e,f,g){return{restrict:"AEC",require:"?ngModel",link:function(h,i,j,k){a(h,i,j,k,b,c,d,e,f,g)}}}]),ngFileUpload.directive("ngfNoFileDrop",function(){return function(a,c){b()&&c.css("display","none")}}),ngFileUpload.directive("ngfDropAvailable",["$parse","$timeout","Upload",function(a,c,d){return function(e,f,g){if(b()){var h=a(d.attrGetter("ngfDropAvailable",g));c(function(){h(e),h.assign&&h.assign(e,!0)})}}}])}(),ngFileUpload.service("UploadExif",["UploadResize","$q",function(a,b){function c(a,b,c,d){switch(b){case 2:return a.transform(-1,0,0,1,c,0);case 3:return a.transform(-1,0,0,-1,c,d);case 4:return a.transform(1,0,0,-1,0,d);case 5:return a.transform(0,1,1,0,0,0);case 6:return a.transform(0,1,-1,0,d,0);case 7:return a.transform(0,-1,-1,0,d,c);case 8:return a.transform(0,-1,1,0,0,c)}}function d(a){for(var b="",c=new Uint8Array(a),d=c.byteLength,e=0;d>e;e++)b+=String.fromCharCode(c[e]);return window.btoa(b)}var e=a;return e.isExifSupported=function(){return window.FileReader&&(new FileReader).readAsArrayBuffer&&e.isResizeSupported();
+
+},e.readOrientation=function(a){var c=b.defer(),d=new FileReader,e=a.slice(0,65536);return d.readAsArrayBuffer(e),d.onerror=function(a){return c.reject(a)},d.onload=function(a){var b={orientation:1},d=new DataView(this.result);if(65496!==d.getUint16(0,!1))return c.resolve(b);for(var e=d.byteLength,f=2;e>f;){var g=d.getUint16(f,!1);if(f+=2,65505===g){if(1165519206!==d.getUint32(f+=2,!1))return c.resolve(b);var h=18761===d.getUint16(f+=6,!1);f+=d.getUint32(f+4,h);var i=d.getUint16(f,h);f+=2;for(var j=0;i>j;j++)if(274===d.getUint16(f+12*j,h)){var k=d.getUint16(f+12*j+8,h);return k>=2&&8>=k&&(d.setUint16(f+12*j+8,1,h),b.fixedArrayBuffer=a.target.result),b.orientation=k,c.resolve(b)}}else{if(65280!==(65280&g))break;f+=d.getUint16(f,!1)}}return c.resolve(b)},c.promise},e.applyExifRotation=function(a){if(0!==a.type.indexOf("image/jpeg"))return e.emptyPromise(a);var f=b.defer();return e.readOrientation(a).then(function(b){return b.orientation<2||b.orientation>8?f.resolve(a):void e.dataUrl(a,!0).then(function(g){var h=document.createElement("canvas"),i=document.createElement("img");i.onload=function(){try{h.width=b.orientation>4?i.height:i.width,h.height=b.orientation>4?i.width:i.height;var g=h.getContext("2d");c(g,b.orientation,i.width,i.height),g.drawImage(i,0,0);var j=h.toDataURL(a.type||"image/WebP",.934);j=e.restoreExif(d(b.fixedArrayBuffer),j);var k=e.dataUrltoBlob(j,a.name);f.resolve(k)}catch(l){return f.reject(l)}},i.onerror=function(){f.reject()},i.src=g},function(a){f.reject(a)})},function(a){f.reject(a)}),f.promise},e.restoreExif=function(a,b){var c={};return c.KEY_STR="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",c.encode64=function(a){var b,c,d,e,f,g="",h="",i="",j=0;do b=a[j++],c=a[j++],h=a[j++],d=b>>2,e=(3&b)<<4|c>>4,f=(15&c)<<2|h>>6,i=63&h,isNaN(c)?f=i=64:isNaN(h)&&(i=64),g=g+this.KEY_STR.charAt(d)+this.KEY_STR.charAt(e)+this.KEY_STR.charAt(f)+this.KEY_STR.charAt(i),b=c=h="",d=e=f=i="";while(j<a.length);return g},c.restore=function(a,b){a.match("data:image/jpeg;base64,")&&(a=a.replace("data:image/jpeg;base64,",""));var c=this.decode64(a),d=this.slice2Segments(c),e=this.exifManipulation(b,d);return"data:image/jpeg;base64,"+this.encode64(e)},c.exifManipulation=function(a,b){var c=this.getExifArray(b),d=this.insertExif(a,c);return new Uint8Array(d)},c.getExifArray=function(a){for(var b,c=0;c<a.length;c++)if(b=a[c],255===b[0]&225===b[1])return b;return[]},c.insertExif=function(a,b){var c=a.replace("data:image/jpeg;base64,",""),d=this.decode64(c),e=d.indexOf(255,3),f=d.slice(0,e),g=d.slice(e),h=f;return h=h.concat(b),h=h.concat(g)},c.slice2Segments=function(a){for(var b=0,c=[];;){if(255===a[b]&218===a[b+1])break;if(255===a[b]&216===a[b+1])b+=2;else{var d=256*a[b+2]+a[b+3],e=b+d+2,f=a.slice(b,e);c.push(f),b=e}if(b>a.length)break}return c},c.decode64=function(a){var b,c,d,e,f,g="",h="",i=0,j=[],k=/[^A-Za-z0-9\+\/\=]/g;k.exec(a)&&console.log("There were invalid base64 characters in the input text.\nValid base64 characters are A-Z, a-z, 0-9, NaNExpect errors in decoding."),a=a.replace(/[^A-Za-z0-9\+\/\=]/g,"");do d=this.KEY_STR.indexOf(a.charAt(i++)),e=this.KEY_STR.indexOf(a.charAt(i++)),f=this.KEY_STR.indexOf(a.charAt(i++)),h=this.KEY_STR.indexOf(a.charAt(i++)),b=d<<2|e>>4,c=(15&e)<<4|f>>2,g=(3&f)<<6|h,j.push(b),64!==f&&j.push(c),64!==h&&j.push(g),b=c=g="",d=e=f=h="";while(i<a.length);return j},c.restore(a,b)},e}]);
 ;(function () {
 	'use strict';
 
@@ -47138,9 +47127,9 @@ var c=b.defer(),d=new FileReader,e=a.slice(0,65536);return d.readAsArrayBuffer(e
 }());
 
 /*!
- * angular-translate - v2.7.2 - 2015-06-01
- * http://github.com/angular-translate/angular-translate
- * Copyright (c) 2015 ; Licensed MIT
+ * angular-translate - v2.13.0 - 2016-10-30
+ * 
+ * Copyright (c) 2016 The angular-translate team, Pascal Precht; Licensed MIT
  */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -47165,6 +47154,14 @@ var c=b.defer(),d=new FileReader,e=a.slice(0,65536);return d.readAsArrayBuffer(e
  * @description
  * The main module which holds everything together.
  */
+runTranslate.$inject = ['$translate'];
+$translate.$inject = ['$STORAGE_KEY', '$windowProvider', '$translateSanitizationProvider', 'pascalprechtTranslateOverrider'];
+$translateDefaultInterpolation.$inject = ['$interpolate', '$translateSanitization'];
+translateDirective.$inject = ['$translate', '$interpolate', '$compile', '$parse', '$rootScope'];
+translateAttrDirective.$inject = ['$translate', '$rootScope'];
+translateCloakDirective.$inject = ['$translate', '$rootScope'];
+translateFilterFactory.$inject = ['$parse', '$translate'];
+$translationCache.$inject = ['$cacheFactory'];
 angular.module('pascalprecht.translate', ['ng'])
   .run(runTranslate);
 
@@ -47198,7 +47195,6 @@ function runTranslate($translate) {
     $translate.use($translate.preferredLanguage());
   }
 }
-runTranslate.$inject = ['$translate'];
 
 runTranslate.displayName = 'runTranslate';
 
@@ -47217,6 +47213,7 @@ function $translateSanitizationProvider () {
   'use strict';
 
   var $sanitize,
+      $sce,
       currentStrategy = null, // TODO change to either 'sanitize', 'escape' or ['sanitize', 'escapeParameters'] in 3.0.
       hasConfiguredStrategy = false,
       hasShownNoStrategyConfiguredWarning = false,
@@ -47253,27 +47250,44 @@ function $translateSanitizationProvider () {
    */
 
   strategies = {
-    sanitize: function (value, mode) {
+    sanitize: function (value, mode/*, context*/) {
       if (mode === 'text') {
         value = htmlSanitizeValue(value);
       }
       return value;
     },
-    escape: function (value, mode) {
+    escape: function (value, mode/*, context*/) {
       if (mode === 'text') {
         value = htmlEscapeValue(value);
       }
       return value;
     },
-    sanitizeParameters: function (value, mode) {
+    sanitizeParameters: function (value, mode/*, context*/) {
       if (mode === 'params') {
         value = mapInterpolationParameters(value, htmlSanitizeValue);
       }
       return value;
     },
-    escapeParameters: function (value, mode) {
+    escapeParameters: function (value, mode/*, context*/) {
       if (mode === 'params') {
         value = mapInterpolationParameters(value, htmlEscapeValue);
+      }
+      return value;
+    },
+    sce: function (value, mode, context) {
+      if (mode === 'text') {
+        value = htmlTrustValue(value);
+      } else if (mode === 'params') {
+        if (context !== 'filter') {
+          // do html escape in filter context #1101
+          value = mapInterpolationParameters(value, htmlEscapeValue);
+        }
+      }
+      return value;
+    },
+    sceParameters: function (value, mode/*, context*/) {
+      if (mode === 'params') {
+        value = mapInterpolationParameters(value, htmlTrustValue);
       }
       return value;
     }
@@ -47344,12 +47358,24 @@ function $translateSanitizationProvider () {
    */
   this.$get = ['$injector', '$log', function ($injector, $log) {
 
-    var applyStrategies = function (value, mode, selectedStrategies) {
+    var cachedStrategyMap = {};
+
+    var applyStrategies = function (value, mode, context, selectedStrategies) {
       angular.forEach(selectedStrategies, function (selectedStrategy) {
         if (angular.isFunction(selectedStrategy)) {
-          value = selectedStrategy(value, mode);
+          value = selectedStrategy(value, mode, context);
         } else if (angular.isFunction(strategies[selectedStrategy])) {
-          value = strategies[selectedStrategy](value, mode);
+          value = strategies[selectedStrategy](value, mode, context);
+        } else if (angular.isString(strategies[selectedStrategy])) {
+          if (!cachedStrategyMap[strategies[selectedStrategy]]) {
+            try {
+              cachedStrategyMap[strategies[selectedStrategy]] = $injector.get(strategies[selectedStrategy]);
+            } catch (e) {
+              cachedStrategyMap[strategies[selectedStrategy]] = function() {};
+              throw new Error('pascalprecht.translate.$translateSanitization: Unknown sanitization strategy: \'' + selectedStrategy + '\'');
+            }
+          }
+          value = cachedStrategyMap[strategies[selectedStrategy]](value, mode, context);
         } else {
           throw new Error('pascalprecht.translate.$translateSanitization: Unknown sanitization strategy: \'' + selectedStrategy + '\'');
         }
@@ -47367,6 +47393,9 @@ function $translateSanitizationProvider () {
 
     if ($injector.has('$sanitize')) {
       $sanitize = $injector.get('$sanitize');
+    }
+    if ($injector.has('$sce')) {
+      $sce = $injector.get('$sce');
     }
 
     return {
@@ -47397,14 +47426,15 @@ function $translateSanitizationProvider () {
        * @param {string|object} value The value which should be sanitized.
        * @param {string} mode The current sanitization mode, either 'params' or 'text'.
        * @param {string|StrategyFunction|array} [strategy] Optional custom strategy which should be used instead of the currently selected strategy.
+       * @param {string} [context] The context of this call: filter, service. Default is service
        * @returns {string|object} sanitized value
        */
-      sanitize: function (value, mode, strategy) {
+      sanitize: function (value, mode, strategy, context) {
         if (!currentStrategy) {
           showNoStrategyConfiguredWarning();
         }
 
-        if (arguments.length < 3) {
+        if (!strategy && strategy !== null) {
           strategy = currentStrategy;
         }
 
@@ -47412,8 +47442,12 @@ function $translateSanitizationProvider () {
           return value;
         }
 
+        if (!context) {
+          context = 'service';
+        }
+
         var selectedStrategies = angular.isArray(strategy) ? strategy : [strategy];
-        return applyStrategies(value, mode, selectedStrategies);
+        return applyStrategies(value, mode, context, selectedStrategies);
       }
     };
   }];
@@ -47431,13 +47465,38 @@ function $translateSanitizationProvider () {
     return $sanitize(value);
   };
 
-  var mapInterpolationParameters = function (value, iteratee) {
-    if (angular.isObject(value)) {
+  var htmlTrustValue = function (value) {
+    if (!$sce) {
+      throw new Error('pascalprecht.translate.$translateSanitization: Error cannot find $sce service.');
+    }
+    return $sce.trustAsHtml(value);
+  };
+
+  var mapInterpolationParameters = function (value, iteratee, stack) {
+    if (angular.isDate(value)) {
+      return value;
+    } else if (angular.isObject(value)) {
       var result = angular.isArray(value) ? [] : {};
 
+      if (!stack) {
+        stack = [];
+      } else {
+        if (stack.indexOf(value) > -1) {
+          throw new Error('pascalprecht.translate.$translateSanitization: Error cannot interpolate parameter due recursive object');
+        }
+      }
+
+      stack.push(value);
       angular.forEach(value, function (propertyValue, propertyKey) {
-        result[propertyKey] = mapInterpolationParameters(propertyValue, iteratee);
+
+        /* Skipping function properties. */
+        if (angular.isFunction(propertyValue)) {
+          return;
+        }
+
+        result[propertyKey] = mapInterpolationParameters(propertyValue, iteratee, stack);
       });
+      stack.splice(-1, 1); // remove last
 
       return result;
     } else if (angular.isNumber(value)) {
@@ -47458,56 +47517,64 @@ function $translateSanitizationProvider () {
  *
  */
 angular.module('pascalprecht.translate')
-.constant('pascalprechtTranslateOverrider', {})
-.provider('$translate', $translate);
+  .constant('pascalprechtTranslateOverrider', {})
+  .provider('$translate', $translate);
 
 function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvider, pascalprechtTranslateOverrider) {
 
   'use strict';
 
   var $translationTable = {},
-      $preferredLanguage,
-      $availableLanguageKeys = [],
-      $languageKeyAliases,
-      $fallbackLanguage,
-      $fallbackWasString,
-      $uses,
-      $nextLang,
-      $storageFactory,
-      $storageKey = $STORAGE_KEY,
-      $storagePrefix,
-      $missingTranslationHandlerFactory,
-      $interpolationFactory,
-      $interpolatorFactories = [],
-      $loaderFactory,
-      $cloakClassName = 'translate-cloak',
-      $loaderOptions,
-      $notFoundIndicatorLeft,
-      $notFoundIndicatorRight,
-      $postCompilingEnabled = false,
-      $forceAsyncReloadEnabled = false,
-      NESTED_OBJECT_DELIMITER = '.',
-      loaderCache,
-      directivePriority = 0,
-      statefulFilter = true,
-      uniformLanguageTagResolver = 'default',
-      languageTagResolver = {
-        'default': function (tag) {
-          return (tag || '').split('-').join('_');
-        },
-        java: function (tag) {
-          var temp = (tag || '').split('-').join('_');
-          var parts = temp.split('_');
-          return parts.length > 1 ? (parts[0].toLowerCase() + '_' + parts[1].toUpperCase()) : temp;
-        },
-        bcp47: function (tag) {
-          var temp = (tag || '').split('_').join('-');
-          var parts = temp.split('-');
-          return parts.length > 1 ? (parts[0].toLowerCase() + '-' + parts[1].toUpperCase()) : temp;
-        }
-      };
+    $preferredLanguage,
+    $availableLanguageKeys = [],
+    $languageKeyAliases,
+    $fallbackLanguage,
+    $fallbackWasString,
+    $uses,
+    $nextLang,
+    $storageFactory,
+    $storageKey = $STORAGE_KEY,
+    $storagePrefix,
+    $missingTranslationHandlerFactory,
+    $interpolationFactory,
+    $interpolatorFactories = [],
+    $loaderFactory,
+    $cloakClassName = 'translate-cloak',
+    $loaderOptions,
+    $notFoundIndicatorLeft,
+    $notFoundIndicatorRight,
+    $postCompilingEnabled = false,
+    $forceAsyncReloadEnabled = false,
+    $nestedObjectDelimeter = '.',
+    $isReady = false,
+    $keepContent = false,
+    loaderCache,
+    directivePriority = 0,
+    statefulFilter = true,
+    postProcessFn,
+    uniformLanguageTagResolver = 'default',
+    languageTagResolver = {
+      'default' : function (tag) {
+        return (tag || '').split('-').join('_');
+      },
+      java : function (tag) {
+        var temp = (tag || '').split('-').join('_');
+        var parts = temp.split('_');
+        return parts.length > 1 ? (parts[0].toLowerCase() + '_' + parts[1].toUpperCase()) : temp;
+      },
+      bcp47 : function (tag) {
+        var temp = (tag || '').split('_').join('-');
+        var parts = temp.split('-');
+        return parts.length > 1 ? (parts[0].toLowerCase() + '-' + parts[1].toUpperCase()) : temp;
+      },
+      'iso639-1' : function (tag) {
+        var temp = (tag || '').split('_').join('-');
+        var parts = temp.split('-');
+        return parts[0].toLowerCase();
+      }
+    };
 
-  var version = '2.7.2';
+  var version = '2.13.0';
 
   // tries to determine the browsers language
   var getFirstBrowserLanguage = function () {
@@ -47518,9 +47585,9 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
     }
 
     var nav = $windowProvider.$get().navigator,
-        browserLanguagePropertyKeys = ['language', 'browserLanguage', 'systemLanguage', 'userLanguage'],
-        i,
-        language;
+      browserLanguagePropertyKeys = ['language', 'browserLanguage', 'systemLanguage', 'userLanguage'],
+      i,
+      language;
 
     // support for HTML 5.1 "navigator.languages"
     if (angular.isArray(nav.languages)) {
@@ -47566,7 +47633,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
    *
    * @returns {int} Index of search element.
    */
-  var indexOf = function(array, searchElement) {
+  var indexOf = function (array, searchElement) {
     for (var i = 0, len = array.length; i < len; i++) {
       if (array[i] === searchElement) {
         return i;
@@ -47584,21 +47651,25 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
    *
    * @returns {string} The string stripped of whitespace from both ends
    */
-  var trim = function() {
+  var trim = function () {
     return this.toString().replace(/^\s+|\s+$/g, '');
   };
 
   var negotiateLocale = function (preferred) {
+    if (!preferred) {
+      return;
+    }
 
     var avail = [],
-        locale = angular.lowercase(preferred),
-        i = 0,
-        n = $availableLanguageKeys.length;
+      locale = angular.lowercase(preferred),
+      i = 0,
+      n = $availableLanguageKeys.length;
 
     for (; i < n; i++) {
       avail.push(angular.lowercase($availableLanguageKeys[i]));
     }
 
+    // Check for an exact match in our list of available keys
     if (indexOf(avail, locale) > -1) {
       return preferred;
     }
@@ -47606,32 +47677,33 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
     if ($languageKeyAliases) {
       var alias;
       for (var langKeyAlias in $languageKeyAliases) {
-        var hasWildcardKey = false;
-        var hasExactKey = Object.prototype.hasOwnProperty.call($languageKeyAliases, langKeyAlias) &&
-          angular.lowercase(langKeyAlias) === angular.lowercase(preferred);
+        if ($languageKeyAliases.hasOwnProperty(langKeyAlias)) {
+          var hasWildcardKey = false;
+          var hasExactKey = Object.prototype.hasOwnProperty.call($languageKeyAliases, langKeyAlias) &&
+            angular.lowercase(langKeyAlias) === angular.lowercase(preferred);
 
-        if (langKeyAlias.slice(-1) === '*') {
-          hasWildcardKey = langKeyAlias.slice(0, -1) === preferred.slice(0, langKeyAlias.length-1);
-        }
-        if (hasExactKey || hasWildcardKey) {
-          alias = $languageKeyAliases[langKeyAlias];
-          if (indexOf(avail, angular.lowercase(alias)) > -1) {
-            return alias;
+          if (langKeyAlias.slice(-1) === '*') {
+            hasWildcardKey = langKeyAlias.slice(0, -1) === preferred.slice(0, langKeyAlias.length - 1);
+          }
+          if (hasExactKey || hasWildcardKey) {
+            alias = $languageKeyAliases[langKeyAlias];
+            if (indexOf(avail, angular.lowercase(alias)) > -1) {
+              return alias;
+            }
           }
         }
       }
     }
 
-    if (preferred) {
-      var parts = preferred.split('_');
+    // Check for a language code without region
+    var parts = preferred.split('_');
 
-      if (parts.length > 1 && indexOf(avail, angular.lowercase(parts[0])) > -1) {
-        return parts[0];
-      }
+    if (parts.length > 1 && indexOf(avail, angular.lowercase(parts[0])) > -1) {
+      return parts[0];
     }
 
-    // If everything fails, just return the preferred, unchanged.
-    return preferred;
+    // If everything fails, return undefined.
+    return;
   };
 
   /**
@@ -47666,7 +47738,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
    * registered with no language key. Invoking it with a language key returns the
    * related translation table.
    *
-   * @param {string} key A language key.
+   * @param {string} langKey A language key.
    * @param {object} translationTable A plain old JavaScript object that represents a translation table.
    *
    */
@@ -47712,6 +47784,26 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
   };
 
   /**
+   * @ngdoc function
+   * @name pascalprecht.translate.$translateProvider#nestedObjectDelimeter
+   * @methodOf pascalprecht.translate.$translateProvider
+   *
+   * @description
+   *
+   * Let's you change the delimiter for namespaced translations.
+   * Default delimiter is `.`.
+   *
+   * @param {string} delimiter namespace separator
+   */
+  this.nestedObjectDelimeter = function (delimiter) {
+    if (!delimiter) {
+      return $nestedObjectDelimeter;
+    }
+    $nestedObjectDelimeter = delimiter;
+    return this;
+  };
+
+  /**
    * @name flatObject
    * @private
    *
@@ -47736,10 +47828,10 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
       if (angular.isObject(val)) {
         flatObject(val, path.concat(key), result, key);
       } else {
-        keyWithPath = path.length ? ('' + path.join(NESTED_OBJECT_DELIMITER) + NESTED_OBJECT_DELIMITER + key) : key;
-        if(path.length && key === prevKey){
+        keyWithPath = path.length ? ('' + path.join($nestedObjectDelimeter) + $nestedObjectDelimeter + key) : key;
+        if (path.length && key === prevKey) {
           // Create shortcut path (foo.bar == foo.bar.bar)
-          keyWithShortPath = '' + path.join(NESTED_OBJECT_DELIMITER);
+          keyWithShortPath = '' + path.join($nestedObjectDelimeter);
           // Link it to original path
           result[keyWithShortPath] = '@:' + keyWithPath;
         }
@@ -47810,7 +47902,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
     return this;
   };
 
- /**
+  /**
    * @ngdoc function
    * @name pascalprecht.translate.$translateProvider#preferredLanguage
    * @methodOf pascalprecht.translate.$translateProvider
@@ -47821,12 +47913,13 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
    * only that it says which language to **prefer**.
    *
    * @param {string} langKey A language key.
-   *
    */
-  this.preferredLanguage = function(langKey) {
-    setupPreferredLanguage(langKey);
-    return this;
-
+  this.preferredLanguage = function (langKey) {
+    if (langKey) {
+      setupPreferredLanguage(langKey);
+      return this;
+    }
+    return $preferredLanguage;
   };
   var setupPreferredLanguage = function (langKey) {
     if (langKey) {
@@ -47919,12 +48012,12 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
     if (langKey) {
       if (angular.isString(langKey)) {
         $fallbackWasString = true;
-        $fallbackLanguage = [ langKey ];
+        $fallbackLanguage = [langKey];
       } else if (angular.isArray(langKey)) {
         $fallbackWasString = false;
         $fallbackLanguage = langKey;
       }
-      if (angular.isString($preferredLanguage)  && indexOf($fallbackLanguage, $preferredLanguage) < 0) {
+      if (angular.isString($preferredLanguage) && indexOf($fallbackLanguage, $preferredLanguage) < 0) {
         $fallbackLanguage.push($preferredLanguage);
       }
 
@@ -47964,7 +48057,21 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
     return $uses;
   };
 
- /**
+  /**
+   * @ngdoc function
+   * @name pascalprecht.translate.$translateProvider#resolveClientLocale
+   * @methodOf pascalprecht.translate.$translateProvider
+   *
+   * @description
+   * This returns the current browser/client's language key. The result is processed with the configured uniform tag resolver.
+   *
+   * @returns {string} the current client/browser language key
+   */
+  this.resolveClientLocale = function () {
+    return getLocale();
+  };
+
+  /**
    * @ngdoc function
    * @name pascalprecht.translate.$translateProvider#storageKey
    * @methodOf pascalprecht.translate.$translateProvider
@@ -47974,7 +48081,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
    *
    * @param {string} key A key for the storage.
    */
-  var storageKey = function(key) {
+  var storageKey = function (key) {
     if (!key) {
       if ($storagePrefix) {
         return $storagePrefix + $storageKey;
@@ -47999,7 +48106,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
    * @param {Object=} options Optional configuration object
    */
   this.useUrlLoader = function (url, options) {
-    return this.useLoader('$translateUrlLoader', angular.extend({ url: url }, options));
+    return this.useLoader('$translateUrlLoader', angular.extend({url : url}, options));
   };
 
   /**
@@ -48230,7 +48337,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
       options = {};
     } else if (angular.isString(options)) {
       options = {
-        standard: options
+        standard : options
       };
     }
 
@@ -48265,7 +48372,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
     if (!$availableLanguageKeys.length) {
       $preferredLanguage = locale;
     } else {
-      $preferredLanguage = negotiateLocale(locale);
+      $preferredLanguage = negotiateLocale(locale) || locale;
     }
 
     return this;
@@ -48305,7 +48412,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
    *
    * @description
    * Registers a cache for internal $http based loaders.
-   * {@link pascalprecht.translate.$translateProvider#determinePreferredLanguage determinePreferredLanguage}.
+   * {@link pascalprecht.translate.$translationCache $translationCache}.
    * When false the cache will be disabled (default). When true or undefined
    * the cache will be a default (see $cacheFactory). When an object it will
    * be treat as a cache object itself: the usage is $http({cache: cache})
@@ -48377,6 +48484,48 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
   };
 
   /**
+   * @ngdoc function
+   * @name pascalprecht.translate.$translateProvider#postProcess
+   * @methodOf pascalprecht.translate.$translateProvider
+   *
+   * @description
+   * The post processor will be intercept right after the translation result. It can modify the result.
+   *
+   * @param {object} fn Function or service name (string) to be called after the translation value has been set / resolved. The function itself will enrich every value being processed and then continue the normal resolver process
+   */
+  this.postProcess = function (fn) {
+    if (fn) {
+      postProcessFn = fn;
+    } else {
+      postProcessFn = undefined;
+    }
+    return this;
+  };
+
+  /**
+   * @ngdoc function
+   * @name pascalprecht.translate.$translateProvider#keepContent
+   * @methodOf pascalprecht.translate.$translateProvider
+   *
+   * @description
+   * If keepContent is set to true than translate directive will always use innerHTML
+   * as a default translation
+   *
+   * Example:
+   * <pre>
+   *  app.config(function ($translateProvider) {
+   *    $translateProvider.keepContent(true);
+   *  });
+   * </pre>
+   *
+   * @param {boolean} value - valid values are true or false
+   */
+  this.keepContent = function (value) {
+    $keepContent = !(!value);
+    return this;
+  };
+
+  /**
    * @ngdoc object
    * @name pascalprecht.translate.$translate
    * @requires $interpolate
@@ -48400,1069 +48549,1337 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
    *                                     is the translation id and the value the translation.
    * @param {object=} interpolateParams An object hash for dynamic values
    * @param {string} interpolationId The id of the interpolation to use
+   * @param {string} defaultTranslationText the optional default translation text that is written as
+   *                                        as default text in case it is not found in any configured language
+   * @param {string} forceLanguage A language to be used instead of the current language
    * @returns {object} promise
    */
-  this.$get = [
-    '$log',
-    '$injector',
-    '$rootScope',
-    '$q',
-    function ($log, $injector, $rootScope, $q) {
+  this.$get = ['$log', '$injector', '$rootScope', '$q', function ($log, $injector, $rootScope, $q) {
 
-      var Storage,
-          defaultInterpolator = $injector.get($interpolationFactory || '$translateDefaultInterpolation'),
-          pendingLoader = false,
-          interpolatorHashMap = {},
-          langPromises = {},
-          fallbackIndex,
-          startFallbackIteration;
+    var Storage,
+      defaultInterpolator = $injector.get($interpolationFactory || '$translateDefaultInterpolation'),
+      pendingLoader = false,
+      interpolatorHashMap = {},
+      langPromises = {},
+      fallbackIndex,
+      startFallbackIteration;
 
-      var $translate = function (translationId, interpolateParams, interpolationId, defaultTranslationText) {
+    var $translate = function (translationId, interpolateParams, interpolationId, defaultTranslationText, forceLanguage) {
+      if (!$uses && $preferredLanguage) {
+        $uses = $preferredLanguage;
+      }
+      var uses = (forceLanguage && forceLanguage !== $uses) ? // we don't want to re-negotiate $uses
+        (negotiateLocale(forceLanguage) || forceLanguage) : $uses;
 
-        // Duck detection: If the first argument is an array, a bunch of translations was requested.
-        // The result is an object.
-        if (angular.isArray(translationId)) {
-          // Inspired by Q.allSettled by Kris Kowal
-          // https://github.com/kriskowal/q/blob/b0fa72980717dc202ffc3cbf03b936e10ebbb9d7/q.js#L1553-1563
-          // This transforms all promises regardless resolved or rejected
-          var translateAll = function (translationIds) {
-            var results = {}; // storing the actual results
-            var promises = []; // promises to wait for
-            // Wraps the promise a) being always resolved and b) storing the link id->value
-            var translate = function (translationId) {
-              var deferred = $q.defer();
-              var regardless = function (value) {
-                results[translationId] = value;
-                deferred.resolve([translationId, value]);
-              };
-              // we don't care whether the promise was resolved or rejected; just store the values
-              $translate(translationId, interpolateParams, interpolationId, defaultTranslationText).then(regardless, regardless);
-              return deferred.promise;
+      // Check forceLanguage is present
+      if (forceLanguage) {
+        loadTranslationsIfMissing(forceLanguage);
+      }
+
+      // Duck detection: If the first argument is an array, a bunch of translations was requested.
+      // The result is an object.
+      if (angular.isArray(translationId)) {
+        // Inspired by Q.allSettled by Kris Kowal
+        // https://github.com/kriskowal/q/blob/b0fa72980717dc202ffc3cbf03b936e10ebbb9d7/q.js#L1553-1563
+        // This transforms all promises regardless resolved or rejected
+        var translateAll = function (translationIds) {
+          var results = {}; // storing the actual results
+          var promises = []; // promises to wait for
+          // Wraps the promise a) being always resolved and b) storing the link id->value
+          var translate = function (translationId) {
+            var deferred = $q.defer();
+            var regardless = function (value) {
+              results[translationId] = value;
+              deferred.resolve([translationId, value]);
             };
-            for (var i = 0, c = translationIds.length; i < c; i++) {
-              promises.push(translate(translationIds[i]));
-            }
-            // wait for all (including storing to results)
-            return $q.all(promises).then(function () {
-              // return the results
-              return results;
-            });
+            // we don't care whether the promise was resolved or rejected; just store the values
+            $translate(translationId, interpolateParams, interpolationId, defaultTranslationText, forceLanguage).then(regardless, regardless);
+            return deferred.promise;
           };
-          return translateAll(translationId);
-        }
-
-        var deferred = $q.defer();
-
-        // trim off any whitespace
-        if (translationId) {
-          translationId = trim.apply(translationId);
-        }
-
-        var promiseToWaitFor = (function () {
-          var promise = $preferredLanguage ?
-            langPromises[$preferredLanguage] :
-            langPromises[$uses];
-
-          fallbackIndex = 0;
-
-          if ($storageFactory && !promise) {
-            // looks like there's no pending promise for $preferredLanguage or
-            // $uses. Maybe there's one pending for a language that comes from
-            // storage.
-            var langKey = Storage.get($storageKey);
-            promise = langPromises[langKey];
-
-            if ($fallbackLanguage && $fallbackLanguage.length) {
-                var index = indexOf($fallbackLanguage, langKey);
-                // maybe the language from storage is also defined as fallback language
-                // we increase the fallback language index to not search in that language
-                // as fallback, since it's probably the first used language
-                // in that case the index starts after the first element
-                fallbackIndex = (index === 0) ? 1 : 0;
-
-                // but we can make sure to ALWAYS fallback to preferred language at least
-                if (indexOf($fallbackLanguage, $preferredLanguage) < 0) {
-                  $fallbackLanguage.push($preferredLanguage);
-                }
-            }
+          for (var i = 0, c = translationIds.length; i < c; i++) {
+            promises.push(translate(translationIds[i]));
           }
-          return promise;
-        }());
-
-        if (!promiseToWaitFor) {
-          // no promise to wait for? okay. Then there's no loader registered
-          // nor is a one pending for language that comes from storage.
-          // We can just translate.
-          determineTranslation(translationId, interpolateParams, interpolationId, defaultTranslationText).then(deferred.resolve, deferred.reject);
-        } else {
-          var promiseResolved = function () {
-            determineTranslation(translationId, interpolateParams, interpolationId, defaultTranslationText).then(deferred.resolve, deferred.reject);
-          };
-          promiseResolved.displayName = 'promiseResolved';
-
-          promiseToWaitFor['finally'](promiseResolved, deferred.reject);
-        }
-        return deferred.promise;
-      };
-
-      /**
-       * @name applyNotFoundIndicators
-       * @private
-       *
-       * @description
-       * Applies not fount indicators to given translation id, if needed.
-       * This function gets only executed, if a translation id doesn't exist,
-       * which is why a translation id is expected as argument.
-       *
-       * @param {string} translationId Translation id.
-       * @returns {string} Same as given translation id but applied with not found
-       * indicators.
-       */
-      var applyNotFoundIndicators = function (translationId) {
-        // applying notFoundIndicators
-        if ($notFoundIndicatorLeft) {
-          translationId = [$notFoundIndicatorLeft, translationId].join(' ');
-        }
-        if ($notFoundIndicatorRight) {
-          translationId = [translationId, $notFoundIndicatorRight].join(' ');
-        }
-        return translationId;
-      };
-
-      /**
-       * @name useLanguage
-       * @private
-       *
-       * @description
-       * Makes actual use of a language by setting a given language key as used
-       * language and informs registered interpolators to also use the given
-       * key as locale.
-       *
-       * @param {key} Locale key.
-       */
-      var useLanguage = function (key) {
-        $uses = key;
-        $rootScope.$emit('$translateChangeSuccess', {language: key});
-
-        if ($storageFactory) {
-          Storage.put($translate.storageKey(), $uses);
-        }
-        // inform default interpolator
-        defaultInterpolator.setLocale($uses);
-
-        var eachInterpolator = function (interpolator, id) {
-          interpolatorHashMap[id].setLocale($uses);
-        };
-        eachInterpolator.displayName = 'eachInterpolatorLocaleSetter';
-
-        // inform all others too!
-        angular.forEach(interpolatorHashMap, eachInterpolator);
-        $rootScope.$emit('$translateChangeEnd', {language: key});
-      };
-
-      /**
-       * @name loadAsync
-       * @private
-       *
-       * @description
-       * Kicks of registered async loader using `$injector` and applies existing
-       * loader options. When resolved, it updates translation tables accordingly
-       * or rejects with given language key.
-       *
-       * @param {string} key Language key.
-       * @return {Promise} A promise.
-       */
-      var loadAsync = function (key) {
-        if (!key) {
-          throw 'No language key specified for loading.';
-        }
-
-        var deferred = $q.defer();
-
-        $rootScope.$emit('$translateLoadingStart', {language: key});
-        pendingLoader = true;
-
-        var cache = loaderCache;
-        if (typeof(cache) === 'string') {
-          // getting on-demand instance of loader
-          cache = $injector.get(cache);
-        }
-
-        var loaderOptions = angular.extend({}, $loaderOptions, {
-          key: key,
-          $http: angular.extend({}, {
-            cache: cache
-          }, $loaderOptions.$http)
-        });
-
-        var onLoaderSuccess = function (data) {
-          var translationTable = {};
-          $rootScope.$emit('$translateLoadingSuccess', {language: key});
-
-          if (angular.isArray(data)) {
-            angular.forEach(data, function (table) {
-              angular.extend(translationTable, flatObject(table));
-            });
-          } else {
-            angular.extend(translationTable, flatObject(data));
-          }
-          pendingLoader = false;
-          deferred.resolve({
-            key: key,
-            table: translationTable
+          // wait for all (including storing to results)
+          return $q.all(promises).then(function () {
+            // return the results
+            return results;
           });
-          $rootScope.$emit('$translateLoadingEnd', {language: key});
         };
-        onLoaderSuccess.displayName = 'onLoaderSuccess';
+        return translateAll(translationId);
+      }
 
-        var onLoaderError = function (key) {
-          $rootScope.$emit('$translateLoadingError', {language: key});
-          deferred.reject(key);
-          $rootScope.$emit('$translateLoadingEnd', {language: key});
-        };
-        onLoaderError.displayName = 'onLoaderError';
+      var deferred = $q.defer();
 
-        $injector.get($loaderFactory)(loaderOptions)
-          .then(onLoaderSuccess, onLoaderError);
+      // trim off any whitespace
+      if (translationId) {
+        translationId = trim.apply(translationId);
+      }
 
-        return deferred.promise;
-      };
+      var promiseToWaitFor = (function () {
+        var promise = $preferredLanguage ?
+          langPromises[$preferredLanguage] :
+          langPromises[uses];
 
-      if ($storageFactory) {
-        Storage = $injector.get($storageFactory);
+        fallbackIndex = 0;
 
-        if (!Storage.get || !Storage.put) {
-          throw new Error('Couldn\'t use storage \'' + $storageFactory + '\', missing get() or put() method!');
+        if ($storageFactory && !promise) {
+          // looks like there's no pending promise for $preferredLanguage or
+          // $uses. Maybe there's one pending for a language that comes from
+          // storage.
+          var langKey = Storage.get($storageKey);
+          promise = langPromises[langKey];
+
+          if ($fallbackLanguage && $fallbackLanguage.length) {
+            var index = indexOf($fallbackLanguage, langKey);
+            // maybe the language from storage is also defined as fallback language
+            // we increase the fallback language index to not search in that language
+            // as fallback, since it's probably the first used language
+            // in that case the index starts after the first element
+            fallbackIndex = (index === 0) ? 1 : 0;
+
+            // but we can make sure to ALWAYS fallback to preferred language at least
+            if (indexOf($fallbackLanguage, $preferredLanguage) < 0) {
+              $fallbackLanguage.push($preferredLanguage);
+            }
+          }
         }
-      }
+        return promise;
+      }());
 
-      // if we have additional interpolations that were added via
-      // $translateProvider.addInterpolation(), we have to map'em
-      if ($interpolatorFactories.length) {
-        var eachInterpolationFactory = function (interpolatorFactory) {
-          var interpolator = $injector.get(interpolatorFactory);
-          // setting initial locale for each interpolation service
-          interpolator.setLocale($preferredLanguage || $uses);
-          // make'em recognizable through id
-          interpolatorHashMap[interpolator.getInterpolationIdentifier()] = interpolator;
+      if (!promiseToWaitFor) {
+        // no promise to wait for? okay. Then there's no loader registered
+        // nor is a one pending for language that comes from storage.
+        // We can just translate.
+        determineTranslation(translationId, interpolateParams, interpolationId, defaultTranslationText, uses).then(deferred.resolve, deferred.reject);
+      } else {
+        var promiseResolved = function () {
+          // $uses may have changed while waiting
+          if (!forceLanguage) {
+            uses = $uses;
+          }
+          determineTranslation(translationId, interpolateParams, interpolationId, defaultTranslationText, uses).then(deferred.resolve, deferred.reject);
         };
-        eachInterpolationFactory.displayName = 'interpolationFactoryAdder';
+        promiseResolved.displayName = 'promiseResolved';
 
-        angular.forEach($interpolatorFactories, eachInterpolationFactory);
+        promiseToWaitFor['finally'](promiseResolved);
+      }
+      return deferred.promise;
+    };
+
+    /**
+     * @name applyNotFoundIndicators
+     * @private
+     *
+     * @description
+     * Applies not fount indicators to given translation id, if needed.
+     * This function gets only executed, if a translation id doesn't exist,
+     * which is why a translation id is expected as argument.
+     *
+     * @param {string} translationId Translation id.
+     * @returns {string} Same as given translation id but applied with not found
+     * indicators.
+     */
+    var applyNotFoundIndicators = function (translationId) {
+      // applying notFoundIndicators
+      if ($notFoundIndicatorLeft) {
+        translationId = [$notFoundIndicatorLeft, translationId].join(' ');
+      }
+      if ($notFoundIndicatorRight) {
+        translationId = [translationId, $notFoundIndicatorRight].join(' ');
+      }
+      return translationId;
+    };
+
+    /**
+     * @name useLanguage
+     * @private
+     *
+     * @description
+     * Makes actual use of a language by setting a given language key as used
+     * language and informs registered interpolators to also use the given
+     * key as locale.
+     *
+     * @param {string} key Locale key.
+     */
+    var useLanguage = function (key) {
+      $uses = key;
+
+      // make sure to store new language key before triggering success event
+      if ($storageFactory) {
+        Storage.put($translate.storageKey(), $uses);
       }
 
-      /**
-       * @name getTranslationTable
-       * @private
-       *
-       * @description
-       * Returns a promise that resolves to the translation table
-       * or is rejected if an error occurred.
-       *
-       * @param langKey
-       * @returns {Q.promise}
-       */
-      var getTranslationTable = function (langKey) {
-        var deferred = $q.defer();
-        if (Object.prototype.hasOwnProperty.call($translationTable, langKey)) {
-          deferred.resolve($translationTable[langKey]);
-        } else if (langPromises[langKey]) {
-          var onResolve = function (data) {
-            translations(data.key, data.table);
-            deferred.resolve(data.table);
-          };
-          onResolve.displayName = 'translationTableResolver';
-          langPromises[langKey].then(onResolve, deferred.reject);
+      $rootScope.$emit('$translateChangeSuccess', {language : key});
+
+      // inform default interpolator
+      defaultInterpolator.setLocale($uses);
+
+      var eachInterpolator = function (interpolator, id) {
+        interpolatorHashMap[id].setLocale($uses);
+      };
+      eachInterpolator.displayName = 'eachInterpolatorLocaleSetter';
+
+      // inform all others too!
+      angular.forEach(interpolatorHashMap, eachInterpolator);
+      $rootScope.$emit('$translateChangeEnd', {language : key});
+    };
+
+    /**
+     * @name loadAsync
+     * @private
+     *
+     * @description
+     * Kicks of registered async loader using `$injector` and applies existing
+     * loader options. When resolved, it updates translation tables accordingly
+     * or rejects with given language key.
+     *
+     * @param {string} key Language key.
+     * @return {Promise} A promise.
+     */
+    var loadAsync = function (key) {
+      if (!key) {
+        throw 'No language key specified for loading.';
+      }
+
+      var deferred = $q.defer();
+
+      $rootScope.$emit('$translateLoadingStart', {language : key});
+      pendingLoader = true;
+
+      var cache = loaderCache;
+      if (typeof(cache) === 'string') {
+        // getting on-demand instance of loader
+        cache = $injector.get(cache);
+      }
+
+      var loaderOptions = angular.extend({}, $loaderOptions, {
+        key : key,
+        $http : angular.extend({}, {
+          cache : cache
+        }, $loaderOptions.$http)
+      });
+
+      var onLoaderSuccess = function (data) {
+        var translationTable = {};
+        $rootScope.$emit('$translateLoadingSuccess', {language : key});
+
+        if (angular.isArray(data)) {
+          angular.forEach(data, function (table) {
+            angular.extend(translationTable, flatObject(table));
+          });
+        } else {
+          angular.extend(translationTable, flatObject(data));
+        }
+        pendingLoader = false;
+        deferred.resolve({
+          key : key,
+          table : translationTable
+        });
+        $rootScope.$emit('$translateLoadingEnd', {language : key});
+      };
+      onLoaderSuccess.displayName = 'onLoaderSuccess';
+
+      var onLoaderError = function (key) {
+        $rootScope.$emit('$translateLoadingError', {language : key});
+        deferred.reject(key);
+        $rootScope.$emit('$translateLoadingEnd', {language : key});
+      };
+      onLoaderError.displayName = 'onLoaderError';
+
+      $injector.get($loaderFactory)(loaderOptions)
+        .then(onLoaderSuccess, onLoaderError);
+
+      return deferred.promise;
+    };
+
+    if ($storageFactory) {
+      Storage = $injector.get($storageFactory);
+
+      if (!Storage.get || !Storage.put) {
+        throw new Error('Couldn\'t use storage \'' + $storageFactory + '\', missing get() or put() method!');
+      }
+    }
+
+    // if we have additional interpolations that were added via
+    // $translateProvider.addInterpolation(), we have to map'em
+    if ($interpolatorFactories.length) {
+      var eachInterpolationFactory = function (interpolatorFactory) {
+        var interpolator = $injector.get(interpolatorFactory);
+        // setting initial locale for each interpolation service
+        interpolator.setLocale($preferredLanguage || $uses);
+        // make'em recognizable through id
+        interpolatorHashMap[interpolator.getInterpolationIdentifier()] = interpolator;
+      };
+      eachInterpolationFactory.displayName = 'interpolationFactoryAdder';
+
+      angular.forEach($interpolatorFactories, eachInterpolationFactory);
+    }
+
+    /**
+     * @name getTranslationTable
+     * @private
+     *
+     * @description
+     * Returns a promise that resolves to the translation table
+     * or is rejected if an error occurred.
+     *
+     * @param langKey
+     * @returns {Q.promise}
+     */
+    var getTranslationTable = function (langKey) {
+      var deferred = $q.defer();
+      if (Object.prototype.hasOwnProperty.call($translationTable, langKey)) {
+        deferred.resolve($translationTable[langKey]);
+      } else if (langPromises[langKey]) {
+        var onResolve = function (data) {
+          translations(data.key, data.table);
+          deferred.resolve(data.table);
+        };
+        onResolve.displayName = 'translationTableResolver';
+        langPromises[langKey].then(onResolve, deferred.reject);
+      } else {
+        deferred.reject();
+      }
+      return deferred.promise;
+    };
+
+    /**
+     * @name getFallbackTranslation
+     * @private
+     *
+     * @description
+     * Returns a promise that will resolve to the translation
+     * or be rejected if no translation was found for the language.
+     * This function is currently only used for fallback language translation.
+     *
+     * @param langKey The language to translate to.
+     * @param translationId
+     * @param interpolateParams
+     * @param Interpolator
+     * @returns {Q.promise}
+     */
+    var getFallbackTranslation = function (langKey, translationId, interpolateParams, Interpolator) {
+      var deferred = $q.defer();
+
+      var onResolve = function (translationTable) {
+        if (Object.prototype.hasOwnProperty.call(translationTable, translationId)) {
+          Interpolator.setLocale(langKey);
+          var translation = translationTable[translationId];
+          if (translation.substr(0, 2) === '@:') {
+            getFallbackTranslation(langKey, translation.substr(2), interpolateParams, Interpolator)
+              .then(deferred.resolve, deferred.reject);
+          } else {
+            var interpolatedValue = Interpolator.interpolate(translationTable[translationId], interpolateParams, 'service');
+            interpolatedValue = applyPostProcessing(translationId, translationTable[translationId], interpolatedValue, interpolateParams, langKey);
+
+            deferred.resolve(interpolatedValue);
+
+          }
+          Interpolator.setLocale($uses);
         } else {
           deferred.reject();
         }
-        return deferred.promise;
       };
+      onResolve.displayName = 'fallbackTranslationResolver';
 
-      /**
-       * @name getFallbackTranslation
-       * @private
-       *
-       * @description
-       * Returns a promise that will resolve to the translation
-       * or be rejected if no translation was found for the language.
-       * This function is currently only used for fallback language translation.
-       *
-       * @param langKey The language to translate to.
-       * @param translationId
-       * @param interpolateParams
-       * @param Interpolator
-       * @returns {Q.promise}
-       */
-      var getFallbackTranslation = function (langKey, translationId, interpolateParams, Interpolator) {
-        var deferred = $q.defer();
+      getTranslationTable(langKey).then(onResolve, deferred.reject);
 
-        var onResolve = function (translationTable) {
-          if (Object.prototype.hasOwnProperty.call(translationTable, translationId)) {
-            Interpolator.setLocale(langKey);
-            var translation = translationTable[translationId];
-            if (translation.substr(0, 2) === '@:') {
-              getFallbackTranslation(langKey, translation.substr(2), interpolateParams, Interpolator)
-                .then(deferred.resolve, deferred.reject);
-            } else {
-              deferred.resolve(Interpolator.interpolate(translationTable[translationId], interpolateParams));
-            }
-            Interpolator.setLocale($uses);
+      return deferred.promise;
+    };
+
+    /**
+     * @name getFallbackTranslationInstant
+     * @private
+     *
+     * @description
+     * Returns a translation
+     * This function is currently only used for fallback language translation.
+     *
+     * @param langKey The language to translate to.
+     * @param translationId
+     * @param interpolateParams
+     * @param Interpolator
+     * @param sanitizeStrategy sanitize strategy override
+     *
+     * @returns {string} translation
+     */
+    var getFallbackTranslationInstant = function (langKey, translationId, interpolateParams, Interpolator, sanitizeStrategy) {
+      var result, translationTable = $translationTable[langKey];
+
+      if (translationTable && Object.prototype.hasOwnProperty.call(translationTable, translationId)) {
+        Interpolator.setLocale(langKey);
+        result = Interpolator.interpolate(translationTable[translationId], interpolateParams, 'filter', sanitizeStrategy);
+        result = applyPostProcessing(translationId, translationTable[translationId], result, interpolateParams, langKey, sanitizeStrategy);
+        // workaround for TrustedValueHolderType
+        if (!angular.isString(result) && angular.isFunction(result.$$unwrapTrustedValue)) {
+          var result2 = result.$$unwrapTrustedValue();
+          if (result2.substr(0, 2) === '@:') {
+            return getFallbackTranslationInstant(langKey, result2.substr(2), interpolateParams, Interpolator, sanitizeStrategy);
+          }
+        } else if (result.substr(0, 2) === '@:') {
+          return getFallbackTranslationInstant(langKey, result.substr(2), interpolateParams, Interpolator, sanitizeStrategy);
+        }
+        Interpolator.setLocale($uses);
+      }
+
+      return result;
+    };
+
+
+    /**
+     * @name translateByHandler
+     * @private
+     *
+     * Translate by missing translation handler.
+     *
+     * @param translationId
+     * @param interpolateParams
+     * @param defaultTranslationText
+     * @param sanitizeStrategy sanitize strategy override
+     *
+     * @returns translation created by $missingTranslationHandler or translationId is $missingTranslationHandler is
+     * absent
+     */
+    var translateByHandler = function (translationId, interpolateParams, defaultTranslationText, sanitizeStrategy) {
+      // If we have a handler factory - we might also call it here to determine if it provides
+      // a default text for a translationid that can't be found anywhere in our tables
+      if ($missingTranslationHandlerFactory) {
+        return $injector.get($missingTranslationHandlerFactory)(translationId, $uses, interpolateParams, defaultTranslationText, sanitizeStrategy);
+      } else {
+        return translationId;
+      }
+    };
+
+    /**
+     * @name resolveForFallbackLanguage
+     * @private
+     *
+     * Recursive helper function for fallbackTranslation that will sequentially look
+     * for a translation in the fallbackLanguages starting with fallbackLanguageIndex.
+     *
+     * @param fallbackLanguageIndex
+     * @param translationId
+     * @param interpolateParams
+     * @param Interpolator
+     * @returns {Q.promise} Promise that will resolve to the translation.
+     */
+    var resolveForFallbackLanguage = function (fallbackLanguageIndex, translationId, interpolateParams, Interpolator, defaultTranslationText) {
+      var deferred = $q.defer();
+
+      if (fallbackLanguageIndex < $fallbackLanguage.length) {
+        var langKey = $fallbackLanguage[fallbackLanguageIndex];
+        getFallbackTranslation(langKey, translationId, interpolateParams, Interpolator).then(
+          function (data) {
+            deferred.resolve(data);
+          },
+          function () {
+            // Look in the next fallback language for a translation.
+            // It delays the resolving by passing another promise to resolve.
+            return resolveForFallbackLanguage(fallbackLanguageIndex + 1, translationId, interpolateParams, Interpolator, defaultTranslationText).then(deferred.resolve, deferred.reject);
+          }
+        );
+      } else {
+        // No translation found in any fallback language
+        // if a default translation text is set in the directive, then return this as a result
+        if (defaultTranslationText) {
+          deferred.resolve(defaultTranslationText);
+        } else {
+          var missingTranslationHandlerTranslation = translateByHandler(translationId, interpolateParams, defaultTranslationText);
+
+          // if no default translation is set and an error handler is defined, send it to the handler
+          // and then return the result if it isn't undefined
+          if ($missingTranslationHandlerFactory && missingTranslationHandlerTranslation) {
+            deferred.resolve(missingTranslationHandlerTranslation);
           } else {
-            deferred.reject();
+            deferred.reject(applyNotFoundIndicators(translationId));
           }
-        };
-        onResolve.displayName = 'fallbackTranslationResolver';
+        }
+      }
+      return deferred.promise;
+    };
 
-        getTranslationTable(langKey).then(onResolve, deferred.reject);
+    /**
+     * @name resolveForFallbackLanguageInstant
+     * @private
+     *
+     * Recursive helper function for fallbackTranslation that will sequentially look
+     * for a translation in the fallbackLanguages starting with fallbackLanguageIndex.
+     *
+     * @param fallbackLanguageIndex
+     * @param translationId
+     * @param interpolateParams
+     * @param Interpolator
+     * @param sanitizeStrategy
+     * @returns {string} translation
+     */
+    var resolveForFallbackLanguageInstant = function (fallbackLanguageIndex, translationId, interpolateParams, Interpolator, sanitizeStrategy) {
+      var result;
 
-        return deferred.promise;
-      };
+      if (fallbackLanguageIndex < $fallbackLanguage.length) {
+        var langKey = $fallbackLanguage[fallbackLanguageIndex];
+        result = getFallbackTranslationInstant(langKey, translationId, interpolateParams, Interpolator, sanitizeStrategy);
+        if (!result && result !== '') {
+          result = resolveForFallbackLanguageInstant(fallbackLanguageIndex + 1, translationId, interpolateParams, Interpolator);
+        }
+      }
+      return result;
+    };
 
-      /**
-       * @name getFallbackTranslationInstant
-       * @private
-       *
-       * @description
-       * Returns a translation
-       * This function is currently only used for fallback language translation.
-       *
-       * @param langKey The language to translate to.
-       * @param translationId
-       * @param interpolateParams
-       * @param Interpolator
-       * @returns {string} translation
-       */
-      var getFallbackTranslationInstant = function (langKey, translationId, interpolateParams, Interpolator) {
-        var result, translationTable = $translationTable[langKey];
+    /**
+     * Translates with the usage of the fallback languages.
+     *
+     * @param translationId
+     * @param interpolateParams
+     * @param Interpolator
+     * @returns {Q.promise} Promise, that resolves to the translation.
+     */
+    var fallbackTranslation = function (translationId, interpolateParams, Interpolator, defaultTranslationText) {
+      // Start with the fallbackLanguage with index 0
+      return resolveForFallbackLanguage((startFallbackIteration > 0 ? startFallbackIteration : fallbackIndex), translationId, interpolateParams, Interpolator, defaultTranslationText);
+    };
 
-        if (translationTable && Object.prototype.hasOwnProperty.call(translationTable, translationId)) {
-          Interpolator.setLocale(langKey);
-          result = Interpolator.interpolate(translationTable[translationId], interpolateParams);
-          if (result.substr(0, 2) === '@:') {
-            return getFallbackTranslationInstant(langKey, result.substr(2), interpolateParams, Interpolator);
-          }
-          Interpolator.setLocale($uses);
+    /**
+     * Translates with the usage of the fallback languages.
+     *
+     * @param translationId
+     * @param interpolateParams
+     * @param Interpolator
+     * @returns {String} translation
+     */
+    var fallbackTranslationInstant = function (translationId, interpolateParams, Interpolator, sanitizeStrategy) {
+      // Start with the fallbackLanguage with index 0
+      return resolveForFallbackLanguageInstant((startFallbackIteration > 0 ? startFallbackIteration : fallbackIndex), translationId, interpolateParams, Interpolator, sanitizeStrategy);
+    };
+
+    var determineTranslation = function (translationId, interpolateParams, interpolationId, defaultTranslationText, uses) {
+
+      var deferred = $q.defer();
+
+      var table = uses ? $translationTable[uses] : $translationTable,
+        Interpolator = (interpolationId) ? interpolatorHashMap[interpolationId] : defaultInterpolator;
+
+      // if the translation id exists, we can just interpolate it
+      if (table && Object.prototype.hasOwnProperty.call(table, translationId)) {
+        var translation = table[translationId];
+
+        // If using link, rerun $translate with linked translationId and return it
+        if (translation.substr(0, 2) === '@:') {
+
+          $translate(translation.substr(2), interpolateParams, interpolationId, defaultTranslationText, uses)
+            .then(deferred.resolve, deferred.reject);
+        } else {
+          //
+          var resolvedTranslation = Interpolator.interpolate(translation, interpolateParams, 'service');
+          resolvedTranslation = applyPostProcessing(translationId, translation, resolvedTranslation, interpolateParams, uses);
+          deferred.resolve(resolvedTranslation);
+        }
+      } else {
+        var missingTranslationHandlerTranslation;
+        // for logging purposes only (as in $translateMissingTranslationHandlerLog), value is not returned to promise
+        if ($missingTranslationHandlerFactory && !pendingLoader) {
+          missingTranslationHandlerTranslation = translateByHandler(translationId, interpolateParams, defaultTranslationText);
         }
 
-        return result;
-      };
-
-
-      /**
-       * @name translateByHandler
-       * @private
-       *
-       * Translate by missing translation handler.
-       *
-       * @param translationId
-       * @returns translation created by $missingTranslationHandler or translationId is $missingTranslationHandler is
-       * absent
-       */
-      var translateByHandler = function (translationId, interpolateParams) {
-        // If we have a handler factory - we might also call it here to determine if it provides
-        // a default text for a translationid that can't be found anywhere in our tables
-        if ($missingTranslationHandlerFactory) {
-          var resultString = $injector.get($missingTranslationHandlerFactory)(translationId, $uses, interpolateParams);
-          if (resultString !== undefined) {
-            return resultString;
-          } else {
-            return translationId;
-          }
-        } else {
-          return translationId;
-        }
-      };
-
-      /**
-       * @name resolveForFallbackLanguage
-       * @private
-       *
-       * Recursive helper function for fallbackTranslation that will sequentially look
-       * for a translation in the fallbackLanguages starting with fallbackLanguageIndex.
-       *
-       * @param fallbackLanguageIndex
-       * @param translationId
-       * @param interpolateParams
-       * @param Interpolator
-       * @returns {Q.promise} Promise that will resolve to the translation.
-       */
-      var resolveForFallbackLanguage = function (fallbackLanguageIndex, translationId, interpolateParams, Interpolator, defaultTranslationText) {
-        var deferred = $q.defer();
-
-        if (fallbackLanguageIndex < $fallbackLanguage.length) {
-          var langKey = $fallbackLanguage[fallbackLanguageIndex];
-          getFallbackTranslation(langKey, translationId, interpolateParams, Interpolator).then(
-            deferred.resolve,
-            function () {
-              // Look in the next fallback language for a translation.
-              // It delays the resolving by passing another promise to resolve.
-              resolveForFallbackLanguage(fallbackLanguageIndex + 1, translationId, interpolateParams, Interpolator, defaultTranslationText).then(deferred.resolve);
-            }
-          );
-        } else {
-          // No translation found in any fallback language
-          // if a default translation text is set in the directive, then return this as a result
+        // since we couldn't translate the inital requested translation id,
+        // we try it now with one or more fallback languages, if fallback language(s) is
+        // configured.
+        if (uses && $fallbackLanguage && $fallbackLanguage.length) {
+          fallbackTranslation(translationId, interpolateParams, Interpolator, defaultTranslationText)
+            .then(function (translation) {
+              deferred.resolve(translation);
+            }, function (_translationId) {
+              deferred.reject(applyNotFoundIndicators(_translationId));
+            });
+        } else if ($missingTranslationHandlerFactory && !pendingLoader && missingTranslationHandlerTranslation) {
+          // looks like the requested translation id doesn't exists.
+          // Now, if there is a registered handler for missing translations and no
+          // asyncLoader is pending, we execute the handler
           if (defaultTranslationText) {
             deferred.resolve(defaultTranslationText);
           } else {
-            // if no default translation is set and an error handler is defined, send it to the handler
-            // and then return the result
-            deferred.resolve(translateByHandler(translationId, interpolateParams));
-          }
-        }
-        return deferred.promise;
-      };
-
-      /**
-       * @name resolveForFallbackLanguageInstant
-       * @private
-       *
-       * Recursive helper function for fallbackTranslation that will sequentially look
-       * for a translation in the fallbackLanguages starting with fallbackLanguageIndex.
-       *
-       * @param fallbackLanguageIndex
-       * @param translationId
-       * @param interpolateParams
-       * @param Interpolator
-       * @returns {string} translation
-       */
-      var resolveForFallbackLanguageInstant = function (fallbackLanguageIndex, translationId, interpolateParams, Interpolator) {
-        var result;
-
-        if (fallbackLanguageIndex < $fallbackLanguage.length) {
-          var langKey = $fallbackLanguage[fallbackLanguageIndex];
-          result = getFallbackTranslationInstant(langKey, translationId, interpolateParams, Interpolator);
-          if (!result) {
-            result = resolveForFallbackLanguageInstant(fallbackLanguageIndex + 1, translationId, interpolateParams, Interpolator);
-          }
-        }
-        return result;
-      };
-
-      /**
-       * Translates with the usage of the fallback languages.
-       *
-       * @param translationId
-       * @param interpolateParams
-       * @param Interpolator
-       * @returns {Q.promise} Promise, that resolves to the translation.
-       */
-      var fallbackTranslation = function (translationId, interpolateParams, Interpolator, defaultTranslationText) {
-        // Start with the fallbackLanguage with index 0
-        return resolveForFallbackLanguage((startFallbackIteration>0 ? startFallbackIteration : fallbackIndex), translationId, interpolateParams, Interpolator, defaultTranslationText);
-      };
-
-      /**
-       * Translates with the usage of the fallback languages.
-       *
-       * @param translationId
-       * @param interpolateParams
-       * @param Interpolator
-       * @returns {String} translation
-       */
-      var fallbackTranslationInstant = function (translationId, interpolateParams, Interpolator) {
-        // Start with the fallbackLanguage with index 0
-        return resolveForFallbackLanguageInstant((startFallbackIteration>0 ? startFallbackIteration : fallbackIndex), translationId, interpolateParams, Interpolator);
-      };
-
-      var determineTranslation = function (translationId, interpolateParams, interpolationId, defaultTranslationText) {
-
-        var deferred = $q.defer();
-
-        var table = $uses ? $translationTable[$uses] : $translationTable,
-            Interpolator = (interpolationId) ? interpolatorHashMap[interpolationId] : defaultInterpolator;
-
-        // if the translation id exists, we can just interpolate it
-        if (table && Object.prototype.hasOwnProperty.call(table, translationId)) {
-          var translation = table[translationId];
-
-          // If using link, rerun $translate with linked translationId and return it
-          if (translation.substr(0, 2) === '@:') {
-
-            $translate(translation.substr(2), interpolateParams, interpolationId, defaultTranslationText)
-              .then(deferred.resolve, deferred.reject);
-          } else {
-            deferred.resolve(Interpolator.interpolate(translation, interpolateParams));
+            deferred.resolve(missingTranslationHandlerTranslation);
           }
         } else {
-          var missingTranslationHandlerTranslation;
-          // for logging purposes only (as in $translateMissingTranslationHandlerLog), value is not returned to promise
-          if ($missingTranslationHandlerFactory && !pendingLoader) {
-            missingTranslationHandlerTranslation = translateByHandler(translationId, interpolateParams);
-          }
-
-          // since we couldn't translate the inital requested translation id,
-          // we try it now with one or more fallback languages, if fallback language(s) is
-          // configured.
-          if ($uses && $fallbackLanguage && $fallbackLanguage.length) {
-            fallbackTranslation(translationId, interpolateParams, Interpolator, defaultTranslationText)
-                .then(function (translation) {
-                  deferred.resolve(translation);
-                }, function (_translationId) {
-                  deferred.reject(applyNotFoundIndicators(_translationId));
-                });
-          } else if ($missingTranslationHandlerFactory && !pendingLoader && missingTranslationHandlerTranslation) {
-            // looks like the requested translation id doesn't exists.
-            // Now, if there is a registered handler for missing translations and no
-            // asyncLoader is pending, we execute the handler
-            if (defaultTranslationText) {
-              deferred.resolve(defaultTranslationText);
-              } else {
-                deferred.resolve(missingTranslationHandlerTranslation);
-              }
+          if (defaultTranslationText) {
+            deferred.resolve(defaultTranslationText);
           } else {
-            if (defaultTranslationText) {
-              deferred.resolve(defaultTranslationText);
-            } else {
-              deferred.reject(applyNotFoundIndicators(translationId));
-            }
+            deferred.reject(applyNotFoundIndicators(translationId));
           }
         }
-        return deferred.promise;
-      };
+      }
+      return deferred.promise;
+    };
 
-      var determineTranslationInstant = function (translationId, interpolateParams, interpolationId) {
+    var determineTranslationInstant = function (translationId, interpolateParams, interpolationId, uses, sanitizeStrategy) {
 
-        var result, table = $uses ? $translationTable[$uses] : $translationTable,
-            Interpolator = defaultInterpolator;
+      var result, table = uses ? $translationTable[uses] : $translationTable,
+        Interpolator = defaultInterpolator;
 
-        // if the interpolation id exists use custom interpolator
-        if (interpolatorHashMap && Object.prototype.hasOwnProperty.call(interpolatorHashMap, interpolationId)) {
-          Interpolator = interpolatorHashMap[interpolationId];
-        }
+      // if the interpolation id exists use custom interpolator
+      if (interpolatorHashMap && Object.prototype.hasOwnProperty.call(interpolatorHashMap, interpolationId)) {
+        Interpolator = interpolatorHashMap[interpolationId];
+      }
 
-        // if the translation id exists, we can just interpolate it
-        if (table && Object.prototype.hasOwnProperty.call(table, translationId)) {
-          var translation = table[translationId];
+      // if the translation id exists, we can just interpolate it
+      if (table && Object.prototype.hasOwnProperty.call(table, translationId)) {
+        var translation = table[translationId];
 
-          // If using link, rerun $translate with linked translationId and return it
-          if (translation.substr(0, 2) === '@:') {
-            result = determineTranslationInstant(translation.substr(2), interpolateParams, interpolationId);
-          } else {
-            result = Interpolator.interpolate(translation, interpolateParams);
-          }
+        // If using link, rerun $translate with linked translationId and return it
+        if (translation.substr(0, 2) === '@:') {
+          result = determineTranslationInstant(translation.substr(2), interpolateParams, interpolationId, uses, sanitizeStrategy);
         } else {
-          var missingTranslationHandlerTranslation;
-          // for logging purposes only (as in $translateMissingTranslationHandlerLog), value is not returned to promise
-          if ($missingTranslationHandlerFactory && !pendingLoader) {
-            missingTranslationHandlerTranslation = translateByHandler(translationId, interpolateParams);
-          }
-
-          // since we couldn't translate the inital requested translation id,
-          // we try it now with one or more fallback languages, if fallback language(s) is
-          // configured.
-          if ($uses && $fallbackLanguage && $fallbackLanguage.length) {
-            fallbackIndex = 0;
-            result = fallbackTranslationInstant(translationId, interpolateParams, Interpolator);
-          } else if ($missingTranslationHandlerFactory && !pendingLoader && missingTranslationHandlerTranslation) {
-            // looks like the requested translation id doesn't exists.
-            // Now, if there is a registered handler for missing translations and no
-            // asyncLoader is pending, we execute the handler
-            result = missingTranslationHandlerTranslation;
-          } else {
-            result = applyNotFoundIndicators(translationId);
-          }
+          result = Interpolator.interpolate(translation, interpolateParams, 'filter', sanitizeStrategy);
+          result = applyPostProcessing(translationId, translation, result, interpolateParams, uses, sanitizeStrategy);
+        }
+      } else {
+        var missingTranslationHandlerTranslation;
+        // for logging purposes only (as in $translateMissingTranslationHandlerLog), value is not returned to promise
+        if ($missingTranslationHandlerFactory && !pendingLoader) {
+          missingTranslationHandlerTranslation = translateByHandler(translationId, interpolateParams, sanitizeStrategy);
         }
 
-        return result;
-      };
-
-      var clearNextLangAndPromise = function(key) {
-        if ($nextLang === key) {
-          $nextLang = undefined;
-        }
-        langPromises[key] = undefined;
-      };
-
-      /**
-       * @ngdoc function
-       * @name pascalprecht.translate.$translate#preferredLanguage
-       * @methodOf pascalprecht.translate.$translate
-       *
-       * @description
-       * Returns the language key for the preferred language.
-       *
-       * @param {string} langKey language String or Array to be used as preferredLanguage (changing at runtime)
-       *
-       * @return {string} preferred language key
-       */
-      $translate.preferredLanguage = function (langKey) {
-        if(langKey) {
-          setupPreferredLanguage(langKey);
-        }
-        return $preferredLanguage;
-      };
-
-      /**
-       * @ngdoc function
-       * @name pascalprecht.translate.$translate#cloakClassName
-       * @methodOf pascalprecht.translate.$translate
-       *
-       * @description
-       * Returns the configured class name for `translate-cloak` directive.
-       *
-       * @return {string} cloakClassName
-       */
-      $translate.cloakClassName = function () {
-        return $cloakClassName;
-      };
-
-      /**
-       * @ngdoc function
-       * @name pascalprecht.translate.$translate#fallbackLanguage
-       * @methodOf pascalprecht.translate.$translate
-       *
-       * @description
-       * Returns the language key for the fallback languages or sets a new fallback stack.
-       *
-       * @param {string=} langKey language String or Array of fallback languages to be used (to change stack at runtime)
-       *
-       * @return {string||array} fallback language key
-       */
-      $translate.fallbackLanguage = function (langKey) {
-        if (langKey !== undefined && langKey !== null) {
-          fallbackStack(langKey);
-
-          // as we might have an async loader initiated and a new translation language might have been defined
-          // we need to add the promise to the stack also. So - iterate.
-          if ($loaderFactory) {
-            if ($fallbackLanguage && $fallbackLanguage.length) {
-              for (var i = 0, len = $fallbackLanguage.length; i < len; i++) {
-                if (!langPromises[$fallbackLanguage[i]]) {
-                  langPromises[$fallbackLanguage[i]] = loadAsync($fallbackLanguage[i]);
-                }
-              }
-            }
-          }
-          $translate.use($translate.use());
-        }
-        if ($fallbackWasString) {
-          return $fallbackLanguage[0];
+        // since we couldn't translate the inital requested translation id,
+        // we try it now with one or more fallback languages, if fallback language(s) is
+        // configured.
+        if (uses && $fallbackLanguage && $fallbackLanguage.length) {
+          fallbackIndex = 0;
+          result = fallbackTranslationInstant(translationId, interpolateParams, Interpolator, sanitizeStrategy);
+        } else if ($missingTranslationHandlerFactory && !pendingLoader && missingTranslationHandlerTranslation) {
+          // looks like the requested translation id doesn't exists.
+          // Now, if there is a registered handler for missing translations and no
+          // asyncLoader is pending, we execute the handler
+          result = missingTranslationHandlerTranslation;
         } else {
-          return $fallbackLanguage;
+          result = applyNotFoundIndicators(translationId);
         }
+      }
 
-      };
+      return result;
+    };
 
-      /**
-       * @ngdoc function
-       * @name pascalprecht.translate.$translate#useFallbackLanguage
-       * @methodOf pascalprecht.translate.$translate
-       *
-       * @description
-       * Sets the first key of the fallback language stack to be used for translation.
-       * Therefore all languages in the fallback array BEFORE this key will be skipped!
-       *
-       * @param {string=} langKey Contains the langKey the iteration shall start with. Set to false if you want to
-       * get back to the whole stack
-       */
-      $translate.useFallbackLanguage = function (langKey) {
-        if (langKey !== undefined && langKey !== null) {
-          if (!langKey) {
-            startFallbackIteration = 0;
-          } else {
-            var langKeyPosition = indexOf($fallbackLanguage, langKey);
-            if (langKeyPosition > -1) {
-              startFallbackIteration = langKeyPosition;
-            }
-          }
+    var clearNextLangAndPromise = function (key) {
+      if ($nextLang === key) {
+        $nextLang = undefined;
+      }
+      langPromises[key] = undefined;
+    };
 
+    var applyPostProcessing = function (translationId, translation, resolvedTranslation, interpolateParams, uses, sanitizeStrategy) {
+      var fn = postProcessFn;
+
+      if (fn) {
+
+        if (typeof(fn) === 'string') {
+          // getting on-demand instance
+          fn = $injector.get(fn);
         }
-
-      };
-
-      /**
-       * @ngdoc function
-       * @name pascalprecht.translate.$translate#proposedLanguage
-       * @methodOf pascalprecht.translate.$translate
-       *
-       * @description
-       * Returns the language key of language that is currently loaded asynchronously.
-       *
-       * @return {string} language key
-       */
-      $translate.proposedLanguage = function () {
-        return $nextLang;
-      };
-
-      /**
-       * @ngdoc function
-       * @name pascalprecht.translate.$translate#storage
-       * @methodOf pascalprecht.translate.$translate
-       *
-       * @description
-       * Returns registered storage.
-       *
-       * @return {object} Storage
-       */
-      $translate.storage = function () {
-        return Storage;
-      };
-
-      /**
-       * @ngdoc function
-       * @name pascalprecht.translate.$translate#use
-       * @methodOf pascalprecht.translate.$translate
-       *
-       * @description
-       * Tells angular-translate which language to use by given language key. This method is
-       * used to change language at runtime. It also takes care of storing the language
-       * key in a configured store to let your app remember the choosed language.
-       *
-       * When trying to 'use' a language which isn't available it tries to load it
-       * asynchronously with registered loaders.
-       *
-       * Returns promise object with loaded language file data
-       * @example
-       * $translate.use("en_US").then(function(data){
-       *   $scope.text = $translate("HELLO");
-       * });
-       *
-       * @param {string} key Language key
-       * @return {string} Language key
-       */
-      $translate.use = function (key) {
-        if (!key) {
-          return $uses;
+        if (fn) {
+          return fn(translationId, translation, resolvedTranslation, interpolateParams, uses, sanitizeStrategy);
         }
+      }
 
-        var deferred = $q.defer();
+      return resolvedTranslation;
+    };
 
-        $rootScope.$emit('$translateChangeStart', {language: key});
+    var loadTranslationsIfMissing = function (key) {
+      if (!$translationTable[key] && $loaderFactory && !langPromises[key]) {
+        langPromises[key] = loadAsync(key).then(function (translation) {
+          translations(translation.key, translation.table);
+          return translation;
+        });
+      }
+    };
 
-        // Try to get the aliased language key
-        var aliasedKey = negotiateLocale(key);
-        if (aliasedKey) {
-          key = aliasedKey;
-        }
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#preferredLanguage
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Returns the language key for the preferred language.
+     *
+     * @param {string} langKey language String or Array to be used as preferredLanguage (changing at runtime)
+     *
+     * @return {string} preferred language key
+     */
+    $translate.preferredLanguage = function (langKey) {
+      if (langKey) {
+        setupPreferredLanguage(langKey);
+      }
+      return $preferredLanguage;
+    };
 
-        // if there isn't a translation table for the language we've requested,
-        // we load it asynchronously
-        if (($forceAsyncReloadEnabled || !$translationTable[key]) && $loaderFactory && !langPromises[key]) {
-          $nextLang = key;
-          langPromises[key] = loadAsync(key).then(function (translation) {
-            translations(translation.key, translation.table);
-            deferred.resolve(translation.key);
-            useLanguage(translation.key);
-            return translation;
-          }, function (key) {
-            $rootScope.$emit('$translateChangeError', {language: key});
-            deferred.reject(key);
-            $rootScope.$emit('$translateChangeEnd', {language: key});
-            return $q.reject(key);
-          });
-          langPromises[key]['finally'](function () {
-            clearNextLangAndPromise(key);
-          });
-        } else if ($nextLang === key && langPromises[key]) {
-          // we are already loading this asynchronously
-          // resolve our new deferred when the old langPromise is resolved
-          langPromises[key].then(function (translation) {
-            deferred.resolve(translation.key);
-            return translation;
-          }, function (key) {
-            deferred.reject(key);
-            return $q.reject(key);
-          });
-        } else {
-          deferred.resolve(key);
-          useLanguage(key);
-        }
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#cloakClassName
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Returns the configured class name for `translate-cloak` directive.
+     *
+     * @return {string} cloakClassName
+     */
+    $translate.cloakClassName = function () {
+      return $cloakClassName;
+    };
 
-        return deferred.promise;
-      };
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#nestedObjectDelimeter
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Returns the configured delimiter for nested namespaces.
+     *
+     * @return {string} nestedObjectDelimeter
+     */
+    $translate.nestedObjectDelimeter = function () {
+      return $nestedObjectDelimeter;
+    };
 
-      /**
-       * @ngdoc function
-       * @name pascalprecht.translate.$translate#storageKey
-       * @methodOf pascalprecht.translate.$translate
-       *
-       * @description
-       * Returns the key for the storage.
-       *
-       * @return {string} storage key
-       */
-      $translate.storageKey = function () {
-        return storageKey();
-      };
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#fallbackLanguage
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Returns the language key for the fallback languages or sets a new fallback stack.
+     *
+     * @param {string=} langKey language String or Array of fallback languages to be used (to change stack at runtime)
+     *
+     * @return {string||array} fallback language key
+     */
+    $translate.fallbackLanguage = function (langKey) {
+      if (langKey !== undefined && langKey !== null) {
+        fallbackStack(langKey);
 
-      /**
-       * @ngdoc function
-       * @name pascalprecht.translate.$translate#isPostCompilingEnabled
-       * @methodOf pascalprecht.translate.$translate
-       *
-       * @description
-       * Returns whether post compiling is enabled or not
-       *
-       * @return {bool} storage key
-       */
-      $translate.isPostCompilingEnabled = function () {
-        return $postCompilingEnabled;
-      };
-
-      /**
-       * @ngdoc function
-       * @name pascalprecht.translate.$translate#isForceAsyncReloadEnabled
-       * @methodOf pascalprecht.translate.$translate
-       *
-       * @description
-       * Returns whether force async reload is enabled or not
-       *
-       * @return {boolean} forceAsyncReload value
-       */
-      $translate.isForceAsyncReloadEnabled = function () {
-        return $forceAsyncReloadEnabled;
-      };
-
-      /**
-       * @ngdoc function
-       * @name pascalprecht.translate.$translate#refresh
-       * @methodOf pascalprecht.translate.$translate
-       *
-       * @description
-       * Refreshes a translation table pointed by the given langKey. If langKey is not specified,
-       * the module will drop all existent translation tables and load new version of those which
-       * are currently in use.
-       *
-       * Refresh means that the module will drop target translation table and try to load it again.
-       *
-       * In case there are no loaders registered the refresh() method will throw an Error.
-       *
-       * If the module is able to refresh translation tables refresh() method will broadcast
-       * $translateRefreshStart and $translateRefreshEnd events.
-       *
-       * @example
-       * // this will drop all currently existent translation tables and reload those which are
-       * // currently in use
-       * $translate.refresh();
-       * // this will refresh a translation table for the en_US language
-       * $translate.refresh('en_US');
-       *
-       * @param {string} langKey A language key of the table, which has to be refreshed
-       *
-       * @return {promise} Promise, which will be resolved in case a translation tables refreshing
-       * process is finished successfully, and reject if not.
-       */
-      $translate.refresh = function (langKey) {
-        if (!$loaderFactory) {
-          throw new Error('Couldn\'t refresh translation table, no loader registered!');
-        }
-
-        var deferred = $q.defer();
-
-        function resolve() {
-          deferred.resolve();
-          $rootScope.$emit('$translateRefreshEnd', {language: langKey});
-        }
-
-        function reject() {
-          deferred.reject();
-          $rootScope.$emit('$translateRefreshEnd', {language: langKey});
-        }
-
-        $rootScope.$emit('$translateRefreshStart', {language: langKey});
-
-        if (!langKey) {
-          // if there's no language key specified we refresh ALL THE THINGS!
-          var tables = [], loadingKeys = {};
-
-          // reload registered fallback languages
+        // as we might have an async loader initiated and a new translation language might have been defined
+        // we need to add the promise to the stack also. So - iterate.
+        if ($loaderFactory) {
           if ($fallbackLanguage && $fallbackLanguage.length) {
             for (var i = 0, len = $fallbackLanguage.length; i < len; i++) {
-              tables.push(loadAsync($fallbackLanguage[i]));
-              loadingKeys[$fallbackLanguage[i]] = true;
+              if (!langPromises[$fallbackLanguage[i]]) {
+                langPromises[$fallbackLanguage[i]] = loadAsync($fallbackLanguage[i]);
+              }
             }
           }
+        }
+        $translate.use($translate.use());
+      }
+      if ($fallbackWasString) {
+        return $fallbackLanguage[0];
+      } else {
+        return $fallbackLanguage;
+      }
 
-          // reload currently used language
-          if ($uses && !loadingKeys[$uses]) {
-            tables.push(loadAsync($uses));
-          }
+    };
 
-          var allTranslationsLoaded = function (tableData) {
-            $translationTable = {};
-            angular.forEach(tableData, function (data) {
-              translations(data.key, data.table);
-            });
-            if ($uses) {
-              useLanguage($uses);
-            }
-            resolve();
-          };
-          allTranslationsLoaded.displayName = 'refreshPostProcessor';
-
-          $q.all(tables).then(allTranslationsLoaded, reject);
-
-        } else if ($translationTable[langKey]) {
-
-          var oneTranslationsLoaded = function (data) {
-            translations(data.key, data.table);
-            if (langKey === $uses) {
-              useLanguage($uses);
-            }
-            resolve();
-          };
-          oneTranslationsLoaded.displayName = 'refreshPostProcessor';
-
-          loadAsync(langKey).then(oneTranslationsLoaded, reject);
-
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#useFallbackLanguage
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Sets the first key of the fallback language stack to be used for translation.
+     * Therefore all languages in the fallback array BEFORE this key will be skipped!
+     *
+     * @param {string=} langKey Contains the langKey the iteration shall start with. Set to false if you want to
+     * get back to the whole stack
+     */
+    $translate.useFallbackLanguage = function (langKey) {
+      if (langKey !== undefined && langKey !== null) {
+        if (!langKey) {
+          startFallbackIteration = 0;
         } else {
-          reject();
-        }
-        return deferred.promise;
-      };
-
-      /**
-       * @ngdoc function
-       * @name pascalprecht.translate.$translate#instant
-       * @methodOf pascalprecht.translate.$translate
-       *
-       * @description
-       * Returns a translation instantly from the internal state of loaded translation. All rules
-       * regarding the current language, the preferred language of even fallback languages will be
-       * used except any promise handling. If a language was not found, an asynchronous loading
-       * will be invoked in the background.
-       *
-       * @param {string|array} translationId A token which represents a translation id
-       *                                     This can be optionally an array of translation ids which
-       *                                     results that the function's promise returns an object where
-       *                                     each key is the translation id and the value the translation.
-       * @param {object} interpolateParams Params
-       * @param {string} interpolationId The id of the interpolation to use
-       *
-       * @return {string|object} translation
-       */
-      $translate.instant = function (translationId, interpolateParams, interpolationId) {
-
-        // Detect undefined and null values to shorten the execution and prevent exceptions
-        if (translationId === null || angular.isUndefined(translationId)) {
-          return translationId;
-        }
-
-        // Duck detection: If the first argument is an array, a bunch of translations was requested.
-        // The result is an object.
-        if (angular.isArray(translationId)) {
-          var results = {};
-          for (var i = 0, c = translationId.length; i < c; i++) {
-            results[translationId[i]] = $translate.instant(translationId[i], interpolateParams, interpolationId);
+          var langKeyPosition = indexOf($fallbackLanguage, langKey);
+          if (langKeyPosition > -1) {
+            startFallbackIteration = langKeyPosition;
           }
-          return results;
         }
 
-        // We discarded unacceptable values. So we just need to verify if translationId is empty String
-        if (angular.isString(translationId) && translationId.length < 1) {
-          return translationId;
-        }
+      }
 
-        // trim off any whitespace
-        if (translationId) {
-          translationId = trim.apply(translationId);
-        }
+    };
 
-        var result, possibleLangKeys = [];
-        if ($preferredLanguage) {
-          possibleLangKeys.push($preferredLanguage);
-        }
-        if ($uses) {
-          possibleLangKeys.push($uses);
-        }
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#proposedLanguage
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Returns the language key of language that is currently loaded asynchronously.
+     *
+     * @return {string} language key
+     */
+    $translate.proposedLanguage = function () {
+      return $nextLang;
+    };
+
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#storage
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Returns registered storage.
+     *
+     * @return {object} Storage
+     */
+    $translate.storage = function () {
+      return Storage;
+    };
+
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#negotiateLocale
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Returns a language key based on available languages and language aliases. If a
+     * language key cannot be resolved, returns undefined.
+     *
+     * If no or a falsy key is given, returns undefined.
+     *
+     * @param {string} [key] Language key
+     * @return {string|undefined} Language key or undefined if no language key is found.
+     */
+    $translate.negotiateLocale = negotiateLocale;
+
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#use
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Tells angular-translate which language to use by given language key. This method is
+     * used to change language at runtime. It also takes care of storing the language
+     * key in a configured store to let your app remember the choosed language.
+     *
+     * When trying to 'use' a language which isn't available it tries to load it
+     * asynchronously with registered loaders.
+     *
+     * Returns promise object with loaded language file data or string of the currently used language.
+     *
+     * If no or a falsy key is given it returns the currently used language key.
+     * The returned string will be ```undefined``` if setting up $translate hasn't finished.
+     * @example
+     * $translate.use("en_US").then(function(data){
+       *   $scope.text = $translate("HELLO");
+       * });
+     *
+     * @param {string} [key] Language key
+     * @return {object|string} Promise with loaded language data or the language key if a falsy param was given.
+     */
+    $translate.use = function (key) {
+      if (!key) {
+        return $uses;
+      }
+
+      var deferred = $q.defer();
+
+      $rootScope.$emit('$translateChangeStart', {language : key});
+
+      // Try to get the aliased language key
+      var aliasedKey = negotiateLocale(key);
+      // Ensure only registered language keys will be loaded
+      if ($availableLanguageKeys.length > 0 && !aliasedKey) {
+        return $q.reject(key);
+      }
+
+      if (aliasedKey) {
+        key = aliasedKey;
+      }
+
+      // if there isn't a translation table for the language we've requested,
+      // we load it asynchronously
+      $nextLang = key;
+      if (($forceAsyncReloadEnabled || !$translationTable[key]) && $loaderFactory && !langPromises[key]) {
+        langPromises[key] = loadAsync(key).then(function (translation) {
+          translations(translation.key, translation.table);
+          deferred.resolve(translation.key);
+          if ($nextLang === key) {
+            useLanguage(translation.key);
+          }
+          return translation;
+        }, function (key) {
+          $rootScope.$emit('$translateChangeError', {language : key});
+          deferred.reject(key);
+          $rootScope.$emit('$translateChangeEnd', {language : key});
+          return $q.reject(key);
+        });
+        langPromises[key]['finally'](function () {
+          clearNextLangAndPromise(key);
+        });
+      } else if (langPromises[key]) {
+        // we are already loading this asynchronously
+        // resolve our new deferred when the old langPromise is resolved
+        langPromises[key].then(function (translation) {
+          if ($nextLang === translation.key) {
+            useLanguage(translation.key);
+          }
+          deferred.resolve(translation.key);
+          return translation;
+        }, function (key) {
+          // find first available fallback language if that request has failed
+          if (!$uses && $fallbackLanguage && $fallbackLanguage.length > 0 && $fallbackLanguage[0] !== key) {
+            return $translate.use($fallbackLanguage[0]).then(deferred.resolve, deferred.reject);
+          } else {
+            return deferred.reject(key);
+          }
+        });
+      } else {
+        deferred.resolve(key);
+        useLanguage(key);
+      }
+
+      return deferred.promise;
+    };
+
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#resolveClientLocale
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * This returns the current browser/client's language key. The result is processed with the configured uniform tag resolver.
+     *
+     * @returns {string} the current client/browser language key
+     */
+    $translate.resolveClientLocale = function () {
+      return getLocale();
+    };
+
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#storageKey
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Returns the key for the storage.
+     *
+     * @return {string} storage key
+     */
+    $translate.storageKey = function () {
+      return storageKey();
+    };
+
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#isPostCompilingEnabled
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Returns whether post compiling is enabled or not
+     *
+     * @return {bool} storage key
+     */
+    $translate.isPostCompilingEnabled = function () {
+      return $postCompilingEnabled;
+    };
+
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#isForceAsyncReloadEnabled
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Returns whether force async reload is enabled or not
+     *
+     * @return {boolean} forceAsyncReload value
+     */
+    $translate.isForceAsyncReloadEnabled = function () {
+      return $forceAsyncReloadEnabled;
+    };
+
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#isKeepContent
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Returns whether keepContent or not
+     *
+     * @return {boolean} keepContent value
+     */
+    $translate.isKeepContent = function () {
+      return $keepContent;
+    };
+
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#refresh
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Refreshes a translation table pointed by the given langKey. If langKey is not specified,
+     * the module will drop all existent translation tables and load new version of those which
+     * are currently in use.
+     *
+     * Refresh means that the module will drop target translation table and try to load it again.
+     *
+     * In case there are no loaders registered the refresh() method will throw an Error.
+     *
+     * If the module is able to refresh translation tables refresh() method will broadcast
+     * $translateRefreshStart and $translateRefreshEnd events.
+     *
+     * @example
+     * // this will drop all currently existent translation tables and reload those which are
+     * // currently in use
+     * $translate.refresh();
+     * // this will refresh a translation table for the en_US language
+     * $translate.refresh('en_US');
+     *
+     * @param {string} langKey A language key of the table, which has to be refreshed
+     *
+     * @return {promise} Promise, which will be resolved in case a translation tables refreshing
+     * process is finished successfully, and reject if not.
+     */
+    $translate.refresh = function (langKey) {
+      if (!$loaderFactory) {
+        throw new Error('Couldn\'t refresh translation table, no loader registered!');
+      }
+
+      var deferred = $q.defer();
+
+      function resolve() {
+        deferred.resolve();
+        $rootScope.$emit('$translateRefreshEnd', {language : langKey});
+      }
+
+      function reject() {
+        deferred.reject();
+        $rootScope.$emit('$translateRefreshEnd', {language : langKey});
+      }
+
+      $rootScope.$emit('$translateRefreshStart', {language : langKey});
+
+      if (!langKey) {
+        // if there's no language key specified we refresh ALL THE THINGS!
+        var tables = [], loadingKeys = {};
+
+        // reload registered fallback languages
         if ($fallbackLanguage && $fallbackLanguage.length) {
-          possibleLangKeys = possibleLangKeys.concat($fallbackLanguage);
-        }
-        for (var j = 0, d = possibleLangKeys.length; j < d; j++) {
-          var possibleLangKey = possibleLangKeys[j];
-          if ($translationTable[possibleLangKey]) {
-            if (typeof $translationTable[possibleLangKey][translationId] !== 'undefined') {
-              result = determineTranslationInstant(translationId, interpolateParams, interpolationId);
-            } else if ($notFoundIndicatorLeft || $notFoundIndicatorRight) {
-              result = applyNotFoundIndicators(translationId);
-            }
-          }
-          if (typeof result !== 'undefined') {
-            break;
-          }
-        }
-
-        if (!result && result !== '') {
-          // Return translation of default interpolator if not found anything.
-          result = defaultInterpolator.interpolate(translationId, interpolateParams);
-          if ($missingTranslationHandlerFactory && !pendingLoader) {
-            result = translateByHandler(translationId, interpolateParams);
-          }
-        }
-
-        return result;
-      };
-
-      /**
-       * @ngdoc function
-       * @name pascalprecht.translate.$translate#versionInfo
-       * @methodOf pascalprecht.translate.$translate
-       *
-       * @description
-       * Returns the current version information for the angular-translate library
-       *
-       * @return {string} angular-translate version
-       */
-      $translate.versionInfo = function () {
-        return version;
-      };
-
-      /**
-       * @ngdoc function
-       * @name pascalprecht.translate.$translate#loaderCache
-       * @methodOf pascalprecht.translate.$translate
-       *
-       * @description
-       * Returns the defined loaderCache.
-       *
-       * @return {boolean|string|object} current value of loaderCache
-       */
-      $translate.loaderCache = function () {
-        return loaderCache;
-      };
-
-      // internal purpose only
-      $translate.directivePriority = function () {
-        return directivePriority;
-      };
-
-      // internal purpose only
-      $translate.statefulFilter = function () {
-        return statefulFilter;
-      };
-
-      if ($loaderFactory) {
-
-        // If at least one async loader is defined and there are no
-        // (default) translations available we should try to load them.
-        if (angular.equals($translationTable, {})) {
-          $translate.use($translate.use());
-        }
-
-        // Also, if there are any fallback language registered, we start
-        // loading them asynchronously as soon as we can.
-        if ($fallbackLanguage && $fallbackLanguage.length) {
-          var processAsyncResult = function (translation) {
-            translations(translation.key, translation.table);
-            $rootScope.$emit('$translateChangeEnd', { language: translation.key });
-            return translation;
-          };
           for (var i = 0, len = $fallbackLanguage.length; i < len; i++) {
-            var fallbackLanguageId = $fallbackLanguage[i];
-            if ($forceAsyncReloadEnabled || !$translationTable[fallbackLanguageId]) {
-              langPromises[fallbackLanguageId] = loadAsync(fallbackLanguageId).then(processAsyncResult);
-            }
+            tables.push(loadAsync($fallbackLanguage[i]));
+            loadingKeys[$fallbackLanguage[i]] = true;
+          }
+        }
+
+        // reload currently used language
+        if ($uses && !loadingKeys[$uses]) {
+          tables.push(loadAsync($uses));
+        }
+
+        var allTranslationsLoaded = function (tableData) {
+          $translationTable = {};
+          angular.forEach(tableData, function (data) {
+            translations(data.key, data.table);
+          });
+          if ($uses) {
+            useLanguage($uses);
+          }
+          resolve();
+        };
+        allTranslationsLoaded.displayName = 'refreshPostProcessor';
+
+        $q.all(tables).then(allTranslationsLoaded, reject);
+
+      } else if ($translationTable[langKey]) {
+
+        var oneTranslationsLoaded = function (data) {
+          translations(data.key, data.table);
+          if (langKey === $uses) {
+            useLanguage($uses);
+          }
+          resolve();
+          return data;
+        };
+        oneTranslationsLoaded.displayName = 'refreshPostProcessor';
+
+        loadAsync(langKey).then(oneTranslationsLoaded, reject);
+
+      } else {
+        reject();
+      }
+      return deferred.promise;
+    };
+
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#instant
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Returns a translation instantly from the internal state of loaded translation. All rules
+     * regarding the current language, the preferred language of even fallback languages will be
+     * used except any promise handling. If a language was not found, an asynchronous loading
+     * will be invoked in the background.
+     *
+     * @param {string|array} translationId A token which represents a translation id
+     *                                     This can be optionally an array of translation ids which
+     *                                     results that the function's promise returns an object where
+     *                                     each key is the translation id and the value the translation.
+     * @param {object} interpolateParams Params
+     * @param {string} interpolationId The id of the interpolation to use
+     * @param {string} forceLanguage A language to be used instead of the current language
+     * @param {string} sanitizeStrategy force sanitize strategy for this call instead of using the configured one
+     *
+     * @return {string|object} translation
+     */
+    $translate.instant = function (translationId, interpolateParams, interpolationId, forceLanguage, sanitizeStrategy) {
+
+      // we don't want to re-negotiate $uses
+      var uses = (forceLanguage && forceLanguage !== $uses) ? // we don't want to re-negotiate $uses
+        (negotiateLocale(forceLanguage) || forceLanguage) : $uses;
+
+      // Detect undefined and null values to shorten the execution and prevent exceptions
+      if (translationId === null || angular.isUndefined(translationId)) {
+        return translationId;
+      }
+
+      // Check forceLanguage is present
+      if (forceLanguage) {
+        loadTranslationsIfMissing(forceLanguage);
+      }
+
+      // Duck detection: If the first argument is an array, a bunch of translations was requested.
+      // The result is an object.
+      if (angular.isArray(translationId)) {
+        var results = {};
+        for (var i = 0, c = translationId.length; i < c; i++) {
+          results[translationId[i]] = $translate.instant(translationId[i], interpolateParams, interpolationId, forceLanguage, sanitizeStrategy);
+        }
+        return results;
+      }
+
+      // We discarded unacceptable values. So we just need to verify if translationId is empty String
+      if (angular.isString(translationId) && translationId.length < 1) {
+        return translationId;
+      }
+
+      // trim off any whitespace
+      if (translationId) {
+        translationId = trim.apply(translationId);
+      }
+
+      var result, possibleLangKeys = [];
+      if ($preferredLanguage) {
+        possibleLangKeys.push($preferredLanguage);
+      }
+      if (uses) {
+        possibleLangKeys.push(uses);
+      }
+      if ($fallbackLanguage && $fallbackLanguage.length) {
+        possibleLangKeys = possibleLangKeys.concat($fallbackLanguage);
+      }
+      for (var j = 0, d = possibleLangKeys.length; j < d; j++) {
+        var possibleLangKey = possibleLangKeys[j];
+        if ($translationTable[possibleLangKey]) {
+          if (typeof $translationTable[possibleLangKey][translationId] !== 'undefined') {
+            result = determineTranslationInstant(translationId, interpolateParams, interpolationId, uses, sanitizeStrategy);
+          }
+        }
+        if (typeof result !== 'undefined') {
+          break;
+        }
+      }
+
+      if (!result && result !== '') {
+        if ($notFoundIndicatorLeft || $notFoundIndicatorRight) {
+          result = applyNotFoundIndicators(translationId);
+        } else {
+          // Return translation of default interpolator if not found anything.
+          result = defaultInterpolator.interpolate(translationId, interpolateParams, 'filter', sanitizeStrategy);
+
+          // looks like the requested translation id doesn't exists.
+          // Now, if there is a registered handler for missing translations and no
+          // asyncLoader is pending, we execute the handler
+          var missingTranslationHandlerTranslation;
+          if ($missingTranslationHandlerFactory && !pendingLoader) {
+            missingTranslationHandlerTranslation = translateByHandler(translationId, interpolateParams, sanitizeStrategy);
+          }
+
+          if ($missingTranslationHandlerFactory && !pendingLoader && missingTranslationHandlerTranslation) {
+            result = missingTranslationHandlerTranslation;
           }
         }
       }
 
-      return $translate;
+      return result;
+    };
+
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#versionInfo
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Returns the current version information for the angular-translate library
+     *
+     * @return {string} angular-translate version
+     */
+    $translate.versionInfo = function () {
+      return version;
+    };
+
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#loaderCache
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Returns the defined loaderCache.
+     *
+     * @return {boolean|string|object} current value of loaderCache
+     */
+    $translate.loaderCache = function () {
+      return loaderCache;
+    };
+
+    // internal purpose only
+    $translate.directivePriority = function () {
+      return directivePriority;
+    };
+
+    // internal purpose only
+    $translate.statefulFilter = function () {
+      return statefulFilter;
+    };
+
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#isReady
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Returns whether the service is "ready" to translate (i.e. loading 1st language).
+     *
+     * See also {@link pascalprecht.translate.$translate#methods_onReady onReady()}.
+     *
+     * @return {boolean} current value of ready
+     */
+    $translate.isReady = function () {
+      return $isReady;
+    };
+
+    var $onReadyDeferred = $q.defer();
+    $onReadyDeferred.promise.then(function () {
+      $isReady = true;
+    });
+
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#onReady
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Returns whether the service is "ready" to translate (i.e. loading 1st language).
+     *
+     * See also {@link pascalprecht.translate.$translate#methods_isReady isReady()}.
+     *
+     * @param {Function=} fn Function to invoke when service is ready
+     * @return {object} Promise resolved when service is ready
+     */
+    $translate.onReady = function (fn) {
+      var deferred = $q.defer();
+      if (angular.isFunction(fn)) {
+        deferred.promise.then(fn);
+      }
+      if ($isReady) {
+        deferred.resolve();
+      } else {
+        $onReadyDeferred.promise.then(deferred.resolve);
+      }
+      return deferred.promise;
+    };
+
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#getAvailableLanguageKeys
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * This function simply returns the registered language keys being defined before in the config phase
+     * With this, an application can use the array to provide a language selection dropdown or similar
+     * without any additional effort
+     *
+     * @returns {object} returns the list of possibly registered language keys and mapping or null if not defined
+     */
+    $translate.getAvailableLanguageKeys = function () {
+      if ($availableLanguageKeys.length > 0) {
+        return $availableLanguageKeys;
+      }
+      return null;
+    };
+
+    /**
+     * @ngdoc function
+     * @name pascalprecht.translate.$translate#getTranslationTable
+     * @methodOf pascalprecht.translate.$translate
+     *
+     * @description
+     * Returns translation table by the given language key.
+     *
+     * Unless a language is provided it returns a translation table of the current one.
+     * Note: If translation dictionary is currently downloading or in progress
+     * it will return null.
+     *
+     * @param {string} langKey A token which represents a translation id
+     *
+     * @return {object} a copy of angular-translate $translationTable
+     */
+    $translate.getTranslationTable = function (langKey) {
+      langKey = langKey || $translate.use();
+      if (langKey && $translationTable[langKey]) {
+        return angular.copy($translationTable[langKey]);
+      }
+      return null;
+    };
+
+    // Whenever $translateReady is being fired, this will ensure the state of $isReady
+    var globalOnReadyListener = $rootScope.$on('$translateReady', function () {
+      $onReadyDeferred.resolve();
+      globalOnReadyListener(); // one time only
+      globalOnReadyListener = null;
+    });
+    var globalOnChangeListener = $rootScope.$on('$translateChangeEnd', function () {
+      $onReadyDeferred.resolve();
+      globalOnChangeListener(); // one time only
+      globalOnChangeListener = null;
+    });
+
+    if ($loaderFactory) {
+
+      // If at least one async loader is defined and there are no
+      // (default) translations available we should try to load them.
+      if (angular.equals($translationTable, {})) {
+        if ($translate.use()) {
+          $translate.use($translate.use());
+        }
+      }
+
+      // Also, if there are any fallback language registered, we start
+      // loading them asynchronously as soon as we can.
+      if ($fallbackLanguage && $fallbackLanguage.length) {
+        var processAsyncResult = function (translation) {
+          translations(translation.key, translation.table);
+          $rootScope.$emit('$translateChangeEnd', {language : translation.key});
+          return translation;
+        };
+        for (var i = 0, len = $fallbackLanguage.length; i < len; i++) {
+          var fallbackLanguageId = $fallbackLanguage[i];
+          if ($forceAsyncReloadEnabled || !$translationTable[fallbackLanguageId]) {
+            langPromises[fallbackLanguageId] = loadAsync(fallbackLanguageId).then(processAsyncResult);
+          }
+        }
+      }
+    } else {
+      $rootScope.$emit('$translateReady', {language : $translate.use()});
     }
-  ];
+
+    return $translate;
+  }];
 }
-$translate.$inject = ['$STORAGE_KEY', '$windowProvider', '$translateSanitizationProvider', 'pascalprechtTranslateOverrider'];
 
 $translate.displayName = 'displayName';
 
@@ -49534,24 +49951,35 @@ function $translateDefaultInterpolation ($interpolate, $translateSanitization) {
    * @methodOf pascalprecht.translate.$translateDefaultInterpolation
    *
    * @description
-   * Interpolates given string agains given interpolate params using angulars
+   * Interpolates given value agains given interpolate params using angulars
    * `$interpolate` service.
+   *
+   * Since AngularJS 1.5, `value` must not be a string but can be anything input.
    *
    * @returns {string} interpolated string.
    */
-  $translateInterpolator.interpolate = function (string, interpolationParams) {
+  $translateInterpolator.interpolate = function (value, interpolationParams, context, sanitizeStrategy) {
     interpolationParams = interpolationParams || {};
-    interpolationParams = $translateSanitization.sanitize(interpolationParams, 'params');
+    interpolationParams = $translateSanitization.sanitize(interpolationParams, 'params', sanitizeStrategy, context);
 
-    var interpolatedText = $interpolate(string)(interpolationParams);
-    interpolatedText = $translateSanitization.sanitize(interpolatedText, 'text');
+    var interpolatedText;
+    if (angular.isNumber(value)) {
+      // numbers are safe
+      interpolatedText = '' + value;
+    } else if (angular.isString(value)) {
+      // strings must be interpolated (that's the job here)
+      interpolatedText = $interpolate(value)(interpolationParams);
+      interpolatedText = $translateSanitization.sanitize(interpolatedText, 'text', sanitizeStrategy, context);
+    } else {
+      // neither a number or a string, cant interpolate => empty string
+      interpolatedText = '';
+    }
 
     return interpolatedText;
   };
 
   return $translateInterpolator;
 }
-$translateDefaultInterpolation.$inject = ['$interpolate', '$translateSanitization'];
 
 $translateDefaultInterpolation.displayName = '$translateDefaultInterpolation';
 
@@ -49561,14 +49989,15 @@ angular.module('pascalprecht.translate')
 /**
  * @ngdoc directive
  * @name pascalprecht.translate.directive:translate
- * @requires $compile
- * @requires $filter
- * @requires $interpolate
- * @restrict A
+ * @requires $interpolate, 
+ * @requires $compile, 
+ * @requires $parse, 
+ * @requires $rootScope
+ * @restrict AE
  *
  * @description
  * Translates given translation id either through attribute or DOM content.
- * Internally it uses `translate` filter to translate translation id. It possible to
+ * Internally it uses $translate service to translate the translation id. It possible to
  * pass an optional `translate-values` object literal as string into translation id.
  *
  * @param {string=} translate Translation id which could be either string or interpolated string.
@@ -49576,6 +50005,7 @@ angular.module('pascalprecht.translate')
  * @param {string=} translate-attr-ATTR translate Translation id and put it into ATTR attribute.
  * @param {string=} translate-default will be used unless translation was successful
  * @param {boolean=} translate-compile (default true if present) defines locally activation of {@link pascalprecht.translate.$translateProvider#methods_usePostCompiling}
+ * @param {boolean=} translate-keep-content (default true if present) defines that in case a KEY could not be translated, that the existing content is left in the innerHTML}
  *
  * @example
    <example module="ngView">
@@ -49592,6 +50022,7 @@ angular.module('pascalprecht.translate')
         <pre translate="WITH_VALUES" translate-values="{{values}}"></pre>
         <pre translate translate-values="{{values}}">WITH_VALUES</pre>
         <pre translate translate-attr-title="WITH_VALUES" translate-values="{{values}}"></pre>
+        <pre translate="WITH_CAMEL_CASE_KEY" translate-value-camel-case-key="Hi"></pre>
 
       </div>
     </file>
@@ -49602,7 +50033,8 @@ angular.module('pascalprecht.translate')
 
         $translateProvider.translations('en',{
           'TRANSLATION_ID': 'Hello there!',
-          'WITH_VALUES': 'The following value is dynamic: {{value}}'
+          'WITH_VALUES': 'The following value is dynamic: {{value}}',
+          'WITH_CAMEL_CASE_KEY': 'The interpolation key is camel cased: {{camelCaseKey}}'
         }).preferredLanguage('en');
 
       });
@@ -49639,13 +50071,17 @@ angular.module('pascalprecht.translate')
           element = $compile('<p translate translate-attr-title="TRANSLATION_ID"></p>')($rootScope);
           $rootScope.$digest();
           expect(element.attr('title')).toBe('Hello there!');
+
+          element = $compile('<p translate="WITH_CAMEL_CASE_KEY" translate-value-camel-case-key="Hello"></p>')($rootScope);
+          $rootScope.$digest();
+          expect(element.text()).toBe('The interpolation key is camel cased: Hello');
         });
       });
     </file>
    </example>
  */
 .directive('translate', translateDirective);
-function translateDirective($translate, $q, $interpolate, $compile, $parse, $rootScope) {
+function translateDirective($translate, $interpolate, $compile, $parse, $rootScope) {
 
   'use strict';
 
@@ -49684,6 +50120,7 @@ function translateDirective($translate, $q, $interpolate, $compile, $parse, $roo
         scope.interpolateParams = {};
         scope.preText = '';
         scope.postText = '';
+        scope.translateNamespace = getTranslateNamespace(scope);
         var translationIds = {};
 
         var initInterpolationParams = function (interpolateParams, iAttr, tAttr) {
@@ -49714,14 +50151,16 @@ function translateDirective($translate, $q, $interpolate, $compile, $parse, $roo
           }
 
           if (angular.equals(translationId , '') || !angular.isDefined(translationId)) {
+            var iElementText = trim.apply(iElement.text());
+
             // Resolve translation id by inner html if required
-            var interpolateMatches = trim.apply(iElement.text()).match(interpolateRegExp);
+            var interpolateMatches = iElementText.match(interpolateRegExp);
             // Interpolate translation id if required
             if (angular.isArray(interpolateMatches)) {
               scope.preText = interpolateMatches[1];
               scope.postText = interpolateMatches[3];
               translationIds.translate = $interpolate(interpolateMatches[2])(scope.$parent);
-              var watcherMatches = iElement.text().match(watcherRegExp);
+              var watcherMatches = iElementText.match(watcherRegExp);
               if (angular.isArray(watcherMatches) && watcherMatches[2] && watcherMatches[2].length) {
                 observeElementTranslation._unwatchOld = scope.$watch(watcherMatches[2], function (newValue) {
                   translationIds.translate = newValue;
@@ -49729,7 +50168,8 @@ function translateDirective($translate, $q, $interpolate, $compile, $parse, $roo
                 });
               }
             } else {
-              translationIds.translate = iElement.text().replace(/^\s+|\s+$/g,'');
+              // do not assigne the translation id if it is empty.
+              translationIds.translate = !iElementText ? undefined : iElementText;
             }
           } else {
             translationIds.translate = translationId;
@@ -49763,13 +50203,14 @@ function translateDirective($translate, $q, $interpolate, $compile, $parse, $roo
         });
 
         for (var translateAttr in iAttr) {
-          if (iAttr.hasOwnProperty(translateAttr) && translateAttr.substr(0, 13) === 'translateAttr') {
+          if (iAttr.hasOwnProperty(translateAttr) && translateAttr.substr(0, 13) === 'translateAttr' && translateAttr.length > 13) {
             observeAttributeTranslation(translateAttr);
           }
         }
 
         iAttr.$observe('translateDefault', function (value) {
           scope.defaultText = value;
+          updateTranslations();
         });
 
         if (translateValuesExist) {
@@ -49799,17 +50240,21 @@ function translateDirective($translate, $q, $interpolate, $compile, $parse, $roo
         // Master update function
         var updateTranslations = function () {
           for (var key in translationIds) {
-
             if (translationIds.hasOwnProperty(key) && translationIds[key] !== undefined) {
-              updateTranslation(key, translationIds[key], scope, scope.interpolateParams, scope.defaultText);
+              updateTranslation(key, translationIds[key], scope, scope.interpolateParams, scope.defaultText, scope.translateNamespace);
             }
           }
         };
 
         // Put translation processing function outside loop
-        var updateTranslation = function(translateAttr, translationId, scope, interpolateParams, defaultTranslationText) {
+        var updateTranslation = function(translateAttr, translationId, scope, interpolateParams, defaultTranslationText, translateNamespace) {
           if (translationId) {
-            $translate(translationId, interpolateParams, translateInterpolation, defaultTranslationText)
+            // if translation id starts with '.' and translateNamespace given, prepend namespace
+            if (translateNamespace && translationId.charAt(0) === '.') {
+              translationId = translateNamespace + translationId;
+            }
+
+            $translate(translationId, interpolateParams, translateInterpolation, defaultTranslationText, scope.translateLanguage)
               .then(function (translation) {
                 applyTranslation(translation, scope, true, translateAttr);
               }, function (translationId) {
@@ -49822,12 +50267,16 @@ function translateDirective($translate, $q, $interpolate, $compile, $parse, $roo
         };
 
         var applyTranslation = function (value, scope, successful, translateAttr) {
-          if (translateAttr === 'translate') {
-            // default translate into innerHTML
-            if (!successful && typeof scope.defaultText !== 'undefined') {
+          if (!successful) {
+            if (typeof scope.defaultText !== 'undefined') {
               value = scope.defaultText;
             }
-            iElement.html(scope.preText + value + scope.postText);
+          }
+          if (translateAttr === 'translate') {
+            // default translate into innerHTML
+            if (successful || (!successful && !$translate.isKeepContent() && typeof iAttr.translateKeepContent === 'undefined')) {
+              iElement.empty().append(scope.preText + value + scope.postText);
+            }
             var globallyEnabled = $translate.isPostCompilingEnabled();
             var locallyDefined = typeof tAttr.translateCompile !== 'undefined';
             var locallyEnabled = locallyDefined && tAttr.translateCompile !== 'false';
@@ -49836,9 +50285,6 @@ function translateDirective($translate, $q, $interpolate, $compile, $parse, $roo
             }
           } else {
             // translate attribute
-            if (!successful && typeof scope.defaultText !== 'undefined') {
-              value = scope.defaultText;
-            }
             var attributeName = iAttr.$attr[translateAttr];
             if (attributeName.substr(0, 5) === 'data-') {
               // ensure html5 data prefix is stripped
@@ -49852,6 +50298,9 @@ function translateDirective($translate, $q, $interpolate, $compile, $parse, $roo
         if (translateValuesExist || translateValueExist || iAttr.translateDefault) {
           scope.$watch('interpolateParams', updateTranslations, true);
         }
+
+        // Replaced watcher on translateLanguage with event listener
+        scope.$on('translateLanguageChanged', updateTranslations);
 
         // Ensures the text will be refreshed after the current language was changed
         // w/ $translate.use(...)
@@ -49874,9 +50323,174 @@ function translateDirective($translate, $q, $interpolate, $compile, $parse, $roo
     }
   };
 }
-translateDirective.$inject = ['$translate', '$q', '$interpolate', '$compile', '$parse', '$rootScope'];
+
+/**
+ * Returns the scope's namespace.
+ * @private
+ * @param scope
+ * @returns {string}
+ */
+function getTranslateNamespace(scope) {
+  'use strict';
+  if (scope.translateNamespace) {
+    return scope.translateNamespace;
+  }
+  if (scope.$parent) {
+    return getTranslateNamespace(scope.$parent);
+  }
+}
 
 translateDirective.displayName = 'translateDirective';
+
+angular.module('pascalprecht.translate')
+/**
+ * @ngdoc directive
+ * @name pascalprecht.translate.directive:translate-attr
+ * @restrict A
+ *
+ * @description
+ * Translates attributes like translate-attr-ATTR, but with an object like ng-class.
+ * Internally it uses `translate` service to translate translation id. It possible to
+ * pass an optional `translate-values` object literal as string into translation id.
+ *
+ * @param {string=} translate-attr Object literal mapping attributes to translation ids.
+ * @param {string=} translate-values Values to pass into the translation ids. Can be passed as object literal string.
+ *
+ * @example
+   <example module="ngView">
+    <file name="index.html">
+      <div ng-controller="TranslateCtrl">
+
+        <input translate-attr="{ placeholder: translationId, title: 'WITH_VALUES' }" translate-values="{value: 5}" />
+
+      </div>
+    </file>
+    <file name="script.js">
+      angular.module('ngView', ['pascalprecht.translate'])
+
+      .config(function ($translateProvider) {
+
+        $translateProvider.translations('en',{
+          'TRANSLATION_ID': 'Hello there!',
+          'WITH_VALUES': 'The following value is dynamic: {{value}}',
+        }).preferredLanguage('en');
+
+      });
+
+      angular.module('ngView').controller('TranslateCtrl', function ($scope) {
+        $scope.translationId = 'TRANSLATION_ID';
+
+        $scope.values = {
+          value: 78
+        };
+      });
+    </file>
+    <file name="scenario.js">
+      it('should translate', function () {
+        inject(function ($rootScope, $compile) {
+          $rootScope.translationId = 'TRANSLATION_ID';
+
+          element = $compile('<input translate-attr="{ placeholder: translationId, title: 'WITH_VALUES' }" translate-values="{ value: 5 }" />')($rootScope);
+          $rootScope.$digest();
+          expect(element.attr('placeholder)).toBe('Hello there!');
+          expect(element.attr('title)).toBe('The following value is dynamic: 5');
+        });
+      });
+    </file>
+   </example>
+ */
+.directive('translateAttr', translateAttrDirective);
+function translateAttrDirective($translate, $rootScope) {
+
+  'use strict';
+
+  return {
+    restrict: 'A',
+    priority: $translate.directivePriority(),
+    link: function linkFn(scope, element, attr) {
+
+      var translateAttr,
+          translateValues,
+          previousAttributes = {};
+
+      // Main update translations function
+      var updateTranslations = function () {
+        angular.forEach(translateAttr, function (translationId, attributeName) {
+          if (!translationId) {
+            return;
+          }
+          previousAttributes[attributeName] = true;
+
+          // if translation id starts with '.' and translateNamespace given, prepend namespace
+          if (scope.translateNamespace && translationId.charAt(0) === '.') {
+            translationId = scope.translateNamespace + translationId;
+          }
+          $translate(translationId, translateValues, attr.translateInterpolation, undefined, scope.translateLanguage)
+            .then(function (translation) {
+              element.attr(attributeName, translation);
+            }, function (translationId) {
+              element.attr(attributeName, translationId);
+            });
+        });
+
+        // Removing unused attributes that were previously used
+        angular.forEach(previousAttributes, function (flag, attributeName) {
+          if (!translateAttr[attributeName]) {
+            element.removeAttr(attributeName);
+            delete previousAttributes[attributeName];
+          }
+        });
+      };
+
+      // Watch for attribute changes
+      watchAttribute(
+        scope,
+        attr.translateAttr,
+        function (newValue) { translateAttr = newValue; },
+        updateTranslations
+      );
+      // Watch for value changes
+      watchAttribute(
+        scope,
+        attr.translateValues,
+        function (newValue) { translateValues = newValue; },
+        updateTranslations
+      );
+
+      if (attr.translateValues) {
+        scope.$watch(attr.translateValues, updateTranslations, true);
+      }
+
+      // Replaced watcher on translateLanguage with event listener
+      scope.$on('translateLanguageChanged', updateTranslations);
+
+      // Ensures the text will be refreshed after the current language was changed
+      // w/ $translate.use(...)
+      var unbind = $rootScope.$on('$translateChangeSuccess', updateTranslations);
+
+      updateTranslations();
+      scope.$on('$destroy', unbind);
+    }
+  };
+}
+
+function watchAttribute(scope, attribute, valueCallback, changeCallback) {
+  'use strict';
+  if (!attribute) {
+    return;
+  }
+  if (attribute.substr(0, 2) === '::') {
+    attribute = attribute.substr(2);
+  } else {
+    scope.$watch(attribute, function(newValue) {
+      valueCallback(newValue);
+      changeCallback();
+    }, true);
+  }
+  valueCallback(scope.$eval(attribute));
+}
+
+translateAttrDirective.displayName = 'translateAttrDirective';
 
 angular.module('pascalprecht.translate')
 /**
@@ -49902,7 +50516,7 @@ angular.module('pascalprecht.translate')
  */
 .directive('translateCloak', translateCloakDirective);
 
-function translateCloakDirective($rootScope, $translate) {
+function translateCloakDirective($translate, $rootScope) {
 
   'use strict';
 
@@ -49913,28 +50527,193 @@ function translateCloakDirective($rootScope, $translate) {
       },
       removeCloak = function () {
         tElement.removeClass($translate.cloakClassName());
-      },
-      removeListener = $rootScope.$on('$translateChangeEnd', function () {
+      };
+      $translate.onReady(function () {
         removeCloak();
-        removeListener();
-        removeListener = null;
       });
       applyCloak();
 
       return function linkFn(scope, iElement, iAttr) {
-        // Register a watcher for the defined translation allowing a fine tuned cloak
         if (iAttr.translateCloak && iAttr.translateCloak.length) {
+          // Register a watcher for the defined translation allowing a fine tuned cloak
           iAttr.$observe('translateCloak', function (translationId) {
             $translate(translationId).then(removeCloak, applyCloak);
+          });
+          // Register for change events as this is being another indicicator revalidating the cloak)
+          $rootScope.$on('$translateChangeSuccess', function () {
+            $translate(iAttr.translateCloak).then(removeCloak, applyCloak);
           });
         }
       };
     }
   };
 }
-translateCloakDirective.$inject = ['$rootScope', '$translate'];
 
 translateCloakDirective.displayName = 'translateCloakDirective';
+
+angular.module('pascalprecht.translate')
+/**
+ * @ngdoc directive
+ * @name pascalprecht.translate.directive:translateNamespace
+ * @restrict A
+ *
+ * @description
+ * Translates given translation id either through attribute or DOM content.
+ * Internally it uses `translate` filter to translate translation id. It possible to
+ * pass an optional `translate-values` object literal as string into translation id.
+ *
+ * @param {string=} translate namespace name which could be either string or interpolated string.
+ *
+ * @example
+   <example module="ngView">
+    <file name="index.html">
+      <div translate-namespace="CONTENT">
+
+        <div>
+            <h1 translate>.HEADERS.TITLE</h1>
+            <h1 translate>.HEADERS.WELCOME</h1>
+        </div>
+
+        <div translate-namespace=".HEADERS">
+            <h1 translate>.TITLE</h1>
+            <h1 translate>.WELCOME</h1>
+        </div>
+
+      </div>
+    </file>
+    <file name="script.js">
+      angular.module('ngView', ['pascalprecht.translate'])
+
+      .config(function ($translateProvider) {
+
+        $translateProvider.translations('en',{
+          'TRANSLATION_ID': 'Hello there!',
+          'CONTENT': {
+            'HEADERS': {
+                TITLE: 'Title'
+            }
+          },
+          'CONTENT.HEADERS.WELCOME': 'Welcome'
+        }).preferredLanguage('en');
+
+      });
+
+    </file>
+   </example>
+ */
+.directive('translateNamespace', translateNamespaceDirective);
+
+function translateNamespaceDirective() {
+
+  'use strict';
+
+  return {
+    restrict: 'A',
+    scope: true,
+    compile: function () {
+      return {
+        pre: function (scope, iElement, iAttrs) {
+          scope.translateNamespace = getTranslateNamespace(scope);
+
+          if (scope.translateNamespace && iAttrs.translateNamespace.charAt(0) === '.') {
+            scope.translateNamespace += iAttrs.translateNamespace;
+          } else {
+            scope.translateNamespace = iAttrs.translateNamespace;
+          }
+        }
+      };
+    }
+  };
+}
+
+/**
+ * Returns the scope's namespace.
+ * @private
+ * @param scope
+ * @returns {string}
+ */
+function getTranslateNamespace(scope) {
+  'use strict';
+  if (scope.translateNamespace) {
+    return scope.translateNamespace;
+  }
+  if (scope.$parent) {
+    return getTranslateNamespace(scope.$parent);
+  }
+}
+
+translateNamespaceDirective.displayName = 'translateNamespaceDirective';
+
+angular.module('pascalprecht.translate')
+/**
+ * @ngdoc directive
+ * @name pascalprecht.translate.directive:translateLanguage
+ * @restrict A
+ *
+ * @description
+ * Forces the language to the directives in the underlying scope.
+ *
+ * @param {string=} translate language that will be negotiated.
+ *
+ * @example
+   <example module="ngView">
+    <file name="index.html">
+      <div>
+
+        <div>
+            <h1 translate>HELLO</h1>
+        </div>
+
+        <div translate-language="de">
+            <h1 translate>HELLO</h1>
+        </div>
+
+      </div>
+    </file>
+    <file name="script.js">
+      angular.module('ngView', ['pascalprecht.translate'])
+
+      .config(function ($translateProvider) {
+
+        $translateProvider
+          .translations('en',{
+            'HELLO': 'Hello world!'
+          })
+          .translations('de',{
+            'HELLO': 'Hallo Welt!'
+          })
+          .preferredLanguage('en');
+
+      });
+
+    </file>
+   </example>
+ */
+.directive('translateLanguage', translateLanguageDirective);
+
+function translateLanguageDirective() {
+
+  'use strict';
+
+  return {
+    restrict: 'A',
+    scope: true,
+    compile: function () {
+      return function linkFn(scope, iElement, iAttrs) {
+
+        iAttrs.$observe('translateLanguage', function (newTranslateLanguage) {
+          scope.translateLanguage = newTranslateLanguage;
+        });
+
+        scope.$watch('translateLanguage', function(){
+          scope.$broadcast('translateLanguageChanged');
+        });
+      };
+    }
+  };
+}
+
+translateLanguageDirective.displayName = 'translateLanguageDirective';
 
 angular.module('pascalprecht.translate')
 /**
@@ -49994,13 +50773,12 @@ function translateFilterFactory($parse, $translate) {
 
   'use strict';
 
-  var translateFilter = function (translationId, interpolateParams, interpolation) {
-
+  var translateFilter = function (translationId, interpolateParams, interpolation, forceLanguage) {
     if (!angular.isObject(interpolateParams)) {
       interpolateParams = $parse(interpolateParams)(this);
     }
 
-    return $translate.instant(translationId, interpolateParams, interpolation);
+    return $translate.instant(translationId, interpolateParams, interpolation, forceLanguage);
   };
 
   if ($translate.statefulFilter()) {
@@ -50009,7 +50787,6 @@ function translateFilterFactory($parse, $translate) {
 
   return translateFilter;
 }
-translateFilterFactory.$inject = ['$parse', '$translate'];
 
 translateFilterFactory.displayName = 'translateFilterFactory';
 
@@ -50035,7 +50812,6 @@ function $translationCache($cacheFactory) {
 
   return $cacheFactory('translations');
 }
-$translationCache.$inject = ['$cacheFactory'];
 
 $translationCache.displayName = '$translationCache';
 return 'pascalprecht.translate';
@@ -50043,9 +50819,9 @@ return 'pascalprecht.translate';
 }));
 
 /*!
- * angular-translate - v2.7.2 - 2015-06-01
- * http://github.com/angular-translate/angular-translate
- * Copyright (c) 2015 ; Licensed MIT
+ * angular-translate - v2.13.0 - 2016-10-30
+ * 
+ * Copyright (c) 2016 The angular-translate team, Pascal Precht; Licensed MIT
  */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -50063,6 +50839,7 @@ return 'pascalprecht.translate';
   }
 }(this, function () {
 
+$translateStaticFilesLoader.$inject = ['$q', '$http'];
 angular.module('pascalprecht.translate')
 /**
  * @ngdoc object
@@ -50075,7 +50852,7 @@ angular.module('pascalprecht.translate')
  * "lang-en_US.json", "lang-de_DE.json", etc. Using this builder,
  * the response of these urls must be an object of key-value pairs.
  *
- * @param {object} options Options object, which gets prefix, suffix and key.
+ * @param {object} options Options object, which gets prefix, suffix, key, and fileMap
  */
 .factory('$translateStaticFilesLoader', $translateStaticFilesLoader);
 
@@ -50101,27 +50878,29 @@ function $translateStaticFilesLoader($q, $http) {
         throw new Error('Couldn\'t load static file, no prefix or suffix specified!');
       }
 
-      var deferred = $q.defer();
+      var fileUrl = [
+        file.prefix,
+        options.key,
+        file.suffix
+      ].join('');
 
-      $http(angular.extend({
-        url: [
-          file.prefix,
-          options.key,
-          file.suffix
-        ].join(''),
+      if (angular.isObject(options.fileMap) && options.fileMap[fileUrl]) {
+        fileUrl = options.fileMap[fileUrl];
+      }
+
+      return $http(angular.extend({
+        url: fileUrl,
         method: 'GET',
         params: ''
-      }, options.$http)).success(function (data) {
-        deferred.resolve(data);
-      }).error(function () {
-        deferred.reject(options.key);
-      });
-
-      return deferred.promise;
+      }, options.$http))
+        .then(function(result) {
+          return result.data;
+        }, function () {
+          return $q.reject(options.key);
+        });
     };
 
-    var deferred = $q.defer(),
-        promises = [],
+    var promises = [],
         length = options.files.length;
 
     for (var i = 0; i < length; i++) {
@@ -50132,25 +50911,21 @@ function $translateStaticFilesLoader($q, $http) {
       }));
     }
 
-    $q.all(promises).then(function (data) {
-      var length = data.length,
-          mergedData = {};
+    return $q.all(promises)
+      .then(function (data) {
+        var length = data.length,
+            mergedData = {};
 
-      for (var i = 0; i < length; i++) {
-        for (var key in data[i]) {
-          mergedData[key] = data[i][key];
+        for (var i = 0; i < length; i++) {
+          for (var key in data[i]) {
+            mergedData[key] = data[i][key];
+          }
         }
-      }
 
-      deferred.resolve(mergedData);
-    }, function (data) {
-      deferred.reject(data);
-    });
-
-    return deferred.promise;
+        return mergedData;
+      });
   };
 }
-$translateStaticFilesLoader.$inject = ['$q', '$http'];
 
 $translateStaticFilesLoader.displayName = '$translateStaticFilesLoader';
 return 'pascalprecht.translate';
@@ -50158,9 +50933,9 @@ return 'pascalprecht.translate';
 }));
 
 /*!
- * angular-translate - v2.7.2 - 2015-06-01
- * http://github.com/angular-translate/angular-translate
- * Copyright (c) 2015 ; Licensed MIT
+ * angular-translate - v2.13.0 - 2016-10-30
+ * 
+ * Copyright (c) 2016 The angular-translate team, Pascal Precht; Licensed MIT
  */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -50178,6 +50953,7 @@ return 'pascalprecht.translate';
   }
 }(this, function () {
 
+$translateCookieStorageFactory.$inject = ['$cookieStore'];
 angular.module('pascalprecht.translate')
 
 /**
@@ -50248,7 +51024,6 @@ function $translateCookieStorageFactory($cookieStore) {
 
   return $translateCookieStorage;
 }
-$translateCookieStorageFactory.$inject = ['$cookieStore'];
 
 $translateCookieStorageFactory.displayName = '$translateCookieStorage';
 return 'pascalprecht.translate';
@@ -50256,9 +51031,9 @@ return 'pascalprecht.translate';
 }));
 
 /*!
- * angular-translate - v2.7.2 - 2015-06-01
- * http://github.com/angular-translate/angular-translate
- * Copyright (c) 2015 ; Licensed MIT
+ * angular-translate - v2.13.0 - 2016-10-30
+ * 
+ * Copyright (c) 2016 The angular-translate team, Pascal Precht; Licensed MIT
  */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -50276,6 +51051,7 @@ return 'pascalprecht.translate';
   }
 }(this, function () {
 
+$translateLocalStorageFactory.$inject = ['$window', '$translateCookieStorage'];
 angular.module('pascalprecht.translate')
 
 /**
@@ -50372,7 +51148,6 @@ function $translateLocalStorageFactory($window, $translateCookieStorage) {
   var $translateLocalStorage = hasLocalStorageSupport ? localStorageAdapter : $translateCookieStorage;
   return $translateLocalStorage;
 }
-$translateLocalStorageFactory.$inject = ['$window', '$translateCookieStorage'];
 
 $translateLocalStorageFactory.displayName = '$translateLocalStorageFactory';
 return 'pascalprecht.translate';
@@ -50380,9 +51155,9 @@ return 'pascalprecht.translate';
 }));
 
 /*!
- * angular-translate - v2.7.2 - 2015-06-01
- * http://github.com/angular-translate/angular-translate
- * Copyright (c) 2015 ; Licensed MIT
+ * angular-translate - v2.13.0 - 2016-10-30
+ * 
+ * Copyright (c) 2016 The angular-translate team, Pascal Precht; Licensed MIT
  */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -50400,6 +51175,7 @@ return 'pascalprecht.translate';
   }
 }(this, function () {
 
+$translateMissingTranslationHandlerLog.$inject = ['$log'];
 angular.module('pascalprecht.translate')
 
 /**
@@ -50423,7 +51199,6 @@ function $translateMissingTranslationHandlerLog ($log) {
     $log.warn('Translation for ' + translationId + ' doesn\'t exist');
   };
 }
-$translateMissingTranslationHandlerLog.$inject = ['$log'];
 
 $translateMissingTranslationHandlerLog.displayName = '$translateMissingTranslationHandlerLog';
 return 'pascalprecht.translate';
@@ -50462,13 +51237,11 @@ angular.module('tmh.dynamicLocale', []).config(['$provide', function($provide) {
 
   var defaultLocale,
     localeLocationPattern = 'angular/i18n/angular-locale_{{locale}}.js',
-    nodeToAppend,
     storageFactory = 'tmhDynamicLocaleStorageCache',
     storage,
     storageKey = STORAGE_KEY,
     promiseCache = {},
-    activeLocale,
-    extraProperties = {};
+    activeLocale;
 
   /**
    * Loads a script asynchronously
@@ -50478,7 +51251,7 @@ angular.module('tmh.dynamicLocale', []).config(['$provide', function($provide) {
    */
   function loadScript(url, callback, errorCallback, $timeout) {
     var script = document.createElement('script'),
-      element = nodeToAppend ? nodeToAppend : document.getElementsByTagName("body")[0],
+      body = document.getElementsByTagName('body')[0],
       removed = false;
 
     script.type = 'text/javascript';
@@ -50491,7 +51264,7 @@ angular.module('tmh.dynamicLocale', []).config(['$provide', function($provide) {
             function () {
               if (removed) return;
               removed = true;
-              element.removeChild(script);
+              body.removeChild(script);
               callback();
             }, 30, false);
         }
@@ -50500,19 +51273,19 @@ angular.module('tmh.dynamicLocale', []).config(['$provide', function($provide) {
       script.onload = function () {
         if (removed) return;
         removed = true;
-        element.removeChild(script);
+        body.removeChild(script);
         callback();
       };
       script.onerror = function () {
         if (removed) return;
         removed = true;
-        element.removeChild(script);
+        body.removeChild(script);
         errorCallback();
       };
     }
     script.src = url;
     script.async = true;
-    element.appendChild(script);
+    body.appendChild(script);
   }
 
   /**
@@ -50610,10 +51383,6 @@ angular.module('tmh.dynamicLocale', []).config(['$provide', function($provide) {
     }
   };
 
-  this.appendScriptTo = function(nodeElement) {
-    nodeToAppend = nodeElement;
-  };
-
   this.useStorage = function(storageName) {
     storageFactory = storageName;
   };
@@ -50633,10 +51402,6 @@ angular.module('tmh.dynamicLocale', []).config(['$provide', function($provide) {
     } else {
       return storageKey;
     }
-  };
-
-  this.addLocalePatternValue = function(key, value) {
-    extraProperties[key] = value;
   };
 
   this.$get = ['$rootScope', '$injector', '$interpolate', '$locale', '$q', 'tmhDynamicLocaleCache', '$timeout', function($rootScope, $injector, interpolate, locale, $q, tmhDynamicLocaleCache, $timeout) {
@@ -50668,8 +51433,7 @@ angular.module('tmh.dynamicLocale', []).config(['$provide', function($provide) {
     };
 
     function loadLocaleFn(localeId) {
-      var baseProperties = {locale: localeId, angularVersion: angular.version.full};
-      return loadLocale(localeLocation(angular.extend({}, extraProperties, baseProperties)), locale, localeId, $rootScope, $q, tmhDynamicLocaleCache, $timeout);
+      return loadLocale(localeLocation({locale: localeId, angularVersion: angular.version.full}), locale, localeId, $rootScope, $q, tmhDynamicLocaleCache, $timeout);
     }
   }];
 }]).provider('tmhDynamicLocaleCache', function() {
@@ -51150,18 +51914,17 @@ L.mapboxGL = function (options) {
 };
 
 /*
- AngularJS v1.5.8
+ AngularJS v1.5.7
  (c) 2010-2016 Google, Inc. http://angularjs.org
  License: MIT
 */
-(function(s,g){'use strict';function H(g){var l=[];t(l,A).chars(g);return l.join("")}var B=g.$$minErr("$sanitize"),C,l,D,E,q,A,F,t;g.module("ngSanitize",[]).provider("$sanitize",function(){function k(a,e){var b={},c=a.split(","),h;for(h=0;h<c.length;h++)b[e?q(c[h]):c[h]]=!0;return b}function I(a){for(var e={},b=0,c=a.length;b<c;b++){var h=a[b];e[h.name]=h.value}return e}function G(a){return a.replace(/&/g,"&amp;").replace(J,function(a){var b=a.charCodeAt(0);a=a.charCodeAt(1);return"&#"+(1024*(b-55296)+
-(a-56320)+65536)+";"}).replace(K,function(a){return"&#"+a.charCodeAt(0)+";"}).replace(/</g,"&lt;").replace(/>/g,"&gt;")}function u(a){if(a.nodeType===s.Node.ELEMENT_NODE)for(var e=a.attributes,b=0,c=e.length;b<c;b++){var h=e[b],d=h.name.toLowerCase();if("xmlns:ns1"===d||0===d.lastIndexOf("ns1:",0))a.removeAttributeNode(h),b--,c--}(e=a.firstChild)&&u(e);(e=a.nextSibling)&&u(e)}var v=!1;this.$get=["$$sanitizeUri",function(a){v&&l(w,x);return function(e){var b=[];F(e,t(b,function(b,h){return!/^unsafe:/.test(a(b,
-h))}));return b.join("")}}];this.enableSvg=function(a){return E(a)?(v=a,this):v};C=g.bind;l=g.extend;D=g.forEach;E=g.isDefined;q=g.lowercase;A=g.noop;F=function(a,e){null===a||void 0===a?a="":"string"!==typeof a&&(a=""+a);f.innerHTML=a;var b=5;do{if(0===b)throw B("uinput");b--;s.document.documentMode&&u(f);a=f.innerHTML;f.innerHTML=a}while(a!==f.innerHTML);for(b=f.firstChild;b;){switch(b.nodeType){case 1:e.start(b.nodeName.toLowerCase(),I(b.attributes));break;case 3:e.chars(b.textContent)}var c;if(!(c=
-b.firstChild)&&(1==b.nodeType&&e.end(b.nodeName.toLowerCase()),c=b.nextSibling,!c))for(;null==c;){b=b.parentNode;if(b===f)break;c=b.nextSibling;1==b.nodeType&&e.end(b.nodeName.toLowerCase())}b=c}for(;b=f.firstChild;)f.removeChild(b)};t=function(a,e){var b=!1,c=C(a,a.push);return{start:function(a,d){a=q(a);!b&&z[a]&&(b=a);b||!0!==w[a]||(c("<"),c(a),D(d,function(b,d){var f=q(d),g="img"===a&&"src"===f||"background"===f;!0!==m[f]||!0===n[f]&&!e(b,g)||(c(" "),c(d),c('="'),c(G(b)),c('"'))}),c(">"))},end:function(a){a=
-q(a);b||!0!==w[a]||!0===y[a]||(c("</"),c(a),c(">"));a==b&&(b=!1)},chars:function(a){b||c(G(a))}}};var J=/[\uD800-\uDBFF][\uDC00-\uDFFF]/g,K=/([^\#-~ |!])/g,y=k("area,br,col,hr,img,wbr"),d=k("colgroup,dd,dt,li,p,tbody,td,tfoot,th,thead,tr"),r=k("rp,rt"),p=l({},r,d),d=l({},d,k("address,article,aside,blockquote,caption,center,del,dir,div,dl,figure,figcaption,footer,h1,h2,h3,h4,h5,h6,header,hgroup,hr,ins,map,menu,nav,ol,pre,section,table,ul")),r=l({},r,k("a,abbr,acronym,b,bdi,bdo,big,br,cite,code,del,dfn,em,font,i,img,ins,kbd,label,map,mark,q,ruby,rp,rt,s,samp,small,span,strike,strong,sub,sup,time,tt,u,var")),
-x=k("circle,defs,desc,ellipse,font-face,font-face-name,font-face-src,g,glyph,hkern,image,linearGradient,line,marker,metadata,missing-glyph,mpath,path,polygon,polyline,radialGradient,rect,stop,svg,switch,text,title,tspan"),z=k("script,style"),w=l({},y,d,r,p),n=k("background,cite,href,longdesc,src,xlink:href"),p=k("abbr,align,alt,axis,bgcolor,border,cellpadding,cellspacing,class,clear,color,cols,colspan,compact,coords,dir,face,headers,height,hreflang,hspace,ismap,lang,language,nohref,nowrap,rel,rev,rows,rowspan,rules,scope,scrolling,shape,size,span,start,summary,tabindex,target,title,type,valign,value,vspace,width"),
-r=k("accent-height,accumulate,additive,alphabetic,arabic-form,ascent,baseProfile,bbox,begin,by,calcMode,cap-height,class,color,color-rendering,content,cx,cy,d,dx,dy,descent,display,dur,end,fill,fill-rule,font-family,font-size,font-stretch,font-style,font-variant,font-weight,from,fx,fy,g1,g2,glyph-name,gradientUnits,hanging,height,horiz-adv-x,horiz-origin-x,ideographic,k,keyPoints,keySplines,keyTimes,lang,marker-end,marker-mid,marker-start,markerHeight,markerUnits,markerWidth,mathematical,max,min,offset,opacity,orient,origin,overline-position,overline-thickness,panose-1,path,pathLength,points,preserveAspectRatio,r,refX,refY,repeatCount,repeatDur,requiredExtensions,requiredFeatures,restart,rotate,rx,ry,slope,stemh,stemv,stop-color,stop-opacity,strikethrough-position,strikethrough-thickness,stroke,stroke-dasharray,stroke-dashoffset,stroke-linecap,stroke-linejoin,stroke-miterlimit,stroke-opacity,stroke-width,systemLanguage,target,text-anchor,to,transform,type,u1,u2,underline-position,underline-thickness,unicode,unicode-range,units-per-em,values,version,viewBox,visibility,width,widths,x,x-height,x1,x2,xlink:actuate,xlink:arcrole,xlink:role,xlink:show,xlink:title,xlink:type,xml:base,xml:lang,xml:space,xmlns,xmlns:xlink,y,y1,y2,zoomAndPan",
-!0),m=l({},n,r,p),f;(function(a){if(a.document&&a.document.implementation)a=a.document.implementation.createHTMLDocument("inert");else throw B("noinert");var e=(a.documentElement||a.getDocumentElement()).getElementsByTagName("body");1===e.length?f=e[0]:(e=a.createElement("html"),f=a.createElement("body"),e.appendChild(f),a.appendChild(e))})(s)});g.module("ngSanitize").filter("linky",["$sanitize",function(k){var l=/((ftp|https?):\/\/|(www\.)|(mailto:)?[A-Za-z0-9._%+-]+@)\S*[^\s.;,(){}<>"\u201d\u2019]/i,
-q=/^mailto:/i,u=g.$$minErr("linky"),v=g.isDefined,s=g.isFunction,t=g.isObject,y=g.isString;return function(d,g,p){function x(a){a&&m.push(H(a))}function z(a,b){var c,d=w(a);m.push("<a ");for(c in d)m.push(c+'="'+d[c]+'" ');!v(g)||"target"in d||m.push('target="',g,'" ');m.push('href="',a.replace(/"/g,"&quot;"),'">');x(b);m.push("</a>")}if(null==d||""===d)return d;if(!y(d))throw u("notstring",d);for(var w=s(p)?p:t(p)?function(){return p}:function(){return{}},n=d,m=[],f,a;d=n.match(l);)f=d[0],d[2]||
-d[4]||(f=(d[3]?"http://":"mailto:")+f),a=d.index,x(n.substr(0,a)),z(f,d[0].replace(q,"")),n=n.substring(a+d[0].length);x(n);return k(m.join(""))}}])})(window,window.angular);
+(function(q,e){'use strict';function A(a){var c=[];v(c,e.noop).chars(a);return c.join("")}function h(a,c){var b={},d=a.split(","),l;for(l=0;l<d.length;l++)b[c?e.lowercase(d[l]):d[l]]=!0;return b}function B(a,c){null===a||void 0===a?a="":"string"!==typeof a&&(a=""+a);g.innerHTML=a;var b=5;do{if(0===b)throw w("uinput");b--;q.document.documentMode&&r(g);a=g.innerHTML;g.innerHTML=a}while(a!==g.innerHTML);for(b=g.firstChild;b;){switch(b.nodeType){case 1:c.start(b.nodeName.toLowerCase(),C(b.attributes));
+break;case 3:c.chars(b.textContent)}var d;if(!(d=b.firstChild)&&(1==b.nodeType&&c.end(b.nodeName.toLowerCase()),d=b.nextSibling,!d))for(;null==d;){b=b.parentNode;if(b===g)break;d=b.nextSibling;1==b.nodeType&&c.end(b.nodeName.toLowerCase())}b=d}for(;b=g.firstChild;)g.removeChild(b)}function C(a){for(var c={},b=0,d=a.length;b<d;b++){var l=a[b];c[l.name]=l.value}return c}function x(a){return a.replace(/&/g,"&amp;").replace(D,function(a){var b=a.charCodeAt(0);a=a.charCodeAt(1);return"&#"+(1024*(b-55296)+
+(a-56320)+65536)+";"}).replace(E,function(a){return"&#"+a.charCodeAt(0)+";"}).replace(/</g,"&lt;").replace(/>/g,"&gt;")}function v(a,c){var b=!1,d=e.bind(a,a.push);return{start:function(a,f){a=e.lowercase(a);!b&&F[a]&&(b=a);b||!0!==n[a]||(d("<"),d(a),e.forEach(f,function(b,f){var g=e.lowercase(f),h="img"===a&&"src"===g||"background"===g;!0!==G[g]||!0===y[g]&&!c(b,h)||(d(" "),d(f),d('="'),d(x(b)),d('"'))}),d(">"))},end:function(a){a=e.lowercase(a);b||!0!==n[a]||!0===z[a]||(d("</"),d(a),d(">"));a==
+b&&(b=!1)},chars:function(a){b||d(x(a))}}}function r(a){if(a.nodeType===q.Node.ELEMENT_NODE)for(var c=a.attributes,b=0,d=c.length;b<d;b++){var e=c[b],f=e.name.toLowerCase();if("xmlns:ns1"===f||0===f.lastIndexOf("ns1:",0))a.removeAttributeNode(e),b--,d--}(c=a.firstChild)&&r(c);(c=a.nextSibling)&&r(c)}var w=e.$$minErr("$sanitize"),D=/[\uD800-\uDBFF][\uDC00-\uDFFF]/g,E=/([^\#-~ |!])/g,z=h("area,br,col,hr,img,wbr"),m=h("colgroup,dd,dt,li,p,tbody,td,tfoot,th,thead,tr"),k=h("rp,rt"),u=e.extend({},k,m),
+m=e.extend({},m,h("address,article,aside,blockquote,caption,center,del,dir,div,dl,figure,figcaption,footer,h1,h2,h3,h4,h5,h6,header,hgroup,hr,ins,map,menu,nav,ol,pre,section,table,ul")),k=e.extend({},k,h("a,abbr,acronym,b,bdi,bdo,big,br,cite,code,del,dfn,em,font,i,img,ins,kbd,label,map,mark,q,ruby,rp,rt,s,samp,small,span,strike,strong,sub,sup,time,tt,u,var")),H=h("circle,defs,desc,ellipse,font-face,font-face-name,font-face-src,g,glyph,hkern,image,linearGradient,line,marker,metadata,missing-glyph,mpath,path,polygon,polyline,radialGradient,rect,stop,svg,switch,text,title,tspan"),
+F=h("script,style"),n=e.extend({},z,m,k,u),y=h("background,cite,href,longdesc,src,xlink:href"),u=h("abbr,align,alt,axis,bgcolor,border,cellpadding,cellspacing,class,clear,color,cols,colspan,compact,coords,dir,face,headers,height,hreflang,hspace,ismap,lang,language,nohref,nowrap,rel,rev,rows,rowspan,rules,scope,scrolling,shape,size,span,start,summary,tabindex,target,title,type,valign,value,vspace,width"),k=h("accent-height,accumulate,additive,alphabetic,arabic-form,ascent,baseProfile,bbox,begin,by,calcMode,cap-height,class,color,color-rendering,content,cx,cy,d,dx,dy,descent,display,dur,end,fill,fill-rule,font-family,font-size,font-stretch,font-style,font-variant,font-weight,from,fx,fy,g1,g2,glyph-name,gradientUnits,hanging,height,horiz-adv-x,horiz-origin-x,ideographic,k,keyPoints,keySplines,keyTimes,lang,marker-end,marker-mid,marker-start,markerHeight,markerUnits,markerWidth,mathematical,max,min,offset,opacity,orient,origin,overline-position,overline-thickness,panose-1,path,pathLength,points,preserveAspectRatio,r,refX,refY,repeatCount,repeatDur,requiredExtensions,requiredFeatures,restart,rotate,rx,ry,slope,stemh,stemv,stop-color,stop-opacity,strikethrough-position,strikethrough-thickness,stroke,stroke-dasharray,stroke-dashoffset,stroke-linecap,stroke-linejoin,stroke-miterlimit,stroke-opacity,stroke-width,systemLanguage,target,text-anchor,to,transform,type,u1,u2,underline-position,underline-thickness,unicode,unicode-range,units-per-em,values,version,viewBox,visibility,width,widths,x,x-height,x1,x2,xlink:actuate,xlink:arcrole,xlink:role,xlink:show,xlink:title,xlink:type,xml:base,xml:lang,xml:space,xmlns,xmlns:xlink,y,y1,y2,zoomAndPan",
+!0),G=e.extend({},y,k,u),g;(function(a){if(a.document&&a.document.implementation)a=a.document.implementation.createHTMLDocument("inert");else throw w("noinert");var c=(a.documentElement||a.getDocumentElement()).getElementsByTagName("body");1===c.length?g=c[0]:(c=a.createElement("html"),g=a.createElement("body"),c.appendChild(g),a.appendChild(c))})(q);e.module("ngSanitize",[]).provider("$sanitize",function(){var a=!1;this.$get=["$$sanitizeUri",function(c){a&&e.extend(n,H);return function(a){var d=
+[];B(a,v(d,function(a,b){return!/^unsafe:/.test(c(a,b))}));return d.join("")}}];this.enableSvg=function(c){return e.isDefined(c)?(a=c,this):a}});e.module("ngSanitize").filter("linky",["$sanitize",function(a){var c=/((ftp|https?):\/\/|(www\.)|(mailto:)?[A-Za-z0-9._%+-]+@)\S*[^\s.;,(){}<>"\u201d\u2019]/i,b=/^mailto:/i,d=e.$$minErr("linky"),g=e.isString;return function(f,h,k){function m(a){a&&p.push(A(a))}function q(a,b){var c,d=r(a);p.push("<a ");for(c in d)p.push(c+'="'+d[c]+'" ');!e.isDefined(h)||
+"target"in d||p.push('target="',h,'" ');p.push('href="',a.replace(/"/g,"&quot;"),'">');m(b);p.push("</a>")}if(null==f||""===f)return f;if(!g(f))throw d("notstring",f);for(var r=e.isFunction(k)?k:e.isObject(k)?function(){return k}:function(){return{}},s=f,p=[],t,n;f=s.match(c);)t=f[0],f[2]||f[4]||(t=(f[3]?"http://":"mailto:")+t),n=f.index,m(s.substr(0,n)),q(t,f[0].replace(b,"")),s=s.substring(n+f[0].length);m(s);return a(p.join(""))}}])})(window,window.angular);
 //# sourceMappingURL=angular-sanitize.min.js.map

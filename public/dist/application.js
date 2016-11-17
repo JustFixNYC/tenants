@@ -45,25 +45,6 @@ var ApplicationConfiguration = (function() {
 //Start by defining the main module and adding the module dependencies
 angular.module(ApplicationConfiguration.applicationModuleName, ApplicationConfiguration.applicationModuleVendorDependencies);
 
-// Extend $santize to accomidate for ui-sref
-// NEEDED: this has to be in the angular-translate module
-// https://github.com/angular/angular.js/pull/6252/files
-
-/*var $sanitizeExtFactory = function() {
-  return {
-
-    addSafeElements: function(elements) {
-      var map = makeMap(elements);
-      angular.extend(blockElements, map);
-      angular.extend(validElements, map);
-    },
-
-    addSafeAttributes: function(attrs) {
-      angular.extend(validAttrs, makeMap(attrs));
-    }
-  };
-};*/
-
 angular.module(ApplicationConfiguration.applicationModuleName)
   // Setting HTML5 Location Mode
   .config(['$locationProvider', function($locationProvider) {
@@ -95,9 +76,9 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     });
 
     $translateProvider.preferredLanguage('en_US');// is applied on first load
-    $translateProvider.useLocalStorage();// saves selected language to localStorage
+    // $translateProvider.useLocalStorage();// saves selected language to localStorage
     // NOTE: This shit causes all sorts of issues with our UI-SREF attribute. Not recognized in any sanitizer module, and causes it to break
-    $translateProvider.useSanitizeValueStrategy(null); // Prevent XSS
+    // $translateProvider.useSanitizeValueStrategy(null); // Prevent XSS
   }])
   // location of the locale settings
   .config(["tmhDynamicLocaleProvider", function (tmhDynamicLocaleProvider) {
@@ -144,7 +125,6 @@ angular.module(ApplicationConfiguration.applicationModuleName)
           break;
       };
     };
-    // setHeaderState('landing');
 
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
 
@@ -159,7 +139,9 @@ angular.module(ApplicationConfiguration.applicationModuleName)
       setHeaderState(toState.name);
     });
   }])
-  .run(["$rootScope", "$location", "LocaleService", function($rootScope, $location, LocaleService) {
+  .run(["$rootScope", "$location", "LocaleService", "$translate", function($rootScope, $location, LocaleService, $translate) {
+
+  	$translate.use('en_US');
 
     var browserLanguage = navigator.language || navigator.userLanguage;
 
@@ -256,7 +238,8 @@ angular.module('actions').config(['$stateProvider', '$urlRouterProvider',
 			.state('listActions', {
 				url: '/take-action',
 				templateUrl: 'modules/actions/views/list-actions.client.view.html',
-				data: { protected: true }
+				data: { protected: true },
+				globalStyles: 'white-bg'
 			});
 
 	}
@@ -688,22 +671,10 @@ angular.module('actions')
       controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
 
       	$scope.user = Authentication.user;
-
-      	$translate($scope.action.title).then(function(title) {
-      		$scope.filterTitleHTML = function() { return $sce.trustAsHtml(title); };
-      	});
-        // $scope.filterTitleHTML = function() { return $sce.trustAsHtml($scope.action.title); };
-        $translate($scope.action.content).then(function(content) {
-	        if(content.indexOf('user.borough') > -1) {
-	        	content = content.replace('user.borough', $scope.user.borough);
-	        }
-      		$scope.filterContentHTML = function() { return $sce.trustAsHtml(content); };
-      	});
-        // $scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
-        $translate($scope.action.cta.buttonTitle).then(function(btn) {
-      		$scope.filterButtonTitleHTML = function() { return $sce.trustAsHtml(btn); };
-      	});
-        // $scope.filterButtonTitleHTML = function() { return $sce.trustAsHtml($scope.action.cta.buttonTitle); };
+      	
+        $scope.filterTitleHTML = $scope.action.title;
+        $scope.filterContentHTML =  $scope.action.content;
+        $scope.filterButtonTitleHTML = $scope.action.cta.buttonTitle;
         $scope.closeErrorAlert = true;
       }],
       link: function (scope, element, attrs) {
@@ -910,8 +881,8 @@ angular.module('actions').factory('Actions', ['$resource',
 
 'use strict';
 
-angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$location', 'Authentication',
-  function Issues($http, $q, $filter, $location, Authentication) {
+angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$location', 'Authentication', '$translate', 'LocaleService',
+  function Issues($http, $q, $filter, $location, Authentication, $translate, LocaleService) {
 
     var user = Authentication.user;
     var request = function(url) {
@@ -925,6 +896,18 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
         });
 
       return deferred.promise;
+    };
+
+    var language = function() {
+    	var deferred = $q.defer;
+    	$http.get('languages/locale-en_US.json')
+	    	.then(function(res){
+	    		deferred.resolve(res);	
+	    	}, function(err) {
+	    		deferred.reject();
+	    	});
+
+	    	return deferred.promise;
     };
 
     var getShareMessage = function(type) {
@@ -957,57 +940,26 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
 
     var getLandlordEmailMessage = function() {
 
+    	console.log($translate.getAvailableLanguageKeys());
+
       var message = 'To whom it may regard, \n\n' +
         'I am requesting the following repairs in my apartment referenced below [and/or] in the public areas of the building:\n\n';
 
       var problemsContent = '';
 
-      for(var i = 0; i < user.problems.length; i++) {
+      for(var i = 0; i < user.problems.length; i++) { 
 
         var prob = user.problems[i];
 
-        problemsContent += prob.title + ':\n';
+        problemsContent += $translate.instant(prob.title, undefined, undefined, 'en_US') + ':\n';
         for(var j = 0; j < prob.issues.length; j++) {
-          problemsContent += ' - ' + prob.issues[j].key;
+          problemsContent += ' - ' + $translate.instant(prob.issues[j].key, undefined, undefined, 'en_US');
           if(prob.issues[j].emergency) problemsContent += ' (FIX IMMEDIATELY)';
           problemsContent += '\n';
         }
         problemsContent += '\n';
 
       }
-
-      // for(var issue in user.issues) {
-      //   var key = issue,
-      //       title = $filter('areaTitle')(key),
-      //       vals = user.issues[issue];
-      //
-      //   if(vals.length) {
-      //
-      //     var activityIdx = user.activity.map(function(i) { return i.key; }).indexOf(key);
-      //     if(activityIdx !== -1) var activity = user.activity[activityIdx];
-      //
-      //     issuesContent += title + ':\n';
-      //     vals.forEach(function(v) {
-      //       issuesContent += ' - ' + v.title;
-      //       if(v.emergency) issuesContent += ' (FIX IMMEDIATELY)';
-      //       issuesContent += '\n';
-      //     });
-      //
-      //     issuesContent += '\n   First Appeared: ';
-      //     if(activity) {
-      //       issuesContent += $filter('date')(activity.date, 'longDate');
-      //       issuesContent += '\n   Additional Information:';
-      //       issuesContent += '\n   ' + activity.description;
-      //       issuesContent += '\n';
-      //       activity = undefined;
-      //     } else {
-      //       issuesContent += '\n   Additional Information:';
-      //     }
-      //
-      //     issuesContent += '\n';
-      //   }
-      // }
-      //
       message += problemsContent + '\n\n';
 
       var superContactIdx = user.activity.map(function(i) { return i.key; }).indexOf('contactSuper');
@@ -1028,6 +980,7 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
                   $filter('tel')(user.phone);
 
       return message;
+
     };
 
     var getLandlordEmailSubject = function() {
@@ -1045,8 +998,8 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
 
 'use strict';
 
-angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$filter',
-  function Pdf($http, $q, Authentication, $filter) {
+angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$filter', '$translate',
+  function Pdf($http, $q, Authentication, $filter, $translate) {
 
     var user = Authentication.user;
 
@@ -1068,7 +1021,7 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
   		// Kick off assembly of obj sent to PDF service
 			assembledObject.tenantInfo = {
-  			'phone': user.phone,
+  			'phone': $filter('tel')(user.phone),
   			'name': user.fullName,
   			'address': user.address + ' ' + user.unit +
   								' <br> ' + user.borough +
@@ -1083,7 +1036,10 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
       	var problemPush = angular.copy(user.problems[i]);
 
+      	problemPush.title = $translate.instant(problemPush.title, undefined, undefined, 'en_US');
+
       	problemPush.issues.map(function(curr, idx, arr) {
+      		curr.key = $translate.instant(curr.key, undefined, undefined, 'en_US');
       		if(curr.emergency === true) {
       			assembledObject.emergency = true;
       		}
@@ -1093,7 +1049,6 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
       }
 
       return assembledObject;
-
   	};
 
     var createComplaint = function(landlord, accessDates) {
@@ -1128,7 +1083,7 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
   	};
   }]);
 
-'use strict';
+;'use strict';
 
 //Setting up route
 angular.module('activity').config(['$stateProvider', '$urlRouterProvider', 'LightboxProvider',
@@ -1150,6 +1105,12 @@ angular.module('activity').config(['$stateProvider', '$urlRouterProvider', 'Ligh
 				url: '/share/:key',
 				templateUrl: 'modules/activity/views/list-activity-public.client.view.html',
 				data: { disableBack: true }
+			})
+			.state('print', {
+				url: '/print',
+				templateUrl: 'modules/activity/views/print.client.view.html',
+				data: {disableBack: true},
+				globalStyles: 'clear-nav'
 			});
 
 	}
@@ -1236,10 +1197,50 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
 
 'use strict';
 
+
+angular.module('activity').controller('PrintController', ['$scope', '$rootScope', '$filter', 'Activity', 'Lightbox', 'Authentication', '$window',
+  function($scope, $rootScope, $filter, Activity, Lightbox, Authentication, $window) {
+
+    $scope.list = function() {
+    	var photoOrder = 0;
+      $scope.activities = Activity.query({}, function(data){
+      	data.reverse();
+      	for(var i = 0; i < data.length; i++) {
+      		if(data[i].photos.length) {
+      			for (var j = 0; j < data[i].photos.length; j ++) {
+      				data[i].photos[j].order = photoOrder;
+      				photoOrder++;
+      			}
+      		}
+      	}
+      }, function(data) {
+
+      });
+    };
+
+    $rootScope.headerLightBG = true;
+
+    $scope.user = Authentication.user;
+
+    $scope.activityTemplate = function(key) {
+      return $filter('activityTemplate')(key);
+    };
+
+    $scope.compareDates = function(start, created) {
+      var startDate = new Date(start).setHours(0,0,0,0);
+      var createdDate = new Date(created).setHours(0,0,0,0);
+      return startDate !== createdDate;
+    }
+
+	}
+]);
+
+'use strict';
+
 angular.module('activity').directive('metaMap', ['$rootScope', 'CartoDB', function ($rootScope, CartoDB) {
     return {
       restrict: 'E',
-      template: '<div id="map" class="meta-map"></div>',
+      template: '<div class="meta-map"></div>',
       scope: false,
       link: function postLink(scope, element, attrs) {
 
@@ -1247,7 +1248,7 @@ angular.module('activity').directive('metaMap', ['$rootScope', 'CartoDB', functi
         var photoLng = attrs.lng;
 
         /*** init map ***/
-        var map = L.map('map', {
+        var map = L.map(element[0].children[0], {
           scrollWheelZoom: false,
           zoomControl: false,
           // center: [40.6462615921222, -73.96270751953125],
@@ -2212,8 +2213,8 @@ angular.module('core').directive('phoneInput', ["$filter", "$browser", function(
 'use strict';
 
 angular.module('core')
-  .directive('printButton', ['deviceDetector', '$window',
-  function (deviceDetector, $window) {
+  .directive('printButton', ['deviceDetector', '$window', '$http',
+  function (deviceDetector, $window, $http) {
     return {
       restrict: 'A',
       scope: false,
@@ -2225,10 +2226,19 @@ angular.module('core')
           element.addClass("print-button");
         }
 
+        var printPg = document.createElement('iframe');
+        printPg.src = '/print';
+        printPg.width = 700;
+        printPg.height = 100;
+        printPg.name = 'frame';
+        document.body.appendChild(printPg);
 
-        element.on('click', function (event) {
-          $window.print();
-        });
+        printPg.onload = function() {
+
+	        element.on('click', function (event) {
+				    window.frames['frame'].print();
+	        });
+        };
 
 
       }
@@ -2489,11 +2499,19 @@ angular.module('core').filter('titlecase', function() {
 
 'use strict';
 
-angular.module('core').filter('trustTranslate', ['$sce', '$filter',
-	function($sce, $filter) {
+angular.module('core').filter('trustTranslate', ['$sce', '$filter', 'Authentication',
+	function($sce, $filter, Authentication) {
+		
+		var user = Authentication.user;
+
 		var translatedText = $filter('translate');
 	  return function (val) {
     	var returnedTranslation = translatedText(val);
+
+    	if(returnedTranslation.indexOf('user.borough') > -1) {
+      	returnedTranslation = returnedTranslation.replace('user.borough', user.borough);
+      }
+
     	return $sce.trustAsHtml(returnedTranslation);
     }
 }]);
