@@ -5,15 +5,20 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
   function($scope, $rootScope, $filter, Activity, Lightbox, Authentication, $window) {
 
     $scope.list = function() {
-      $scope.activities = Activity.query();
+    	var photoOrder = 0;
+      $scope.activities = Activity.query({}, function(data){
+      	data.reverse();
+      	for(var i = 0; i < data.length; i++) {
+      		if(data[i].photos.length) {
+      			for (var j = 0; j < data[i].photos.length; j ++) {
+      				data[i].photos[j].order = photoOrder;
+      				photoOrder++;
+      			}
+      		}
+      	}
+      }, function(data) {
 
-      var fixPrint = function(){
-      	console.log('huh?');
-			  var printContents = document.documentElement.outerHTML;
-      }
-
-
-      fixPrint();
+      });
     };
 
     $rootScope.headerLightBG = true;

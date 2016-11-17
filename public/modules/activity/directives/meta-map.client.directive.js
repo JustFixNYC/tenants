@@ -3,7 +3,7 @@
 angular.module('activity').directive('metaMap', ['$rootScope', 'CartoDB', function ($rootScope, CartoDB) {
     return {
       restrict: 'E',
-      template: '<div id="map" class="meta-map"></div>',
+      template: '<div class="meta-map"></div>',
       scope: false,
       link: function postLink(scope, element, attrs) {
 
@@ -11,7 +11,7 @@ angular.module('activity').directive('metaMap', ['$rootScope', 'CartoDB', functi
         var photoLng = attrs.lng;
 
         /*** init map ***/
-        var map = L.map('map', {
+        var map = L.map(element[0].children[0], {
           scrollWheelZoom: false,
           zoomControl: false,
           // center: [40.6462615921222, -73.96270751953125],

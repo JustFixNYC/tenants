@@ -1,49 +1,32 @@
 
 <div class="lightbox-image-container">
   <div class="lightbox-image-caption">
-    <span>{{Lightbox.imageCaption}}</span>
+		<h2>{{ activity.title | translate }}</h2>
+    <span>{{activity.description}}</span>
   </div>
 
   <!-- image -->
-  <img ng-if="!Lightbox.isVideo(Lightbox.image)" ng-src="{{activity.photos[0].url}}">
+  <!-- <img ng-if="!activity.isVideo(Lightbox.image)" ng-repeat="activityPhoto in activity.photos track by $index" ng-src="{{activity.photos[$index].url}}"> -->
   <!-- <img ng-if="!Lightbox.isVideo(Lightbox.image)" ng-src="{{Lightbox.imageUrl}}" image-orient="{{Lightbox.image.exif.orientation}}"> -->
 
-  <!-- video -->
-  <div ng-if="Lightbox.isVideo(Lightbox.image)"
-      class="embed-responsive embed-responsive-16by9">
-    <!-- video file embedded directly -->
-    <video ng-if="!Lightbox.isSharedVideo(Lightbox.image)"
-        lightbox-src="{{Lightbox.imageUrl}}"
-        controls
-        autoplay="true">
-    </video>
-
-    <!-- video embedded with an external service using
-         `ng-videosharing-embed` -->
-    <embed-video ng-if="activity.isSharedVideo(Lightbox.image)"
-        lightbox-src="{{Lightbox.imageUrl}}"
-        ng-href="{{Lightbox.imageUrl}}"
-        iframe-id="lightbox-video"
-        class="embed-responsive-item">
-      <a ng-href="{{Lightbox.imageUrl}}">Watch video</a>
-    </embed-video>
-  </div>
-	
-	<h3>{{ activity.title | translate }}</h3>
-  <div ng-if="activity.photos[0].exif" class="exifdata">
-    <div class="row"><!-- 
+  <div ng-repeat="photo in activity.photos">
+		<h3>See appendix {{photo.order + 1}}</h3>
+		<div class="row">
+			<div class="col-sm-4">
+				<img ng-src="{{photo.thumb}}">
+			</div>
       <div class="col-sm-4">
         <div ng-if="activity.photos[0].exif.lat">
-          <meta-map lat="{{ activity.photos[0].exif.lat }}" lng="{{ activity.photos[0].exif.lng }}"></meta-map>
+          <meta-map lat="{{ activity.photos[0].exif.lat }}" lng="{{ activity.photos[0].exif.lng }}" idx="$index"></meta-map>
         </div>
-      </div> -->
-      <div class="col-smactivity.photos[0]-8">
+      </div>
+      <div class="col-sm-4">
         <p ng-if="activity.photos[0].exif.make"><b>Phone Make/Model:</b> {{ activity.photos[0].exif.make }} / {{ activity.photos[0].exif.model }}</p>
         <p ng-if="activity.photos[0].exif.created"><b>Date Captured:</b> {{ activity.photos[0].exif.created | date:'short' }}</p>
         <p ng-if="activity.photos[0].exif.dir"><b>Facing Direction (approx.):</b> {{ activity.photos[0].exif.dir }}</p>
         <p ng-if="activity.photos[0].exif.lat"><b>Latitude/Longitude:</b> {{ activity.photos[0].exif.lat }} {{ activity.photos[0].exif.lng }}</p>
         <p ng-if="!activity.photos[0].exif.lat"><em>No location data available for this photo.</em></p>
       </div>
-    </div>
+		</div>
   </div>
 </div>

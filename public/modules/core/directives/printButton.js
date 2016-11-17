@@ -16,14 +16,17 @@ angular.module('core')
 
         var printPg = document.createElement('iframe');
         printPg.src = '/print';
-        printPg.width = 0;
-        printPg.height = 0;
+        printPg.width = 700;
+        printPg.height = 100;
         printPg.name = 'frame';
         document.body.appendChild(printPg);
 
-        element.on('click', function (event) {
-			    window.frames['frame'].print();
-        });
+        printPg.onload = function() {
+
+	        element.on('click', function (event) {
+				    window.frames['frame'].print();
+	        });
+        };
 
 
       }

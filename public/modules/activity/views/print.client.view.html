@@ -5,31 +5,37 @@
       <h1>{{ user.fullName }}</h1>
       <p class="text-center">{{'modules.activity.views.listActivityPublic.contact' | translate}} {{ user.phone | tel }}</p>
   </div>
-  <div data-ng-if="activities.length">
-      <div data-ng-repeat="activity in activities | orderBy:'createdDate':true" class="panel activity-panel">
-          <div class="panel-body">
+  <div data-ng-if="activities.length" class="activity-list">
+    <div data-ng-repeat="activity in activities | orderBy:'createdDate':true" class="panel activity-panel">
+        <div class="panel-body">
 
-          <!-- {{activity | json}} -->
+        	<div class="image-share" ng-show="activity.key == 'statusUpdate'">
+						
+						<div ng-include="'/modules/activity/partials/print-image-template.html'"></div>
 
-          	<div class="image-share" ng-show="activity.key == 'statusUpdate'">
-							
-							<div ng-include="'/modules/activity/partials/print-image-template.html'"></div>
+        	</div>
 
-          	</div>
+        	<div class="other-share" ng-show="activity.key != 'statusUpdate'">
 
-          	<div class="other-share" ng-show="activity.key != 'statusUpdate'">
+            <h2>{{ activity.title | translate }}</h2>
 
-	            <div ng-include="activityTemplate(activity.key)"></div>
-
-              <p><b>{{ activity.title | translate }}</b></p>
+            <div ng-include="activityTemplate(activity.key)"></div>
 
 
-              <span class="pull-right activity-logged-date"><i>{{'modules.activity.views.listActivityPublic.loggedOn' | translate}} {{ activity.createdDate | date:'short' }}</i></span>
-
-            </div>
+            <span class="pull-right activity-logged-date"><i>{{'modules.activity.views.listActivityPublic.loggedOn' | translate}} {{ activity.createdDate | date:'short' }}</i></span>
 
           </div>
-      </div>
+
+        </div>
+    </div>
+  </div>
+  <div class="appendix">
+		<div class="items" ng-repeat="activity in activities | orderBy:'createdDate':true" ng-if="activity.key == 'statusUpdate'">
+			<div ng-repeat="photo in activity.photos" class="photo-wrap">
+				<h3>Appendix {{photo.order + 1}}</h3>
+				<img ng-src="{{photo.url}}" />
+			</div>
+		</div>
   </div>
   <div class="alert alert-warning text-center" data-ng-if="!activities.length">
     {{ user.fullName }} {{'modules.activity.views.listActivityPublic.empty' | translate}}
