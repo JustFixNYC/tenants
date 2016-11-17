@@ -42,7 +42,7 @@ AdminSchema.methods.build = function() {
 
     console.log('build', this);
 
-    built.resolve();
+    built.resolve(this);
 
     return built.promise;
 };

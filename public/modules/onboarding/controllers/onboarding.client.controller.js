@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$filter', 'Authentication', 'Referrals', '$http', '$modal',
-	function($rootScope, $scope, $location, $filter, Authentication, Referrals, $http, $modal) {
+angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$filter', 'Authentication', 'Advocates', '$http', '$modal',
+	function($rootScope, $scope, $location, $filter, Authentication, Advocates, $http, $modal) {
 
 		$scope.authentication = Authentication;
 		$scope.newUser = {};
@@ -49,7 +49,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			// handles back button
 			if(!$scope.accessCode.valueEntered || $scope.accessCode.valueEntered !== $scope.accessCode.value) {
 
-				var referral = new Referrals();
+				var referral = new Advocates();
 		    referral.$validateNewUser({ code: $scope.accessCode.value },
 		      function(success) {
 

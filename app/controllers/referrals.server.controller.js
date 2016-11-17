@@ -79,6 +79,25 @@ exports.validateNewUser = function(req, res) {
 
 };
 
-// exports.validateNewUser = function(req, res) {
-//
-// };
+exports.validateExistingUser = function(req, res) {
+
+  // TODO
+
+};
+
+exports.listTenants = function(req, res) {
+
+  console.log('list tenants', req.user);
+
+  Tenant.find({ advocate: req.user._userdata })
+    .then(function (tenants) {
+      res.json(tenants);
+      res.end();
+    })
+    .catch(function (err) {
+      res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+    })
+
+  //
+  // Tenants.find({ advocate: })
+};
