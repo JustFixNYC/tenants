@@ -1,7 +1,13 @@
 @media print {
 	body {
+		margin: auto;
 		display: block;
 		min-height: auto;
+		font-size: 12px;
+
+		p {
+			font-size: 1em;
+		}
 	}
 }
 
@@ -18,6 +24,7 @@
 
 		h1 {
 			margin-bottom: 15px;
+			font-size: 1.75em;
 		}
 
 		p {
@@ -27,7 +34,7 @@
 
 	h2 {
 		margin-top: 0px;
-		font-size: 22px;
+		font-size: 1.5em;
 
 		&.print-title {
 			display: block;
@@ -36,6 +43,7 @@
 
 	h3 {
 		margin-top: 15px;
+		font-style: italic;
 	}
 
 	.activity-list {

@@ -35,7 +35,7 @@
   <div class="appendix">
 		<div class="items" ng-repeat="activity in activities | orderBy:'createdDate':true" ng-if="activity.key == 'statusUpdate' || activity.photosExist == true">
 			<div ng-repeat="photo in activity.photos" class="photo-wrap">
-				<h3>Appendix {{photo.order + 1}}</h3>
+				<h2>Appendix {{photo.order + 1}}</h2>
 				<img ng-src="{{photo.url}}" />
         <p ng-if="!activity.photos[0].exif.lat"><em>No location data available for this photo.</em></p>
 				<div class="row">
