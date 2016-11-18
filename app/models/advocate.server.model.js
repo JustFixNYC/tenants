@@ -113,7 +113,7 @@ AdvocateSchema.path('code').validate(function (value, done) {
   mongoose.models['Advocate'].findOne({ code: value }, function(err, advocate) {
       if(err) {
           done(err);
-      } else if(advocate) {
+      } else if(advocate &&  !advocate._id.equals(_this._id)) {
           _this.invalidate("code", "Advocate code is already registered!");
           done(new Error("Advocate code is already registered!"));
       } else {

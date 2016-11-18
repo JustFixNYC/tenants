@@ -78,8 +78,13 @@ var updatePhoneNumber = function(req) {
 										updated.resolve(userObject);
 									}
 								});
-
+							})
+							.catch(function (err) {
+								updated.reject(err);
 							});
+					})
+					.catch(function (err) {
+						updated.reject(err);
 					});
 			})
 			.catch(function (err) {

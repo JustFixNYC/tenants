@@ -159,8 +159,8 @@ exports.updateActivitiesFromChecklist = function(req, res, next) {
 
   var _prblms = req.body.problems;
 
-  // new user
-  if(!req.user) {
+  // new user OR advocate user creating managed account
+  if(!req.user || req.user.roles.indexOf('advocate') !== -1) {
 
     // (1) new user who didn't enter any problems
     if(!_prblms) next();
@@ -188,6 +188,13 @@ exports.updateActivitiesFromChecklist = function(req, res, next) {
     // }
 
     // console.log(_user);
+
+    // var newBody = {
+    //   activity: req.body.activity,
+    //   problems: req.body.problems
+    // };
+    // req.body = newBody;
+
     next();
   }
 

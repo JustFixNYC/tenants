@@ -7,7 +7,7 @@ var passport = require('passport');
 // User Routes
 var users 		= require('../../app/controllers/users.server.controller'),
 		advocates = require('../../app/controllers/advocates.server.controller'),
-		referrals = require('../../app/controllers/referrals.server.controller');
+		problems = require('../../app/controllers/problems.server.controller');
 
 module.exports = function(app) {
 
@@ -20,8 +20,10 @@ module.exports = function(app) {
 	// app.route('/api/auth/signin').post(users.signin);
 	// app.route('/api/auth/signout').get(users.signout);
 
-	app.route('/api/advocates/validate/new').get(referrals.validateNewUser);
+	app.route('/api/advocates/validate/new').get(advocates.validateNewUser);
 
-	app.route('/api/advocates').get(users.hasAuthorization(['advocate']), referrals.listTenants);
+	app.route('/api/advocates').get(users.hasAuthorization(['advocate']), advocates.listTenants);
+
+	app.route('/api/advocates/tenants/create').post(users.hasAuthorization(['advocate']), problems.updateActivitiesFromChecklist, advocates.createNewTenant);
 
 };

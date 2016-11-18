@@ -91,7 +91,7 @@ IdentitySchema.path('phone').validate(function (value, done) {
   mongoose.models['Identity'].findOne({ phone: value }, function(err, identity) {
       if(err) {
           done(err);
-      } else if(identity) {
+      } else if(identity && !identity._id.equals(_this._id)) {
           _this.invalidate("phone", "Phone number is already registered!");
           done(new Error("Phone number is already registered!"));
       } else {

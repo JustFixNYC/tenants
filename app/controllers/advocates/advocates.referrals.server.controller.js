@@ -5,7 +5,7 @@
  */
 var _ = require('lodash'),
   Q = require('q'),
-  errorHandler = require('./errors.server.controller'),
+  errorHandler = require('../errors.server.controller'),
   mongoose = require('mongoose'),
   passport = require('passport'),
   rollbar = require('rollbar'),
@@ -89,8 +89,6 @@ exports.validateExistingUser = function(req, res) {
 
 exports.listTenants = function(req, res) {
 
-  console.log('list tenants', req.user);
-
   Tenant.find({ advocate: req.user._userdata })
     .then(function (tenants) {
 
@@ -111,7 +109,7 @@ exports.listTenants = function(req, res) {
 
       });
 
-      console.log(tenants);
+      // console.log(tenants);
       res.json(tenants);
       res.end();
     })

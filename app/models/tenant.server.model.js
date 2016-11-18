@@ -164,7 +164,7 @@ TenantSchema.path('phone').validate(function (value, done) {
   mongoose.models['Tenant'].findOne({ phone: value }, function(err, tenant) {
       if(err) {
           done(err);
-      } else if(tenant) {
+      } else if(tenant && !tenant._id.equals(_this._id)) {
           _this.invalidate("phone", "Phone number is already registered!");
           done(new Error("Phone number is already registered!"));
       } else {

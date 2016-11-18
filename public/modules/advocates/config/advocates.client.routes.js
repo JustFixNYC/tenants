@@ -31,6 +31,23 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 				url: '/referral',
 				templateUrl: 'modules/advocates/partials/signup-referral.client.view.html'
 			})
+			.state('newTenantSignup', {
+				url: '/advocate/tenant/new',
+				templateUrl: 'modules/advocates/views/new-tenant.client.view.html',
+				controller: 'NewTenantSignupController',
+				abstract: true,
+				data: {
+					disableBack: true
+				}
+			})
+			.state('newTenantSignup.problems', {
+				url: '/checklist',
+				templateUrl: 'modules/advocates/partials/new-tenant-problems.client.view.html'
+			})
+			.state('newTenantSignup.details', {
+				url: '/personal',
+				templateUrl: 'modules/advocates/partials/new-tenant-details.client.view.html'
+			})
 			.state('advocateHome', {
 				url: '/advocate',
 				templateUrl: 'modules/advocates/views/home.client.view.html',

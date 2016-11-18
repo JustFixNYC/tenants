@@ -1,6 +1,8 @@
 <section data-ng-controller="AdvocateController" data-ng-init="list()">
   <h1>Advocate Home</h1>
 
+  <a ui-sref="newTenantSignup.problems" class="btn btn-primary btn-block">New Tenant</a>
+
   <ul>
     <li ng-repeat="tenant in tenants">
       <p>{{ tenant.fullName }} {{ tenant.phone }}</p>

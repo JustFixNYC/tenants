@@ -19,6 +19,36 @@ var _ = require('lodash'),
 
 mongoose.Promise = require('q').Promise;
 
+var buildNewTenant = exports.buildNewTenant = function(tenant) {
+
+  var built = Q.defer();
+
+  tenant.actionFlags.push('initial');
+
+  // make sure this comes before the 'added to checklist card'
+  var acctCreatedDate = new Date();
+  acctCreatedDate.setSeconds(acctCreatedDate.getSeconds() - 60);
+
+  // self-explanatory?
+  tenant.activity.push({
+    key: 'createAcount',
+    title: 'modules.activity.other.created',
+    createdDate: acctCreatedDate,
+    startDate: acctCreatedDate
+  });
+
+  // new user enabled sharing, so create a key
+  // **actually, just create a key regardless**
+  // if(user.sharing.enabled) {
+    tenantProfileHandler.createPublicView().then(function(newUrl) {
+      tenant.sharing.key = newUrl;
+      built.resolve(tenant);
+    });
+  // }
+
+  return built.promise;
+};
+
 /**
  * Signup
  */
@@ -36,33 +66,15 @@ exports.signup = function(req, res) {
   // this is a tenant user
   user.kind = 'Tenant';
 
-  var message = null;
-
   // Add missing user fields
   identity.provider = 'local';
-  tenant.actionFlags.push('initial');
 
-  // new user enabled sharing, so create a key
-  // **actually, just create a key regardless**
-  // if(user.sharing.enabled) {
-    tenantProfileHandler.createPublicView().then(function(newUrl) {
-      tenant.sharing.key = newUrl;
-    });
-  // }
+  var message = null;
 
-  // make sure this comes before the 'added to checklist card'
-  var acctCreatedDate = new Date();
-  acctCreatedDate.setSeconds(acctCreatedDate.getSeconds() - 60);
-
-  // self-explanatory?
-  tenant.activity.push({
-    key: 'createAcount',
-    title: 'modules.activity.other.created',
-    createdDate: acctCreatedDate,
-    startDate: acctCreatedDate
-  });
-
-  userAuthHandler.saveNewUser(req, identity, tenant, user)
+  buildNewTenant(tenant)
+    .then(function (tenant) {
+      return userAuthHandler.saveNewUser(req, identity, tenant, user);
+    })
     .then(function (userObject) {
       rollbar.reportMessage("New User Signup!", "info", req);
       res.json(userObject);

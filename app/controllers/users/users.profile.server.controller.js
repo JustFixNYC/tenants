@@ -10,9 +10,10 @@ var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
 	rollbar = require('rollbar'),
-	// User = mongoose.model('User');
 	Identity = mongoose.model('Identity'),
-	User = mongoose.model('User');
+	User = mongoose.model('User'),
+	Tenant = mongoose.model('Tenant');
+
 
 mongoose.Promise = require('q').Promise;
 
@@ -64,7 +65,10 @@ var updateUser = function(req) {
 								updated.resolve(userObject);
 							}
 						});
-					});  // end of userdata.save
+					})  // end of userdata.save
+					.catch(function (err) {
+						updated.reject(err);
+					});
 			})	// end of user.populate
 			.catch(function (err) {
 				updated.reject(err);

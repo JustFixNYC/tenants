@@ -92,8 +92,6 @@ var saveNewUser = exports.saveNewUser = function(req, identity, userdata, user) 
                   saved.reject(errorHandler.getErrorMessage(userdata.reason));
                 }
 
-                console.log(userdata);
-
                 // save the ObjectID references of the two documents
                 user._identity = identity.value._id;
                 user._userdata = userdata.value._id;
@@ -179,6 +177,10 @@ exports.signin = function(req, res, next) {
                   rollbar.reportMessage("User Sign In", "info", req);
                   res.json(userObject);
                   res.end();
+                })
+                .catch(function (err) {
+                  rollbar.handleError(err);
+                  res.status(400).send(err);
                 });
             }
           });
