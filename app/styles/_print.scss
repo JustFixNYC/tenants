@@ -29,7 +29,6 @@
 
 		> div {
 			border-top: 1px solid $darkgray-light;
-			page-break-inside: avoid;
 
 			&:first-child {
 				border-top: none;
@@ -44,6 +43,14 @@
 
 	img {
 		max-height: 100%;
+	}
+
+	.other-share {
+		page-break-inside:avoid;
+	}
+
+	.photo-row {
+		page-break-inside: avoid;
 	}
 
 	.exifdata {

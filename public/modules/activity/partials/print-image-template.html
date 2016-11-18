@@ -9,7 +9,7 @@
   <!-- <img ng-if="!activity.isVideo(Lightbox.image)" ng-repeat="activityPhoto in activity.photos track by $index" ng-src="{{activity.photos[$index].url}}"> -->
   <!-- <img ng-if="!Lightbox.isVideo(Lightbox.image)" ng-src="{{Lightbox.imageUrl}}" image-orient="{{Lightbox.image.exif.orientation}}"> -->
 
-  <div ng-repeat="photo in activity.photos">
+  <div class="photo-row" ng-repeat="photo in activity.photos">
 		<h3>See appendix {{photo.order + 1}}</h3>
 		<div class="row">
 			<div class="col-sm-4">
