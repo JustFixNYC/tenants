@@ -4,6 +4,8 @@
       <img src="/modules/core/img/sections/history.svg" alt="Case History" />
       <h1>{{ user.fullName }}</h1>
       <p class="text-center">{{'modules.activity.views.listActivityPublic.contact' | translate}} {{ user.phone | tel }}</p>
+      <p class="text-center">{{'modules.users.views.settings.editProfile.address' | translate}} {{ user.address }}</p>
+      <p class="text-center">{{'modules.onboarding.partials.onboardingDetails.apt' | translate}} {{ user.unit }}</p>
   </div>
   <div data-ng-if="activities.length" class="activity-list">
     <div data-ng-repeat="activity in activities | orderBy:'createdDate':true" class="panel activity-panel">
@@ -13,6 +15,8 @@
 						
 						<div ng-include="'/modules/activity/partials/print-image-template.html'"></div>
 
+            <span class="pull-right activity-logged-date"><i>{{'modules.activity.views.listActivityPublic.loggedOn' | translate}} {{ activity.createdDate | date:'short' }}</i></span>
+
         	</div>
 
         	<div class="other-share" ng-show="activity.key != 'statusUpdate'">
@@ -20,7 +24,6 @@
             <h2>{{ activity.title | translate }}</h2>
 
             <div ng-include="activityTemplate(activity.key)"></div>
-
 
             <span class="pull-right activity-logged-date"><i>{{'modules.activity.views.listActivityPublic.loggedOn' | translate}} {{ activity.createdDate | date:'short' }}</i></span>
 
@@ -34,6 +37,17 @@
 			<div ng-repeat="photo in activity.photos" class="photo-wrap">
 				<h3>Appendix {{photo.order + 1}}</h3>
 				<img ng-src="{{photo.url}}" />
+        <p ng-if="!activity.photos[0].exif.lat"><em>No location data available for this photo.</em></p>
+				<div class="row">
+					<div class="col-md-6">
+		        <p ng-if="activity.photos[0].exif.make"><b>Phone Make/Model:</b> {{ activity.photos[0].exif.make }} / {{ activity.photos[0].exif.model }}</p>
+		        <p ng-if="activity.photos[0].exif.created"><b>Date Captured:</b> {{ activity.photos[0].exif.created | date:'short' }}</p>
+	        </div>
+					<div class="col-md-6">
+		        <p ng-if="activity.photos[0].exif.dir"><b>Facing Direction (approx.):</b> {{ activity.photos[0].exif.dir }}</p>
+		        <p ng-if="activity.photos[0].exif.lat"><b>Latitude/Longitude:</b> {{ activity.photos[0].exif.lat }} {{ activity.photos[0].exif.lng }}</p>
+	        </div>
+        </div>
 			</div>
 		</div>
   </div>

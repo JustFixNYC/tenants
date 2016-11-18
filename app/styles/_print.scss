@@ -13,12 +13,27 @@
 	position: relative;
 	display: block;
 
+	.page-header {
+		h1 {
+			margin-bottom: 15px;
+		}
+
+		p {
+			margin-top: 0px;
+		}
+	}
+
 	h2 {
 		margin-top: 0px;
+		font-size: 22px;
 
 		&.print-title {
 			display: block;
 		}
+	}
+
+	h3 {
+		margin-top: 15px;
 	}
 
 	.activity-list {
@@ -90,7 +105,12 @@
 
 		img {
 			margin: auto;
-			max-height: 700px;
+			max-height: 800px;
+		}
+
+		.row {
+			text-align: left;
+			font-size: 14px;
 		}
 	}
 }
