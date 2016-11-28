@@ -9,6 +9,10 @@
 			font-size: 1em;
 		}
 	}
+
+	.print-hidden {
+		display: none;
+	}
 }
 
 .print-title {
@@ -35,10 +39,10 @@
 	h2 {
 		margin-top: 0px;
 		font-size: 1.5em;
+	}
 
-		&.print-title {
-			display: block;
-		}
+	.print-title {
+		display: block;
 	}
 
 	h3 {
