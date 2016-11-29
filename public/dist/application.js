@@ -76,9 +76,9 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     });
 
     $translateProvider.preferredLanguage('en_US');// is applied on first load
-    // $translateProvider.useLocalStorage();// saves selected language to localStorage
+    $translateProvider.useLocalStorage(); // saves selected language to localStorage
     // NOTE: This shit causes all sorts of issues with our UI-SREF attribute. Not recognized in any sanitizer module, and causes it to break
-    // $translateProvider.useSanitizeValueStrategy(null); // Prevent XSS
+    $translateProvider.useSanitizeValueStrategy(null); // Prevent XSS
   }])
   // location of the locale settings
   .config(["tmhDynamicLocaleProvider", function (tmhDynamicLocaleProvider) {
@@ -899,18 +899,6 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
       return deferred.promise;
     };
 
-    var language = function() {
-    	var deferred = $q.defer;
-    	$http.get('languages/locale-en_US.json')
-	    	.then(function(res){
-	    		deferred.resolve(res);	
-	    	}, function(err) {
-	    		deferred.reject();
-	    	});
-
-	    	return deferred.promise;
-    };
-
     var getShareMessage = function(type) {
 
       var message;
@@ -941,14 +929,14 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
 
     var getLandlordEmailMessage = function() {
 
-    	console.log($translate.getAvailableLanguageKeys());
+    	// console.log($translate.getAvailableLanguageKeys());
 
       var message = 'To whom it may regard, \n\n' +
         'I am requesting the following repairs in my apartment referenced below [and/or] in the public areas of the building:\n\n';
 
       var problemsContent = '';
 
-      for(var i = 0; i < user.problems.length; i++) { 
+      for(var i = 0; i < user.problems.length; i++) {
 
         var prob = user.problems[i];
 

@@ -17,18 +17,6 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
       return deferred.promise;
     };
 
-    var language = function() {
-    	var deferred = $q.defer;
-    	$http.get('languages/locale-en_US.json')
-	    	.then(function(res){
-	    		deferred.resolve(res);	
-	    	}, function(err) {
-	    		deferred.reject();
-	    	});
-
-	    	return deferred.promise;
-    };
-
     var getShareMessage = function(type) {
 
       var message;
@@ -59,14 +47,14 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
 
     var getLandlordEmailMessage = function() {
 
-    	console.log($translate.getAvailableLanguageKeys());
+    	// console.log($translate.getAvailableLanguageKeys());
 
       var message = 'To whom it may regard, \n\n' +
         'I am requesting the following repairs in my apartment referenced below [and/or] in the public areas of the building:\n\n';
 
       var problemsContent = '';
 
-      for(var i = 0; i < user.problems.length; i++) { 
+      for(var i = 0; i < user.problems.length; i++) {
 
         var prob = user.problems[i];
 
