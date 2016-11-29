@@ -17,7 +17,7 @@ angular.module('core')
 
         var printPg = document.createElement('iframe');
         printPg.src = '/print';
-        printPg.width = 0;
+        printPg.width = 700;
         printPg.height = 0;
         printPg.name = 'frame';
         document.body.appendChild(printPg);

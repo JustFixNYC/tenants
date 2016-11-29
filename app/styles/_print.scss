@@ -1,6 +1,7 @@
 @media print {
 	body {
-		margin: auto;
+		size: auto;
+		margin: auto auto;
 		display: block;
 		min-height: auto;
 		font-size: 12px;
@@ -13,6 +14,10 @@
 	.print-hidden {
 		display: none;
 	}
+}
+
+@page {
+	margin: 25mm auto;
 }
 
 .print-title {
@@ -119,7 +124,7 @@
 
 		img {
 			margin: auto;
-			max-height: 800px;
+			max-height: 700px;
 		}
 
 		.row {
