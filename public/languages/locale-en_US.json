@@ -393,7 +393,7 @@
 					"wrongPassword": "Please create a password.",
 					"shortPassword": "Password should be at least 6 characters.",
 					"verify": "Re-enter your new password",
-					"verifyEmpty": "please enter your password",
+					"verifyEmpty": "Please enter your password",
 					"verifyWrong": "These passwords don't match!",
 					"errorMsg": "Please <a ui-sref=\"contact\" target=\"_blank\">Contact Us</a> if you need assistance.",
 					"notComplete": "Please complete the above fields in order to create your account!",

@@ -3196,8 +3196,8 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
 
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$filter', 'Authentication', 'Referrals', '$http', '$modal',
-	function($rootScope, $scope, $location, $filter, Authentication, Referrals, $http, $modal) {
+angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$filter', 'Authentication', 'Referrals', '$http', '$modal', '$timeout',
+	function($rootScope, $scope, $location, $filter, Authentication, Referrals, $http, $modal, $timeout) {
 
 		$scope.authentication = Authentication;
 		$scope.newUser = {};
@@ -3225,7 +3225,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 				lastName: "Stevenson",
 				password: "password",
 				borough: 'Brooklyn',
-				address: '654 Park Place',
+				address: '123 Example Drive',
 				unit: '1RF',
 				phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
 				problems: [],
@@ -3235,7 +3235,8 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			};
 
 			$scope.accessCode = {
-				value: 'test5',
+				// value: 'test5',
+				value: '',
 				valid: false
 			};
 
@@ -3293,6 +3294,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 		};
 
 		$scope.userError = false;
+		$scope.loaded = false;
 
 		$scope.createAndNext = function (isValid) {
 
@@ -3305,21 +3307,26 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 				$scope.newUser.address = $filter('titlecase')($scope.newUser.address);
 
 				$scope.userError = false;
+				$scope.error = undefined;
 				$rootScope.loading = true;
 
 				$http.post('/api/auth/signup', $scope.newUser).success(function(response) {
 
 					// If successful we assign the response to the global user model
-					$rootScope.loading = false;
-					$rootScope.takeActionAlert = true;
 					$scope.authentication.user = response;
 					if(typeof DEBUG !== 'undefined' && DEBUG == true) console.log('create account post save', response);
+					$rootScope.loading = false;
+					$rootScope.takeActionAlert = true;
 					$location.path('/tutorial');
 
 				}).error(function(err) {
-					$rootScope.loading = false;
-					// console.log(err);
-        	$scope.error = err;
+
+						// just gives a little fake load time, helps with user perception
+						// users will just repeatedly try with the same errors
+						$timeout(function () {
+							$rootScope.loading = false;
+		        	$scope.error = err;
+						}, 1000);
 				});
 
 			} else {
@@ -3985,8 +3992,8 @@ angular.module('users').config(['$stateProvider', '$urlRouterProvider',
 
 'use strict';
 
-angular.module('users').controller('AuthenticationController', ['$rootScope', '$scope', '$http', '$state', 'Authentication',
-  function($rootScope, $scope, $http, $state, Authentication) {
+angular.module('users').controller('AuthenticationController', ['$rootScope', '$scope', '$http', '$state', '$timeout', 'Authentication',
+  function($rootScope, $scope, $http, $state, $timeout, Authentication) {
     $scope.authentication = Authentication;
 
     // If user is signed in then redirect back home
@@ -4005,14 +4012,23 @@ angular.module('users').controller('AuthenticationController', ['$rootScope', '$
     // };
 
     $scope.signin = function() {
+      $scope.error = undefined;
+      $rootScope.loading = true;
       $http.post('/api/auth/signin', $scope.credentials).success(function(response) {
+
+        $rootScope.loading = false;
+
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;
 
         // console.log($scope.authentication.user);
         $state.go('home');
       }).error(function(response) {
-        $scope.error = response.message;
+
+        $timeout(function () {
+          $rootScope.loading = false;
+          $scope.error = response.message;
+        }, 1000);
       });
     };
 

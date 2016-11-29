@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('users').controller('AuthenticationController', ['$rootScope', '$scope', '$http', '$state', 'Authentication',
-  function($rootScope, $scope, $http, $state, Authentication) {
+angular.module('users').controller('AuthenticationController', ['$rootScope', '$scope', '$http', '$state', '$timeout', 'Authentication',
+  function($rootScope, $scope, $http, $state, $timeout, Authentication) {
     $scope.authentication = Authentication;
 
     // If user is signed in then redirect back home
@@ -20,14 +20,23 @@ angular.module('users').controller('AuthenticationController', ['$rootScope', '$
     // };
 
     $scope.signin = function() {
+      $scope.error = undefined;
+      $rootScope.loading = true;
       $http.post('/api/auth/signin', $scope.credentials).success(function(response) {
+
+        $rootScope.loading = false;
+
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;
 
         // console.log($scope.authentication.user);
         $state.go('home');
       }).error(function(response) {
-        $scope.error = response.message;
+
+        $timeout(function () {
+          $rootScope.loading = false;
+          $scope.error = response.message;
+        }, 1000);
       });
     };
 
