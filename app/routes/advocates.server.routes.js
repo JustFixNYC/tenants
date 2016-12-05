@@ -7,7 +7,11 @@ var passport = require('passport');
 // User Routes
 var users 		= require('../../app/controllers/users.server.controller'),
 		advocates = require('../../app/controllers/advocates.server.controller'),
-		problems = require('../../app/controllers/problems.server.controller');
+		problems = require('../../app/controllers/problems.server.controller'),
+		activity = require('../../app/controllers/activity.server.controller'),
+		multipart = require('connect-multiparty'),
+		// multipartMiddleware = multipart({ maxFieldsSize: 4 * 1024 * 1024 });
+		multipartMiddleware = multipart();
 
 module.exports = function(app) {
 
@@ -25,5 +29,7 @@ module.exports = function(app) {
 	app.route('/api/advocates').get(users.hasAuthorization(['advocate']), advocates.listTenants);
 
 	app.route('/api/advocates/tenants/create').post(users.hasAuthorization(['advocate']), problems.updateActivitiesFromChecklist, advocates.createNewTenant);
+
+	app.route('/api/advocates/tenants/:id').post(users.hasAuthorization(['advocate']), advocates.isManagedTenant, multipartMiddleware, activity.create, advocates.updateManagedTenant);
 
 };

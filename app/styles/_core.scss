@@ -92,7 +92,7 @@ h4 {
     max-width: 970px;
   }
   body.fluid-container & section.container {
-    max-width: none;
+    max-width: 970px;
     width: auto !important;
     @include container-fixed;
   }
@@ -165,6 +165,10 @@ label.control-label em {
     p {
       text-align: center;
     }
+  }
+
+  p + p:not(.text-danger) {
+    margin-top: 0;
   }
 
 

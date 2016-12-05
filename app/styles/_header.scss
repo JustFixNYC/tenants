@@ -141,6 +141,10 @@ header {
   }
 }
 
+.advocate-view #header {
+  background-color: $darkgray-dark !important;
+}
+
 // #header-wrapper.light-bg {
 //
 //   .header-brand > .logo > svg * {

@@ -6,13 +6,13 @@ angular.module('advocates').controller('AdvocateController', ['$rootScope', '$sc
 		$scope.user = Authentication.user;
 
 		$scope.list = function() {
-			Advocates.query(function(tenants) {
-				console.log(tenants);
+			Advocates.query().then(function (tenants) {
 				$scope.tenants = tenants;
+				console.log(tenants);
 			});
 		};
 
-		$scope.view = 'building';
+		$scope.view = 'individual';
 		$scope.changeView = function(newView) {
 			$scope.view = newView;
 		};

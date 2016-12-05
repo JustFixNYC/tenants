@@ -262,11 +262,19 @@ var create = function(req, res, next) {
     // format req.body;
     var newActivity = _.clone(req.body);
     req.body = {};
-    req.body.activity = req.user.activity;
 
-    // store updates to flag objects
-    req.body.followUpFlags = req.user.followUpFlags;
-    req.body.actionFlags = req.user.actionFlags;
+    // updating a managed tenant
+    if(res.locals.tenant) {
+      req.body.activity = res.locals.tenant.activity;
+      // store updates to flag objects
+      req.body.followUpFlags = res.locals.tenant.followUpFlags;
+      req.body.actionFlags = res.locals.tenant.actionFlags;
+    } else {
+      req.body.activity = req.user.activity;
+      // store updates to flag objects
+      req.body.followUpFlags = req.user.followUpFlags;
+      req.body.actionFlags = req.user.actionFlags;
+    }
 
     // remove from follow up flags
     var idx = _.findIndex(req.body.followUpFlags, { key: newActivity.key});

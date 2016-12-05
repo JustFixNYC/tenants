@@ -58,12 +58,20 @@ angular.module('activity').factory('Activity', ['$resource', 'UpdateUserIntercep
 
     return $resource('api/activity', {}, {
       save: {
-          method: 'POST',
-          transformRequest: formDataTransform,
-          headers: {
-            'Content-Type': undefined
-          },
-          interceptor: UpdateUserInterceptor
+        method: 'POST',
+        transformRequest: formDataTransform,
+        headers: {
+          'Content-Type': undefined
+        },
+        interceptor: UpdateUserInterceptor
+      },
+      saveManagedByID: {
+        method: 'POST',
+        url: 'api/advocates/tenants/:id',
+        transformRequest: formDataTransform,
+        headers: {
+          'Content-Type': undefined
+        }
       },
       public: {
         method: 'GET',

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$filter', 'Authentication', 'Advocates', '$http', '$modal',
-	function($rootScope, $scope, $location, $filter, Authentication, Advocates, $http, $modal) {
+angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$filter', 'Authentication', 'AdvocatesResource', '$http', '$modal',
+	function($rootScope, $scope, $location, $filter, Authentication, AdvocatesResource, $http, $modal) {
 
 		$scope.authentication = Authentication;
 		$scope.newUser = {};
@@ -49,7 +49,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			// handles back button
 			if(!$scope.accessCode.valueEntered || $scope.accessCode.valueEntered !== $scope.accessCode.value) {
 
-				var referral = new Advocates();
+				var referral = new AdvocatesResource();
 		    referral.$validateNewUser({ code: $scope.accessCode.value },
 		      function(success) {
 
@@ -60,7 +60,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 		          $scope.accessCode.valueEntered = $scope.accessCode.value;
 							$scope.newUser.advocate = success.advocate;
 							$scope.newUser.advocateRole = success.advocateRole;
-		          $scope.referral = success.referral;							
+		          $scope.referral = success.referral;
 							$scope.newUser.sharing.enabled = true;
 							$location.path('/onboarding/success');
 							$scope.codeError = false;

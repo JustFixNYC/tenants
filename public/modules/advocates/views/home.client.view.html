@@ -1,4 +1,4 @@
-<section id="advocates" data-ng-controller="AdvocateController" data-ng-init="list()">
+<section id="advocates" data-ng-init="list()">
 
   <div class="advocates-header clearfix">
     <h1 class="pull-left">Your Accounts</h1>
@@ -26,20 +26,20 @@
         <thead>
           <tr>
             <th>Name</th>
-            <th>Date Created</th>
+            <th>Last Updated</th>
             <th>Address</th>
             <th>Phone Number</th>
             <th>Case</th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="t in tenants | orderBy:'-created'">
+          <tr ng-repeat="t in tenants | orderBy:'-updated'">
             <td ng-bind="t.fullName"></td>
-            <td>{{ t.created | date:'short' }}</td>
+            <td>{{ t.updated | date:'short' }}</td>
             <td ng-bind="t.address"></td>
             <td>{{ t.phone | tel }}</td>
             <td ng-if="t.advocateRole === 'managed'">
-              <button class="btn btn-info">Manage</button>
+              <a ui-sref="managedTenant({ id: t._id })" class="btn btn-info">Manage</a>
             </td>
             <td ng-if="t.advocateRole === 'linked' && t.sharing.enabled">
               <a ng-href="/share/{{ t.sharing.key }}">View Case</a>
@@ -64,23 +64,23 @@
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Date Created</th>
+                <th>Last Updated</th>
                 <th>Unit</th>
                 <th>Phone Number</th>
                 <th>Case</th>
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="t in members | orderBy:'-created'">
+              <tr ng-repeat="t in members | orderBy:'-updated'">
                 <td ng-bind="t.fullName"></td>
-                <td>{{ t.created | date:'short' }}</td>
+                <td>{{ t.updated | date:'short' }}</td>
                 <td ng-bind="t.unit"></td>
                 <td>{{ t.phone | tel }}</td>
                 <td ng-if="t.advocateRole === 'managed'">
-                  <button class="btn btn-info">Manage</button>
+                  <a ui-sref="managedTenant({ id: t._id })" ng-click="$event.stopPropagation();" class="btn btn-info">Manage</a>
                 </td>
                 <td ng-if="t.advocateRole === 'linked' && t.sharing.enabled">
-                  <a ng-href="/share/{{ t.sharing.key }}">View Case</a>
+                  <a ng-href="/share/{{ t.sharing.key }}" ng-click="$event.stopPropagation();">View Case</a>
                 </td>
                 <td ng-if="t.advocateRole === 'linked' && !t.sharing.enabled">
                   <em>Not Shared</em>

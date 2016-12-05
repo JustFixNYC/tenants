@@ -14,8 +14,14 @@
     height: auto;
   }
 
-  @media (min-width: $screen-sm-min) {
-    margin-top: 30px;
+  &:not(.add-details) {
+    @media (min-width: $screen-sm-min) {
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+  }
+  &.add-details {
+    margin-top: 15px;
     margin-bottom: 30px;
   }
 

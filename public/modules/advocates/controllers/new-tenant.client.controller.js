@@ -23,7 +23,7 @@ angular.module('advocates').controller('NewTenantSignupController', ['$rootScope
 				firstName: 'Pete',
 				lastName: 'Best',
 				borough: 'Brooklyn',
-				address: '980 Bergen St',
+				address: '654 Park Place',
 				unit: '1RF',
 				phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
 				problems: [],

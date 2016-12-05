@@ -39,74 +39,96 @@ exports.createNewTenant = function(req, res) {
 
 };
 
-//
-// exports.validateNewUser = function(req, res) {
-//
-//   validateCode(req.query.code)
-//     .then(function (advocate) {
-//
-//       if(advocate) {
-//
-//         res.json({
-//           advocate: advocate._id,
-//           advocateRole: 'linked',
-//           referral: {                                   // this is just for display purposes
-//             email: advocate.email,
-//             contactPhone: advocate.contactPhone,
-//             contactPhoneExt: advocate.contactPhoneExt,
-//             organization: advocate.organization,
-//             name: advocate.fullName,
-//             code: advocate.code
-//           }
-//         });
-//       } else {
-//         res.json({ advocate: null, referral: null });
-//       }
-//
-//
-//
-//     })
-//     .catch(function (err) {
-//       console.log(err);
-//       rollbar.handleError("Invalid Access Code", { code: req.query.code, error: err }, req);
-//       res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-//     });
-//
-// };
-//
-//
-//
-// exports.listTenants = function(req, res) {
-//
-//   Tenant.find({ advocate: req.user._userdata })
-//     .then(function (tenants) {
-//
-//       tenants = _.map(tenants, function(t) {
-//
-//         if(t.advocateRole !== 'managed') {
-//           t.activity = undefined;
-//           t.actionFlags = undefined;
-//           t.followUpFlags = undefined;
-//           t.problems = undefined;
-//         }
-//         // else if (t.advocateRole === 'none') {
-//         //   rollbar.handleError("Tenant/advocate mismatch", req);
-//         //   res.status(500).send({ message: "This shouldn\'t happen." });
-//         // }
-//
-//         return t;
-//
-//       });
-//
-//       // console.log(tenants);
-//       res.json(tenants);
-//       res.end();
-//     })
-//     .catch(function (err) {
-//       rollbar.handleError("Error in finding advocate\'s tenants", req);
-//       res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-//     });
-//
-//   //
-//   // Tenants.find({ advocate: })
-// };
+
+exports.listTenants = function(req, res) {
+
+  Tenant.find({ advocate: req.user._userdata })
+    .then(function (tenants) {
+
+      tenants = _.map(tenants, function(t) {
+
+        if(t.advocateRole !== 'managed') {
+          t.activity = undefined;
+          t.actionFlags = undefined;
+          t.followUpFlags = undefined;
+          t.problems = undefined;
+        }
+        // else if (t.advocateRole === 'none') {
+        //   rollbar.handleError("Tenant/advocate mismatch", req);
+        //   res.status(500).send({ message: "This shouldn\'t happen." });
+        // }
+
+        return t;
+
+      });
+
+      // console.log(tenants);
+      res.json(tenants);
+      res.end();
+    })
+    .catch(function (err) {
+      rollbar.handleError("Error in finding advocate\'s tenants", req);
+      res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+    });
+
+  //
+  // Tenants.find({ advocate: })
+};
+
+exports.updateManagedTenant = function(req, res) {
+
+  console.log(req.body);
+
+  console.log(res.locals.tenant);
+
+  var tenant = res.locals.tenant;
+
+  if(!tenant) {
+    rollbar.handleError("This shouldn't happen", req);
+    res.status(400).send({ message: errorHandler.getErrorMessage("This shouldn't happen") });
+  } else {
+
+    tenant = _.extend(tenant, req.body);
+    tenant.updated = Date.now();
+
+    tenant.save()
+      .then(function (tenant) {
+        res.json(tenant);
+        res.end(); // important to update session
+      })
+      .catch(function (err) {
+        rollbar.handleError("Error updating tenant info", req);
+        res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+			});
+  }
+  //
+  // Tenant.find({ advocate: req.user._userdata })
+  //   .then(function (tenants) {
+  //
+  //     tenants = _.map(tenants, function(t) {
+  //
+  //       if(t.advocateRole !== 'managed') {
+  //         t.activity = undefined;
+  //         t.actionFlags = undefined;
+  //         t.followUpFlags = undefined;
+  //         t.problems = undefined;
+  //       }
+  //       // else if (t.advocateRole === 'none') {
+  //       //   rollbar.handleError("Tenant/advocate mismatch", req);
+  //       //   res.status(500).send({ message: "This shouldn\'t happen." });
+  //       // }
+  //
+  //       return t;
+  //
+  //     });
+  //
+  //     // console.log(tenants);
+  //     res.json(tenants);
+  //     res.end();
+  //   })
+  //   .catch(function (err) {
+  //     rollbar.handleError("Error in finding advocate\'s tenants", req);
+  //     res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+  //   });
+
+};
