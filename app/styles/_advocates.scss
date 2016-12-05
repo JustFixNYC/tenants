@@ -1,0 +1,35 @@
+#advocates {
+
+  .advocates-header {
+    margin-top: 25px;
+    margin-bottom: 45px;
+  }
+
+  .advocates-view-toggle {
+    a:hover {
+      cursor: pointer;
+    }
+    a.disabled {
+      color: #434A54;
+
+      &:hover {
+        cursor: default;
+      }
+    }
+  }
+
+  .table {
+    td {
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+
+    &.buildings-table {
+        .buildings-table-item {
+          .glyphicon {
+            padding-right: 10px;
+          }
+        }
+    }
+  }
+}

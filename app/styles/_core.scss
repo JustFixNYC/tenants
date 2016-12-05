@@ -91,6 +91,11 @@ h4 {
   body.landing & section.container {
     max-width: 970px;
   }
+  body.fluid-container & section.container {
+    max-width: none;
+    width: auto !important;
+    @include container-fixed;
+  }
 }
 .undecorated-link:hover {
 	text-decoration: none;

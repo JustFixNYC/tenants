@@ -12,4 +12,9 @@ angular.module('advocates').controller('AdvocateController', ['$rootScope', '$sc
 			});
 		};
 
+		$scope.view = 'building';
+		$scope.changeView = function(newView) {
+			$scope.view = newView;
+		};
+
 	}]);

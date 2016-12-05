@@ -52,6 +52,7 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 				url: '/advocate',
 				templateUrl: 'modules/advocates/views/home.client.view.html',
 				controller: 'AdvocateController',
+				globalStyles: 'fluid-container',
 				data: {
 					disableBack: true
 				}

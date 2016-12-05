@@ -20,10 +20,10 @@ angular.module('advocates').controller('NewTenantSignupController', ['$rootScope
 		if(typeof DEBUG !== 'undefined' && DEBUG == true) {
 
 			$scope.newTenantUser = {
-				firstName: 'Dan',
-				lastName: "Stevenson",
+				firstName: 'Pete',
+				lastName: 'Best',
 				borough: 'Brooklyn',
-				address: '654 Park Place',
+				address: '980 Bergen St',
 				unit: '1RF',
 				phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
 				problems: [],

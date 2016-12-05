@@ -18,8 +18,9 @@ var ApplicationConfiguration = (function() {
 		'angularLazyImg',
 		'duScroll',
 		'pascalprecht.translate',	// angular-translate
- 		'tmh.dynamicLocale'/*, // angular-dynamic-locale
- 		'ngSanitize'*/ // Santize translations -> /application.js at line ~40
+ 		'tmh.dynamicLocale',// angular-dynamic-locale
+		'angular.filter'
+ 		/* 'ngSanitize'*/ // Santize translations -> /application.js at line ~40
 	];
 // 'ngAnimate',  'ngTouch', , 'bootstrapLightbox' , 'angularModalService'
 
