@@ -148,6 +148,7 @@ var processAndSavePhoto = function(file) {
     var _exif = {};
 
     // if theres no error
+    // if(!result.error && _.has(result.exif.image, 'Orientation')) {
     if(!result.error) {
 
       var exif = result.exif;
@@ -177,13 +178,20 @@ var processAndSavePhoto = function(file) {
         if(_.has(exif.image, 'Orientation')) _exif.orientation = exif.image.Orientation;
       }
 
-      console.time("buffCreate");
-      // console.time("pathSave");
 
+      // if the orientation metadata is set, we can autoOrient the image by converting it to a buffer
+      // if(exif.image && !_.isEmpty(exif.image) && _.has(exif.image, 'Orientation')) {
+
+      console.time("buffCreate");
+
+      // this should *just work* even without an Orientation exif value
       gm(file.path)
         .autoOrient()
         .toBuffer(function (err, buffer) {
-          if (err) console.log('aaw, shucks', err);
+          if (err) {
+            console.log('aaw, shucks', err);
+            processed.reject(err);
+          }
 
           console.timeEnd("buffCreate");
           console.time("s3buffUpload");
@@ -198,33 +206,39 @@ var processAndSavePhoto = function(file) {
 
         });
 
-      // gm(file.path)
-      //   .autoOrient()
-      //   .write(file.path, function (err) {
-      //     if (err) {
-      //       processed.reject(err);
-      //       console.log('aaw, shucks', err);
-      //     }
+      // } else {
       //
-      //     // upload to s3
-      //     s3Upload(file.path, fileType, false).then(function(urls) {
-      //       console.timeEnd("pathSave");
-      //       processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
-      //     }).fail(function(err) {
-      //       processed.reject(err);
-      //     });
+      //   console.log('has exif, but no orientation');
       //
+      //   // upload to s3
+      //   console.time("s3PathUpload");
+      //   s3Upload(file.path, fileType, false).then(function(urls) {
+      //     console.timeEnd("s3PathUpload");
+      //     processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
+      //   }).fail(function(err) {
+      //     processed.reject(err);
       //   });
+      //
+      // }
 
+        // gm(file.path)
+        //   .autoOrient()
+        //   .write(file.path, function (err) {
+        //     if (err) {
+        //       processed.reject(err);
+        //       console.log('aaw, shucks', err);
+        //     }
+        //
+        //     // upload to s3
+        //     s3Upload(file.path, fileType, false).then(function(urls) {
+        //       console.timeEnd("pathSave");
+        //       processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
+        //     }).fail(function(err) {
+        //       processed.reject(err);
+        //     });
+        //
+        //   });
 
-      // upload to s3
-      // console.time("s3PathUpload");
-      // s3Upload(file.path, fileType, false).then(function(urls) {
-      //   console.timeEnd("s3PathUpload");
-      //   processed.resolve({ url: urls.url, thumb: urls.thumb, exif: _exif });
-      // }).fail(function(err) {
-      //   processed.reject(err);
-      // });
 
     } else {
 
