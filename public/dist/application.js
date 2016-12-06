@@ -2217,8 +2217,8 @@ angular.module('core').directive('phoneInput', ["$filter", "$browser", function(
 'use strict';
 
 angular.module('core')
-  .directive('printButton', ['deviceDetector', '$window', '$http',
-  function (deviceDetector, $window, $http) {
+  .directive('printButton', ['deviceDetector', '$window', '$timeout',
+  function (deviceDetector, $window, $timeout) {
     return {
       restrict: 'A',
       scope: false,
@@ -2228,16 +2228,19 @@ angular.module('core')
           element.css("display", "none");
         } else {
           element.addClass("print-button");
+          element.addClass('disabled');
         }
 
         var printPg = document.createElement('iframe');
         printPg.src = '/print';
         printPg.width = 700;
-        printPg.height = 100;
+        printPg.height = 0;
         printPg.name = 'frame';
         document.body.appendChild(printPg);
 
         printPg.onload = function() {
+
+        	element.removeClass('disabled');
 
 	        element.on('click', function (event) {
 				    window.frames['frame'].print();
