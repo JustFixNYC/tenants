@@ -77,11 +77,9 @@ exports.listTenants = function(req, res) {
 
 exports.updateManagedTenant = function(req, res) {
 
-  console.log(req.body);
-
-  console.log(res.locals.tenant);
-
   var tenant = res.locals.tenant;
+
+  // console.log(tenant);
 
   if(!tenant) {
     rollbar.handleError("This shouldn't happen", req);
@@ -90,6 +88,8 @@ exports.updateManagedTenant = function(req, res) {
 
     tenant = _.extend(tenant, req.body);
     tenant.updated = Date.now();
+
+    // console.log(tenant);
 
     tenant.save()
       .then(function (tenant) {

@@ -39,7 +39,7 @@
             <td ng-bind="t.address"></td>
             <td>{{ t.phone | tel }}</td>
             <td ng-if="t.advocateRole === 'managed'">
-              <a ui-sref="managedTenant({ id: t._id })" class="btn btn-info">Manage</a>
+              <a ng-click="viewTenant(t)" class="btn btn-info">Manage</a>
             </td>
             <td ng-if="t.advocateRole === 'linked' && t.sharing.enabled">
               <a ng-href="/share/{{ t.sharing.key }}">View Case</a>
@@ -77,7 +77,7 @@
                 <td ng-bind="t.unit"></td>
                 <td>{{ t.phone | tel }}</td>
                 <td ng-if="t.advocateRole === 'managed'">
-                  <a ui-sref="managedTenant({ id: t._id })" ng-click="$event.stopPropagation();" class="btn btn-info">Manage</a>
+                  <a ng-click="viewTenant(t)" ng-click="$event.stopPropagation();" class="btn btn-info">Manage</a>
                 </td>
                 <td ng-if="t.advocateRole === 'linked' && t.sharing.enabled">
                   <a ng-href="/share/{{ t.sharing.key }}" ng-click="$event.stopPropagation();">View Case</a>

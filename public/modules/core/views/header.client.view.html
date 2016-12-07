@@ -41,7 +41,7 @@
   					ga-event="Language Toggle,click,Header" language-toggle></div>
 				<a class="header-btn header-home pull-right glyphicon glyphicon-home"
 					 ui-sref="home"
-					 ng-if="authentication.user && $root.state != 'home'"
+					 ng-if="authentication.user && authentication.user.roles.indexOf('tenant') !== -1 && $root.state != 'home'"
 					 ga-event="Home Icon,click"></a>
 		</div> <!-- end of .container -->
 	</div>	<!-- end of #header -->

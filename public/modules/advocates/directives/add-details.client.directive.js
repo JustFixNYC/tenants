@@ -1,28 +1,28 @@
 'use strict';
 
-angular.module('actions')
-  .directive('addDetails', ['$rootScope', '$filter', '$sce', '$timeout', 'Activity', 'Actions', 'Problems',
-    function ($rootScope, $filter, $sce, $timeout, Activity, Actions, Problems) {
+angular.module('advocates')
+  .directive('addDetails', ['$rootScope', '$filter', '$sce', '$timeout', 'Activity', 'Advocates', 'Problems',
+    function ($rootScope, $filter, $sce, $timeout, Activity, Advocates, Problems) {
     return {
       restrict: 'E',
       templateUrl: 'modules/advocates/partials/add-details.client.view.html',
-      controller: function($scope, $element, $attrs) {
-        //$scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
+      scope: {
+        tenant: '='
       },
       link: function (scope, element, attrs) {
 
         // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
         // scope.action is a $resource!
-
-        console.log(scope.tenant);
-
         scope.problems = [];
 
         scope.$watch('tenant', function (tenant) {
+          console.log('add details');
           if(tenant) {
-    				for(var i = 0; i < scope.tenant.problems.length; i++) {
-    					scope.problems.push(scope.tenant.problems[i].title);
-    				}
+            scope.tenant = tenant;
+            for(var i = 0; i < scope.tenant.problems.length; i++) {
+              scope.problems.push(scope.tenant.problems[i].title);
+            }
+            // Advocates.currentTenant = scope.tenant;
           }
         });
 
@@ -50,11 +50,11 @@ angular.module('actions')
           // setTimeout(function() { element[0].querySelector('textarea').focus(); }, 0);
           // setTimeout(function() { element[0].querySelector('textarea').focus(); }, 0);
 
-        }
+        };
 
         scope.toggleTagging = function() {
           scope.status.tagging = !scope.status.tagging;
-        }
+        };
 
         scope.selectProblem = function(problem) {
 
@@ -114,7 +114,7 @@ angular.module('actions')
               scope.status.completed = true;
               scope.status.formSubmitted = false;
               scope.status.expanded = false;
-              scope.tenant = response;
+
               scope.newActivity = {
                 date: '',
                 title: 'modules.activity.other.statusUpdate',
@@ -122,6 +122,11 @@ angular.module('actions')
                 relatedProblems: [],
                 photos: []
               };
+
+              // need to use angular.extend rather than scope.tenant = response
+              // this will actually update all the attributes
+              // (and trigger an update in parent controllers)
+              angular.extend(scope.tenant, response);
 
             }, function(errorResponse) {
               $rootScope.loading = false;

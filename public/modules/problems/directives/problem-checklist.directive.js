@@ -10,6 +10,8 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
       },
       link: function postLink(scope, element, attrs) {
 
+        console.log(scope.ourUser);
+
 					// problemAssembler, if we don't have the problem set we just clear it out here
 					var newProblem = function(problem) {
 
@@ -23,7 +25,6 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 
 				    return newProb;
 					};
-
 
           // this is a reference to whichever user we're working with, i.e.
           // scope.newUser or Authentication.user

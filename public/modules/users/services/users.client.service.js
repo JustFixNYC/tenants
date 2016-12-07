@@ -6,16 +6,12 @@ angular.module('users').factory('UpdateUserInterceptor', ['Authentication',
     //Code
     return {
         response: function(res) {
-
-					console.log('new res', res);
-
 					Authentication.user = res.resource;
 					return res;
         }
 		};
 	}
 ]);
-
 
 angular.module('users').factory('Users', ['$resource', 'UpdateUserInterceptor',
 	function($resource, UpdateUserInterceptor) {
@@ -32,11 +28,6 @@ angular.module('users').factory('Users', ['$resource', 'UpdateUserInterceptor',
 			toggleSharing: {
 				method: 'GET',
 				url: 'api/tenants/public'
-			},
-			updateChecklist: {
-				method: 'PUT',
-				url: 'api/tenants/checklist',
-				interceptor: UpdateUserInterceptor
 			}
       // ,
       // getIssues: {

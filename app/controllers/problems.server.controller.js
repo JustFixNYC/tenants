@@ -160,7 +160,7 @@ exports.updateActivitiesFromChecklist = function(req, res, next) {
   var _prblms = req.body.problems;
 
   // new user OR advocate user creating managed account
-  if(!req.user || req.user.roles.indexOf('advocate') !== -1) {
+  if(!req.user || !res.locals.tenant) {
 
     // (1) new user who didn't enter any problems
     if(!_prblms) next();
@@ -170,10 +170,15 @@ exports.updateActivitiesFromChecklist = function(req, res, next) {
     createProblemActivities(req.body, _prblms, []);
     next();
 
-  // returning user
+  // returning user OR advocate user updating managed account
   } else {
 
-    var prblms = req.user.problems;
+    var prblms;
+    if(res.locals.tenant) {
+      prblms = res.locals.tenant.problems;
+    } else {
+      prblms = req.user.problems;
+    }
 
     var added = checkProblems(req.body, prblms, _prblms),
         removed = checkProblems(req.body, _prblms, prblms);

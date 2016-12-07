@@ -22,41 +22,55 @@ angular.module('advocates')
 			});
 		}
 	])
-	.service('Advocates', ['AdvocatesResource', '$q', function(AdvocatesResource, $q) {
+	.factory('Advocates', ['AdvocatesResource', '$q', function(AdvocatesResource, $q) {
 
 		var _this = this;
 
-		this.query = function() {
+		_this.query = function() {
 
 			var queried = $q.defer();
 
 			AdvocatesResource.query(function (tenants) {
-				_this.tenants = tenants;
+				_this._tenants = tenants;
 				queried.resolve(tenants);
 			});
 
 			return queried.promise;
 		};
 
-		this.getTenantById = function(id) {
+		return {
+			query: _this.query,
+			setCurrentTenant: function(tenant) {
+				_this._currentTenant = tenant;
+			},
+			getTenantByCurrentOrId: function(id) {
 
-			var filtered = $q.defer();
+				var filtered = $q.defer();
 
-			var filterTenant = function () {
-				var tenant = _this.tenants.filter(function (t) {
-					return t._id === id;
-				});
-				filtered.resolve(tenant[0]);
-			}
+				var filterTenant = function () {
+					var tenant = _this._tenants.filter(function (t) {
+						return t._id === id;
+					});
+					filtered.resolve(tenant[0]);
+				};
 
-			if(!_this.tenants) {
-				_this.query().then(function () {
+				if(_this._currentTenant) {
+					console.log('current');
+					filtered.resolve(_this._currentTenant);
+				} else if(!_this._tenants) {
+					console.log('query');
+					_this.query().then(function () {
+						filterTenant();
+					});
+				} else {
+					console.log('filter');
 					filterTenant();
-				})
-			} else {
-				filterTenant();
-			}
+				}
 
-			return filtered.promise;
+				return filtered.promise;
+			}
 		};
+
+		//
+		// this.
 	}]);

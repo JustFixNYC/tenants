@@ -1,33 +1,59 @@
 'use strict';
 
 angular.module('advocates').controller('ManageTenantController', [
-					'$rootScope', '$scope', '$stateParams', '$filter', 'deviceDetector', 'Authentication', 'Advocates', 'Lightbox',
-	function($rootScope, $scope, $stateParams, $filter, deviceDetector, Authentication, Advocates, Lightbox) {
+					'$scope', '$stateParams', 'Authentication', 'Advocates', 'tenant',
+	function($scope, $stateParams, Authentication, Advocates, tenant) {
 
 		$scope.user = Authentication.user;
+		$scope.tenant = tenant;
 
-		$scope.init = function() {
-			Advocates.getTenantById($stateParams.id).then(function (tenant) {
-				$scope.tenant = tenant;
-				console.log(tenant);
-			})
-		};
+		$scope.$watch('tenant', function (tenant) {
+			console.log('change in root', tenant);
+		}, true);
 
-		$scope.isDesktop = deviceDetector.isDesktop();
+	}])
+	.controller('ManageTenantHomeController', ['$scope', '$stateParams', '$filter', 'deviceDetector', 'Advocates', 'Lightbox',
+		function($scope, $stateParams, $filter, deviceDetector, Advocates, Lightbox) {
 
-		$scope.activityTemplate = function(key) {
-			return $filter('activityTemplate')(key);
-		};
+			$scope.$watch('tenant', function (tenant) {
+				console.log('change in home', tenant);
+			}, true);
 
-		$scope.compareDates = function(start, created) {
-			var startDate = new Date(start).setHours(0,0,0,0);
-			var createdDate = new Date(created).setHours(0,0,0,0);
-			return startDate !== createdDate;
-		}
+			$scope.isDesktop = deviceDetector.isDesktop();
 
-		$scope.openLightboxModal = function (photos, index) {
-			Lightbox.openModal(photos, index);
-		};
+			$scope.activityTemplate = function(key) {
+				return $filter('activityTemplate')(key);
+			};
+
+			$scope.compareDates = function(start, created) {
+				var startDate = new Date(start).setHours(0,0,0,0);
+				var createdDate = new Date(created).setHours(0,0,0,0);
+				return startDate !== createdDate;
+			};
+
+			$scope.openLightboxModal = function (photos, index) {
+				Lightbox.openModal(photos, index);
+			};
 
 
-	}]);
+		}])
+		.controller('ManageTenantProblemsController', ['$scope', '$stateParams', 'Advocates', 'ProblemsResource',
+			function($scope, $stateParams, Advocates, ProblemsResource) {
+
+				$scope.saveProblems = function () {
+
+					console.log('before', $scope.tenant);
+					var tenant = new ProblemsResource($scope.tenant);
+					tenant.$updateManagedChecklist({ id: $scope.tenant._id }, function(response) {
+						console.log('after', response);
+
+						// need to use angular.extend rather than scope.tenant = response
+						// this will actually update all the attributes
+						// (and trigger an update in parent controllers)
+						angular.extend($scope.tenant, response);
+					});
+
+				};
+
+
+			}]);

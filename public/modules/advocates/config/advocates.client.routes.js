@@ -36,7 +36,6 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 			.state('newTenantSignup', {
 				url: '/advocate/tenant/new',
 				templateUrl: 'modules/advocates/views/new-tenant.client.view.html',
-				globalStyles: 'advocate-view',
 				controller: 'NewTenantSignupController',
 				abstract: true,
 				data: {
@@ -62,10 +61,27 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 					disableBack: true
 				}
 			})
-			.state('managedTenant', {
+			.state('manageTenant', {
 				url: '/advocate/manage/:id',
-				templateUrl: 'modules/advocates/views/manage.client.view.html',
+				templateUrl: 'modules/advocates/views/manage-tenant.client.view.html',
 				controller: 'ManageTenantController',
+				abstract: true,
+				resolve: {
+					tenant: ['Advocates', '$stateParams', function(Advocates, $stateParams) {
+						return Advocates.getTenantByCurrentOrId($stateParams.id);
+					}]
+				}
+			})
+			.state('manageTenant.home', {
+				url: '',
+				templateUrl: 'modules/advocates/partials/manage-tenant-home.client.view.html',
+				controller: 'ManageTenantHomeController',
+				globalStyles: 'advocate-view'
+			})
+			.state('manageTenant.problems', {
+				url: '/problems',
+				templateUrl: 'modules/advocates/partials/manage-tenant-problems.client.view.html',
+				controller: 'ManageTenantProblemsController',
 				globalStyles: 'advocate-view'
 			});
 	}
