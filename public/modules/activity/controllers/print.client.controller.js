@@ -4,6 +4,8 @@
 angular.module('activity').controller('PrintController', ['$scope', '$rootScope', '$filter', 'Activity', 'Lightbox', 'Authentication', '$window',
   function($scope, $rootScope, $filter, Activity, Lightbox, Authentication, $window) {
 
+  	$scope.printable = false;
+
     $scope.list = function() {
     	var photoOrder = 0;
 
@@ -38,6 +40,11 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
       var createdDate = new Date(created).setHours(0,0,0,0);
       return startDate !== createdDate;
     }
+
+    $rootScope.$on('$viewContentLoaded', function() {
+    	$scope.printable = true;
+    	console.log('displayable!');
+    });
 
 	}
 ]);

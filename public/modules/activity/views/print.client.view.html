@@ -1,4 +1,4 @@
-<section class="print" ng-controller="PrintController" ng-init="list()">
+<section class="print" ng-controller="PrintController" ng-init="list()" id="print-view">
 
 	<div class="page-header">
       <img src="/modules/core/img/sections/history.svg" alt="Case History" />
@@ -50,5 +50,4 @@
   <div class="alert alert-warning text-center" data-ng-if="!activities.length">
     {{ user.fullName }} {{'modules.activity.views.listActivityPublic.empty' | translate}}
   </div>
-
 </section>
