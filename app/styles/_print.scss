@@ -14,6 +14,12 @@
 	.print-hidden {
 		display: none;
 	}
+
+	#header-wrapper.inner #header .header-brand {
+		left: auto;
+		transform: none;
+		right: 0;
+	}
 }
 
 @page {
@@ -43,6 +49,15 @@
 		p {
 			margin-top: 0px;
 		}
+	}
+
+	.row {
+		display: table;
+	}
+
+	.col-sm-4 {
+		display: table-cell;
+		vertical-align: middle;
 	}
 
 	h2 {
@@ -130,9 +145,14 @@
     page-break-inside: avoid;
     break-inside: avoid;
 
+    &:last-child {
+		page-break-before: auto;
+		break-before: auto;
+    }
+
 		img {
 			margin: auto;
-			max-height: 690px;
+			max-height: 700px;
 		}
 
 		.row {
