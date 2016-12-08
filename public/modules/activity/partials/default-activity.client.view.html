@@ -24,8 +24,9 @@
   <p ng-if="activity.description">{{ activity.description }}</p>
 
   <div class="row thumb-list">
+  		<h3 class="print-title show-print">(see appendix {{photo.order + 1}} for fullsize photo)</h3>
       <div data-ng-repeat="photo in activity.photos" class="col-xs-4">
-      		<h3 class="print-title">(see appendix {{photo.order + 1}} for fullsize photo)</h3>
+      		<h3 class="print-title print-hidden">(see appendix {{photo.order + 1}} for fullsize photo)</h3>
           <a ng-click="openLightboxModal(activity.photos, $index)">
               <img ng-src="{{ activity.photos[$index].thumb }}" alt="{{ activity.key }}" class="img-thumbnail" />
           </a>
