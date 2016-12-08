@@ -25,7 +25,8 @@
         <p ng-if="activity.photos[0].exif.make"><b>Phone Make/Model:</b> {{ activity.photos[0].exif.make }} / {{ activity.photos[0].exif.model }}</p>
         <p ng-if="activity.photos[0].exif.created"><b>Date Captured:</b> {{ activity.photos[0].exif.created | date:'short' }}</p>
         <p ng-if="activity.photos[0].exif.dir"><b>Facing Direction (approx.):</b> {{ activity.photos[0].exif.dir }}</p>
-        <p ng-if="activity.photos[0].exif.lat"><b>Latitude/Longitude:</b> {{ activity.photos[0].exif.lat }} {{ activity.photos[0].exif.lng }}</p>
+        <p ng-if="activity.photos[0].exif.lat"><b>Latitude:</b> {{ activity.photos[0].exif.lat }}</p>
+        <p ng-if="activity.photos[0].exif.lng"><b>Longitude:</b> {{ activity.photos[0].exif.lng }}</p>
         <p ng-if="!activity.photos[0].exif.lat"><em>No location data available for this photo.</em></p>
       </div>
 		</div>
