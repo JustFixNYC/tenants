@@ -30,5 +30,18 @@
               <img ng-src="{{ activity.photos[$index].thumb }}" alt="{{ activity.key }}" class="img-thumbnail" />
           </a>
       </div>
+      <div class="col-sm-4 show-print">
+      	<img ng-src="https://maps.googleapis.com/maps/api/staticmap?center={{activity.photos[0].exif.lat}},{{activity.photos[0].exif.lng}}&markers=color%3A0x0096D7%7C{{activity.photos[0].exif.lat}},{{activity.photos[0].exif.lng}}&zoom=13&size=150x150&maptype=roadmap&key=AIzaSyAEKIXDSbYyeg_dqLHa0KZR561nV81Tr8g">
+        <!-- <div ng-if="activity.photos[0].exif.lat">
+          <meta-map lat="{{ activity.photos[0].exif.lat }}" lng="{{ activity.photos[0].exif.lng }}" idx="$index"></meta-map>
+        </div> -->
+      </div>
+      <div class="col-sm-4 show-print">
+        <p ng-if="activity.photos[0].exif.make"><b>Phone Make/Model:</b> {{ activity.photos[0].exif.make }} / {{ activity.photos[0].exif.model }}</p>
+        <p ng-if="activity.photos[0].exif.created"><b>Date Captured:</b> {{ activity.photos[0].exif.created | date:'short' }}</p>
+        <p ng-if="activity.photos[0].exif.dir"><b>Facing Direction (approx.):</b> {{ activity.photos[0].exif.dir }}</p>
+        <p ng-if="activity.photos[0].exif.lat"><b>Latitude/Longitude:</b> {{ activity.photos[0].exif.lat }} {{ activity.photos[0].exif.lng }}</p>
+        <p ng-if="!activity.photos[0].exif.lat"><em>No location data available for this photo.</em></p>
+      </div>
   </div>
 </div>

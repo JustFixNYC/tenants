@@ -14,6 +14,10 @@
 	.print-hidden {
 		display: none;
 	}
+
+	.show-print {
+		display: block;
+	}
 }
 
 @page {
@@ -21,6 +25,10 @@
 }
 
 .print-title {
+	display: none;
+}
+
+.show-print {
 	display: none;
 }
 
