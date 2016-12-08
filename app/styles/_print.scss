@@ -14,10 +14,6 @@
 	.print-hidden {
 		display: none;
 	}
-
-	.show-print {
-		display: block;
-	}
 }
 
 @page {
@@ -85,6 +81,10 @@
 
 	img {
 		max-height: 100%;
+	}
+
+	.show-print {
+		display: block;
 	}
 
 	.other-share {
