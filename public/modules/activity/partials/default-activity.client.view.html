@@ -23,7 +23,7 @@
 
   <p ng-if="activity.description">{{ activity.description }}</p>
 
-  <div class="row thumb-list">
+  <div class="row thumb-list" ng-show="activity.photos">
   		<h3 class="print-title show-print">(see appendix {{photo.order + 1}} for fullsize photo)</h3>
       <div data-ng-repeat="photo in activity.photos" class="col-xs-4">
           <a ng-click="openLightboxModal(activity.photos, $index)">
