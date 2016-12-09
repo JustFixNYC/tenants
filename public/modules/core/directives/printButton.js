@@ -33,7 +33,6 @@ angular.module('core')
 	        	var printView = printPg.contentWindow.angular.element(printPg.contentWindow.document.querySelector('#print-view'));
 	        	if(!printView.scope()) {
 	        		return $timeout(function(){
-	        			console.log('huh?');
 	        			// Recusive functions FTW
 		        		checkLoaded();
 	        		}, 500);
@@ -43,7 +42,6 @@ angular.module('core')
 	        	// Check if we're actually loaded
 	        	if(!printableLoaded) {
 	        		$timeout(function(){
-	        			console.log('huh?');
 	        			// Recusive functions FTW
 		        		checkLoaded();
 	        		}, 500);
