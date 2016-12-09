@@ -19,21 +19,40 @@
   </h2>
 </div>
 <div data-ng-if="tenant.activity.length">
-    <div data-ng-repeat="activity in tenant.activity | orderBy:'createdDate':true" class="panel activity-panel">
-        <div class="panel-heading">
-            <h3>{{ activity.title | translate }}</h3>
-        </div>
-        <div class="panel-body">
 
-          <div ng-include="activityTemplate(activity.key)"></div>
-
-            <!-- <p><b>{{ activity.key | areaTitle }} {{ activity.title === 'Text/Photos' ? 'Details' : activity.title }}</b></p> -->
-
-
+  <tabset justified="true">
+    <tab heading="Activity Log">
+      <div data-ng-repeat="activity in tenant.activity | orderBy:'createdDate':true" class="panel activity-panel">
+          <div class="panel-heading">
+              <h3>{{ activity.title | translate }}</h3>
+          </div>
+          <div class="panel-body">
+            <div ng-include="activityTemplate(activity.key)"></div>
             <span class="pull-right activity-logged-date"><i>{{'modules.activity.views.listActivityPublic.loggedOn' | translate}} {{ activity.createdDate | date:'short' }}</i></span>
-
+          </div>
+      </div>
+    </tab>
+    <tab heading="Current Issues">
+      <div data-ng-repeat="problem in tenant.problems">
+        <h3>{{ problem.title | translate }}</h3>
+        <ul>
+          <li data-ng-repeat="issue in problem.issues">{{ issue.key | translate }}</li>
+        </ul>
+      </div>
+    </tab>
+    <tab heading="Photos">
+      <div class="photos-grid">
+        <div data-ng-repeat="photo in photos" class="photos-grid-item">
+            <a ng-click="openLightboxModal(photos, $index)">
+                <img ng-src="{{ photo.thumb }}" class="img-thumbnail" />
+            </a>
         </div>
-    </div>
+      </div>
+    </tab>
+  </tabset>
+
+
+
 </div>
 <div class="alert alert-warning text-center" data-ng-if="!tenant.activity.length">
   {{ tenant.fullName }} {{'modules.activity.views.listActivityPublic.empty' | translate}}

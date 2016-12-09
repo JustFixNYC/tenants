@@ -26,20 +26,20 @@ angular.module('advocates')
 
 		var _this = this;
 
-		_this.query = function() {
-
-			var queried = $q.defer();
-
-			AdvocatesResource.query(function (tenants) {
-				_this._tenants = tenants;
-				queried.resolve(tenants);
-			});
-
-			return queried.promise;
-		};
+		// _this.query = function() {
+		//
+		// 	var queried = $q.defer();
+		//
+		// 	AdvocatesResource.query(function (tenants) {
+		// 		_this._tenants = tenants;
+		// 		queried.resolve(tenants);
+		// 	});
+		//
+		// 	return queried.promise;
+		// };
 
 		return {
-			query: _this.query,
+			query: AdvocatesResource.query,
 			setCurrentTenant: function(tenant) {
 				_this._currentTenant = tenant;
 			},
@@ -57,15 +57,26 @@ angular.module('advocates')
 				if(_this._currentTenant) {
 					console.log('current');
 					filtered.resolve(_this._currentTenant);
-				} else if(!_this._tenants) {
-					console.log('query');
-					_this.query().then(function () {
-						filterTenant();
-					});
 				} else {
-					console.log('filter');
-					filterTenant();
+					console.log('query');
+					AdvocatesResource.query(function (tenants) {
+						console.log(tenants);
+						filtered.resolve(tenants.filter(function (t) { return t._id === id; })[0]);
+					});
 				}
+
+				// if(_this._currentTenant) {
+				// 	console.log('current');
+				// 	filtered.resolve(_this._currentTenant);
+				// } else if(!_this._tenants) {
+				// 	console.log('query');
+				// 	_this.query().then(function () {
+				// 		filterTenant();
+				// 	});
+				// } else {
+				// 	console.log('filter');
+				// 	filterTenant();
+				// }
 
 				return filtered.promise;
 			}

@@ -1,15 +1,10 @@
 'use strict';
 
-angular.module('advocates').controller('AdvocateController', ['$rootScope', '$scope', '$state', '$location', '$filter', 'Authentication', 'Advocates', '$http', '$modal',
-	function($rootScope, $scope, $state, $location, $filter, Authentication, Advocates, $http, $modal) {
+angular.module('advocates').controller('AdvocateController', ['$rootScope', '$scope', '$state', '$location', '$filter', 'Authentication', 'Advocates', '$http', '$modal', 'tenants',
+	function($rootScope, $scope, $state, $location, $filter, Authentication, Advocates, $http, $modal, tenants) {
 
 		$scope.user = Authentication.user;
-
-		$scope.list = function() {
-			Advocates.query().then(function (tenants) {
-				$scope.tenants = tenants;
-			});
-		};
+		$scope.tenants = tenants;
 
 		$scope.view = 'individual';
 		$scope.changeView = function(newView) {

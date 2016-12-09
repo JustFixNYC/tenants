@@ -59,6 +59,11 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 				globalStyles: 'fluid-container advocate-view',
 				data: {
 					disableBack: true
+				},
+				resolve: {
+					tenants: ['Advocates', function(Advocates) {
+						return Advocates.query();
+					}]
 				}
 			})
 			.state('manageTenant', {

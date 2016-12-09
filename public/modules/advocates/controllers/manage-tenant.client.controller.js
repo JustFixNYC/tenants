@@ -7,6 +7,7 @@ angular.module('advocates').controller('ManageTenantController', [
 		$scope.user = Authentication.user;
 		$scope.tenant = tenant;
 
+
 		$scope.$watch('tenant', function (tenant) {
 			console.log('change in root', tenant);
 		}, true);
@@ -18,6 +19,11 @@ angular.module('advocates').controller('ManageTenantController', [
 			$scope.$watch('tenant', function (tenant) {
 				console.log('change in home', tenant);
 			}, true);
+
+			$scope.photos = [];
+			$scope.tenant.activity.forEach(function (act) {
+				$scope.photos = $scope.photos.concat(act.photos);
+			});
 
 			$scope.isDesktop = deviceDetector.isDesktop();
 
