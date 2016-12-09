@@ -48,8 +48,8 @@ exports.signup = function(req, res) {
       res.json(user);
     })
     .fail(function (err) {
-      rollbar.handleError(errorHandler.getErrorMessage(err), req);
-      res.status(400).send(errorHandler.getErrorMessage(err));
+      rollbar.handleError(err, req);
+      res.status(400).send(err);
     });
 
 

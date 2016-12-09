@@ -67,69 +67,61 @@ var saveNewUser = exports.saveNewUser = function(req, identity, userdata, user) 
   var saved = Q.defer();
   var _this = this;
 
+  Q.allSettled([identity.validate(), userdata.validate()])
+    .spread(function (identityError, userdataError) {
 
-  // This is awful. Promises seem to be broken in Mongoose 4.6.x
-  // We need to validate both documents before saving so we don't
-  // accidentally save one and not the other.
-  // https://github.com/Automattic/mongoose/issues/4728
-  userdata.validate(function (err) {
-    if(err) saved.reject(errorHandler.getErrorMessage(err));
-    else {
+      if(identityError.state === 'rejected') {
+        throw identityError.reason;
+      } else if(userdataError.state === 'rejected') {
+        throw userdataError.reason;
+      } else {
+        // save both identity and userdata documents
+        // mongoose is configured to run on q promises
+        return Q.allSettled([identity.save(), userdata.save()]);
+      }
+    })
+    .spread(function (identity, userdata) {
 
-      identity.validate(function (err) {
-        if(err) saved.reject(errorHandler.getErrorMessage(err));
-        else {
+      if(identity.state === 'rejected') {
+        throw identity.reason;
+      }
+      if(userdata.state === 'rejected') {
+        throw userdata.reason;
+      }
 
-            // save both identity and userdata documents
-            // mongoose is configured to run on q promises
-            Q.allSettled([identity.save(), userdata.save()])
-              .spread(function (identity, userdata) {
+      // save the ObjectID references of the two documents
+      user._identity = identity.value._id;
+      user._userdata = userdata.value._id;
 
-                if(identity.state === 'rejected') {
-                  saved.reject(errorHandler.getErrorMessage(identity.reason));
+      // // save new User
+      user.save()
+        .then(function (user) {
+
+          // this is nested because we'll need user for the req.login
+          formatUserForClient(identity.value, userdata.value)
+            .then(function (userObject) {
+
+              // passport login, serializes the user
+              // unfortunately not configured for q promises
+              // req.login (serialize) should be sent an *unpopulated* User document
+              req.login(user, function(err) {
+                if (err) {
+                  saved.reject(errorHandler.getErrorMessage(err));
+                } else {
+                  // pass this json for the res
+                  saved.resolve(userObject);
                 }
-                if(userdata.state === 'rejected') {
-                  saved.reject(errorHandler.getErrorMessage(userdata.reason));
-                }
-
-                // save the ObjectID references of the two documents
-                user._identity = identity.value._id;
-                user._userdata = userdata.value._id;
-
-                // // save new User
-                user.save()
-                  .then(function (user) {
-
-                    // this is nested because we'll need user for the req.login
-                    formatUserForClient(identity.value, userdata.value)
-                      .then(function (userObject) {
-
-                        // passport login, serializes the user
-                        // unfortunately not configured for q promises
-                        // req.login (serialize) should be sent an *unpopulated* User document
-                        req.login(user, function(err) {
-                          if (err) {
-                            saved.reject(errorHandler.getErrorMessage(err));
-                          } else {
-                            // pass this json for the res
-                            saved.resolve(userObject);
-                          }
-                        });
-                      })
-                      .catch(function (err) {
-                        saved.reject(errorHandler.getErrorMessage(err));
-                      });
-                  });
-              })
-              .catch(function (err) {
-                console.log('err', err);
-                saved.reject(errorHandler.getErrorMessage(err));
               });
-
-        }
-      });       // identity validate
-    }
-  });       // userdata validate
+            })
+            .catch(function (err) {
+              saved.reject(errorHandler.getErrorMessage(err));
+            });
+        });
+    })
+    .catch(function (err) {
+      console.log('err', err);
+      saved.reject(errorHandler.getErrorMessage(err));
+    });
 
   return saved.promise;
 };
