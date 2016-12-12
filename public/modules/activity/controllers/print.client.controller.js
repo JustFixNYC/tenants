@@ -1,10 +1,15 @@
 'use strict';
 
 
-angular.module('activity').controller('PrintController', ['$scope', '$rootScope', '$filter', 'Activity', 'Lightbox', 'Authentication', '$window',
-  function($scope, $rootScope, $filter, Activity, Lightbox, Authentication, $window) {
+angular.module('activity').controller('PrintController', ['$scope', '$rootScope', '$filter', 'Activity', 'Authentication', '$state',
+  function($scope, $rootScope, $filter, Activity, Authentication, $state) {
 
   	$scope.printable = false;
+
+  	$scope.reloadView = function() {
+  		$scope.printable = false; 
+  		$state.reload();
+  	};
 
     $scope.list = function() {
     	var photoOrder = 0;
@@ -22,8 +27,8 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
       		}
       	}
 
-      }, function(data) {
-
+      }, function(error) {
+      	console.log(error);
       });
     };
 
@@ -43,7 +48,6 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
 
     $rootScope.$on('$viewContentLoaded', function() {
     	$scope.printable = true;
-    	console.log('displayable!');
     });
 
 	}
