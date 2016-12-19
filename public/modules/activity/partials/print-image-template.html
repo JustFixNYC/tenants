@@ -12,7 +12,7 @@
   <div class="photo-row" ng-repeat="photo in activity.photos">
 		<h3>(see appendix {{photo.order + 1}} for fullsize photo)</h3>
 		<div class="row">
-			<div class="col-sm-4" ng-class="{'col-missing-override': activity.photos[0].exif.lat}">
+			<div class="col-sm-4" ng-class="{'col-missing-override': !activity.photos[0].exif.lat}">
 				<img ng-src="{{photo.thumb}}">
 			</div>
       <div class="col-sm-4" ng-if="activity.photos[0].exif.lat">
@@ -21,7 +21,7 @@
           <meta-map lat="{{ activity.photos[0].exif.lat }}" lng="{{ activity.photos[0].exif.lng }}" idx="$index"></meta-map>
         </div> -->
       </div>
-      <div class="col-sm-4" ng-class="{'col-missing-override': activity.photos[0].exif.lat}">
+      <div class="col-sm-4" ng-class="{'col-missing-override': !activity.photos[0].exif.lat}">
         <p ng-if="activity.photos[0].exif.make"><b>Phone Make/Model:</b> {{ activity.photos[0].exif.make }} / {{ activity.photos[0].exif.model }}</p>
         <p ng-if="activity.photos[0].exif.created"><b>Date Captured:</b> {{ activity.photos[0].exif.created | date:'short' }}</p>
         <p ng-if="activity.photos[0].exif.dir"><b>Facing Direction (approx.):</b> {{ activity.photos[0].exif.dir }}</p>
