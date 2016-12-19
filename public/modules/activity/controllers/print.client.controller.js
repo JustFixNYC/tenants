@@ -6,6 +6,7 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
 
   	$scope.printable = false;
 
+  	// If we need to reload view (should be fired in parent)
   	$scope.reloadView = function() {
   		$scope.printable = false; 
   		$state.reload();
