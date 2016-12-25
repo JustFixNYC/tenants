@@ -18,7 +18,8 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
     $scope.isDesktop = deviceDetector.isDesktop();
 
     $scope.list = function() {
-      $scope.activities = Activity.query();
+      // $scope.activities = Activity.query();
+      $scope.activities = $scope.authentication.user.activity;
     };
 
     $scope.activityTemplate = function(key) {

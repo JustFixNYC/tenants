@@ -1,7 +1,10 @@
 <section id="advocates" data-ng-init="list()">
 
   <div class="advocates-header clearfix">
-    <h1 class="pull-left">Your Accounts</h1>
+    <div class="pull-left">
+      <h1>Your Accounts</h1>
+      <p><b>Your Advocate Code:</b> {{ user.code }}</p>
+    </div>
 
     <a ui-sref="newTenantSignup.problems" class="btn btn-primary btn-block pull-right">+ Managed Tenant</a>
   </div>

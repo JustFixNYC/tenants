@@ -19,7 +19,7 @@ var _ = require('lodash'),
 
 mongoose.Promise = require('q').Promise;
 
-var buildNewTenant = exports.buildNewTenant = function(tenant) {
+var buildNewTenant = exports.buildNewTenant = function(tenant, advocate) {
 
   var built = Q.defer();
 
@@ -30,12 +30,22 @@ var buildNewTenant = exports.buildNewTenant = function(tenant) {
   acctCreatedDate.setSeconds(acctCreatedDate.getSeconds() - 60);
 
   // self-explanatory?
-  tenant.activity.push({
+  var createActivity = {
     key: 'createAcount',
     title: 'modules.activity.other.created',
     createdDate: acctCreatedDate,
     startDate: acctCreatedDate
-  });
+  };
+
+  if(advocate) {
+    createActivity.loggedBy = advocate.fullName;
+  } else {
+    createActivity.loggedBy = tenant.firstName + ' ' + tenant.lastName;
+  }
+
+  tenant.activity.push(createActivity);
+
+  tenant.updated = acctCreatedDate;
 
   // new user enabled sharing, so create a key
   // **actually, just create a key regardless**
@@ -71,7 +81,7 @@ exports.signup = function(req, res) {
 
   var message = null;
 
-  buildNewTenant(tenant)
+  buildNewTenant(tenant, undefined)
     .then(function (tenant) {
       return userAuthHandler.saveNewUser(req, identity, tenant, user);
     })

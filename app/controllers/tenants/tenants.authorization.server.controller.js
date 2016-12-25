@@ -26,6 +26,10 @@ exports.hasPublicView = function(req, res, next) {
     		req.tempUser = {
     			fullName: tenant.fullName,
     			phone: tenant.phone,
+					address: tenant.address,
+					unit: tenant.unit,
+					borough: tenant.borough,
+					gro: tenant.geo,
     			activity: tenant.activity
     		};
     		next();

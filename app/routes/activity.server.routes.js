@@ -19,7 +19,7 @@ var users = require('../../app/controllers/users.server.controller'),
 module.exports = function(app) {
 	// Article Routes
 	app.route('/api/activity')
-		.get(activity.list)
+		.get(users.requiresLogin, activity.list)
     //.post(users.requiresLogin, upload.array('photos'), activity.create);
     .post(users.requiresLogin, multipartMiddleware, activity.create, users.updateUserData);
 

@@ -171,12 +171,14 @@
 	  			"alert": "This is a sharing view!",
 	  			"print": "Print",
 	  			"caseHistory": "@:repeating.caseHistory",
-	  			"loggedOn": "Logged on",
+	  			"loggedOn": "Logged by",
+	  			"loggedOnAttrib": "on",
 	  			"empty": "hasn't added anything to their Case History yet. Check back later!"
 	  		},
 	  		"listActivity": {
 	  			"title": "@:repeating.caseHistory",
-          "loggedOn": "Logged on",
+          "loggedOn": "Logged by",
+          "loggedOnAttrib": "on",
 	  			"description": "This is a record of all the actions you’ve taken in resolving your housing issues.",
 	  			"share": "Share My Case",
 	  			"email": "Email",

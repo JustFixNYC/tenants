@@ -44,7 +44,7 @@ exports.getProblemKeys = function() {
 };
 
 
-var createProblemActivities = function(user, added, removed) {
+var createProblemActivities = function(user, added, removed, byName) {
 
   var newActivities = [];
 
@@ -56,14 +56,16 @@ var createProblemActivities = function(user, added, removed) {
     user.activity.push({
       key: 'checklist',
       title: 'modules.activity.other.added',
-      problems: added
+      problems: added,
+      loggedBy: byName
     });
   }
   if(removed.length) {
     user.activity.push({
       key: 'checklist',
       title: 'modules.activity.other.removed',
-      problems: removed
+      problems: removed,
+      loggedBy: byName
     });
   }
 
@@ -160,14 +162,24 @@ exports.updateActivitiesFromChecklist = function(req, res, next) {
   var _prblms = req.body.problems;
 
   // new user OR advocate user creating managed account
-  if(!req.user || !res.locals.tenant) {
+  if(!req.user || (req.user.roles[0] === 'advocate' && !res.locals.tenant)) {
 
     // (1) new user who didn't enter any problems
     if(!_prblms) next();
 
     // (2) activity array hasn't been created yet
     req.body.activity = [];
-    createProblemActivities(req.body, _prblms, []);
+
+    // goofy and inelegant :~(
+    // need to store the loged by info for the new activities
+    var byName;
+    if(req.user) {
+      byName = req.user.fullName;
+    } else {
+      byName = req.body.firstName + ' ' + req.body.lastName;
+    }
+
+    createProblemActivities(req.body, _prblms, [], byName);
     next();
 
   // returning user OR advocate user updating managed account
@@ -183,7 +195,7 @@ exports.updateActivitiesFromChecklist = function(req, res, next) {
     var added = checkProblems(req.body, prblms, _prblms),
         removed = checkProblems(req.body, _prblms, prblms);
 
-    createProblemActivities(req.body, added, removed);
+    createProblemActivities(req.body, added, removed, req.user.fullName);
 
     // only take relevant properties
     // for (var prop in req.body) {

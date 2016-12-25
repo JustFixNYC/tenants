@@ -4,13 +4,9 @@
 <div class="form-group">
     <div class="row">
         <div class="col-xs-4">
-            <!-- should go to either success or access code page  -->
-            <!-- <a ng-if="!newUser.advocate" ui-sref="onboarding.accessCode" class="btn btn-block btn-default">
+            <a ui-sref="manageTenant.home" class="btn btn-block btn-default">
               {{'modules.onboarding.partials.onboardingProblems.back' | translate}}
             </a>
-            <a ng-if="newUser.advocate" ui-sref="onboarding.success" class="btn btn-block btn-default">
-              {{'modules.onboarding.partials.onboardingProblems.back' | translate}}
-            </a> -->
         </div>
         <div class="col-xs-8">
             <a ng-click="saveProblems()" class="btn btn-primary btn-block pull-right">
@@ -18,4 +14,11 @@
             </a>
         </div>
     </div>
+    <br />
+    <alert
+          data-ng-show="problemsAlert"
+          type="danger"
+          close="problemsAlert = false">
+      <span ng-bind-html="'modules.core.views.home.error' | trustTranslate" compile-template></span>
+    </alert>
 </div>

@@ -43,21 +43,35 @@ angular.module('advocates').controller('ManageTenantController', [
 
 
 		}])
-		.controller('ManageTenantProblemsController', ['$scope', '$stateParams', 'Advocates', 'ProblemsResource',
-			function($scope, $stateParams, Advocates, ProblemsResource) {
+		.controller('ManageTenantProblemsController', ['$rootScope', '$scope', '$state', '$stateParams', 'Advocates', 'ProblemsResource',
+			function($rootScope, $scope, $state, $stateParams, Advocates, ProblemsResource) {
+
+				$scope.problemsAlert = false;
 
 				$scope.saveProblems = function () {
 
 					console.log('before', $scope.tenant);
-					var tenant = new ProblemsResource($scope.tenant);
-					tenant.$updateManagedChecklist({ id: $scope.tenant._id }, function(response) {
-						console.log('after', response);
 
-						// need to use angular.extend rather than scope.tenant = response
-						// this will actually update all the attributes
-						// (and trigger an update in parent controllers)
-						angular.extend($scope.tenant, response);
-					});
+					$rootScope.loading = true;
+					$scope.problemsAlert = false;
+
+					var tenant = new ProblemsResource($scope.tenant);
+					tenant.$updateManagedChecklist({ id: $scope.tenant._id },
+						function(response) {
+							console.log('after', response);
+
+							// need to use angular.extend rather than scope.tenant = response
+							// this will actually update all the attributes
+							// (and trigger an update in parent controllers)
+							angular.extend($scope.tenant, response);
+
+							$rootScope.loading = false;
+							$state.go('manageTenant.home');
+						}, function(err) {
+							$rootScope.loading = false;
+							$scope.problemsAlert = true;
+
+						});
 
 				};
 

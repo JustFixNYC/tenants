@@ -9,16 +9,23 @@ var _ = require('lodash'),
     mongoose = require('mongoose'),
     rollbar = require('rollbar'),
     problemsHandler = require('./problems.server.controller.js'),
-    User = mongoose.model('User');
+    User = mongoose.model('User'),
+    Activity = mongoose.model('Activity');
 
 var list = function(req, res) {
-  if(req.user) {
-    res.json(req.user.activity);
-  } else {
-    res.status(401).send({
-      message: 'User is not signed in'
-    });
-  }
+
+  // Activity.populate(req.user.activity, { path: 'loggedBy', select: 'fullName' })
+  //   .then(function (activities) {
+  //     res.json(activities);
+  //   })
+  //   .fail(function (err) {
+  //     rollbar.handleError(err, req);
+  //     res.status(500).send({ message: errorHandler.getErrorMessage(err) });
+  //   });
+
+
+
+  res.json(req.user.activity);
 };
 
 // GPS processing helper function
@@ -284,6 +291,27 @@ var create = function(req, res, next) {
     // add to action flags
     if(!_.contains(req.body.actionFlags, newActivity.key)) req.body.actionFlags.push(newActivity.key);
 
+    // stored logged by info
+    // we aren't gonna store a reference to the author
+    // in the interest of all activity data
+    // being *unchangable* from the time that its created.
+    // so instead this is just the author's name at the time
+    newActivity.loggedBy = req.user.fullName;
+
+
+
+    // this will allow you to store a reference to the author
+    //
+    // newActivity.loggedBy = req.user._userdata;
+    //
+    // // for the time being there's only one referenced role
+    // // how to acct when there could be multiple types of user data?
+    // var role = req.user.roles[0];
+    // // convert from role to Model, bleh
+    // newActivity.loggedByKind = role.charAt(0).toUpperCase() + role.substring(1);
+
+    // console.log(newActivity);
+
     // init photos array
     newActivity.photos = [];
 
@@ -296,42 +324,48 @@ var create = function(req, res, next) {
 
     for(var file in files) uploadQueue.push(processAndSavePhoto(files[file]));
 
-    Q.allSettled(uploadQueue).then(function (results) {
+    Q.allSettled(uploadQueue)
+      .then(function (results) {
 
-      results.forEach(function (r) {
+        results.forEach(function (r) {
 
-        if(r.state !== 'fulfilled') {
-          console.log(r.reason);
-          rollbar.handleError(r.reason, req);
-          res.status(500).send({ message: "Photo is not fulfilled" });
-        }
+          if(r.state !== 'fulfilled') {
+            console.log(r.reason);
+            rollbar.handleError(r.reason, req);
+            res.status(500).send({ message: "Photo is not fulfilled" });
+          }
 
-        newActivity.photos.push({
-          url: r.value.url,
-          thumb: r.value.thumb,
-          exif: r.value.exif
+          newActivity.photos.push({
+            url: r.value.url,
+            thumb: r.value.thumb,
+            exif: r.value.exif
+          });
         });
+
+        // add ref to problems
+        // we aren't using this right now so i'll handle it later
+        // if(_.contains(problemsHandler.getProblemKeys(), newActivity.key)) {
+        //   var prob = req.user.problems.getByKey(newActivity.key);
+        //   prob.startDate = newActivity.startDate;
+        //   prob.description = newActivity.description;
+        //   prob.photos = newActivity.photos;
+        // }
+
+        // add activity object
+        req.body.activity.push(newActivity);
+
+        next();
+
+      })  // end of Q.allSettled
+      .fail(function (err) {
+
+        // s3 error
+
+        // console.log('s3 error', err);
+        rollbar.handleError(err, req);
+        res.status(500).send({ message: errorHandler.getErrorMessage(err) });
+
       });
-
-      // add ref to problems
-      // we aren't using this right now so i'll handle it later
-      // if(_.contains(problemsHandler.getProblemKeys(), newActivity.key)) {
-      //   var prob = req.user.problems.getByKey(newActivity.key);
-      //   prob.startDate = newActivity.startDate;
-      //   prob.description = newActivity.description;
-      //   prob.photos = newActivity.photos;
-      // }
-
-      // add activity object
-      req.body.activity.push(newActivity);
-
-      next();
-
-    })  // end of Q.allSettled
-    .fail(function (err) {
-      // console.log('s3 error', err);
-      rollbar.handleError(err, req);
-    });
 
   } else {
     res.status(400).send({

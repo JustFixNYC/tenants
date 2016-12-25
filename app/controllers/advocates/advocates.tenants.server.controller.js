@@ -23,8 +23,9 @@ exports.createNewTenant = function(req, res) {
 
   tenant.advocateRole = 'managed';
   tenant.advocate = req.user._userdata;
+  tenant.updated = Date.now();
 
-  tenantHandler.buildNewTenant(tenant)
+  tenantHandler.buildNewTenant(tenant, req.user)
     .then(function (tenant) {
       return tenant.save();
     })
@@ -57,6 +58,8 @@ exports.listTenants = function(req, res) {
         //   rollbar.handleError("Tenant/advocate mismatch", req);
         //   res.status(500).send({ message: "This shouldn\'t happen." });
         // }
+
+        console.log(t);
 
         return t;
 

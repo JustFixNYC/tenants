@@ -120,8 +120,7 @@ var TenantSchema = new Schema({
     required: true
   },
   updated: {
-    type: Date,
-    default: Date.now
+    type: Date
   },
   created: {
     type: Date,

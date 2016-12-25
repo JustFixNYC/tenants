@@ -28,8 +28,13 @@
           </div>
           <div class="panel-body">
             <div ng-include="activityTemplate(activity.key)"></div>
-            <span class="pull-right activity-logged-date"><i>{{'modules.activity.views.listActivityPublic.loggedOn' | translate}} {{ activity.createdDate | date:'short' }}</i></span>
-          </div>
+            <span class="pull-right activity-logged-date"><i>
+              <span ng-if="activity.loggedBy">
+                {{'modules.activity.views.listActivity.loggedOn' | translate}} {{ activity.loggedBy }} {{'modules.activity.views.listActivity.loggedOnAttrib' | translate}}
+              </span>
+
+              {{ activity.createdDate | date:'short' }}
+            </i></span>          </div>
       </div>
     </tab>
     <tab heading="Current Issues">

@@ -77,9 +77,13 @@
 
                   <!-- <p><b>{{ activity.key | areaTitle }} {{ activity.title === 'Text/Photos' ? 'Details' : activity.title }}</b></p> -->
 
+                <span class="pull-right activity-logged-date"><i>
+                  <span ng-if="activity.loggedBy">
+                    {{'modules.activity.views.listActivity.loggedOn' | translate}} {{ activity.loggedBy }} {{'modules.activity.views.listActivity.loggedOnAttrib' | translate}}
+                  </span>
 
-
-                <span class="pull-right activity-logged-date"><i>{{'modules.activity.views.listActivity.loggedOn' | translate}} {{ activity.createdDate | date:'short' }}</i></span>
+                  {{ activity.createdDate | date:'short' }}
+                </i></span>
               </div>
           </div>
       </div>
