@@ -80,6 +80,9 @@ exports.hasPublicView = function(req, res, next) {
 			req.tempUser = {
 				fullName: user.fullName,
 				phone: user.phone,
+				address: user.address,
+				borough: user.borough,
+				geo: user.geo,
 				activity: user.activity
 			};
 			next();
