@@ -22,7 +22,7 @@ angular.module('activity').config(['$stateProvider', '$urlRouterProvider', 'Ligh
 				data: { disableBack: true }
 			})
 			.state('print', {
-				url: '/print',
+				url: '/print/:key',
 				templateUrl: 'modules/activity/views/print.client.view.html',
 				data: {disableBack: true},
 				globalStyles: 'clear-nav'

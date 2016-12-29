@@ -49,15 +49,21 @@ angular.module('core')
         };
 
         var iframe = document.getElementById('print-frame');
+        var queryKey = '';
+        if(scope.query) {
+        	queryKey = '/' + scope.query.key;
+        }
 
         if (iframe) {
         	// If we're returning here, reload iFrame and begin checking when loaded
         	var printPg = iframe;
+        	printPg.src = printPg.src + queryKey; 
         	printPg.contentWindow.angular.element(printPg.contentWindow.document.querySelector('#print-view')).scope().reloadView();
         	checkLoaded();
         } else {
+        	// init new printPg instance
 	        var printPg = document.createElement('iframe');
-	        printPg.src = '/print';
+	        printPg.src = '/print' + queryKey;
 	        printPg.width = 700;
 	        printPg.height = 0;
 	        printPg.setAttribute('id', 'print-frame');

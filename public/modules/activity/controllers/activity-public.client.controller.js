@@ -9,12 +9,12 @@
 
 angular.module('activity').controller('ActivityPublicController', ['$scope', '$stateParams', '$state', '$http', '$filter', 'Activity', 'Lightbox',
   function($scope, $stateParams, $state, $http, $filter, Activity, Lightbox) {
-
-    var query = $stateParams;
-    if(!query.key) $state.go('/');
+		
+		$scope.query = $stateParams;
+    if(!$scope.query.key) $state.go('/');
 
     $scope.list = function() {
-      Activity.public({ key: query.key }, function(user) {
+      Activity.public({ key: $scope.query.key }, function(user) {
         $scope.user = user;
         $scope.activities = $scope.user.activity;
       });
