@@ -15,8 +15,9 @@ var list = function(req, res) {
   if(req.user) {
     res.json(req.user.activity);
   } else {
+    rollbar.handleError("User is not signed in", req);
     res.status(401).send({
-      message: 'User is not signed in'
+      message: "User is not signed in"
     });
   }
 };
