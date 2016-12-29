@@ -69,6 +69,9 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
       for(var i = 0; i < user.problems.length; i++) { 
 
         var prob = user.problems[i];
+        if (prob.key === 'landlordIssues') {
+        	continue;
+        }
 
         problemsContent += $translate.instant(prob.title, undefined, undefined, 'en_US') + ':\n';
         for(var j = 0; j < prob.issues.length; j++) {

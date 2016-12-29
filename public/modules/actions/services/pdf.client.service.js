@@ -36,6 +36,10 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
       for(var i = 0; i < user.problems.length; i++) {
 
+      	if(user.problems[i].key === 'landlordIssues') {
+      		continue;
+      	}
+
       	var problemPush = angular.copy(user.problems[i]);
 
       	problemPush.title = $translate.instant(problemPush.title, undefined, undefined, 'en_US');
