@@ -76,7 +76,11 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     });
 
     $translateProvider.preferredLanguage('en_US');// is applied on first load
+<<<<<<< HEAD
     // $translateProvider.useLocalStorage();// saves selected language to localStorage
+=======
+    $translateProvider.useLocalStorage(); // saves selected language to localStorage
+>>>>>>> master
     // NOTE: This shit causes all sorts of issues with our UI-SREF attribute. Not recognized in any sanitizer module, and causes it to break
     // $translateProvider.useSanitizeValueStrategy(null); // Prevent XSS
   }])
@@ -511,16 +515,18 @@ angular.module('actions').directive('compileTemplate', ['$compile', '$parse', '$
 	function($compile, $parse, $sce, $translate){
     return {
         link: function(scope, element, attr){
+
             var parsed = $parse(attr.ngBindHtml);
-            
+
             var getStringValue = function() { return (parsed(scope) || '').toString(); }
+
             //Recompile if the template changes
             scope.$watch(getStringValue, function(val) {
             	// Check if our translation service has failed
             	if(val.indexOf('modules') !== -1) {
             		$translate(val).then(function(newVal){
 	            		element.html(newVal);
-	            		$compile(element, null, -9999)(scope);	
+	            		$compile(element, null, -9999)(scope);
             		});
             	} else {
             		element.html(val);
@@ -940,7 +946,11 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
 
     var getLandlordEmailMessage = function() {
 
+<<<<<<< HEAD
     	console.log($translate.getAvailableLanguageKeys());
+=======
+    	// console.log($translate.getAvailableLanguageKeys());
+>>>>>>> master
 
       var message = 'To whom it may regard, \n\n' +
         'I am requesting the following repairs in my apartment referenced below [and/or] in the public areas of the building:\n\n';
@@ -2581,7 +2591,11 @@ angular.module('core').filter('titlecase', function() {
 
 angular.module('core').filter('trustTranslate', ['$sce', '$filter', 'Authentication',
 	function($sce, $filter, Authentication) {
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> master
 		var user = Authentication.user;
 
 		var translatedText = $filter('translate');
@@ -3335,8 +3349,8 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
 
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$filter', 'Authentication', 'Referrals', '$http', '$modal',
-	function($rootScope, $scope, $location, $filter, Authentication, Referrals, $http, $modal) {
+angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$filter', 'Authentication', 'Referrals', '$http', '$modal', '$timeout',
+	function($rootScope, $scope, $location, $filter, Authentication, Referrals, $http, $modal, $timeout) {
 
 		$scope.authentication = Authentication;
 		$scope.newUser = {};
@@ -3364,7 +3378,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 				lastName: "Stevenson",
 				password: "password",
 				borough: 'Brooklyn',
-				address: '654 Park Place',
+				address: '123 Example Drive',
 				unit: '1RF',
 				phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
 				problems: [],
@@ -3374,7 +3388,8 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			};
 
 			$scope.accessCode = {
-				value: 'test5',
+				// value: 'test5',
+				value: '',
 				valid: false
 			};
 
@@ -3432,6 +3447,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 		};
 
 		$scope.userError = false;
+		$scope.loaded = false;
 
 		$scope.createAndNext = function (isValid) {
 
@@ -3444,21 +3460,26 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 				$scope.newUser.address = $filter('titlecase')($scope.newUser.address);
 
 				$scope.userError = false;
+				$scope.error = undefined;
 				$rootScope.loading = true;
 
 				$http.post('/api/auth/signup', $scope.newUser).success(function(response) {
 
 					// If successful we assign the response to the global user model
-					$rootScope.loading = false;
-					$rootScope.takeActionAlert = true;
 					$scope.authentication.user = response;
 					if(typeof DEBUG !== 'undefined' && DEBUG == true) console.log('create account post save', response);
+					$rootScope.loading = false;
+					$rootScope.takeActionAlert = true;
 					$location.path('/tutorial');
 
 				}).error(function(err) {
-					$rootScope.loading = false;
-					// console.log(err);
-        	$scope.error = err;
+
+						// just gives a little fake load time, helps with user perception
+						// users will just repeatedly try with the same errors
+						$timeout(function () {
+							$rootScope.loading = false;
+		        	$scope.error = err;
+						}, 1000);
 				});
 
 			} else {
@@ -4124,8 +4145,8 @@ angular.module('users').config(['$stateProvider', '$urlRouterProvider',
 
 'use strict';
 
-angular.module('users').controller('AuthenticationController', ['$rootScope', '$scope', '$http', '$state', 'Authentication',
-  function($rootScope, $scope, $http, $state, Authentication) {
+angular.module('users').controller('AuthenticationController', ['$rootScope', '$scope', '$http', '$state', '$timeout', 'Authentication',
+  function($rootScope, $scope, $http, $state, $timeout, Authentication) {
     $scope.authentication = Authentication;
 
     // If user is signed in then redirect back home
@@ -4144,14 +4165,23 @@ angular.module('users').controller('AuthenticationController', ['$rootScope', '$
     // };
 
     $scope.signin = function() {
+      $scope.error = undefined;
+      $rootScope.loading = true;
       $http.post('/api/auth/signin', $scope.credentials).success(function(response) {
+
+        $rootScope.loading = false;
+
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;
 
         // console.log($scope.authentication.user);
         $state.go('home');
       }).error(function(response) {
-        $scope.error = response.message;
+
+        $timeout(function () {
+          $rootScope.loading = false;
+          $scope.error = response.message;
+        }, 1000);
       });
     };
 

@@ -137,7 +137,8 @@ exports.validate = function(req, res) {
           message: errorHandler.getErrorMessage("Multiple referrals for a single code - this shouldn't happen.")
         });
       } else if (r.length == 0) {
-        rollbar.handleError("Invalid Access Code", query, req);
+        var err = new Error("Invalid Access Code");
+        rollbar.handleErrorWithPayloadData(err, { level: "error", custom: query }, req);
         res.json({ referral: null });
       } else if (r[0].totalUsers == r[0].inUse) {
         return res.status(400).send({

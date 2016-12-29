@@ -34,7 +34,11 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     });
 
     $translateProvider.preferredLanguage('en_US');// is applied on first load
+<<<<<<< HEAD
     // $translateProvider.useLocalStorage();// saves selected language to localStorage
+=======
+    $translateProvider.useLocalStorage(); // saves selected language to localStorage
+>>>>>>> master
     // NOTE: This shit causes all sorts of issues with our UI-SREF attribute. Not recognized in any sanitizer module, and causes it to break
     // $translateProvider.useSanitizeValueStrategy(null); // Prevent XSS
   })

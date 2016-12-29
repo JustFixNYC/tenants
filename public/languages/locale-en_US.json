@@ -380,10 +380,12 @@
 					"manhattan": "Manhattan",
 					"statenIsland": "Staten Island",
 					"errorBorough": "Please enter your borough.",
-					"streetAddress": "Street Address <em><a ng-click=\"additionalInfo()\">(why do you need this?)</a></em>",
+					"streetAddress": "Street Address",
 					"streetError": "Please enter your address.",
-					"apt": "Apartment #",
+					"streetPlaceholder": "Ex: 1432 W Sheraton Ave",
+					"apt": "Apt. #",
 					"aptError": "Please enter your apartment number.",
+          "additionalInfo": "<em><a ng-click=\"additionalInfo()\">(why do you need this information?)</a></em>",
 					"phone": "Phone Number <em>(you will use this to sign in)</em>",
 					"phoneError": "Please enter your phone number.",
 					"phoneNumber": "Phone Number",
@@ -391,7 +393,7 @@
 					"wrongPassword": "Please create a password.",
 					"shortPassword": "Password should be at least 6 characters.",
 					"verify": "Re-enter your new password",
-					"verifyEmpty": "please enter your password",
+					"verifyEmpty": "Please enter your password",
 					"verifyWrong": "These passwords don't match!",
 					"errorMsg": "Please <a ui-sref=\"contact\" target=\"_blank\">Contact Us</a> if you need assistance.",
 					"notComplete": "Please complete the above fields in order to create your account!",
@@ -885,7 +887,7 @@
   	"HPAction": {
 	    "title": "HP Action",
 	    "activityTitle": "HP Action",
-	    "content": "HP Actions are housing court proceedings that offer quick and cheap resolution to repair issues, and legal recourse if your landlord doesn't comply. <b>You must go to the user.borough Housing Court to file the HP Action.</b>",
+	    "content": "HP Actions are housing court proceedings that offer quick and cheap resolution to repair issues, and legal recourse if your landlord doesn't comply. <b>You must go to the <span ng-bind='user.borough'></span> Housing Court to file the HP Action.</b>",
 	    "cta": {
 	      "buttonTitle": "Get info"
 	    },
