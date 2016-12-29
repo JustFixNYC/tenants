@@ -41,9 +41,11 @@ angular.module('core')
         		// If we are loaded, let this button be free! 
 	        	element.removeClass('disabled');
 
+	        	console.log(element);
+
 		        element.on('click', function (event) {
 					    window.frames['print-frame'].print();
-		        });
+		        }); 
 
         	}
         };
@@ -56,13 +58,12 @@ angular.module('core')
 
         if (iframe) {
         	// If we're returning here, reload iFrame and begin checking when loaded
-        	var printPg = iframe;
+        	printPg = iframe;
         	printPg.src = '/print/' + queryKey;
-        	printPg.contentWindow.angular.element(printPg.contentWindow.document.querySelector('#print-view')).scope().reloadView();
-        	checkLoaded();
+        	printPg.contentWindow.location.reload(); // just reload w/ new SRC
         } else {
         	// init new print instance
-	        var printPg = document.createElement('iframe');
+	        printPg = document.createElement('iframe');
 	        printPg.src = '/print/' + queryKey;
 	        printPg.width = 700;
 	        printPg.height = 0;
