@@ -4,15 +4,15 @@
       <img src="/modules/core/img/sections/history.svg" alt="Case History" />
       <h1>{{ user.fullName }}</h1>
       <p class="text-center">{{'modules.activity.views.listActivityPublic.contact' | translate}} {{ user.phone | tel }}</p>
-      <p class="text-center">{{'modules.users.views.settings.editProfile.address' | translate}}: {{ user.address }}</p>
-      <p class="text-center">{{'modules.onboarding.partials.onboardingDetails.apt' | translate}}: {{ user.unit }}</p>
+      <p class="text-center">{{ user.address }} {{ user.unit }}</p>
+      <p class="text-center">{{ user.borough }} NY, {{ user.geo.zip }}</p>
   </div>
   <div data-ng-if="activities.length" class="activity-list">
     <div data-ng-repeat="activity in activities | orderBy:'createdDate':true" class="panel activity-panel">
         <div class="panel-body">
 
         	<div class="image-share" ng-show="activity.key == 'statusUpdate'">
-						
+
 						<div ng-include="'/modules/activity/partials/print-image-template.html'"></div>
 
             <span class="pull-right activity-logged-date"><i>{{'modules.activity.views.listActivityPublic.loggedOn' | translate}} {{ activity.createdDate | date:'short' }}</i></span>
