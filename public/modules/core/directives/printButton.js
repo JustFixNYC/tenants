@@ -41,8 +41,6 @@ angular.module('core')
         		// If we are loaded, let this button be free! 
 	        	element.removeClass('disabled');
 
-	        	console.log(element);
-
 		        element.on('click', function (event) {
 					    window.frames['print-frame'].print();
 		        }); 
