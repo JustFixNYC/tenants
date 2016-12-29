@@ -14,6 +14,12 @@
 	.print-hidden {
 		display: none;
 	}
+
+	#header-wrapper.inner #header .header-brand {
+		left: auto;
+		transform: none;
+		right: 0;
+	}
 }
 
 @page {
@@ -21,6 +27,10 @@
 }
 
 .print-title {
+	display: none;
+}
+
+.show-print {
 	display: none;
 }
 
@@ -38,6 +48,19 @@
 
 		p {
 			margin-top: 0px;
+		}
+	}
+
+	.row {
+		display: table;
+	}
+
+	.col-sm-4 {
+		display: table-cell;
+		vertical-align: middle;
+
+		&.col-missing-override {
+			width: 50%;
 		}
 	}
 
@@ -79,6 +102,14 @@
 		max-height: 100%;
 	}
 
+	.show-print {
+		display: block;
+
+		&.col-sm-4 {
+			display: table-cell;
+		}
+	}
+
 	.other-share {
 		page-break-inside:avoid;
 	}
@@ -112,15 +143,31 @@
 
 	.items {
 		display: block;
-	}
-
-	.photo-wrap {
 		display: block;
 		text-align: center;
 		page-break-before: always;
 		break-before: always;
     page-break-inside: avoid;
     break-inside: avoid;
+	}
+
+	.cell-one {
+		display: table-cell;
+		vertical-align: middle;
+	}
+
+	.cell-two {
+		display: table-cell;
+		vertical-align: middle;
+		padding-left: 20px;
+
+		img {
+			width: 125px;
+			height: 105px;
+		}
+	}
+
+	.photo-wrap {
 
 		img {
 			margin: auto;

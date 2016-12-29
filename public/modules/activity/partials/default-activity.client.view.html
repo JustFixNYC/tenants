@@ -23,12 +23,26 @@
 
   <p ng-if="activity.description">{{ activity.description }}</p>
 
-  <div class="row thumb-list">
-      <div data-ng-repeat="photo in activity.photos" class="col-xs-4">
-      		<h3 class="print-title">(see appendix {{photo.order + 1}} for fullsize photo)</h3>
-          <a ng-click="openLightboxModal(activity.photos, $index)">
-              <img ng-src="{{ activity.photos[$index].thumb }}" alt="{{ activity.key }}" class="img-thumbnail" />
-          </a>
+  <div class="thumb-list" data-ng-repeat="photo in activity.photos">
+  		<h3 class="print-title show-print">(see appendix {{photo.order + 1}} for fullsize photo)</h3>
+  		<div class="row">
+	      <div class="col-sm-4">
+	          <a class="print-hidden" ng-click="openLightboxModal(activity.photos, $index)">
+	              <img ng-src="{{ activity.photos[$index].thumb }}" alt="{{ activity.key }}" class="img-thumbnail" />
+	          </a>
+	          <img class="show-print" ng-src="{{ activity.photos[$index].thumb }}" alt="{{ activity.key }}" class="img-thumbnail" />
+	      </div>
+	      <div class="col-sm-4 show-print">
+	      	<img ng-src="https://maps.googleapis.com/maps/api/staticmap?center={{activity.photos[0].exif.lat}},{{activity.photos[0].exif.lng}}&markers=color%3A0x0096D7%7C{{activity.photos[0].exif.lat}},{{activity.photos[0].exif.lng}}&zoom=15&size=150x150&maptype=roadmap&key=AIzaSyAEKIXDSbYyeg_dqLHa0KZR561nV81Tr8g" />
+	      </div>
+	      <div class="col-sm-4 show-print">
+	        <p ng-if="activity.photos[0].exif.make"><b>Phone Make/Model:</b> {{ activity.photos[0].exif.make }} / {{ activity.photos[0].exif.model }}</p>
+	        <p ng-if="activity.photos[0].exif.created"><b>Date Captured:</b> {{ activity.photos[0].exif.created | date:'short' }}</p>
+	        <p ng-if="activity.photos[0].exif.dir"><b>Facing Direction (approx.):</b> {{ activity.photos[0].exif.dir }}</p>
+	        <p ng-if="activity.photos[0].exif.lat"><b>Latitude:</b> {{ activity.photos[0].exif.lat }}</p>
+	        <p ng-if="activity.photos[0].exif.lng"><b>Longitude:</b> {{ activity.photos[0].exif.lng }}</p>
+	        <p ng-if="!activity.photos[0].exif.lat"><em>No location data available for this photo.</em></p>
+	      </div>
       </div>
   </div>
 </div>

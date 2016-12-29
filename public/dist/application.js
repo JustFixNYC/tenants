@@ -1198,8 +1198,16 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
 'use strict';
 
 
-angular.module('activity').controller('PrintController', ['$scope', '$rootScope', '$filter', 'Activity', 'Lightbox', 'Authentication', '$window',
-  function($scope, $rootScope, $filter, Activity, Lightbox, Authentication, $window) {
+angular.module('activity').controller('PrintController', ['$scope', '$rootScope', '$filter', 'Activity', 'Authentication', '$state',
+  function($scope, $rootScope, $filter, Activity, Authentication, $state) {
+
+  	$scope.printable = false;
+
+  	// If we need to reload view (should be fired in parent)
+  	$scope.reloadView = function() {
+  		$scope.printable = false; 
+  		$state.reload();
+  	};
 
     $scope.list = function() {
     	var photoOrder = 0;
@@ -1217,8 +1225,8 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
       		}
       	}
 
-      }, function(data) {
-
+      }, function(error) {
+      	console.log(error);
       });
     };
 
@@ -1235,6 +1243,10 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
       var createdDate = new Date(created).setHours(0,0,0,0);
       return startDate !== createdDate;
     }
+
+    $rootScope.$on('$viewContentLoaded', function() {
+    	$scope.printable = true;
+    });
 
 	}
 ]);
@@ -2217,13 +2229,20 @@ angular.module('core').directive('phoneInput', ["$filter", "$browser", function(
 'use strict';
 
 angular.module('core')
+<<<<<<< HEAD
   .directive('printButton', ['deviceDetector', '$window', '$timeout',
   function (deviceDetector, $window, $timeout) {
+=======
+  .directive('printButton', ['deviceDetector', '$window', '$timeout', '$rootScope',
+  function (deviceDetector, $window, $timeout, $rootScope) {
+>>>>>>> 475c865b1844eee6f2f43cce60d33e9e29c85488
     return {
       restrict: 'A',
       scope: false,
       link: function (scope, element, attrs) {
+      	var printPg;
 
+      	// Set up our button state as soon as we init
         if(!deviceDetector.isDesktop()) {
           element.css("display", "none");
         } else {
@@ -2231,20 +2250,74 @@ angular.module('core')
           element.addClass('disabled');
         }
 
+<<<<<<< HEAD
         var printPg = document.createElement('iframe');
         printPg.src = '/print';
         printPg.width = 700;
         printPg.height = 0;
         printPg.name = 'frame';
         document.body.appendChild(printPg);
+=======
+        // Helper function for checking if printPg is loaded
+        var checkLoaded = function(){
+	        // need to access scope INSIDE the iframe, so we can trust angular to tell us when we're fully loaded instead of parent JS
+        	var printView = printPg.contentWindow.angular.element(printPg.contentWindow.document.querySelector('#print-view'));
 
-        printPg.onload = function() {
+        	// Smol bug: sometimes, printView returns an empty instance, so we need to check to make sure angular is inited correctly
+        	if(!printView.scope()) {
+        		return $timeout(function(){
+        			// Recusive functions FTW
+	        		checkLoaded();
+        		}, 500);
+        	}
+        	var printableLoaded = printView.scope().printable;
 
+        	// Check if the content is actually loaded (dependent on child controller, in /activity/controllers/print.controller)
+        	if(!printableLoaded) {
+        		return $timeout(function(){
+	        		checkLoaded();
+        		}, 500);
+        	} else {
+
+        		// If we are loaded, let this button be free! 
+	        	element.removeClass('disabled');
+
+		        element.on('click', function (event) {
+					    window.frames['print-frame'].print();
+		        });
+
+        	}
+        };
+>>>>>>> 475c865b1844eee6f2f43cce60d33e9e29c85488
+
+        var iframe = document.getElementById('print-frame');
+
+        if (iframe) {
+        	// If we're returning here, reload iFrame and begin checking when loaded
+        	var printPg = iframe;
+        	printPg.contentWindow.angular.element(printPg.contentWindow.document.querySelector('#print-view')).scope().reloadView();
+        	checkLoaded();
+        } else {
+	        var printPg = document.createElement('iframe');
+	        printPg.src = '/print';
+	        printPg.width = 700;
+	        printPg.height = 0;
+	        printPg.setAttribute('id', 'print-frame');
+	        printPg.name = 'print-frame';
+	        document.body.appendChild(printPg);	
+        }
+
+<<<<<<< HEAD
         	element.removeClass('disabled');
 
 	        element.on('click', function (event) {
 				    window.frames['frame'].print();
 	        });
+=======
+        // Listen for when iFrame is loaded if the first time (safety measure so we KNOW the following will init printView var correctly)
+        printPg.onload = function() {
+	        checkLoaded();
+>>>>>>> 475c865b1844eee6f2f43cce60d33e9e29c85488
         };
 
 
@@ -2563,8 +2636,8 @@ angular.module('core').service('LocaleService', ["$translate", "LOCALES", "$root
   // EVENTS
   // on successful applying translations by angular-translate
   $rootScope.$on('$translateChangeSuccess', function (event, data) {
-    document.documentElement.setAttribute('lang', data.language);// sets "lang" attribute to html
-    $location.search('lang', $translate.use());
+    // document.documentElement.setAttribute('lang', data.language);// sets "lang" attribute to html
+    // $location.search('lang', $translate.use());
   
      // asking angular-dynamic-locale to load and apply proper AngularJS $locale setting
     tmhDynamicLocale.set(data.language.toLowerCase().replace(/_/g, '-'));

@@ -1,8 +1,16 @@
 'use strict';
 
 
-angular.module('activity').controller('PrintController', ['$scope', '$rootScope', '$filter', 'Activity', 'Lightbox', 'Authentication', '$window',
-  function($scope, $rootScope, $filter, Activity, Lightbox, Authentication, $window) {
+angular.module('activity').controller('PrintController', ['$scope', '$rootScope', '$filter', 'Activity', 'Authentication', '$state',
+  function($scope, $rootScope, $filter, Activity, Authentication, $state) {
+
+  	$scope.printable = false;
+
+  	// If we need to reload view (should be fired in parent)
+  	$scope.reloadView = function() {
+  		$scope.printable = false; 
+  		$state.reload();
+  	};
 
     $scope.list = function() {
     	var photoOrder = 0;
@@ -20,8 +28,8 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
       		}
       	}
 
-      }, function(data) {
-
+      }, function(error) {
+      	console.log(error);
       });
     };
 
@@ -38,6 +46,10 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
       var createdDate = new Date(created).setHours(0,0,0,0);
       return startDate !== createdDate;
     }
+
+    $rootScope.$on('$viewContentLoaded', function() {
+    	$scope.printable = true;
+    });
 
 	}
 ]);

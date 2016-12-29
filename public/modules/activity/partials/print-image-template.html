@@ -12,20 +12,21 @@
   <div class="photo-row" ng-repeat="photo in activity.photos">
 		<h3>(see appendix {{photo.order + 1}} for fullsize photo)</h3>
 		<div class="row">
-			<div class="col-sm-4">
+			<div class="col-sm-4" ng-class="{'col-missing-override': !activity.photos[0].exif.lat}">
 				<img ng-src="{{photo.thumb}}">
 			</div>
-      <div class="col-sm-4">
-      	<img ng-src="https://maps.googleapis.com/maps/api/staticmap?center={{activity.photos[0].exif.lat}},{{activity.photos[0].exif.lng}}&markers=color%3A0x0096D7%7C{{activity.photos[0].exif.lat}},{{activity.photos[0].exif.lng}}&zoom=13&size=150x150&maptype=roadmap&key=AIzaSyAEKIXDSbYyeg_dqLHa0KZR561nV81Tr8g">
+      <div class="col-sm-4" ng-if="activity.photos[0].exif.lat">
+      	<img ng-src="https://maps.googleapis.com/maps/api/staticmap?center={{activity.photos[0].exif.lat}},{{activity.photos[0].exif.lng}}&markers=color%3A0x0096D7%7C{{activity.photos[0].exif.lat}},{{activity.photos[0].exif.lng}}&zoom=15&size=150x150&maptype=roadmap&key=AIzaSyAEKIXDSbYyeg_dqLHa0KZR561nV81Tr8g">
         <!-- <div ng-if="activity.photos[0].exif.lat">
           <meta-map lat="{{ activity.photos[0].exif.lat }}" lng="{{ activity.photos[0].exif.lng }}" idx="$index"></meta-map>
         </div> -->
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-4" ng-class="{'col-missing-override': !activity.photos[0].exif.lat}">
         <p ng-if="activity.photos[0].exif.make"><b>Phone Make/Model:</b> {{ activity.photos[0].exif.make }} / {{ activity.photos[0].exif.model }}</p>
         <p ng-if="activity.photos[0].exif.created"><b>Date Captured:</b> {{ activity.photos[0].exif.created | date:'short' }}</p>
         <p ng-if="activity.photos[0].exif.dir"><b>Facing Direction (approx.):</b> {{ activity.photos[0].exif.dir }}</p>
-        <p ng-if="activity.photos[0].exif.lat"><b>Latitude/Longitude:</b> {{ activity.photos[0].exif.lat }} {{ activity.photos[0].exif.lng }}</p>
+        <p ng-if="activity.photos[0].exif.lat"><b>Latitude:</b> {{ activity.photos[0].exif.lat }}</p>
+        <p ng-if="activity.photos[0].exif.lng"><b>Longitude:</b> {{ activity.photos[0].exif.lng }}</p>
         <p ng-if="!activity.photos[0].exif.lat"><em>No location data available for this photo.</em></p>
       </div>
 		</div>
