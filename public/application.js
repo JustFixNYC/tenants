@@ -26,7 +26,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
   // async loading for templates
   .config(function ($translateProvider, $translateSanitizationProvider) {
   	// enable logging for missing IDs
-    $translateProvider.useMissingTranslationHandlerLog();
+    // $translateProvider.useMissingTranslationHandlerLog();
 
     $translateProvider.useStaticFilesLoader({
         prefix: 'languages/locale-',// path to translations files
