@@ -37,7 +37,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
 
     $translateProvider.useLocalStorage(); // saves selected language to localStorage
     // NOTE: This shit causes all sorts of issues with our UI-SREF attribute. Not recognized in any sanitizer module, and causes it to break
-    // $translateProvider.useSanitizeValueStrategy(null); // Prevent XSS
+    $translateProvider.useSanitizeValueStrategy(null); // Normally, prevent XSS, but in this case we're only using local translations
   })
   // location of the locale settings
   .config(function (tmhDynamicLocaleProvider) {
