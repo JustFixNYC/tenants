@@ -76,11 +76,8 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     });
 
     $translateProvider.preferredLanguage('en_US');// is applied on first load
-<<<<<<< HEAD
-    // $translateProvider.useLocalStorage();// saves selected language to localStorage
-=======
+
     $translateProvider.useLocalStorage(); // saves selected language to localStorage
->>>>>>> master
     // NOTE: This shit causes all sorts of issues with our UI-SREF attribute. Not recognized in any sanitizer module, and causes it to break
     // $translateProvider.useSanitizeValueStrategy(null); // Prevent XSS
   }])
@@ -946,11 +943,7 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
 
     var getLandlordEmailMessage = function() {
 
-<<<<<<< HEAD
     	console.log($translate.getAvailableLanguageKeys());
-=======
-    	// console.log($translate.getAvailableLanguageKeys());
->>>>>>> master
 
       var message = 'To whom it may regard, \n\n' +
         'I am requesting the following repairs in my apartment referenced below [and/or] in the public areas of the building:\n\n';
@@ -2239,13 +2232,8 @@ angular.module('core').directive('phoneInput', ["$filter", "$browser", function(
 'use strict';
 
 angular.module('core')
-<<<<<<< HEAD
-  .directive('printButton', ['deviceDetector', '$window', '$timeout',
-  function (deviceDetector, $window, $timeout) {
-=======
   .directive('printButton', ['deviceDetector', '$window', '$timeout', '$rootScope',
   function (deviceDetector, $window, $timeout, $rootScope) {
->>>>>>> 475c865b1844eee6f2f43cce60d33e9e29c85488
     return {
       restrict: 'A',
       scope: false,
@@ -2260,14 +2248,6 @@ angular.module('core')
           element.addClass('disabled');
         }
 
-<<<<<<< HEAD
-        var printPg = document.createElement('iframe');
-        printPg.src = '/print';
-        printPg.width = 700;
-        printPg.height = 0;
-        printPg.name = 'frame';
-        document.body.appendChild(printPg);
-=======
         // Helper function for checking if printPg is loaded
         var checkLoaded = function(){
 	        // need to access scope INSIDE the iframe, so we can trust angular to tell us when we're fully loaded instead of parent JS
@@ -2298,7 +2278,6 @@ angular.module('core')
 
         	}
         };
->>>>>>> 475c865b1844eee6f2f43cce60d33e9e29c85488
 
         var iframe = document.getElementById('print-frame');
 
@@ -2317,17 +2296,9 @@ angular.module('core')
 	        document.body.appendChild(printPg);	
         }
 
-<<<<<<< HEAD
-        	element.removeClass('disabled');
-
-	        element.on('click', function (event) {
-				    window.frames['frame'].print();
-	        });
-=======
         // Listen for when iFrame is loaded if the first time (safety measure so we KNOW the following will init printView var correctly)
         printPg.onload = function() {
 	        checkLoaded();
->>>>>>> 475c865b1844eee6f2f43cce60d33e9e29c85488
         };
 
 
@@ -2591,11 +2562,7 @@ angular.module('core').filter('titlecase', function() {
 
 angular.module('core').filter('trustTranslate', ['$sce', '$filter', 'Authentication',
 	function($sce, $filter, Authentication) {
-<<<<<<< HEAD
 		
-=======
-
->>>>>>> master
 		var user = Authentication.user;
 
 		var translatedText = $filter('translate');
