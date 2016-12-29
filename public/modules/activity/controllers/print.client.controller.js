@@ -35,7 +35,7 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
 
     	if($scope.user){
     		// if we have a logged in user, the activity array will be updated, and we can return that saved val
-				$scope.activities = $scope.user.activity;
+				$scope.activities = dataTagAndOrder($scope.user.activity);
 
 	    } else {
 
