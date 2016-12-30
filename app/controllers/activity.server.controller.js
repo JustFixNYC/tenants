@@ -271,7 +271,6 @@ var processAndSavePhoto = function(file) {
 };
 
 var create = function(req, res, next) {
-	console.log(req);
   var user = req.user;
   var activity = req.body;
 
@@ -286,10 +285,8 @@ var create = function(req, res, next) {
     // if(idx < 0) return res.status(500).send({ message: 'Follow up key not found, this is bad' });
     if(idx !== -1) user.followUpFlags.splice(idx, 1);
 
-
     // add to action flags
     if(!_.contains(user.actionFlags, activity.key)) user.actionFlags.push(activity.key);
-
 
     // init photos array
     activity.photos = [];

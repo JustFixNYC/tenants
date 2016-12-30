@@ -68,7 +68,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
   // async loading for templates
   .config(["$translateProvider", "$translateSanitizationProvider", function ($translateProvider, $translateSanitizationProvider) {
   	// enable logging for missing IDs
-    $translateProvider.useMissingTranslationHandlerLog();
+    // $translateProvider.useMissingTranslationHandlerLog();
 
     $translateProvider.useStaticFilesLoader({
         prefix: 'languages/locale-',// path to translations files
@@ -79,7 +79,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
 
     $translateProvider.useLocalStorage(); // saves selected language to localStorage
     // NOTE: This shit causes all sorts of issues with our UI-SREF attribute. Not recognized in any sanitizer module, and causes it to break
-    // $translateProvider.useSanitizeValueStrategy(null); // Prevent XSS
+    $translateProvider.useSanitizeValueStrategy(null); // Normally, prevent XSS, but in this case we're only using local translations
   }])
   // location of the locale settings
   .config(["tmhDynamicLocaleProvider", function (tmhDynamicLocaleProvider) {
@@ -239,8 +239,7 @@ angular.module('actions').config(['$stateProvider', '$urlRouterProvider',
 			.state('listActions', {
 				url: '/take-action',
 				templateUrl: 'modules/actions/views/list-actions.client.view.html',
-				data: { protected: true },
-				globalStyles: 'white-bg'
+				data: { protected: true }
 			});
 
 	}
@@ -953,6 +952,9 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
       for(var i = 0; i < user.problems.length; i++) { 
 
         var prob = user.problems[i];
+        if (prob.key === 'landlordIssues') {
+        	continue;
+        }
 
         problemsContent += $translate.instant(prob.title, undefined, undefined, 'en_US') + ':\n';
         for(var j = 0; j < prob.issues.length; j++) {
@@ -1037,6 +1039,10 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
       for(var i = 0; i < user.problems.length; i++) {
 
+      	if(user.problems[i].key === 'landlordIssues') {
+      		continue;
+      	}
+
       	var problemPush = angular.copy(user.problems[i]);
 
       	problemPush.title = $translate.instant(problemPush.title, undefined, undefined, 'en_US');
@@ -1110,7 +1116,7 @@ angular.module('activity').config(['$stateProvider', '$urlRouterProvider', 'Ligh
 				data: { disableBack: true }
 			})
 			.state('print', {
-				url: '/print',
+				url: '/print/:key',
 				templateUrl: 'modules/activity/views/print.client.view.html',
 				data: {disableBack: true},
 				globalStyles: 'clear-nav'
@@ -1130,12 +1136,12 @@ angular.module('activity').config(['$stateProvider', '$urlRouterProvider', 'Ligh
 
 angular.module('activity').controller('ActivityPublicController', ['$scope', '$stateParams', '$state', '$http', '$filter', 'Activity', 'Lightbox',
   function($scope, $stateParams, $state, $http, $filter, Activity, Lightbox) {
-
-    var query = $stateParams;
-    if(!query.key) $state.go('/');
+		
+		$scope.query = $stateParams;
+    if(!$scope.query.key) $state.go('/');
 
     $scope.list = function() {
-      Activity.public({ key: query.key }, function(user) {
+      Activity.public({ key: $scope.query.key }, function(user) {
         $scope.user = user;
         $scope.activities = $scope.user.activity;
       });
@@ -1201,10 +1207,11 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
 'use strict';
 
 
-angular.module('activity').controller('PrintController', ['$scope', '$rootScope', '$filter', 'Activity', 'Authentication', '$state',
-  function($scope, $rootScope, $filter, Activity, Authentication, $state) {
+angular.module('activity').controller('PrintController', ['$scope', '$rootScope', '$filter', 'Activity', 'Authentication', '$state', '$stateParams',
+  function($scope, $rootScope, $filter, Activity, Authentication, $state, $stateParams) {
 
   	$scope.printable = false;
+    $scope.user = Authentication.user;
 
   	// If we need to reload view (should be fired in parent)
   	$scope.reloadView = function() {
@@ -1215,27 +1222,46 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
     $scope.list = function() {
     	var photoOrder = 0;
 
-      $scope.activities = Activity.query({}, function(data){
+    	// abstract our actual data transformation into this function
+    	var dataTagAndOrder = function(data) {
       	data.reverse();
 
       	for(var i = 0; i < data.length; i++) {
       		if(data[i].photos.length) {
       			data[i].photosExist = true;
-      			for (var j = 0; j < data[i].photos.length; j ++) {
+      			for (var j = 0; j < data[i].photos.length; j++) {
       				data[i].photos[j].order = photoOrder;
       				photoOrder++;
       			}
       		}
       	}
+      	return data;
+    	}
 
-      }, function(error) {
-      	console.log(error);
-      });
+    	if($scope.user && $scope.user.roles.indexOf('admin') === -1){
+
+    		// if we have a logged in user, the activity array will be updated, and we can return that saved val
+				$scope.activities = dataTagAndOrder($scope.user.activity);
+	    } else {
+
+	    	// if we don't have a logged in user, make sure we have a public key (otherwise disable button)
+		  	var key = $stateParams.key;
+		  	if(!key) {
+		  		return $scope.stopPrint = true;
+		  	}
+
+	    	// if we have a key, we'll need to query via the 'public' method on the Activity service (diff query params)
+	    	Activity.public({'key': key}, function(data) {
+	    		$scope.user = data;
+	    		$scope.activities = dataTagAndOrder(data.activity);
+	    	}, function(error) {
+	    		console.log(error);
+	    	});
+
+	    }
     };
 
     $rootScope.headerLightBG = true;
-
-    $scope.user = Authentication.user;
 
     $scope.activityTemplate = function(key) {
       return $filter('activityTemplate')(key);
@@ -1248,7 +1274,9 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
     }
 
     $rootScope.$on('$viewContentLoaded', function() {
-    	$scope.printable = true;
+    	if(!$scope.stopPrint) {
+    		$scope.printable = true;
+    	}
     });
 
 	}
@@ -2274,21 +2302,26 @@ angular.module('core')
 
 		        element.on('click', function (event) {
 					    window.frames['print-frame'].print();
-		        });
+		        }); 
 
         	}
         };
 
         var iframe = document.getElementById('print-frame');
+        var queryKey = '';
+        if(scope.query) {
+        	queryKey = scope.query.key;
+        }
 
         if (iframe) {
         	// If we're returning here, reload iFrame and begin checking when loaded
-        	var printPg = iframe;
-        	printPg.contentWindow.angular.element(printPg.contentWindow.document.querySelector('#print-view')).scope().reloadView();
-        	checkLoaded();
+        	printPg = iframe;
+        	printPg.src = '/print/' + queryKey;
+        	printPg.contentWindow.location.reload(); // just reload w/ new SRC
         } else {
-	        var printPg = document.createElement('iframe');
-	        printPg.src = '/print';
+        	// init new print instance
+	        printPg = document.createElement('iframe');
+	        printPg.src = '/print/' + queryKey;
 	        printPg.width = 700;
 	        printPg.height = 0;
 	        printPg.setAttribute('id', 'print-frame');
