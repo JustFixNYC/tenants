@@ -12,7 +12,7 @@
 	}
 
 	.print-hidden {
-		display: none;
+		display: none !important;
 	}
 
 	#header-wrapper.inner #header .header-brand {
@@ -119,7 +119,7 @@
 	}
 
 	.exifdata {
-		margin: 10px 0px 0px 20px;	
+		margin: 10px 0px 0px 20px;
 	}
 
 	.meta-map {
