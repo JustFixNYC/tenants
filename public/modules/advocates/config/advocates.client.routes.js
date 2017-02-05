@@ -62,7 +62,8 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 				},
 				resolve: {
 					tenants: ['Advocates', function(Advocates) {
-						return Advocates.query();
+						// forces resolution, see: http://www.jvandemo.com/how-to-resolve-angularjs-resources-with-ui-router/
+						return Advocates.query().$promise;
 					}]
 				}
 			})

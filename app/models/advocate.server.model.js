@@ -21,6 +21,16 @@ var validateLocalStrategyProperty = function(property) {
 };
 
 /**
+ * A Validation function for phone numbers
+ * They should only be digits and only have 10 characters
+ */
+var validatePhone = function(property) {
+  if(!property.length) return false;
+  else return /^[0-9]{10}$/.test(property);
+};
+
+
+/**
  * Advocate Schema
  */
 var AdvocateSchema = new Schema({
@@ -46,9 +56,8 @@ var AdvocateSchema = new Schema({
     unique: true,
     trim: true,
     default: '',
-    validate: [validateLocalStrategyProperty, 'Please fill in your phone number'],
-    match: [/[0-9]{7}/, 'Please fill a valid phone number'],
-    required: true
+    validate: [validatePhone, 'Please fill a valid phone number'],
+    required: [true, 'Please fill in your phone number']
   },
   code: {
     type: String,

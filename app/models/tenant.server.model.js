@@ -16,6 +16,8 @@ var Q = require('q'),
 
 mongoose.Promise = require('q').Promise;
 
+mongoose.set('debug', true);
+
 /**
  * A Validation function for local strategy properties
  */
@@ -24,20 +26,32 @@ var validateLocalStrategyProperty = function(property) {
 };
 
 /**
+ * A Validation function for phone numbers
+ * They should only be digits and only have 10 characters
+ */
+var validatePhone = function(property) {
+  if(!property.length) return false;
+  else return /^[0-9]{10}$/.test(property);
+};
+
+/**
  * A Validation function for address geolocation
  */
 var validateGeoclientAddress = function(address, callback) {
 
-  addressHandler.requestGeoclient(this.borough, address)
-    .then(function (geo) {
-      return callback(true);
-    })
-    .fail(function (e) {
-      console.log('[Geoclient Validation]', e);
-      rollbar.handleError(e);
-      // this will prevent users from creating accounts if anything is broken...
-      return callback(false);
-    });
+  if(!this.geo) {
+
+    addressHandler.requestGeoclient(this.borough, address)
+      .then(function (geo) {
+        return callback(true);
+      })
+      .fail(function (e) {
+        console.log('[Geoclient Validation]', e);
+        rollbar.handleError(e);
+        // this will prevent users from creating accounts if anything is broken...
+        return callback(false);
+      });
+  }
 };
 
 /**
@@ -115,9 +129,8 @@ var TenantSchema = new Schema({
     unique: true,
     trim: true,
     default: '',
-    validate: [validateLocalStrategyProperty, 'Please fill in your phone number'],
-    match: [/[0-9]{7}/, 'Please fill a valid phone number'],
-    required: true
+    validate: [validatePhone, 'Please fill a valid phone number'],
+    required: [true, 'Please fill in your phone number']
   },
   updated: {
     type: Date
@@ -210,6 +223,8 @@ TenantSchema.methods.build = function() {
  */
 TenantSchema.pre('save', function(next) {
 
+  console.log('save?');
+
 
   this.fullName = this.firstName + ' ' + this.lastName;
 
@@ -220,7 +235,9 @@ TenantSchema.pre('save', function(next) {
   // - completed details for all issues, or not
   // - if the user hasn't selected any issues
 
-  if(this.problems.length == 0) {
+
+
+  if(this.problems.length === 0) {
     _.pull(this.actionFlags, 'hasProblems');
   } else if(!_.contains(this.actionFlags, 'hasProblems')) {
     this.actionFlags.push('hasProblems');
@@ -240,7 +257,7 @@ TenantSchema.pre('save', function(next) {
   }
 
   // check is everything in userProblems is in actionFlags
-  if(_.intersection(userProblems, this.actionFlags).length == userProblems.length) {
+  if(_.intersection(userProblems, this.actionFlags).length === userProblems.length) {
     if(!_.contains(this.actionFlags, 'allInitial')) this.actionFlags.push('allInitial');
   } else {
     _.pull(this.actionFlags, 'allInitial');
@@ -250,7 +267,7 @@ TenantSchema.pre('save', function(next) {
   // if(user.nycha === 'yes') user.actionFlags.push('isNYCHA');
 
   // check some address stuff
-  if(!this._addressChanged) {
+  if(!this._addressChanged || this.geo) {
     next();
   } else {
 

@@ -1,12 +1,15 @@
 <section id="advocates" data-ng-init="list()">
 
-  <div class="advocates-header clearfix">
-    <div class="pull-left">
-      <h1>Your Accounts</h1>
-      <p><b>Your Advocate Code:</b> {{ user.code }}</p>
+  <div class="advocates-header">
+    <div class="clearfix">
+      <h1 class="pull-left">Your Accounts</h1>
+      <a ui-sref="newTenantSignup.problems" class="btn btn-primary btn-block pull-right">+ Managed Tenant</a>
     </div>
 
-    <a ui-sref="newTenantSignup.problems" class="btn btn-primary btn-block pull-right">+ Managed Tenant</a>
+
+    <div>
+      <p><b>Your Advocate Code:</b> {{ user.code }}</p>
+    </div>
   </div>
 
   <div class="advocates-view-toggle">
@@ -37,10 +40,17 @@
         </thead>
         <tbody>
           <tr ng-repeat="t in tenants | orderBy:'-updated'">
-            <td ng-bind="t.fullName"></td>
-            <td>{{ t.updated | date:'short' }}</td>
-            <td ng-bind="t.address"></td>
-            <td>{{ t.phone | tel }}</td>
+            <td class="table-desktop-view" ng-bind="t.fullName"></td>
+            <td class="table-desktop-view">{{ t.updated | date:'short' }}</td>
+            <td class="table-desktop-view">{{ t.geo.bbl | toAddress:bbls }}</td>
+            <td class="table-desktop-view">{{ t.phone | tel }}</td>
+            <td class="table-mobile-view">
+              <b>{{t.fullName}}</b><br />
+              {{ t.geo.bbl | toAddress:bbls }}<br />
+              Apt. {{ t.unit }}<br />
+              {{ t.phone | tel }}
+            </td>
+
             <td ng-if="t.advocateRole === 'managed'">
               <a ng-click="viewTenant(t)" class="btn btn-info">Manage</a>
             </td>
@@ -57,11 +67,12 @@
 
   <div ng-if="view === 'building'">
     <accordion template-url='/modules/advocates/partials/accordion/accordion.html'>
+      <!-- ng-repeat="(building, members) in tenants | groupBy: 'address'" -->
       <accordion-group
-        ng-repeat="(building, members) in tenants | groupBy: 'address'"
+        ng-repeat="(bbl, members) in tenants | groupBy: 'geo.bbl'"
         template-url='/modules/advocates/partials/accordion/accordion-group.html'>
         <accordion-heading>
-          {{ building }} <em>({{members.length}} accounts)</em>
+          {{ bbl | toAddress:bbls }} <em>({{members.length}} accounts)</em>
         </accordion-heading>
         <table class="table table-striped">
             <thead>

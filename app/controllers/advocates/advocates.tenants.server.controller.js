@@ -27,16 +27,26 @@ exports.createNewTenant = function(req, res) {
 
   tenantHandler.buildNewTenant(tenant, req.user)
     .then(function (tenant) {
-      return tenant.save();
-    })
-    .then(function (tenant) {
-      res.json(tenant);
-      res.end();
-    })
-    .catch(function (err) {
-      rollbar.handleError(errorHandler.getErrorMessage(err), req);
-      res.status(400).send(errorHandler.getErrorMessage(err));
+
+      console.log('tenant?', tenant);
+      // console.log(tenant.save() instanceof require('q').makePromise)
+      tenant.save(function (err) {
+        if (err) console.log(err);
+        console.log('saved');
+      // saved!
+      });
+
+
+
     });
+    // .then(function (tenant) {
+    //   res.json(tenant);
+    //   res.end();
+    // })
+    // .catch(function (err) {
+    //   rollbar.handleError(errorHandler.getErrorMessage(err), req);
+    //   res.status(400).send(errorHandler.getErrorMessage(err));
+    // });
 
 };
 
@@ -58,9 +68,7 @@ exports.listTenants = function(req, res) {
         //   rollbar.handleError("Tenant/advocate mismatch", req);
         //   res.status(500).send({ message: "This shouldn\'t happen." });
         // }
-
-        console.log(t);
-
+        
         return t;
 
       });
