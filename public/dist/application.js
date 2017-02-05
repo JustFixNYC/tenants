@@ -1610,7 +1610,8 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 				},
 				resolve: {
 					tenants: ['Advocates', function(Advocates) {
-						return Advocates.query();
+						// forces resolution, see: http://www.jvandemo.com/how-to-resolve-angularjs-resources-with-ui-router/
+						return Advocates.query().$promise;
 					}]
 				}
 			})
@@ -1727,6 +1728,16 @@ angular.module('advocates').controller('AdvocateController', ['$rootScope', '$sc
 
 		$scope.user = Authentication.user;
 		$scope.tenants = tenants;
+		$scope.bbls = {};
+
+		console.log($scope.tenants);
+
+		// used for the bblsToAddress filter
+		angular.forEach(tenants, function(tenant) {
+			// get a title case version of the streetname from geoclient
+			var streetName = tenant.geo.streetName.split(' ').map(function(i) { return i[0].toUpperCase() + i.substr(1).toLowerCase(); }).join(' ');
+			$scope.bbls[tenant.geo.bbl] = tenant.geo.streetNum + ' ' + streetName;
+		});
 
 		$scope.view = 'individual';
 		$scope.changeView = function(newView) {
@@ -2040,6 +2051,14 @@ angular.module('advocates')
       }
     };
   }]);
+
+'use strict';
+
+angular.module('advocates').filter('toAddress', function() {
+  return function(input, bbls) {
+    return bbls[input];
+  };
+});
 
 'use strict';
 
@@ -3876,9 +3895,6 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 				var referral = new AdvocatesResource();
 		    referral.$validateNewUser({ code: $scope.accessCode.value },
 		      function(success) {
-
-						console.log(success);
-
 		        if(success.advocate) {
 		          $scope.accessCode.valid = $rootScope.validated = true;
 		          $scope.accessCode.valueEntered = $scope.accessCode.value;

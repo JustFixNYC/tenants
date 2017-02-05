@@ -7,6 +7,8 @@ angular.module('advocates').controller('AdvocateController', ['$rootScope', '$sc
 		$scope.tenants = tenants;
 		$scope.bbls = {};
 
+		console.log($scope.tenants);
+
 		// used for the bblsToAddress filter
 		angular.forEach(tenants, function(tenant) {
 			// get a title case version of the streetname from geoclient

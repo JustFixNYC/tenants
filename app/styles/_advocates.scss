@@ -3,6 +3,11 @@
   .advocates-header {
     margin-top: 25px;
     margin-bottom: 45px;
+
+    @media (max-width: $screen-xs-max) {
+      margin-top: 0;
+      text-align: center;
+    }
   }
 
   .advocates-view-toggle {
@@ -37,6 +42,9 @@
     }
 
     @media (max-width: $screen-xs-max) {
+
+
+
       thead {
         display: none;
       }
@@ -48,9 +56,15 @@
         display: table-cell;
       }
 
-      .buildings-table .panel-body {
-        padding-left: 0;
-        padding-right: 0;
+      &.buildings-table {
+
+        .table {
+          margin-bottom: 0;
+        }
+        .panel-body {
+          padding-left: 0;
+          padding-right: 0;
+        }
       }
 
     }

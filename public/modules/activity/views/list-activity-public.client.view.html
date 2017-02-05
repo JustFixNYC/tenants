@@ -4,7 +4,7 @@
         <h1>{{ user.fullName }}</h1>
         <p class="text-center">{{ user.address }}, {{ user.unit }}</p>
         <p class="text-center">{{ user.borough }}, NY {{ user.geo.zip }}</p>
-        <p class="text-center">{{'modules.activity.views.listActivityPublic.contact' | translate}} {{ user.phone | tel }}</p>
+        <p class="text-center">{{'modules.activity.views.listActivityPublic.contact' | translate}} <a ng-href="tel:{{user.phone}}">{{ user.phone | tel }}</a></p>
         <p class="text-danger text-center">{{'modules.activity.views.listActivityPublic.alert' | translate}}</p>
     </div>
     <button class="btn btn-primary btn-block" print-button>

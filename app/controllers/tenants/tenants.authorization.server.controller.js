@@ -29,7 +29,7 @@ exports.hasPublicView = function(req, res, next) {
 					address: tenant.address,
 					unit: tenant.unit,
 					borough: tenant.borough,
-					gro: tenant.geo,
+					geo: tenant.geo,
     			activity: tenant.activity
     		};
     		next();

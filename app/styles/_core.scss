@@ -337,3 +337,14 @@ input[type="date"].date-mobile:focus:before {
 .no-gutter [class*="col"] {
   padding: 0;
 }
+
+.pull-left-on-desktop {
+  @media (min-width: $screen-xs-min) {
+    float: left !important;
+  }
+}
+.pull-right-on-desktop {
+  @media (min-width: $screen-xs-min) {
+    float: right !important;
+  }
+}

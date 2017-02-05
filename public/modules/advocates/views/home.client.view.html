@@ -1,14 +1,13 @@
 <section id="advocates" data-ng-init="list()">
 
-  <div class="advocates-header">
-    <div class="clearfix">
-      <h1 class="pull-left">Your Accounts</h1>
-      <a ui-sref="newTenantSignup.problems" class="btn btn-primary btn-block pull-right">+ Managed Tenant</a>
+  <div class="advocates-header clearfix">
+    <div class="pull-left-on-desktop">
+      <h1 >Your Accounts</h1>
+      <p><b>Your Advocate Code:</b> {{ user.code }}</p>
     </div>
 
-
     <div>
-      <p><b>Your Advocate Code:</b> {{ user.code }}</p>
+      <a ui-sref="newTenantSignup.problems" class="btn btn-primary btn-block pull-right-on-desktop">+ Managed Tenant</a>
     </div>
   </div>
 
@@ -32,7 +31,7 @@
         <thead>
           <tr>
             <th>Name</th>
-            <th>Last Updated</th>
+            <th>Last Updated <span style="font-size:12px;" class="glyphicon glyphicon-triangle-top"></span></th>
             <th>Address</th>
             <th>Phone Number</th>
             <th>Case</th>
@@ -48,7 +47,7 @@
               <b>{{t.fullName}}</b><br />
               {{ t.geo.bbl | toAddress:bbls }}<br />
               Apt. {{ t.unit }}<br />
-              {{ t.phone | tel }}
+              <a ng-href="tel:{{t.phone}}">{{ t.phone | tel }}</a>
             </td>
 
             <td ng-if="t.advocateRole === 'managed'">
@@ -94,7 +93,7 @@
                   <b>{{t.fullName}}</b><br />
                   {{ t.geo.bbl | toAddress:bbls }}<br />
                   Apt. {{ t.unit }}<br />
-                  {{ t.phone | tel }}
+                  <a ng-href="tel:{{t.phone}}">{{ t.phone | tel }}</a>
                 </td>
                 <td ng-if="t.advocateRole === 'managed'">
                   <a ng-click="viewTenant(t)" ng-click="$event.stopPropagation();" class="btn btn-info">Manage</a>
