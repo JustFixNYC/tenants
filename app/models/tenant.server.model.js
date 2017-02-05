@@ -16,7 +16,7 @@ var Q = require('q'),
 
 mongoose.Promise = require('q').Promise;
 
-mongoose.set('debug', true);
+// mongoose.set('debug', true);
 
 /**
  * A Validation function for local strategy properties
@@ -39,7 +39,9 @@ var validatePhone = function(property) {
  */
 var validateGeoclientAddress = function(address, callback) {
 
-  if(!this.geo) {
+  if(!_.isEmpty(this.geo)) {      // this was just for migration purposes
+    return callback(true);
+  } else {
 
     addressHandler.requestGeoclient(this.borough, address)
       .then(function (geo) {
@@ -223,9 +225,6 @@ TenantSchema.methods.build = function() {
  */
 TenantSchema.pre('save', function(next) {
 
-  console.log('save?');
-
-
   this.fullName = this.firstName + ' ' + this.lastName;
 
   var userProblems = [];
@@ -267,7 +266,7 @@ TenantSchema.pre('save', function(next) {
   // if(user.nycha === 'yes') user.actionFlags.push('isNYCHA');
 
   // check some address stuff
-  if(!this._addressChanged || this.geo) {
+  if(!this._addressChanged || !_.isEmpty(this.geo)) {
     next();
   } else {
 

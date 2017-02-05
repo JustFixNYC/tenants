@@ -39,9 +39,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="t in tenants | orderBy:'-updated'">
+          <tr ng-repeat="t in tenants | orderBy:['!updated', '-updated']">
             <td class="table-desktop-view" ng-bind="t.fullName"></td>
-            <td class="table-desktop-view">{{ t.updated | date:'short' }}</td>
+            <td class="table-desktop-view">{{ t.updated ? (t.updated | date:'short') : (t.created | date:'short') }}</td>
             <td class="table-desktop-view">{{ t.geo.bbl | toAddress:bbls }}</td>
             <td class="table-desktop-view">{{ t.phone | tel }}</td>
             <td class="table-mobile-view">
@@ -85,11 +85,17 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="t in members | orderBy:'-updated'">
-                <td ng-bind="t.fullName"></td>
-                <td>{{ t.updated | date:'short' }}</td>
-                <td ng-bind="t.unit"></td>
-                <td>{{ t.phone | tel }}</td>
+              <tr ng-repeat="t in members | orderBy:['!updated', '-updated']">
+                <td class="table-desktop-view" ng-bind="t.fullName"></td>
+                <td class="table-desktop-view">{{ t.updated ? (t.updated | date:'short') : (t.created | date:'short') }}</td>
+                <td class="table-desktop-view">{{ t.geo.bbl | toAddress:bbls }}</td>
+                <td class="table-desktop-view">{{ t.phone | tel }}</td>
+                <td class="table-mobile-view">
+                  <b>{{t.fullName}}</b><br />
+                  {{ t.geo.bbl | toAddress:bbls }}<br />
+                  Apt. {{ t.unit }}<br />
+                  {{ t.phone | tel }}
+                </td>
                 <td ng-if="t.advocateRole === 'managed'">
                   <a ng-click="viewTenant(t)" ng-click="$event.stopPropagation();" class="btn btn-info">Manage</a>
                 </td>

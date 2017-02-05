@@ -52,9 +52,6 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 				var referral = new AdvocatesResource();
 		    referral.$validateNewUser({ code: $scope.accessCode.value },
 		      function(success) {
-
-						console.log(success);
-
 		        if(success.advocate) {
 		          $scope.accessCode.valid = $rootScope.validated = true;
 		          $scope.accessCode.valueEntered = $scope.accessCode.value;

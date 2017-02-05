@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var _ = require('lodash'),
+  escapeRegExp = require('lodash.escaperegexp'),
   Q = require('q'),
   errorHandler = require('../errors.server.controller'),
   mongoose = require('mongoose'),
@@ -26,7 +27,8 @@ var validateCode = exports.validateCode = function(code) {
 
   var validated = Q.defer();
 
-  Advocate.findOne({ code: code })
+  // Advocate codes are case insensitive!
+  Advocate.findOne({ code: { $regex: new RegExp('^' + escapeRegExp(code) + '$', 'i') } })
     .then(function (advocate) {
 
       // if(!advocate) {
