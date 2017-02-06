@@ -1,0 +1,6 @@
+<span class="pull-right activity-logged-date"><i>
+  {{'modules.activity.views.listActivity.loggedOn' | translate}} {{ activity.createdDate | date:'short' }}
+  <span ng-if="activity.loggedBy">
+    {{'modules.activity.views.listActivity.loggedOnAttrib' | translate}} {{ activity.loggedBy }}
+  </span>
+</i></span>

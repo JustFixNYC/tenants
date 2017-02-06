@@ -1,13 +1,16 @@
 #advocates {
 
   .advocates-header {
-    margin-top: 25px;
-    margin-bottom: 45px;
+    margin-top: 0;
+    text-align: center;
 
-    @media (max-width: $screen-xs-max) {
-      margin-top: 0;
-      text-align: center;
+    @media (min-width: $screen-xs-min) {
+      margin-top: 25px;
+      margin-bottom: 45px;
+      text-align: left;
     }
+
+
   }
 
   .advocates-view-toggle {

@@ -174,14 +174,14 @@
 	  			"alert": "¡Esta es la vista para compartir!",
 	  			"print": "Imprimir",
 	  			"caseHistory": "@:repeating.caseHistory",
-	  			"loggedOn": "Registrado por",
-	  			"loggedOnAttrib": "el",
+	  			"loggedOn": "Registrado el",
+	  			"loggedOnAttrib": "por",
 	  			"empty": "aún no se ha añadido nada a su Historial del Caso. ¡Regrese en otro momento!"
 	  		},
 	  		"listActivity": {
 	  			"title": "@:repeating.caseHistory",
-          "loggedOn": "Registrado por",
-          "loggedOnAttrib": "el",
+          "loggedOn": "Registrado el",
+          "loggedOnAttrib": "por",
 	  			"description": "Este es un registro de todas las acciones que usted ha tomado para resolver sus problemas de vivienda.",
 	  			"share": "Compartir mi caso",
 	  			"email": "Enviar email",

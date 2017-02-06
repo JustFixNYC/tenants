@@ -49,6 +49,10 @@
 					 ui-sref="home"
 					 ng-if="authentication.user && authentication.user.roles.indexOf('tenant') !== -1 && $root.state != 'home'"
 					 ga-event="Home Icon,click"></a>
+			 <a class="header-btn header-home pull-right glyphicon glyphicon-home"
+					 ui-sref="advocateHome"
+					 ng-if="authentication.user && authentication.user.roles.indexOf('advocate') !== -1 && $root.state != 'advocateHome'"
+					 ga-event="Home Icon,click"></a>
 			 <a class="header-btn pull-right glyphicon glyphicon-user"
 					 ui-sref="settings.profile"
 					 ng-if="authentication.user && authentication.user.roles.indexOf('advocate') !== -1 && $root.state != 'home'"></a>

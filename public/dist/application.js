@@ -19,7 +19,8 @@ var ApplicationConfiguration = (function() {
 		'duScroll',
 		'pascalprecht.translate',	// angular-translate
  		'tmh.dynamicLocale',// angular-dynamic-locale
-		'angular.filter'
+		'angular.filter',
+		'angular-clipboard'
  		/* 'ngSanitize'*/ // Santize translations -> /application.js at line ~40
 	];
 // 'ngAnimate',  'ngTouch', , 'bootstrapLightbox' , 'angularModalService'
@@ -76,6 +77,14 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|tel|sms|mailto):/);
     // enable this for speed enhancement b4 production push
     // $compileProvider.debugInfoEnabled(false);
+  }])
+  .config(['$tooltipProvider', function($tooltipProvider){
+   $tooltipProvider.setTriggers({
+    'mouseenter': 'mouseleave',
+    'click': 'mouseleave',
+    'focus': 'blur',
+    'hideonclick': 'click'
+   });
   }])
   // internationalization constants
   .constant('LOCALES', {
@@ -1569,17 +1578,15 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 			.state('advocateSignup.info', {
 				url: '',
 				templateUrl: 'modules/advocates/partials/signup-info.client.view.html',
-				globalStyles: 'white-bg advocate-view'
+				globalStyles: 'white-bg'
 			})
 			.state('advocateSignup.details', {
 				url: '/create',
-				templateUrl: 'modules/advocates/partials/signup-details.client.view.html',
-				globalStyles: 'advocate-view'
+				templateUrl: 'modules/advocates/partials/signup-details.client.view.html'
 			})
 			.state('advocateSignup.referral', {
 				url: '/referral',
-				templateUrl: 'modules/advocates/partials/signup-referral.client.view.html',
-				globalStyles: 'advocate-view'
+				templateUrl: 'modules/advocates/partials/signup-referral.client.view.html'
 			})
 			.state('newTenantSignup', {
 				url: '/advocate/tenant/new',
@@ -1592,19 +1599,17 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 			})
 			.state('newTenantSignup.problems', {
 				url: '/checklist',
-				templateUrl: 'modules/advocates/partials/new-tenant-problems.client.view.html',
-				globalStyles: 'advocate-view'
+				templateUrl: 'modules/advocates/partials/new-tenant-problems.client.view.html'
 			})
 			.state('newTenantSignup.details', {
 				url: '/personal',
-				templateUrl: 'modules/advocates/partials/new-tenant-details.client.view.html',
-				globalStyles: 'advocate-view'
+				templateUrl: 'modules/advocates/partials/new-tenant-details.client.view.html'
 			})
 			.state('advocateHome', {
 				url: '/advocate',
 				templateUrl: 'modules/advocates/views/home.client.view.html',
 				controller: 'AdvocateController',
-				globalStyles: 'fluid-container advocate-view',
+				globalStyles: 'fluid-container',
 				data: {
 					disableBack: true
 				},
@@ -1629,14 +1634,12 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 			.state('manageTenant.home', {
 				url: '',
 				templateUrl: 'modules/advocates/partials/manage-tenant-home.client.view.html',
-				controller: 'ManageTenantHomeController',
-				globalStyles: 'advocate-view'
+				controller: 'ManageTenantHomeController'
 			})
 			.state('manageTenant.problems', {
 				url: '/problems',
 				templateUrl: 'modules/advocates/partials/manage-tenant-problems.client.view.html',
-				controller: 'ManageTenantProblemsController',
-				globalStyles: 'advocate-view'
+				controller: 'ManageTenantProblemsController'
 			});
 	}
 ]);
@@ -1723,14 +1726,15 @@ angular.module('advocates').controller('AdvocateSignupController', ['$rootScope'
 
 'use strict';
 
-angular.module('advocates').controller('AdvocateController', ['$rootScope', '$scope', '$state', '$location', '$filter', 'Authentication', 'Advocates', '$http', '$modal', 'tenants',
-	function($rootScope, $scope, $state, $location, $filter, Authentication, Advocates, $http, $modal, tenants) {
+angular.module('advocates').controller('AdvocateController', ['$rootScope', '$scope', '$state', '$location', '$timeout', '$filter', 'Authentication', 'Advocates', '$http', '$modal', 'tenants',
+	function($rootScope, $scope, $state, $location, $timeout, $filter, Authentication, Advocates, $http, $modal, tenants) {
 
 		$scope.user = Authentication.user;
 		$scope.tenants = tenants;
 		$scope.bbls = {};
 
-		console.log($scope.tenants);
+		$scope.currentLocation = $location.protocol() + '://' + $location.host() + ($location.port() !== '80' ? ':' + $location.port() : '');
+		console.log($scope.currentLocation);
 
 		// used for the bblsToAddress filter
 		angular.forEach(tenants, function(tenant) {
@@ -2159,6 +2163,10 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
         $rootScope.globalStyles = toState.globalStyles;
       } else {
         $rootScope.globalStyles = '';
+      }
+
+      if(Authentication.user && Authentication.user.roles.indexOf('advocate') !== -1) {
+        $rootScope.globalStyles += ' advocate-view';
       }
 
       if(Authentication.user && Authentication.user.roles.indexOf('tenant') !== -1 && toState.name === 'landing') {
@@ -4617,7 +4625,7 @@ angular.module('users').config(['$stateProvider', '$urlRouterProvider',
 				url: '/password/reset/:token',
 				templateUrl: 'modules/users/views/password/reset-password.client.view.html'
 			});
-			
+
 	}
 ]);
 
@@ -4745,6 +4753,9 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
       $scope.user = Authentication.user;
+
+      console.log($scope.user);
+
       if(fromState.name === 'settings.profile') {
       	$scope.successfulUpdate = false;
       }

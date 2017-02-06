@@ -24,10 +24,7 @@
               <div ng-include="activityTemplate(activity.key)"></div>
 
                 <!-- <p><b>{{ activity.key | areaTitle }} {{ activity.title === 'Text/Photos' ? 'Details' : activity.title }}</b></p> -->
-
-
-                <span class="pull-right activity-logged-date"><i>{{'modules.activity.views.listActivityPublic.loggedOn' | translate}} {{ activity.createdDate | date:'short' }}</i></span>
-
+              <div ng-include="'/modules/activity/partials/attribution.html'"></div>
             </div>
         </div>
     </div>
