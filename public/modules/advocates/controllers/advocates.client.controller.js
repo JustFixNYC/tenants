@@ -1,13 +1,14 @@
 'use strict';
 
-angular.module('advocates').controller('AdvocateController', ['$rootScope', '$scope', '$state', '$location', '$filter', 'Authentication', 'Advocates', '$http', '$modal', 'tenants',
-	function($rootScope, $scope, $state, $location, $filter, Authentication, Advocates, $http, $modal, tenants) {
+angular.module('advocates').controller('AdvocateController', ['$rootScope', '$scope', '$state', '$location', '$timeout', '$filter', 'Authentication', 'Advocates', '$http', '$modal', 'tenants',
+	function($rootScope, $scope, $state, $location, $timeout, $filter, Authentication, Advocates, $http, $modal, tenants) {
 
 		$scope.user = Authentication.user;
 		$scope.tenants = tenants;
 		$scope.bbls = {};
 
-		console.log($scope.tenants);
+		$scope.currentLocation = $location.protocol() + '://' + $location.host() + ($location.port() !== '80' ? ':' + $location.port() : '');
+		console.log($scope.currentLocation);
 
 		// used for the bblsToAddress filter
 		angular.forEach(tenants, function(tenant) {

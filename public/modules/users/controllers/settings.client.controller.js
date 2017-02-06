@@ -8,6 +8,9 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
       $scope.user = Authentication.user;
+
+      console.log($scope.user);
+
       if(fromState.name === 'settings.profile') {
       	$scope.successfulUpdate = false;
       }

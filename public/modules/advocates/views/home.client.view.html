@@ -34,21 +34,32 @@
             <th>Last Updated <span style="font-size:12px;" class="glyphicon glyphicon-triangle-top"></span></th>
             <th>Address</th>
             <th>Phone Number</th>
+            <th>Share Link</th>
             <th>Case</th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="t in tenants | orderBy:['!updated', '-updated']">
+          <tr class="tenant-list-item" ng-repeat="t in tenants | orderBy:['!updated', '-updated']">
             <td class="table-desktop-view" ng-bind="t.fullName"></td>
             <td class="table-desktop-view">{{ t.updated ? (t.updated | date:'short') : (t.created | date:'short') }}</td>
             <td class="table-desktop-view">{{ t.geo.bbl | toAddress:bbls }}</td>
             <td class="table-desktop-view">{{ t.phone | tel }}</td>
+            <td class="table-desktop-view text-center">
+              <span
+                ng-if="t.sharing.enabled"
+                class="glyphicon glyphicon-link copy-link"
+                clipboard
+                text="currentLocation + '/share/' + t.sharing.key"
+                tooltip="Copied Share Link!" tooltip-trigger="click" tooltip-placement="bottom">
+              </span>
+            </td>
             <td class="table-mobile-view">
               <b>{{t.fullName}}</b><br />
               {{ t.geo.bbl | toAddress:bbls }}<br />
               Apt. {{ t.unit }}<br />
               <a ng-href="tel:{{t.phone}}">{{ t.phone | tel }}</a>
             </td>
+
 
             <td ng-if="t.advocateRole === 'managed'">
               <a ng-click="viewTenant(t)" class="btn btn-info">Manage</a>
@@ -80,6 +91,7 @@
                 <th>Last Updated</th>
                 <th>Unit</th>
                 <th>Phone Number</th>
+                <th>Share Link</th>
                 <th>Case</th>
               </tr>
             </thead>
@@ -89,6 +101,15 @@
                 <td class="table-desktop-view">{{ t.updated ? (t.updated | date:'short') : (t.created | date:'short') }}</td>
                 <td class="table-desktop-view">{{ t.geo.bbl | toAddress:bbls }}</td>
                 <td class="table-desktop-view">{{ t.phone | tel }}</td>
+                <td class="table-desktop-view text-center">
+                  <span
+                    ng-if="t.sharing.enabled"
+                    class="glyphicon glyphicon-link copy-link"
+                    clipboard
+                    text="currentLocation + '/share/' + t.sharing.key"
+                    tooltip="Copied Share Link!" tooltip-trigger="click" tooltip-placement="bottom">
+                  </span>
+                </td>
                 <td class="table-mobile-view">
                   <b>{{t.fullName}}</b><br />
                   {{ t.geo.bbl | toAddress:bbls }}<br />

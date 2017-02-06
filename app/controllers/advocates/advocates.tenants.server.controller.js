@@ -58,7 +58,6 @@ exports.listTenants = function(req, res) {
         //   rollbar.handleError("Tenant/advocate mismatch", req);
         //   res.status(500).send({ message: "This shouldn\'t happen." });
         // }
-
         return t;
 
       });

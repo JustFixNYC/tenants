@@ -11,6 +11,10 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
         $rootScope.globalStyles = '';
       }
 
+      if(Authentication.user && Authentication.user.roles.indexOf('advocate') !== -1) {
+        $rootScope.globalStyles += ' advocate-view';
+      }
+
       if(Authentication.user && Authentication.user.roles.indexOf('tenant') !== -1 && toState.name === 'landing') {
         event.preventDefault();
         $rootScope.globalStyles = '';

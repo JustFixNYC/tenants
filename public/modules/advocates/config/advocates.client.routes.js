@@ -21,17 +21,15 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 			.state('advocateSignup.info', {
 				url: '',
 				templateUrl: 'modules/advocates/partials/signup-info.client.view.html',
-				globalStyles: 'white-bg advocate-view'
+				globalStyles: 'white-bg'
 			})
 			.state('advocateSignup.details', {
 				url: '/create',
-				templateUrl: 'modules/advocates/partials/signup-details.client.view.html',
-				globalStyles: 'advocate-view'
+				templateUrl: 'modules/advocates/partials/signup-details.client.view.html'
 			})
 			.state('advocateSignup.referral', {
 				url: '/referral',
-				templateUrl: 'modules/advocates/partials/signup-referral.client.view.html',
-				globalStyles: 'advocate-view'
+				templateUrl: 'modules/advocates/partials/signup-referral.client.view.html'
 			})
 			.state('newTenantSignup', {
 				url: '/advocate/tenant/new',
@@ -44,19 +42,17 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 			})
 			.state('newTenantSignup.problems', {
 				url: '/checklist',
-				templateUrl: 'modules/advocates/partials/new-tenant-problems.client.view.html',
-				globalStyles: 'advocate-view'
+				templateUrl: 'modules/advocates/partials/new-tenant-problems.client.view.html'
 			})
 			.state('newTenantSignup.details', {
 				url: '/personal',
-				templateUrl: 'modules/advocates/partials/new-tenant-details.client.view.html',
-				globalStyles: 'advocate-view'
+				templateUrl: 'modules/advocates/partials/new-tenant-details.client.view.html'
 			})
 			.state('advocateHome', {
 				url: '/advocate',
 				templateUrl: 'modules/advocates/views/home.client.view.html',
 				controller: 'AdvocateController',
-				globalStyles: 'fluid-container advocate-view',
+				globalStyles: 'fluid-container',
 				data: {
 					disableBack: true
 				},
@@ -81,14 +77,12 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 			.state('manageTenant.home', {
 				url: '',
 				templateUrl: 'modules/advocates/partials/manage-tenant-home.client.view.html',
-				controller: 'ManageTenantHomeController',
-				globalStyles: 'advocate-view'
+				controller: 'ManageTenantHomeController'
 			})
 			.state('manageTenant.problems', {
 				url: '/problems',
 				templateUrl: 'modules/advocates/partials/manage-tenant-problems.client.view.html',
-				controller: 'ManageTenantProblemsController',
-				globalStyles: 'advocate-view'
+				controller: 'ManageTenantProblemsController'
 			});
 	}
 ]);
