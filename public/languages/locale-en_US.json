@@ -189,7 +189,11 @@
 	  			"alert": "This allows you to share your Case History with advocates. <b>It does not give access to the rest of your account.</b>",
 	  			"labelShare": "Copy and paste this link to share your Case History: ",
 	  			"empty": "Nothing has been added to your case yet! <a ui-sref=\"listActions\">Click here</a> to see some things to do.",
-	  			"experienced": "First experienced on:"
+	  			"experienced": "First experienced on:",
+          "activityTab": "Activity Log",
+          "issuesTab": "Current Issues",
+          "photosTab": "Photos",
+          "noPhotosTab": "No photos have been uploaded yet!"
 	  		}
 	  	},
 	  	"other": {
@@ -262,7 +266,9 @@
   				"kyr": "@:repeating.kyr",
   				"advocate": "Advocate Information",
   				"call": "@:repeating.call",
-  				"signOut": "@:repeating.signOut"
+  				"signOut": "@:repeating.signOut",
+          "friendShare": "Refer a Neighbor!",
+          "contact": "Contact Us"
   			},
   			"landing": {
   				"bigText": "JustFix.nyc is a digital paper trail for your housing issues.",

@@ -951,10 +951,13 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
       var message;
       switch(type) {
         case 'share':
-        message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
-           ' I\'m experiencing issues with my apartment and would like to get them resolved.' +
-           ' A link to my Case History can be found at http://' + $location.host() + '/share/' + user.sharing.key + '. Thank you!';
-        break;
+          message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
+             ' I\'m experiencing issues with my apartment and would like to get them resolved.' +
+             ' A link to my Case History can be found at http://' + $location.host() + '/share/' + user.sharing.key + '. Thank you!';
+          break;
+        case 'friendShare':
+          message = 'I am using JustFix.nyc to take action on my housing issues! Click here to sign up: http://justfix.nyc/signup';
+          break;
         default:
           message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
              ' I\'m experiencing issues with my apartment and would like to get them resolved.' +
@@ -1189,10 +1192,15 @@ angular.module('activity').controller('ActivityPublicController', ['$scope', '$s
     var query = $stateParams;
     if(!query.key) $state.go('/');
 
+    $scope.photos = [];
+
     $scope.list = function() {
       Activity.public({ key: query.key }, function(user) {
         $scope.user = user;
         $scope.activities = $scope.user.activity;
+        $scope.activities.forEach(function (act) {
+          $scope.photos = $scope.photos.concat(act.photos);
+        });
       });
     };
 
@@ -1232,9 +1240,15 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
 
     $scope.isDesktop = deviceDetector.isDesktop();
 
+    $scope.photos = [];
+
     $scope.list = function() {
       // $scope.activities = Activity.query();
       $scope.activities = $scope.authentication.user.activity;
+
+      $scope.activities.forEach(function (act) {
+        $scope.photos = $scope.photos.concat(act.photos);
+      });
     };
 
     $scope.activityTemplate = function(key) {
@@ -1620,6 +1634,11 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 					}]
 				}
 			})
+			.state('advocateHelp', {
+				url: '/advocate/information',
+				templateUrl: 'modules/advocates/views/help.client.view.html',
+				controller: 'AdvocateHelpController'
+			})
 			.state('manageTenant', {
 				url: '/advocate/manage/:id',
 				templateUrl: 'modules/advocates/views/manage-tenant.client.view.html',
@@ -1643,6 +1662,15 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 			});
 	}
 ]);
+
+'use strict';
+
+angular.module('advocates').controller('AdvocateHelpController', ['$rootScope', '$scope', '$state', '$location', '$timeout', '$filter', 'Authentication', 'Advocates', '$http', '$modal', 'tenants',
+	function($rootScope, $scope, $state, $location, $timeout, $filter, Authentication, Advocates, $http, $modal, tenants) {
+
+
+
+	}]);
 
 'use strict';
 
@@ -1774,14 +1802,18 @@ angular.module('advocates').controller('ManageTenantController', [
 	.controller('ManageTenantHomeController', ['$scope', '$stateParams', '$filter', 'deviceDetector', 'Advocates', 'Lightbox',
 		function($scope, $stateParams, $filter, deviceDetector, Advocates, Lightbox) {
 
+
+
 			$scope.$watch('tenant', function (tenant) {
 				console.log('change in home', tenant);
+				$scope.photos = [];
+				$scope.tenant.activity.forEach(function (act) {
+					$scope.photos = $scope.photos.concat(act.photos);
+				});
 			}, true);
 
-			$scope.photos = [];
-			$scope.tenant.activity.forEach(function (act) {
-				$scope.photos = $scope.photos.concat(act.photos);
-			});
+
+
 
 			$scope.isDesktop = deviceDetector.isDesktop();
 

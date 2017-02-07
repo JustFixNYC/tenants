@@ -63,6 +63,11 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 					}]
 				}
 			})
+			.state('advocateHelp', {
+				url: '/advocate/information',
+				templateUrl: 'modules/advocates/views/help.client.view.html',
+				controller: 'AdvocateHelpController'
+			})
 			.state('manageTenant', {
 				url: '/advocate/manage/:id',
 				templateUrl: 'modules/advocates/views/manage-tenant.client.view.html',

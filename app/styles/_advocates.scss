@@ -2,11 +2,11 @@
 
   .advocates-header {
     margin-top: 0;
+    margin-bottom: 45px;
     text-align: center;
 
     @media (min-width: $screen-xs-min) {
       margin-top: 25px;
-      margin-bottom: 45px;
       text-align: left;
     }
 

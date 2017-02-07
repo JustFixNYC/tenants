@@ -1,16 +1,16 @@
 <div class="page-header">
 	<h3>(Step 2 of 2)</h3>
-	<h1>Referral Information</h1>
-	<p>This is how you will connect with your clients! Information here will be made available to them once they are linked to your account.</p>
+	<h1>Your Advocate Information</h1>
+	<p>This will be shared with tenants who use your Advocate Code.</p>
 </div>
 <form name="createAdvocateUserForm" class="create-user-form" ng-submit="createAdvocate(createAdvocateUserForm.$valid)" novalidate>
 
 	<div class="form-group" ng-class="{ 'has-error' : createAdvocateUserForm.$submitted && createAdvocateUserForm.code.$invalid }">
-		<label class="control-label" for="code">Your Advocate Code</label>
-		<p><em>This is what your client will enter to connect and share information with you.</em></p>
+		<label class="control-label" for="code">Create your unique Advocate Code</label>
 		<input class="form-control" placeholder="Ex: janedoe" name="code" ng-model="newAdvocateUser.code" required>
+		<p><em>Share this with your tenants when you refer them to JustFix.nyc.</em></p>
 		<div ng-show="createAdvocateUserForm.$submitted || createAdvocateUserForm.code.$touched">
-			<p ng-show="createAdvocateUserForm.code.$error.required" class="text-danger">Please enter an advocate code.</p>
+			<p ng-show="createAdvocateUserForm.code.$error.required" class="text-danger">Please create an advocate code.</p>
 		</div>
 	</div>
 
@@ -49,8 +49,8 @@
 
 
 	<div class="form-group" ng-class="{ 'has-error' : createAdvocateUserForm.$submitted && createAdvocateUserForm.organization.$invalid }">
-		<label class="control-label" for="organization">Name of your Organization</label>
-		<input class="form-control" placeholder="Organization Name" name="organization" ng-model="newAdvocateUser.organization" required>
+		<label class="control-label" for="organization">Organization Name</label>
+		<input class="form-control" placeholder="Ex: Westside Tenants Coalition" name="organization" ng-model="newAdvocateUser.organization" required>
 		<div ng-show="createAdvocateUserForm.$submitted || createAdvocateUserForm.organization.$touched">
 			<p ng-show="createAdvocateUserForm.organization.$error.required" class="text-danger">Please enter the name of your organization.</p>
 		</div>

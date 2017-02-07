@@ -68,6 +68,16 @@
   </div>
 
   <br />
+  <!-- <div class="row"> -->
+  <div class="clearfix">
+    <a class="btn btn-success col-xs-6" ng-if="!device.isDesktop()" sms-message type="friendShare">
+        {{'modules.core.views.home.friendShare' | translate}}
+    </a>
+    <a class="btn btn-warning col-xs-5 col-xs-offset-1" ng-if="!device.isDesktop()" ui-sref="contact">
+        {{'modules.core.views.home.contact' | translate}}
+    </a>
+  </div>
+  <br />
   <div class="row">
     <a class="btn btn-block btn-primary" href="/api/auth/signout" target="_self">{{'modules.core.views.home.signOut' | translate}}</a>
   </div>

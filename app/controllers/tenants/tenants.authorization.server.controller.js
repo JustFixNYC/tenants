@@ -30,7 +30,8 @@ exports.hasPublicView = function(req, res, next) {
 					unit: tenant.unit,
 					borough: tenant.borough,
 					geo: tenant.geo,
-    			activity: tenant.activity
+    			activity: tenant.activity,
+					problems: tenant.problems
     		};
     		next();
     	} else {

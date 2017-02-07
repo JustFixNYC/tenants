@@ -16,14 +16,18 @@ angular.module('advocates').controller('ManageTenantController', [
 	.controller('ManageTenantHomeController', ['$scope', '$stateParams', '$filter', 'deviceDetector', 'Advocates', 'Lightbox',
 		function($scope, $stateParams, $filter, deviceDetector, Advocates, Lightbox) {
 
+
+
 			$scope.$watch('tenant', function (tenant) {
 				console.log('change in home', tenant);
+				$scope.photos = [];
+				$scope.tenant.activity.forEach(function (act) {
+					$scope.photos = $scope.photos.concat(act.photos);
+				});
 			}, true);
 
-			$scope.photos = [];
-			$scope.tenant.activity.forEach(function (act) {
-				$scope.photos = $scope.photos.concat(act.photos);
-			});
+
+
 
 			$scope.isDesktop = deviceDetector.isDesktop();
 

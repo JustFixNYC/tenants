@@ -13,10 +13,15 @@ angular.module('activity').controller('ActivityPublicController', ['$scope', '$s
     var query = $stateParams;
     if(!query.key) $state.go('/');
 
+    $scope.photos = [];
+
     $scope.list = function() {
       Activity.public({ key: query.key }, function(user) {
         $scope.user = user;
         $scope.activities = $scope.user.activity;
+        $scope.activities.forEach(function (act) {
+          $scope.photos = $scope.photos.concat(act.photos);
+        });
       });
     };
 
