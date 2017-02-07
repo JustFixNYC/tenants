@@ -300,17 +300,11 @@ var create = function(req, res, next) {
     // remove from follow up flags
     var idx = _.findIndex(req.body.followUpFlags, { key: newActivity.key});
     // if(idx < 0) return res.status(500).send({ message: 'Follow up key not found, this is bad' });
-<<<<<<< HEAD
-    if(idx !== -1) user.followUpFlags.splice(idx, 1);
-=======
     if(idx !== -1) req.body.followUpFlags.splice(idx, 1);
->>>>>>> org-mvp
 
     // add to action flags
     if(!_.contains(req.body.actionFlags, newActivity.key)) req.body.actionFlags.push(newActivity.key);
 
-<<<<<<< HEAD
-=======
     // stored logged by info
     // we aren't gonna store a reference to the author
     // in the interest of all activity data
@@ -332,7 +326,6 @@ var create = function(req, res, next) {
 
     // console.log(newActivity);
 
->>>>>>> org-mvp
     // init photos array
     newActivity.photos = [];
 
