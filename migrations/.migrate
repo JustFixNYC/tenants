@@ -1,1 +1,1 @@
-{"migrations":[{"title":"1485380298564-temp-users.js"},{"title":"1485380498564-seed-advocates.js"},{"title":"1485380545915-transfer-users.js"}],"path":"migrations/.migrate","pos":3,"_events":{},"_eventsCount":1}
+{"migrations":[{"title":"1485380298564-temp-users.js"},{"title":"1485380398564-cleanup-users.js"},{"title":"1485380498564-seed-advocates.js"},{"title":"1485380545915-transfer-users.js"},{"title":"1486491106719-drop-extras.js"}],"path":"migrations/.migrate","pos":null,"_events":{},"_eventsCount":1}
