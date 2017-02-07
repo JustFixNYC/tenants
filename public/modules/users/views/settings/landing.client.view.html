@@ -7,18 +7,37 @@
 	<h1>{{'modules.users.views.settings.landing.profile' | translate}}</h1>
 </div>
 <div class="user-profile">
-	<p>{{user.fullName}}</p>
-	<p>{{user.phone | tel}}</p>
-	<p>{{user.address}}</p>
-	<p>{{user.unit}}</p>
-	<p>{{user.borough}}, NY  {{user.geo.zip}}</p>
-	<br/>
-	<div ng-if="user.referral">
+
+	<div ng-if="user.roles.indexOf('tenant') !== -1">
+		<p>{{user.fullName}}</p>
+		<p>{{user.phone | tel}}</p>
+		<p>{{user.address}}</p>
+		<p>{{user.unit}}</p>
+		<p>{{user.borough}}, NY  {{user.geo.zip}}</p>
+	</div>
+	<div ng-if="user.roles.indexOf('advocate') !== -1">
+		<p><b>Personal Information</b></p>
+		<p>{{ user.fullName }}</p>
+		<p>{{ user.phone | tel }}</p>
+		<br />
+		<p><b>Contact Information</b></p>
+		<p>Advocate Code: {{ user.code }}</p>
+		<p>{{ user.organization }}</p>
+		<p>{{ user.contactPhone  + (user.contactPhoneExt ? (',' + user.contactPhoneExt) : '') | tel }}</p>
+		<p>{{ user.email }}</p>
+	</div>
+
+	<br />
+	<div ng-if="user.advocate">
 		<p><strong>{{'modules.users.views.settings.landing.advocateInfo' | translate}}</strong></p>
-		<p>{{user.referral.name}}</p>
-		<p>{{user.referral.organization}}</p>
-		<p><a ng-href="tel:{{user.referral.phone}}" class="text-link">{{user.referral.phone | tel}}</a></p>
-		<p><a ng-href="mailto:{{user.referral.email}}" class="text-link">{{user.referral.email}}</a></p>
+		<p>{{user.advocate.fullName}}</p>
+		<p>{{user.advocate.organization}}</p>
+		<p><a ng-href="tel:{{user.advocate.contactPhone + (authentication.user.advocate.contactPhoneExt ? (',' + authentication.user.advocate.contactPhoneExt) : '') }}"
+					class="text-link">
+						{{user.advocate.contactPhone + (authentication.user.advocate.contactPhoneExt ? (',' + authentication.user.advocate.contactPhoneExt) : '') | tel}}
+				</a>
+		</p>
+		<p><a ng-href="mailto:{{user.advocate.email}}" class="text-link">{{user.advocate.email}}</a></p>
 		<br/>
 	</div>
 	<div class="user-container">

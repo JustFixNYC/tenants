@@ -17,8 +17,15 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
 
     $scope.isDesktop = deviceDetector.isDesktop();
 
+    $scope.photos = [];
+
     $scope.list = function() {
-      $scope.activities = Activity.query();
+      // $scope.activities = Activity.query();
+      $scope.activities = $scope.authentication.user.activity;
+
+      $scope.activities.forEach(function (act) {
+        $scope.photos = $scope.photos.concat(act.photos);
+      });
     };
 
     $scope.activityTemplate = function(key) {

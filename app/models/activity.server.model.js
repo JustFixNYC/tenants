@@ -31,6 +31,19 @@ var ActivitySchema = new Schema({
       type: String,
       default: ''
     },
+    // loggedBy: {
+    //   type: Schema.Types.ObjectId,
+    //   refPath: 'loggedByKind'
+    // },
+    // loggedByKind: {
+    //   type: String,
+    //   enum: ['Tenant', 'Advocate', 'Admin']
+    // },
+    // this is just the name, not the reference
+    loggedBy: {
+      type: String,
+      default: ''
+    },
     photos: [{
       url : { type : String}, 
       thumb : { type : String}, 
@@ -53,5 +66,7 @@ var ActivitySchema = new Schema({
       default: {}
     }
 });
+
+mongoose.model('Activity', ActivitySchema);
 
 module.exports = ActivitySchema;

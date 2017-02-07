@@ -8,6 +8,9 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
       $scope.user = Authentication.user;
+
+      console.log($scope.user);
+
       if(fromState.name === 'settings.profile') {
       	$scope.successfulUpdate = false;
       }
@@ -90,6 +93,43 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 				}
 			}
     };
+
+
+    // Update a user phone
+    $scope.updateUserPhone = function(isValid) {
+      if (isValid) {
+        $scope.success = $scope.error = null;
+        var user = new Users($scope.user);
+
+        if(isValid) {
+
+				$scope.userError = false;
+				$rootScope.loading = true;
+
+				user.$updatePhone(function(response) {
+
+					// If successful we assign the response to the global user model
+
+					$rootScope.loading = false;
+					$scope.user = Authentication.user;
+
+					$state.go('settings.profile');
+	    		$scope.passwordVerified = false;
+	    		$scope.successfulUpdate = true;
+
+
+				}, function(err) {
+					$rootScope.loading = false;
+					console.log(err);
+        	$scope.error = err;
+				});
+
+				} else {
+					$scope.userError = true;
+				}
+			}
+    };
+
 
     // Change user password
     $scope.changeUserPassword = function() {

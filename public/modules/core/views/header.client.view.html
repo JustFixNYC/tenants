@@ -15,7 +15,13 @@
 						<img ng-if="!$root.headerLightBG" src="/modules/core/img/brand/logo.png" class="logo" />
 						<img ng-if="$root.headerLightBG" src="/modules/core/img/brand/logo_dark.png" class="logo" />
 				</a>
-				<a ng-if="$root.state != 'landing'" href="/" class="header-brand" ga-event="JustFix Logo,click">
+				<!-- <a ng-if="$root.state != 'landing'" href="/" class="header-brand" ga-event="JustFix Logo,click"> -->
+				<a ng-if="$root.state != 'landing' && authentication.user.roles.indexOf('tenant') !== -1" ui-sref="home" class="header-brand" ga-event="JustFix Logo,click">
+						<img ng-if="!$root.headerLightBG" src="/modules/core/img/brand/logo.png" class="logo" />
+						<img ng-if="$root.headerLightBG" src="/modules/core/img/brand/logo_dark.png" class="logo" />
+				</a>
+
+				<a ng-if="$root.state != 'landing' && authentication.user.roles.indexOf('advocate') !== -1" ui-sref="advocateHome" class="header-brand" ga-event="JustFix Logo,click">
 						<img ng-if="!$root.headerLightBG" src="/modules/core/img/brand/logo.png" class="logo" />
 						<img ng-if="$root.headerLightBG" src="/modules/core/img/brand/logo_dark.png" class="logo" />
 				</a>
@@ -41,8 +47,18 @@
   					ga-event="Language Toggle,click,Header" language-toggle></div>
 				<a class="header-btn header-home pull-right glyphicon glyphicon-home"
 					 ui-sref="home"
-					 ng-if="authentication.user && $root.state != 'home'"
+					 ng-if="authentication.user && authentication.user.roles.indexOf('tenant') !== -1 && $root.state != 'home'"
 					 ga-event="Home Icon,click"></a>
+			 <a class="header-btn header-home pull-right glyphicon glyphicon-home"
+					 ui-sref="advocateHome"
+					 ng-if="authentication.user && authentication.user.roles.indexOf('advocate') !== -1 && $root.state != 'advocateHome'"
+					 ga-event="Home Icon,click"></a>
+			 <a class="header-btn pull-right glyphicon glyphicon-user"
+					 ui-sref="settings.profile"
+					 ng-if="authentication.user && authentication.user.roles.indexOf('advocate') !== -1 && $root.state == 'advocateHome'"></a>
+			 <a class="header-btn pull-right glyphicon glyphicon-info-sign"
+					 ui-sref="advocateHelp"
+					 ng-if="authentication.user && authentication.user.roles.indexOf('advocate') !== -1 && $root.state != 'advocateHelp'"></a>
 		</div> <!-- end of .container -->
 	</div>	<!-- end of #header -->
 

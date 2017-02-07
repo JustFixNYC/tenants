@@ -6,51 +6,16 @@ var mongoose = require('mongoose'),
     rollbar = require('rollbar'),
     Referral = mongoose.model('Referral');
 
-// var PARTS = 2;
-// var PART_LENGTH = 4;
-// var CHARS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-//
-// var makeNewRandomCode = function(deferred) {
-//
-//   if(!deferred) var deferred = Q.defer();
-//
-//   // generate rando code
-//   var code = '';
-//   for(var i = 0; i < PARTS; i++) {
-//     for(var j = PART_LENGTH; j > 0; --j) code += CHARS[Math.floor(Math.random() * CHARS.length)];
-//     if(i+1 != PARTS) code += '-';
-//   }
-//
-//   // check if code already exists
-//   Referral.find({ codes: code }, function(err, referrals) {
-//     if(referrals.length) makeNewRandomCode(deferred);
-//     else deferred.resolve(code);
-//   });
-//
-//   return deferred.promise;
-// };
 
-// var makeNewBaseCodes = function(code, numCodes) {
-//
-//   var deferred = Q.defer();
-//   var codes = [];
-//
-//   //check if repeat baseCode
-//   Referral.find({ baseCode: base }, function(err, referrals) {
-//     if(referrals.length) deferred.reject('Base code already exists.');
-//     else {
-//       for(var i = 0; i < numCodes; i++) {
-//         codes.push(base + (i+1));
-//       }
-//       deferred.resolve(codes);
-//     }
-//   });
-//
-//   return deferred.promise;
-//
-//
-//
-// };
+ /*
+
+      validate
+        takes a code, returns an advocate _id
+
+
+
+ */
+
 
 
 var search = function(query) {
@@ -172,6 +137,7 @@ exports.validate = function(req, res) {
       });
     });
 };
+
 
 exports.remove = function(req, res) {
 

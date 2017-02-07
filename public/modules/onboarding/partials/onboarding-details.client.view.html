@@ -22,7 +22,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.borough.$invalid }">
 		<label class="control-label" for="borough">{{'modules.onboarding.partials.onboardingDetails.borough' | translate}}</label>
 		<div class="controls">
@@ -79,7 +79,7 @@
 		</div>
 	</div>
 
-	<div class="form-group pw-check-field" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.pw2.$invalid }">
+	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.pw2.$invalid }">
 		<label class="control-label" for="pw2">{{'modules.onboarding.partials.onboardingDetails.verify' | translate}}</label>
 		<input class="form-control" ng-model="pw2" type="password" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.verify' | translate}}" name="pw2" pw-check="pw1" ng-minlength="6" required>
 		<div ng-show="createUserForm.$submitted || createUserForm.pw2.$touched">
@@ -88,7 +88,7 @@
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group form-submit-field">
 		<fieldset>
 				<div data-ng-show="error.errors" class="alert alert-danger">
 						<strong data-ng-repeat="err in error.errors">

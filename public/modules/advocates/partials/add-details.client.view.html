@@ -1,0 +1,80 @@
+<div class="status-update add-details" ng-class="{ 'expanded' : status.expanded }">
+  <button type="button" class="close" aria-label="Close" ng-show="status.expanded" data-ng-click="status.expanded = false" ng-cloak><span aria-hidden="true">&times;</span></button>
+  <!-- <span class="status-update-closed-icon glyphicon glyphicon-edit" ng-if="!status.expanded"></span> -->
+  <span class="status-update-closed-icon glyphicon glyphicon-camera" ng-if="!status.expanded"></span>
+  <!-- <div  ngf-select="addPhoto($file)"
+        ngf-select-disabled="newActivity.photos.length >= 3"
+        ngf-capture="'camera'" accept="image/*"
+        name="photos"
+        ng-if="!status.expanded"
+        class="">
+        <span class="status-update-closed-icon glyphicon glyphicon-camera"></span>
+  </div> -->
+  <div class="status-update-open">
+    <form name="statusUpdate" class="update-activity-form" novalidate>
+      <textarea name="description"
+                data-ng-model="newActivity.description"
+                ng-focus="status.expanded = true"
+                id="description"
+                class="form-control"
+                cols="30" rows="4"
+                maxlength="500"
+                ng-attr-placeholder="Add an update to {{ tenant.firstName }}'s situation"
+                required>
+      </textarea>
+      <span class="text-danger" ng-show="status.formSubmitted && statusUpdate.description.$invalid">{{'modules.actions.partials.statusUpdate.description' | translate}}</span>
+      <div class="image-preview">
+        <img ng-repeat="photo in newActivity.photos" ngf-thumbnail="photo" />
+      </div>
+      <div class="status-update-controls" ng-class="{ 'tagging' : status.tagging }">
+        <div  ngf-select="addPhoto($file)"
+              ngf-select-disabled="newActivity.photos.length >= 3"
+              ngf-accept="'image/*'"
+              name="photos"
+              class="pull-left select-photos">
+              <!-- ngf-capture="'camera'" accept="image/*" -->
+          <span class="glyphicon glyphicon-camera"></span>
+        </div>
+        <div class="tag-issue-toggle pull-right" ng-click="toggleTagging()" ng-class="{ 'active' : newActivity.problems.length }" ng-if="problems.length">
+          {{'modules.actions.partials.statusUpdate.tagTitle'| translate}}
+          <span ng-if="newActivity.problems.length">({{newActivity.problems.length}})</span>
+          <span class="glyphicon pull-right"
+                style="padding-top:1px"
+                ng-class="status.tagging ? 'glyphicon-triangle-top' : 'glyphicon-triangle-bottom'">
+          </span>
+        </div>
+        <div class="tag-issue-list" ng-if="status.tagging">
+          <div class="list-group">
+              <button type="button"
+                      class="list-group-item"
+                      data-ng-repeat="problem in problems"
+                      data-ng-click="selectProblem(problem)"
+                      data-ng-class="{ 'list-group-item-primary': isSelectedProblem(problem) }">
+                      {{ problem | translate}}
+                      <span data-ng-show="isSelectedProblem(problem)" class="selected-icon glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
+              </button>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-info pull-right" data-ng-click="createActivity(statusUpdate.$valid)">
+          <span class="glyphicon glyphicon-ok pull-left" style="padding-top:1px"></span>
+          Add To {{ tenant.firstName }}'s Case
+      </button>
+    </form>
+  </div>
+</div>
+
+<alert
+			data-ng-if="status.completed"
+			data-ng-show="!status.closeAlert"
+			type="success"
+			close="closeAlert()">
+  <span ng-bind-html="'modules.actions.partials.statusUpdate.success' | trustTranslate" compile-template></span>
+</alert>
+<alert
+			data-ng-show="!status.closeErrorAlert"
+			type="danger"
+			close="status.closeErrorAlert = true">
+  <span ng-bind-html="'modules.actions.partials.statusUpdate.error' | trustTranslate" compile-template></span>
+</alert>
+<!-- <alert data-ng-if="error.length" data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert> -->

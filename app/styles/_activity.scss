@@ -1,7 +1,7 @@
 .activities-container {
 
   .activity-panel {
-    @include make-row();
+    // @include make-row();
 
     .panel-heading {
 
@@ -69,20 +69,42 @@
 
 }
 
+.lightbox-modal .modal-content {
+  background-color: rgba(0,0,0,0.8);
+  color: $lightgray-light;
+}
+
 .lightbox-nav {
 
   .close {
     font-size: 40px;
     z-index: 10;
+    color: $lightgray-light;
+    opacity: 1;
   }
 
   .btn-group {
-    display: none;
+    display: block;
+    width: auto;
+    margin-top: 15px;
+
+    .btn {
+      margin-bottom: 15px;
+      background: transparent;
+      color: $lightgray-light;
+      border-color: darken($lightgray-light, 10%);
+    }
   }
 }
 
 .lightbox-image-container {
   top: 40px;
+
+  & > img {
+    max-height: 60vh;
+    height: inherit !important;
+    width: auto !important;
+  }
 }
 
 .upload-thumb {
@@ -93,3 +115,17 @@
   height: 150px;
   overflow: hidden;
 }
+
+.photos-grid {
+    /* Prevent vertical gaps */
+  line-height: 0;
+
+  -webkit-column-count: 3;
+  -webkit-column-gap:   0px;
+  -moz-column-count:    3;
+  -moz-column-gap:      0px;
+  column-count:         3;
+  column-gap:           0px;
+}
+
+.photo-grid-item {}

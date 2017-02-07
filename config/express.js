@@ -16,7 +16,7 @@ var fs = require('fs'),
 	cookieParser = require('cookie-parser'),
 	helmet = require('helmet'),
 	passport = require('passport'),
-	mongoStore = require('connect-mongo')({
+	mongoStore = require('connect-mongo/es5')({
 		session: session
 	}),
 	flash = require('connect-flash'),
@@ -100,6 +100,11 @@ module.exports = function(db) {
 	// CookieParser should be above session
 	app.use(cookieParser());
 
+	// Setting the app router and static folder
+	// Keep this above sessions and passport
+	// https://github.com/jaredhanson/passport/issues/14
+	app.use(express.static(path.resolve('./public')));
+
 	// Express MongoDB session storage
 	// [TODO] this is still causing issues (see https://github.com/meanjs/mean/issues/224)
 	// this is inconsistent, be wary of it...
@@ -109,9 +114,8 @@ module.exports = function(db) {
 		secret: config.sessionSecret,
 		cookie: { maxAge: 14 * 24 * 60 * 60 * 1000 },		// 14 days
 		store: new mongoStore({
-			db: db.connection.db,
-			collection: config.sessionCollection,
-			auto_reconnect: true												// this only works for connect-mongo < 0.5
+			mongooseConnection: db.connection,
+			collection: config.sessionCollection
 		})
 	}));
 
@@ -132,9 +136,6 @@ module.exports = function(db) {
 	app.use(helmet.nosniff());
 	app.use(helmet.ienoopen());
 	app.disable('x-powered-by');
-
-	// Setting the app router and static folder
-	app.use(express.static(path.resolve('./public')));
 
 	// Globbing routing files
 	config.getGlobbedFiles('./app/routes/**/*.js').forEach(function(routePath) {

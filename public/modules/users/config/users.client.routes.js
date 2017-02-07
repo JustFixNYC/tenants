@@ -57,6 +57,6 @@ angular.module('users').config(['$stateProvider', '$urlRouterProvider',
 				url: '/password/reset/:token',
 				templateUrl: 'modules/users/views/password/reset-password.client.view.html'
 			});
-			
+
 	}
 ]);

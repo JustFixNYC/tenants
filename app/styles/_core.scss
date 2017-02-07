@@ -91,6 +91,11 @@ h4 {
   body.landing & section.container {
     max-width: 970px;
   }
+  body.fluid-container & section.container {
+    max-width: 970px;
+    width: auto !important;
+    @include container-fixed;
+  }
 }
 .undecorated-link:hover {
 	text-decoration: none;
@@ -115,6 +120,10 @@ label.control-label em {
     border-color: $justfix-blue !important;
     color: #fff;
   }
+}
+
+.copy-link {
+  cursor: pointer;
 }
 
 .page-header {
@@ -160,6 +169,10 @@ label.control-label em {
     p {
       text-align: center;
     }
+  }
+
+  p + p:not(.text-danger) {
+    margin-top: 0;
   }
 
 
@@ -327,4 +340,15 @@ input[type="date"].date-mobile:focus:before {
 
 .no-gutter [class*="col"] {
   padding: 0;
+}
+
+.pull-left-on-desktop {
+  @media (min-width: $screen-xs-min) {
+    float: left !important;
+  }
+}
+.pull-right-on-desktop {
+  @media (min-width: $screen-xs-min) {
+    float: right !important;
+  }
 }

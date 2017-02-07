@@ -18,8 +18,10 @@ var ApplicationConfiguration = (function() {
 		'angularLazyImg',
 		'duScroll',
 		'pascalprecht.translate',	// angular-translate
- 		'tmh.dynamicLocale'/*, // angular-dynamic-locale
- 		'ngSanitize'*/ // Santize translations -> /application.js at line ~40
+ 		'tmh.dynamicLocale',// angular-dynamic-locale
+		'angular.filter',
+		'angular-clipboard'
+ 		/* 'ngSanitize'*/ // Santize translations -> /application.js at line ~40
 	];
 // 'ngAnimate',  'ngTouch', , 'bootstrapLightbox' , 'angularModalService'
 
@@ -57,6 +59,14 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     // enable this for speed enhancement b4 production push
     // $compileProvider.debugInfoEnabled(false);
   }])
+  .config(['$tooltipProvider', function($tooltipProvider){
+   $tooltipProvider.setTriggers({
+    'mouseenter': 'mouseleave',
+    'click': 'mouseleave',
+    'focus': 'blur',
+    'hideonclick': 'click'
+   });
+  }])
   // internationalization constants
   .constant('LOCALES', {
     'locales': {
@@ -66,7 +76,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     'preferredLocale': 'en_US'
   })
   // async loading for templates
-  .config(["$translateProvider", "$translateSanitizationProvider", function ($translateProvider, $translateSanitizationProvider) {
+  .config(function ($translateProvider, $translateSanitizationProvider) {
   	// enable logging for missing IDs
     // $translateProvider.useMissingTranslationHandlerLog();
 
@@ -80,11 +90,11 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     $translateProvider.useLocalStorage(); // saves selected language to localStorage
     // NOTE: This shit causes all sorts of issues with our UI-SREF attribute. Not recognized in any sanitizer module, and causes it to break
     $translateProvider.useSanitizeValueStrategy(null); // Normally, prevent XSS, but in this case we're only using local translations
-  }])
+  })
   // location of the locale settings
-  .config(["tmhDynamicLocaleProvider", function (tmhDynamicLocaleProvider) {
+  .config(function (tmhDynamicLocaleProvider) {
     tmhDynamicLocaleProvider.localeLocationPattern('lib/angular-i18n/angular-locale_{{locale}}.js');
-  }])
+  })
   .run(function () {
 
     // lets make our lives easier!
@@ -107,7 +117,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
       return;
     };
   })
-  .run(["$rootScope", "$location", "LocaleService", function($rootScope, $location, LocaleService) {
+  .run(function($rootScope, $location, LocaleService) {
     // ensure that this happens on pageload
     // https://github.com/angular-ui/ui-router/issues/1307
     var setHeaderState = function(name) {
@@ -139,8 +149,8 @@ angular.module(ApplicationConfiguration.applicationModuleName)
 
       setHeaderState(toState.name);
     });
-  }])
-  .run(["$rootScope", "$location", "LocaleService", "$translate", function($rootScope, $location, LocaleService, $translate) {
+  })
+  .run(function($rootScope, $location, LocaleService, $translate) {
 
   	$translate.use('en_US');
 
@@ -170,7 +180,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
       // console.log('condition 4');
 			$location.search('lang', '');
   	}
-  }]);
+  });
 
 
 //Then define the init function for starting up the application
@@ -199,6 +209,11 @@ ApplicationConfiguration.registerModule('activity');
 
 // Use application configuration module to register a new module
 ApplicationConfiguration.registerModule('admin');
+
+'use strict';
+
+// Use application configuration module to register a new module
+ApplicationConfiguration.registerModule('advocates');
 
 'use strict';
 
@@ -431,7 +446,7 @@ angular.module('actions').controller('ContactSuperController', ['$scope', '$moda
 
 'use strict';
 
-angular.module('actions').controller('DecreasedServicesController', ["$scope", "$modalInstance", "newActivity", function ($scope, $modalInstance, newActivity) {
+angular.module('actions').controller('DecreasedServicesController', function ($scope, $modalInstance, newActivity) {
 
   $scope.newActivity = newActivity;
 
@@ -442,11 +457,11 @@ angular.module('actions').controller('DecreasedServicesController', ["$scope", "
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
-}]);
+});
 
 'use strict';
 
-angular.module('actions').controller('HpactionController', ["$scope", "$modalInstance", "newActivity", function ($scope, $modalInstance, newActivity) {
+angular.module('actions').controller('HpactionController', function ($scope, $modalInstance, newActivity) {
 
   $scope.newActivity = newActivity;
 
@@ -457,7 +472,7 @@ angular.module('actions').controller('HpactionController', ["$scope", "$modalIns
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
-}]);
+});
 
 'use strict';
 
@@ -542,9 +557,9 @@ angular.module('actions')
     return {
       restrict: 'E',
       templateUrl: 'modules/actions/partials/status-update.client.view.html',
-      controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
+      controller: function($scope, $element, $attrs) {
         //$scope.filterContentHTML = function() { return $sce.trustAsHtml($scope.action.content); };
-      }],
+      },
       link: function (scope, element, attrs) {
 
         // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
@@ -670,7 +685,7 @@ angular.module('actions')
     return {
       restrict: 'E',
       templateUrl: 'modules/actions/partials/to-do-item.client.view.html',
-      controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
+      controller: function($scope, $element, $attrs) {
 
       	$scope.user = Authentication.user;
       	
@@ -678,7 +693,7 @@ angular.module('actions')
         $scope.filterContentHTML =  $scope.action.content;
         $scope.filterButtonTitleHTML = $scope.action.cta.buttonTitle;
         $scope.closeErrorAlert = true;
-      }],
+      },
       link: function (scope, element, attrs) {
 
         // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
@@ -770,7 +785,11 @@ angular.module('actions')
             scope.newActivity.startDate = scope.action.startDate = new Date();
           }
 
+          // console.log()
+
           scope.action.$followUp({ type: 'add' });
+
+
 
           if(url && type === 'tel') window.location.href = url;
           else if(url && type === 'link') window.open(url, '_blank');
@@ -917,10 +936,13 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
       var message;
       switch(type) {
         case 'share':
-        message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
-           ' I\'m experiencing issues with my apartment and would like to get them resolved.' +
-           ' A link to my Case History can be found at http://' + $location.host() + '/share/' + user.sharing.key + '. Thank you!';
-        break;
+          message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
+             ' I\'m experiencing issues with my apartment and would like to get them resolved.' +
+             ' A link to my Case History can be found at http://' + $location.host() + '/share/' + user.sharing.key + '. Thank you!';
+          break;
+        case 'friendShare':
+          message = 'I am using JustFix.nyc to take action on my housing issues! Click here to sign up: http://justfix.nyc/signup';
+          break;
         default:
           message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
              ' I\'m experiencing issues with my apartment and would like to get them resolved.' +
@@ -1140,10 +1162,15 @@ angular.module('activity').controller('ActivityPublicController', ['$scope', '$s
 		$scope.query = $stateParams;
     if(!$scope.query.key) $state.go('/');
 
+    $scope.photos = [];
+
     $scope.list = function() {
       Activity.public({ key: $scope.query.key }, function(user) {
         $scope.user = user;
         $scope.activities = $scope.user.activity;
+        $scope.activities.forEach(function (act) {
+          $scope.photos = $scope.photos.concat(act.photos);
+        });
       });
     };
 
@@ -1183,8 +1210,15 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
 
     $scope.isDesktop = deviceDetector.isDesktop();
 
+    $scope.photos = [];
+
     $scope.list = function() {
-      $scope.activities = Activity.query();
+      // $scope.activities = Activity.query();
+      $scope.activities = $scope.authentication.user.activity;
+
+      $scope.activities.forEach(function (act) {
+        $scope.photos = $scope.photos.concat(act.photos);
+      });
     };
 
     $scope.activityTemplate = function(key) {
@@ -1448,12 +1482,20 @@ angular.module('activity').factory('Activity', ['$resource', 'UpdateUserIntercep
 
     return $resource('api/activity', {}, {
       save: {
-          method: 'POST',
-          transformRequest: formDataTransform,
-          headers: {
-            'Content-Type': undefined
-          },
-          interceptor: UpdateUserInterceptor
+        method: 'POST',
+        transformRequest: formDataTransform,
+        headers: {
+          'Content-Type': undefined
+        },
+        interceptor: UpdateUserInterceptor
+      },
+      saveManagedByID: {
+        method: 'POST',
+        url: 'api/advocates/tenants/:id',
+        transformRequest: formDataTransform,
+        headers: {
+          'Content-Type': undefined
+        }
       },
       public: {
         method: 'GET',
@@ -1506,10 +1548,10 @@ angular.module('admin')
 
         var modalInstance = $modal.open({
           templateUrl: 'modules/admin/partials/show-codes.client.view.html',
-          controller: ["$scope", "$modalInstance", "codes", function($scope, $modalInstance, codes) {
+          controller: function($scope, $modalInstance, codes) {
             $scope.codes = codes;
             $scope.close = function(result) { $modalInstance.close(); };
-          }],
+          },
           resolve: {
             codes: function () { return codes; }
           }
@@ -1577,24 +1619,618 @@ angular.module('admin').factory('Passwords', ['$resource',
 
 'use strict';
 
-// Users service used for communicating with the users REST endpoint
-angular.module('admin').factory('Referrals', ['$resource',
-	function($resource) {
-		return $resource('api/referrals', {}, {
-			update: {
-				method: 'PUT'
-			},
-			validate: {
-				method: 'GET',
-				url: '/api/referrals/validate'
-			}
-      // ,
-      // getIssues: {
-      //   method: 'GET'
-      // }
-		});
+//Setting up route
+angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
+	function($stateProvider, $urlRouterProvider) {
+
+		// Jump to first child state
+    // $urlRouterProvider.when('/advocate/signup', '/advocate/signup/create');
+
+		// Advocate state routing
+		$stateProvider
+			.state('advocateSignup', {
+				url: '/advocate/signup',
+				templateUrl: 'modules/advocates/views/signup.client.view.html',
+				controller: 'AdvocateSignupController',
+				abstract: true,
+				data: {
+					disableBack: true
+				}
+			})
+			.state('advocateSignup.info', {
+				url: '',
+				templateUrl: 'modules/advocates/partials/signup-info.client.view.html',
+				globalStyles: 'white-bg'
+			})
+			.state('advocateSignup.details', {
+				url: '/create',
+				templateUrl: 'modules/advocates/partials/signup-details.client.view.html'
+			})
+			.state('advocateSignup.referral', {
+				url: '/referral',
+				templateUrl: 'modules/advocates/partials/signup-referral.client.view.html'
+			})
+			.state('newTenantSignup', {
+				url: '/advocate/tenant/new',
+				templateUrl: 'modules/advocates/views/new-tenant.client.view.html',
+				controller: 'NewTenantSignupController',
+				abstract: true,
+				data: {
+					disableBack: true
+				}
+			})
+			.state('newTenantSignup.problems', {
+				url: '/checklist',
+				templateUrl: 'modules/advocates/partials/new-tenant-problems.client.view.html'
+			})
+			.state('newTenantSignup.details', {
+				url: '/personal',
+				templateUrl: 'modules/advocates/partials/new-tenant-details.client.view.html'
+			})
+			.state('advocateHome', {
+				url: '/advocate',
+				templateUrl: 'modules/advocates/views/home.client.view.html',
+				controller: 'AdvocateController',
+				globalStyles: 'fluid-container',
+				data: {
+					disableBack: true
+				},
+				resolve: {
+					tenants: ['Advocates', function(Advocates) {
+						// forces resolution, see: http://www.jvandemo.com/how-to-resolve-angularjs-resources-with-ui-router/
+						return Advocates.query().$promise;
+					}]
+				}
+			})
+			.state('advocateHelp', {
+				url: '/advocate/information',
+				templateUrl: 'modules/advocates/views/help.client.view.html',
+				controller: 'AdvocateHelpController'
+			})
+			.state('manageTenant', {
+				url: '/advocate/manage/:id',
+				templateUrl: 'modules/advocates/views/manage-tenant.client.view.html',
+				controller: 'ManageTenantController',
+				abstract: true,
+				resolve: {
+					tenant: ['Advocates', '$stateParams', function(Advocates, $stateParams) {
+						return Advocates.getTenantByCurrentOrId($stateParams.id);
+					}]
+				}
+			})
+			.state('manageTenant.home', {
+				url: '',
+				templateUrl: 'modules/advocates/partials/manage-tenant-home.client.view.html',
+				controller: 'ManageTenantHomeController'
+			})
+			.state('manageTenant.problems', {
+				url: '/problems',
+				templateUrl: 'modules/advocates/partials/manage-tenant-problems.client.view.html',
+				controller: 'ManageTenantProblemsController'
+			});
 	}
 ]);
+
+'use strict';
+
+angular.module('advocates').controller('AdvocateHelpController', ['$rootScope', '$scope', '$state', '$location', '$timeout', '$filter', 'Authentication', 'Advocates', '$http', '$modal', 'tenants',
+	function($rootScope, $scope, $state, $location, $timeout, $filter, Authentication, Advocates, $http, $modal, tenants) {
+
+
+
+	}]);
+
+'use strict';
+
+angular.module('advocates').controller('AdvocateSignupController', ['$rootScope', '$scope', '$state', '$location', '$filter', 'Authentication', '$http', '$modal',
+	function($rootScope, $scope, $state, $location, $filter, Authentication, $http, $modal) {
+
+		$scope.authentication = Authentication;
+		$scope.newAdvocateUser = {};
+
+		/**
+			*
+			*   DEBUG STUFF
+			*
+			*/
+
+		if(typeof DEBUG !== 'undefined' && DEBUG == true) {
+
+			$scope.newAdvocateUser = {
+				firstName: "Jane",
+				lastName: "Doe",
+				password: "password",
+				phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
+				code: "janedoe",
+				email: "jane@westsidetenants.org",
+				contactPhone: "8459781262",
+				// contactPhoneExt: "12",
+				organization: "Westside Tenants"
+			};
+
+			$scope.pw2 = "password";
+		}
+
+
+		$scope.userError = false;
+
+		$scope.toReferralStep = function (isValid) {
+			if(isValid) {
+				$state.go('advocateSignup.referral');
+			} else {
+				$scope.userError = true;
+			}
+		};
+
+		$scope.createAdvocate = function (isValid) {
+
+			if(typeof DEBUG !== 'undefined' && DEBUG == true) console.log('create account pre save', $scope.newAdvocateUser);
+
+			if(isValid) {
+
+				$scope.newAdvocateUser.firstName = $filter('titlecase')($scope.newAdvocateUser.firstName);
+				$scope.newAdvocateUser.lastName = $filter('titlecase')($scope.newAdvocateUser.lastName);
+
+				$scope.userError = false;
+				$rootScope.loading = true;
+
+				$http.post('/api/advocates/signup', $scope.newAdvocateUser).success(function(response) {
+
+					// If successful we assign the response to the global user model
+					$rootScope.loading = false;
+					$scope.authentication.user = response;
+					if(typeof DEBUG !== 'undefined' && DEBUG == true) console.log('create account post save', response);
+
+					$state.go('advocateHome');
+
+
+				}).error(function(err) {
+					$rootScope.loading = false;
+					// console.log(err);
+        	$scope.error = err;
+				});
+
+			} else {
+				$scope.userError = true;
+			}
+
+
+		};
+
+
+	}]);
+
+'use strict';
+
+angular.module('advocates').controller('AdvocateController', ['$rootScope', '$scope', '$state', '$location', '$timeout', '$filter', 'Authentication', 'Advocates', '$http', '$modal', 'tenants',
+	function($rootScope, $scope, $state, $location, $timeout, $filter, Authentication, Advocates, $http, $modal, tenants) {
+
+		$scope.user = Authentication.user;
+		$scope.tenants = tenants;
+		$scope.bbls = {};
+
+		$scope.currentLocation = $location.protocol() + '://' + $location.host() + ($location.port() !== '80' ? ':' + $location.port() : '');
+		console.log($scope.currentLocation);
+
+		// used for the bblsToAddress filter
+		angular.forEach(tenants, function(tenant) {
+			// get a title case version of the streetname from geoclient
+			var streetName = tenant.geo.streetName.split(' ').map(function(i) { return i[0].toUpperCase() + i.substr(1).toLowerCase(); }).join(' ');
+			$scope.bbls[tenant.geo.bbl] = tenant.geo.streetNum + ' ' + streetName;
+		});
+
+		$scope.view = 'individual';
+		$scope.changeView = function(newView) {
+			$scope.view = newView;
+		};
+
+		$scope.viewTenant = function(tenant) {
+			// Advocates.setCurrent(tenant);
+			Advocates.setCurrentTenant(tenant);
+			$state.go('manageTenant.home', { id: tenant._id});
+		};
+
+	}]);
+
+'use strict';
+
+angular.module('advocates').controller('ManageTenantController', [
+					'$scope', '$stateParams', 'Authentication', 'Advocates', 'tenant',
+	function($scope, $stateParams, Authentication, Advocates, tenant) {
+
+		$scope.user = Authentication.user;
+		$scope.tenant = tenant;
+
+
+		$scope.$watch('tenant', function (tenant) {
+			console.log('change in root', tenant);
+		}, true);
+
+	}])
+	.controller('ManageTenantHomeController', ['$scope', '$stateParams', '$filter', 'deviceDetector', 'Advocates', 'Lightbox',
+		function($scope, $stateParams, $filter, deviceDetector, Advocates, Lightbox) {
+
+
+
+			$scope.$watch('tenant', function (tenant) {
+				console.log('change in home', tenant);
+				$scope.photos = [];
+				$scope.tenant.activity.forEach(function (act) {
+					$scope.photos = $scope.photos.concat(act.photos);
+				});
+			}, true);
+
+
+
+
+			$scope.isDesktop = deviceDetector.isDesktop();
+
+			$scope.activityTemplate = function(key) {
+				return $filter('activityTemplate')(key);
+			};
+
+			$scope.compareDates = function(start, created) {
+				var startDate = new Date(start).setHours(0,0,0,0);
+				var createdDate = new Date(created).setHours(0,0,0,0);
+				return startDate !== createdDate;
+			};
+
+			$scope.openLightboxModal = function (photos, index) {
+				Lightbox.openModal(photos, index);
+			};
+
+
+		}])
+		.controller('ManageTenantProblemsController', ['$rootScope', '$scope', '$state', '$stateParams', 'Advocates', 'ProblemsResource',
+			function($rootScope, $scope, $state, $stateParams, Advocates, ProblemsResource) {
+
+				$scope.problemsAlert = false;
+
+				$scope.saveProblems = function () {
+
+					console.log('before', $scope.tenant);
+
+					$rootScope.loading = true;
+					$scope.problemsAlert = false;
+
+					var tenant = new ProblemsResource($scope.tenant);
+					tenant.$updateManagedChecklist({ id: $scope.tenant._id },
+						function(response) {
+							console.log('after', response);
+
+							// need to use angular.extend rather than scope.tenant = response
+							// this will actually update all the attributes
+							// (and trigger an update in parent controllers)
+							angular.extend($scope.tenant, response);
+
+							$rootScope.loading = false;
+							$state.go('manageTenant.home');
+						}, function(err) {
+							$rootScope.loading = false;
+							$scope.problemsAlert = true;
+
+						});
+
+				};
+
+
+			}]);
+
+'use strict';
+
+angular.module('advocates').controller('NewTenantSignupController', ['$rootScope', '$scope', '$state', '$location', '$filter', 'Authentication', '$http', '$modal',
+	function($rootScope, $scope, $state, $location, $filter, Authentication, $http, $modal) {
+
+		$scope.authentication = Authentication;
+		$scope.newTenantUser = {};
+		// create newTenantUser.problems only once (handles next/prev)
+		$scope.newTenantUser.problems = [];
+		$scope.newTenantUser.sharing = {
+			enabled: true
+		};
+
+		/**
+			*
+			*   DEBUG STUFF
+			*
+			*/
+
+		if(typeof DEBUG !== 'undefined' && DEBUG == true) {
+
+			$scope.newTenantUser = {
+				firstName: 'Pete',
+				lastName: 'Best',
+				borough: 'Brooklyn',
+				address: '654 Park Place',
+				unit: '1RF',
+				phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
+				problems: [],
+				sharing: {
+					enabled: true
+				}
+			};
+		}
+
+
+		$scope.userError = false;
+
+		$scope.createNewTenant = function (isValid) {
+
+			if(typeof DEBUG !== 'undefined' && DEBUG == true) console.log('create account pre save', $scope.newTenantUser);
+
+			if(isValid) {
+
+				$scope.newTenantUser.firstName = $filter('titlecase')($scope.newTenantUser.firstName);
+				$scope.newTenantUser.lastName = $filter('titlecase')($scope.newTenantUser.lastName);
+
+				$scope.userError = false;
+				$rootScope.loading = true;
+
+				$http.post('/api/advocates/tenants/create', $scope.newTenantUser).success(function(response) {
+
+					// If successful we assign the response to the global user model
+					$rootScope.loading = false;
+					// $scope.authentication.user = response;
+					if(typeof DEBUG !== 'undefined' && DEBUG == true) console.log('create account post save', response);
+
+					$state.go('advocateHome');
+
+
+				}).error(function(err) {
+					$rootScope.loading = false;
+					// console.log(err);
+        	$scope.error = err;
+				});
+
+			} else {
+				$scope.userError = true;
+			}
+
+
+		};
+
+
+	}]);
+
+'use strict';
+
+angular.module('advocates')
+  .directive('addDetails', ['$rootScope', '$filter', '$sce', '$timeout', 'Activity', 'Advocates', 'Problems',
+    function ($rootScope, $filter, $sce, $timeout, Activity, Advocates, Problems) {
+    return {
+      restrict: 'E',
+      templateUrl: 'modules/advocates/partials/add-details.client.view.html',
+      scope: {
+        tenant: '='
+      },
+      link: function (scope, element, attrs) {
+
+        // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
+        // scope.action is a $resource!
+        scope.problems = [];
+
+        scope.$watch('tenant', function (tenant) {
+          console.log('add details');
+          if(tenant) {
+            scope.tenant = tenant;
+            for(var i = 0; i < scope.tenant.problems.length; i++) {
+              scope.problems.push(scope.tenant.problems[i].title);
+            }
+            // Advocates.currentTenant = scope.tenant;
+          }
+        });
+
+        scope.status = {
+          expanded: false,
+          tagging: false,
+          closeAlert: false,
+          closeErrorAlert: true,
+          formSubmitted: false,
+          completed: false
+        };
+        //if(!scope.completed) scope.completed = false;
+
+        scope.newActivity = {
+          date: '',
+          title: 'modules.activity.other.statusUpdate',
+          key: 'statusUpdate',
+          relatedProblems: [],
+          photos: []
+        };
+
+        scope.expand = function(event) {
+          event.preventDefault();
+          scope.status.expanded = true;
+          // setTimeout(function() { element[0].querySelector('textarea').focus(); }, 0);
+          // setTimeout(function() { element[0].querySelector('textarea').focus(); }, 0);
+
+        };
+
+        scope.toggleTagging = function() {
+          scope.status.tagging = !scope.status.tagging;
+        };
+
+        scope.selectProblem = function(problem) {
+
+          if(!this.isSelectedProblem(problem)) {
+            scope.newActivity.relatedProblems.push(problem);
+          } else {
+            var i = scope.newActivity.relatedProblems.indexOf(problem);
+            scope.newActivity.relatedProblems.splice(i, 1);
+            // $scope.checklist[area].numChecked--;
+          }
+        };
+        scope.isSelectedProblem = function(problem) {
+          // if(!$scope.newIssue.issues[area]) return false;
+          return scope.newActivity.relatedProblems.indexOf(problem) !== -1;
+        };
+
+        scope.addPhoto = function(file) {
+
+          if(file) {
+            scope.newActivity.photos.push(file);
+            // console.log(file);
+            // console.log(file.lastModifiedDate);
+            if(file.lastModifiedDate) scope.newActivity.date = file.lastModifiedDate;
+          }
+
+        };
+
+        scope.closeAlert = function() {
+          scope.status.closeAlert = true;
+        };
+
+        scope.createActivity = function(isValid) {
+
+          scope.status.formSubmitted = true;
+
+          if(isValid) {
+            $rootScope.loading = true;
+
+            console.time("statusUpdate");
+
+            // console.log('create activity pre creation', scope.newActivity);
+
+            // [TODO] have an actual section for the 'area' field in the activity log
+            // if(scope.newActivity.description && scope.newActivity.area) scope.newActivity.description = scope.newActivity.area + ' - ' + scope.newActivity.description;
+            // else if(scope.newActivity.area) scope.newActivity.description = scope.newActivity.area;
+
+            var activity = new Activity(scope.newActivity);
+
+            // console.log('create activity post creation', scope.newActivity);
+
+            activity.$saveManagedByID({ id: scope.tenant._id }, function(response) {
+
+              // console.log('create activity post save', response);
+              console.timeEnd("statusUpdate");
+
+              $rootScope.loading = false;
+              scope.status.completed = true;
+              scope.status.formSubmitted = false;
+              scope.status.expanded = false;
+
+              scope.newActivity = {
+                date: '',
+                title: 'modules.activity.other.statusUpdate',
+                key: 'statusUpdate',
+                relatedProblems: [],
+                photos: []
+              };
+
+              // need to use angular.extend rather than scope.tenant = response
+              // this will actually update all the attributes
+              // (and trigger an update in parent controllers)
+              angular.extend(scope.tenant, response);
+
+            }, function(errorResponse) {
+              $rootScope.loading = false;
+              scope.error = errorResponse.data.message;
+              scope.status.closeErrorAlert = false;
+            });
+          }
+
+        }; // end of create activity
+
+
+      }
+    };
+  }]);
+
+'use strict';
+
+angular.module('advocates').filter('toAddress', function() {
+  return function(input, bbls) {
+    return bbls[input];
+  };
+});
+
+'use strict';
+
+// Users service used for communicating with the users REST endpoint
+angular.module('advocates')
+	.factory('AdvocatesResource', ['$resource', function($resource) {
+			return $resource('api/advocates', {}, {
+				// update: {
+				// 	method: 'PUT'
+				// },
+				// getTenants: {
+				// 	method: 'GET',
+				// 	url: '/api/advocates/tenants'
+				// },
+				validateNewUser: {
+					method: 'GET',
+					url: '/api/advocates/validate/new'
+				}
+	      // ,
+	      // getIssues: {
+	      //   method: 'GET'
+	      // }
+			});
+		}
+	])
+	.factory('Advocates', ['AdvocatesResource', '$q', function(AdvocatesResource, $q) {
+
+		var _this = this;
+
+		// _this.query = function() {
+		//
+		// 	var queried = $q.defer();
+		//
+		// 	AdvocatesResource.query(function (tenants) {
+		// 		_this._tenants = tenants;
+		// 		queried.resolve(tenants);
+		// 	});
+		//
+		// 	return queried.promise;
+		// };
+
+		return {
+			query: AdvocatesResource.query,
+			setCurrentTenant: function(tenant) {
+				_this._currentTenant = tenant;
+			},
+			getTenantByCurrentOrId: function(id) {
+
+				var filtered = $q.defer();
+
+				var filterTenant = function () {
+					var tenant = _this._tenants.filter(function (t) {
+						return t._id === id;
+					});
+					filtered.resolve(tenant[0]);
+				};
+
+				if(_this._currentTenant) {
+					console.log('current');
+					filtered.resolve(_this._currentTenant);
+				} else {
+					console.log('query');
+					AdvocatesResource.query(function (tenants) {
+						console.log(tenants);
+						filtered.resolve(tenants.filter(function (t) { return t._id === id; })[0]);
+					});
+				}
+
+				// if(_this._currentTenant) {
+				// 	console.log('current');
+				// 	filtered.resolve(_this._currentTenant);
+				// } else if(!_this._tenants) {
+				// 	console.log('query');
+				// 	_this.query().then(function () {
+				// 		filterTenant();
+				// 	});
+				// } else {
+				// 	console.log('filter');
+				// 	filterTenant();
+				// }
+
+				return filtered.promise;
+			}
+		};
+
+		//
+		// this.
+	}]);
 
 'use strict';
 
@@ -1609,10 +2245,20 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
         $rootScope.globalStyles = '';
       }
 
-      if(Authentication.user && toState.name === 'landing') {
+      if(Authentication.user && Authentication.user.roles.indexOf('advocate') !== -1) {
+        $rootScope.globalStyles += ' advocate-view';
+      }
+
+      if(Authentication.user && Authentication.user.roles.indexOf('tenant') !== -1 && toState.name === 'landing') {
         event.preventDefault();
         $rootScope.globalStyles = '';
         $state.go('home');
+      }
+
+      if(Authentication.user && Authentication.user.roles.indexOf('advocate') !== -1 && toState.name === 'landing') {
+        event.preventDefault();
+        $rootScope.globalStyles = '';
+        $state.go('advocateHome');
       }
 
       if(!Authentication.user && toState.data && toState.data.protected) {
@@ -1635,14 +2281,14 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
 angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide',
 	function($stateProvider, $urlRouterProvider, $provide) {
 
-		$provide.decorator('accordionGroupDirective', ["$delegate", function($delegate) {
-	    $delegate[0].templateUrl = 'bootstrap-templates/accordion/accordion-group.html';
-	    return $delegate;
-	  }]);
-		$provide.decorator('accordionDirective', ["$delegate", function($delegate) {
-	    $delegate[0].templateUrl = 'bootstrap-templates/accordion/accordion.html';
-	    return $delegate;
-	  }]);
+		// $provide.decorator('accordionGroupDirective', function($delegate) {
+	  //   $delegate[0].templateUrl = 'bootstrap-templates/accordion/accordion-group.html';
+	  //   return $delegate;
+	  // });
+		// $provide.decorator('accordionDirective', function($delegate) {
+	  //   $delegate[0].templateUrl = 'bootstrap-templates/accordion/accordion.html';
+	  //   return $delegate;
+	  // });
 
 
 		// Redirect to home view when route not found
@@ -1675,16 +2321,16 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 		})
 		.state('espanol', {
 			url: '/espanol',
-			onEnter: ["LocaleService", "$state", function(LocaleService, $state) {
+			onEnter: function(LocaleService, $state) {
 				LocaleService.setLocaleByName('es_mx');
 				$state.go('landing');
-			}]
+			}
 		})
 		.state('donate', {
 			url: '/donate',
-			onEnter: ["$window", function($window) {
+			onEnter: function($window) {
 		 		$window.open('https://www.nycharities.org/give/donate.aspx?cc=4125', '_self');
- 			}]
+ 			}
 		})
 		.state('home', {
 			url: '/home',
@@ -1858,7 +2504,7 @@ angular.module('core').controller('LandingController', ['$scope', 'Authenticatio
 
 angular.module('core').directive('bottomOnClick', ['$document', '$timeout', function($document, $timeout) {
   return {
-    controller: ["$parse", "$element", "$attrs", "$scope", function($parse, $element, $attrs, $scope) {
+    controller: function($parse, $element, $attrs, $scope) {
 
         var parent = $attrs.bottomOnClick;
         var parentElm = document.getElementById(parent);
@@ -1868,7 +2514,7 @@ angular.module('core').directive('bottomOnClick', ['$document', '$timeout', func
             parentElm.scrollTop = parentElm.scrollHeight;
           }, 0);
         });
-    }]
+    }
   };
 }]);
 
@@ -1902,14 +2548,14 @@ angular.module('core')
 
 angular.module('core').directive('filesModel', function() {
   return {
-    controller: ["$parse", "$element", "$attrs", "$scope", function($parse, $element, $attrs, $scope){
+    controller: function($parse, $element, $attrs, $scope){
       var exp = $parse($attrs.filesModel);
 
       $element.on('change', function(){
         exp.assign($scope, this.files);
         $scope.$apply();
       });
-    }]
+    }
   };
 });
 'use strict';
@@ -1946,7 +2592,7 @@ angular.module('core')
 
 'use strict';
 
-angular.module('core').directive('fullBg', ["$window", function($window) {
+angular.module('core').directive('fullBg', function($window) {
     return function (scope, element, attrs) {
 
       function getWidth() {
@@ -1968,7 +2614,7 @@ angular.module('core').directive('fullBg', ["$window", function($window) {
       });
       element.css('width', getWidth() + 'px');
     };
-}]);
+});
 'use strict';
 
 angular.module('core')
@@ -1998,7 +2644,7 @@ angular.module('core')
 
 'use strict';
 
-angular.module('core').directive('goToTop', ["$document", function($document) {
+angular.module('core').directive('goToTop', function($document) {
     return {
         restrict: 'A',
         link: function (scope, elm, attrs) {
@@ -2025,7 +2671,7 @@ angular.module('core').directive('goToTop', ["$document", function($document) {
             });
         }
     };
-}]);
+});
 
 'use strict';
 
@@ -2096,7 +2742,7 @@ angular.module('core').directive('inheritHeight', ['$window', '$timeout', 'devic
 
 angular.module('core').directive('jumpTo', ['$document', function($document) {
   return {
-    controller: ["$parse", "$element", "$attrs", "$scope", function($parse, $element, $attrs, $scope) {
+    controller: function($parse, $element, $attrs, $scope) {
 
         var id = $attrs.jumpTo;
         var duration = 1000; //milliseconds
@@ -2110,17 +2756,17 @@ angular.module('core').directive('jumpTo', ['$document', function($document) {
         $element.bind('click', function(e) {
           $document.scrollToElement(someElement, offset, duration, easing);
         });
-    }]
+    }
   };
 }]);
 'use strict';
 
-angular.module('core').directive('languageSelect', ["LocaleService", "$window", "$location", function (LocaleService, $window, $location) { 'use strict';
+angular.module('core').directive('languageSelect', function (LocaleService, $window, $location) { 'use strict';
   return {
     restrict: 'A',
     replace: true,
     templateUrl: 'modules/core/partials/language-select.client.view.html',
-    controller: ["$scope", function ($scope) {
+    controller: function ($scope) {
       $scope.currentLocaleDisplayName = LocaleService.getLocaleDisplayName();
       $scope.localesDisplayNames = LocaleService.getLocalesDisplayNames();
       $scope.visible = $scope.localesDisplayNames &&
@@ -2130,17 +2776,17 @@ angular.module('core').directive('languageSelect', ["LocaleService", "$window", 
         LocaleService.setLocaleByDisplayName(locale);
         // FYI: locale changes happens in LocaleService at /services/locale.client.service.js
       };
-    }]
+    }
   };
-}]);
+});
 'use strict';
 
-angular.module('core').directive('languageToggle', ["LocaleService", "$window", "$location", function (LocaleService, $window, $location) { 'use strict';
+angular.module('core').directive('languageToggle', function (LocaleService, $window, $location) { 'use strict';
   return {
     restrict: 'A',
     replace: true,
     templateUrl: 'modules/core/partials/language-toggle.client.view.html',
-    controller: ["$scope", function ($scope) {
+    controller: function ($scope) {
 
 
       var getLocaleName = function() {
@@ -2161,13 +2807,13 @@ angular.module('core').directive('languageToggle', ["LocaleService", "$window", 
         getLocaleName();
         // FYI: locale changes happens in LocaleService at /services/locale.client.service.js
       };
-    }]
+    }
   };
-}]);
+});
 
 'use strict';
 
-angular.module('core').directive('loading', ["$document", function($document) {
+angular.module('core').directive('loading', function($document) {
     return {
         restrict: 'E',
         templateUrl: 'modules/core/partials/loading.client.view.html',
@@ -2175,7 +2821,7 @@ angular.module('core').directive('loading', ["$document", function($document) {
 
         }
     };
-}]);
+});
 
 'use strict';
 
@@ -2205,7 +2851,7 @@ angular.module('core')
 
 'use strict';
 
-angular.module('core').directive('phoneInput', ["$filter", "$browser", function($filter, $browser) {
+angular.module('core').directive('phoneInput', function($filter, $browser) {
   return {
     require: 'ngModel',
     link: function($scope, $element, $attrs, ngModelCtrl) {
@@ -2256,7 +2902,7 @@ angular.module('core').directive('phoneInput', ["$filter", "$browser", function(
       });
     }
   };
-}]);
+});
 'use strict';
 
 angular.module('core')
@@ -2455,7 +3101,7 @@ angular.module('core').directive('twitterFollow', ['$timeout', function($timeout
 
 angular.module('core').directive('variableHeight', ['$document', '$timeout', function($document, $timeout) {
   return {
-    controller: ["$parse", "$element", "$attrs", "$scope", function($parse, $element, $attrs, $scope) {
+    controller: function($parse, $element, $attrs, $scope) {
 
         var parent = $attrs.variableHeight;
         var parentElm = document.getElementById(parent);
@@ -2463,7 +3109,7 @@ angular.module('core').directive('variableHeight', ['$document', '$timeout', fun
         $scope.$watch(function() {
           angular.element(parentElm).css('height', $element[0].offsetHeight + 'px');
         });
-    }]
+    }
   };
 }]);
 
@@ -2613,7 +3259,7 @@ angular.module('core').filter('trustTranslate', ['$sce', '$filter', 'Authenticat
 'use strict';
 
 //Menu service used for managing  menus
-angular.module('core').service('LocaleService', ["$translate", "LOCALES", "$rootScope", "tmhDynamicLocale", "$location", function ($translate, LOCALES, $rootScope, tmhDynamicLocale, $location) {
+angular.module('core').service('LocaleService', function ($translate, LOCALES, $rootScope, tmhDynamicLocale, $location) {
 
   // PREPARING LOCALES INFO
   var localesObj = LOCALES.locales;
@@ -2678,7 +3324,7 @@ angular.module('core').service('LocaleService', ["$translate", "LOCALES", "$root
       return _LOCALES_DISPLAY_NAMES;
     }
   };
-}]);
+});
 'use strict';
 
 //Menu service used for managing  menus
@@ -3349,8 +3995,8 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
 
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$filter', 'Authentication', 'Referrals', '$http', '$modal', '$timeout',
-	function($rootScope, $scope, $location, $filter, Authentication, Referrals, $http, $modal, $timeout) {
+angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$filter', 'Authentication', 'AdvocatesResource', '$http', '$modal',
+	function($rootScope, $scope, $location, $filter, Authentication, AdvocatesResource, $http, $modal) {
 
 		$scope.authentication = Authentication;
 		$scope.newUser = {};
@@ -3399,14 +4045,15 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			// handles back button
 			if(!$scope.accessCode.valueEntered || $scope.accessCode.valueEntered !== $scope.accessCode.value) {
 
-				var referral = new Referrals();
-		    referral.$validate({ code: $scope.accessCode.value },
+				var referral = new AdvocatesResource();
+		    referral.$validateNewUser({ code: $scope.accessCode.value },
 		      function(success) {
-		        if(success.referral) {
+		        if(success.advocate) {
 		          $scope.accessCode.valid = $rootScope.validated = true;
 		          $scope.accessCode.valueEntered = $scope.accessCode.value;
-		          $scope.newUser.referral = success.referral;
-							$scope.newUser.referral.code = $scope.accessCode.value;
+							$scope.newUser.advocate = success.advocate;
+							$scope.newUser.advocateRole = success.advocateRole;
+		          $scope.referral = success.referral;
 							$scope.newUser.sharing.enabled = true;
 							$location.path('/onboarding/success');
 							$scope.codeError = false;
@@ -3463,7 +4110,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 				$scope.error = undefined;
 				$rootScope.loading = true;
 
-				$http.post('/api/auth/signup', $scope.newUser).success(function(response) {
+				$http.post('/api/tenants/signup', $scope.newUser).success(function(response) {
 
 					// If successful we assign the response to the global user model
 					$scope.authentication.user = response;
@@ -3538,31 +4185,6 @@ angular.module('onboarding').directive('selectionList', function selectionList(/
 
 'use strict';
 
-angular.module('onboarding').factory('AccessCodeService', ['$resource', function($resource) {
-
-	return $resource('access-code', {}, {
-		save: {
-			method: 'POST'
-		},
-		get: {
-			method: 'GET'
-		},
-		delete: {
-			method: 'DELETE'
-		}
-	});
-
-}]);
-
-'use strict';
-
-angular.module('onboarding').factory('UserListingService', ['$resource', function($resource) {
-  // Public API
-  return $resource('users/list');
-}]);
-
-'use strict';
-
 // Setting up route
 angular.module('problems').run(['$rootScope', '$state', '$window', 'Authentication', 'Users', 'Problems',
   function($rootScope, $state, $window, Authentication, Users, Problems) {
@@ -3633,8 +4255,8 @@ angular.module('problems').controller('ModalProblemController', ['$scope', 'Prob
 
 'use strict';
 
-angular.module('problems').controller('ProblemsController', ['$rootScope', '$scope', '$state', 'Authentication', 'Users', 'Problems',
-	function($rootScope, $scope, $state, Authentication, Users, Problems) {
+angular.module('problems').controller('ProblemsController', ['$rootScope', '$scope', '$state', 'Authentication', 'Users', 'ProblemsResource', 'Problems',
+	function($rootScope, $scope, $state, Authentication, Users, ProblemsResource, Problems) {
 
 		$scope.user = Authentication.user;
 
@@ -3648,7 +4270,7 @@ angular.module('problems').controller('ProblemsController', ['$rootScope', '$sco
 				toState.updated = true;
 			  $rootScope.loading = true;
 
-			  var user = new Users(Authentication.user);
+			  var user = new ProblemsResource(Authentication.user);
 				user.$updateChecklist(function(response) {
 
 			    $rootScope.loading = false;
@@ -3681,8 +4303,12 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
     return {
       templateUrl: '/modules/problems/partials/problems-list.client.view.html',
       restrict: 'E',
-      scope: false,
+      scope: {
+        ourUser: '='
+      },
       link: function postLink(scope, element, attrs) {
+
+        console.log(scope.ourUser);
 
 					// problemAssembler, if we don't have the problem set we just clear it out here
 					var newProblem = function(problem) {
@@ -3698,18 +4324,17 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 				    return newProb;
 					};
 
-
           // this is a reference to whichever user we're working with, i.e.
           // scope.newUser or Authentication.user
           // scope.ourUser;
 
-          // user exists
-          if(!Authentication.user) {
-            // This needs to be tested to see if it actually... works...
-            scope.ourUser = scope.newUser;
-          } else {
-            scope.ourUser = Authentication.user;
-          }
+          // // user exists
+          // if(!Authentication.user) {
+          //   // This needs to be tested to see if it actually... works...
+          //   scope.ourUser = scope.newUser;
+          // } else {
+          //   scope.ourUser = Authentication.user;
+          // }
 
           // get problems from service
           Problems.getLocalFile().then(function (data) {
@@ -3732,8 +4357,7 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 
           });
 
-
-          scope.hasChangedProblems = false;
+          scope.$parent.hasChangedProblems = false;
 
           // modal opening/closing
           // passing scopes
@@ -3779,7 +4403,7 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 
               // check if anything has changed...
               if(numIssuesOnModalOpen != ourUserCurrentProblem.issues.length) {
-                scope.hasChangedProblems = true;
+                scope.$parent.hasChangedProblems = true;
               }
 
               // check if the modal was closed and no issues were selectedIssues
@@ -3945,7 +4569,23 @@ angular.module('problems').filter('problemTitle', function() {
 
 'use strict';
 
-angular.module('onboarding').factory('Problems', ['$http', '$q', 'Authentication',
+angular.module('onboarding')
+.factory('ProblemsResource', ['$resource', 'UpdateUserInterceptor',
+	function($resource, UpdateUserInterceptor) {
+		return $resource('', {}, {
+			updateChecklist: {
+				method: 'PUT',
+				url: 'api/tenants/checklist',
+				interceptor: UpdateUserInterceptor
+			},
+			updateManagedChecklist: {
+				method: 'PUT',
+				url: 'api/advocates/tenants/:id/checklist'
+			}
+		});
+	}
+])
+.factory('Problems', ['$http', '$q', 'Authentication',
 	function($http, $q, Authentication){
 
 		var requestLocalFile = function() {
@@ -3975,10 +4615,7 @@ angular.module('onboarding').factory('Problems', ['$http', '$q', 'Authentication
 				return problems;
 			}
 		};
-
-
-
-	}]);
+}]);
 
 'use strict';
 
@@ -4139,7 +4776,7 @@ angular.module('users').config(['$stateProvider', '$urlRouterProvider',
 				url: '/password/reset/:token',
 				templateUrl: 'modules/users/views/password/reset-password.client.view.html'
 			});
-			
+
 	}
 ]);
 
@@ -4174,8 +4811,22 @@ angular.module('users').controller('AuthenticationController', ['$rootScope', '$
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;
 
-        // console.log($scope.authentication.user);
-        $state.go('home');
+        switch(response.roles[0]) {
+          case "admin":
+            $state.go('admin');
+            break;
+          case "advocate":
+            $state.go('advocateHome');
+            break;
+          case "tenant":
+            $state.go('home');
+            break;
+          default:
+            $state.go('home');
+            break;
+        }
+
+
       }).error(function(response) {
 
         $timeout(function () {
@@ -4262,6 +4913,9 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
       $scope.user = Authentication.user;
+
+      console.log($scope.user);
+
       if(fromState.name === 'settings.profile') {
       	$scope.successfulUpdate = false;
       }
@@ -4344,6 +4998,43 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 				}
 			}
     };
+
+
+    // Update a user phone
+    $scope.updateUserPhone = function(isValid) {
+      if (isValid) {
+        $scope.success = $scope.error = null;
+        var user = new Users($scope.user);
+
+        if(isValid) {
+
+				$scope.userError = false;
+				$rootScope.loading = true;
+
+				user.$updatePhone(function(response) {
+
+					// If successful we assign the response to the global user model
+
+					$rootScope.loading = false;
+					$scope.user = Authentication.user;
+
+					$state.go('settings.profile');
+	    		$scope.passwordVerified = false;
+	    		$scope.successfulUpdate = true;
+
+
+				}, function(err) {
+					$rootScope.loading = false;
+					console.log(err);
+        	$scope.error = err;
+				});
+
+				} else {
+					$scope.userError = true;
+				}
+			}
+    };
+
 
     // Change user password
     $scope.changeUserPassword = function() {
@@ -4444,7 +5135,6 @@ angular.module('users').factory('UpdateUserInterceptor', ['Authentication',
 	}
 ]);
 
-
 angular.module('users').factory('Users', ['$resource', 'UpdateUserInterceptor',
 	function($resource, UpdateUserInterceptor) {
 		return $resource('api/users', {}, {
@@ -4452,14 +5142,14 @@ angular.module('users').factory('Users', ['$resource', 'UpdateUserInterceptor',
 				method: 'PUT',
 				interceptor: UpdateUserInterceptor
 			},
+			updatePhone: {
+				method: 'PUT',
+				url: 'api/users/phone',
+				interceptor: UpdateUserInterceptor
+			},
 			toggleSharing: {
 				method: 'GET',
-				url: 'api/users/public'
-			},
-			updateChecklist: {
-				method: 'PUT',
-				url: 'api/users/checklist',
-				interceptor: UpdateUserInterceptor
+				url: 'api/tenants/public'
 			}
       // ,
       // getIssues: {

@@ -9,17 +9,23 @@ var _ = require('lodash'),
     mongoose = require('mongoose'),
     rollbar = require('rollbar'),
     problemsHandler = require('./problems.server.controller.js'),
-    User = mongoose.model('User');
+    User = mongoose.model('User'),
+    Activity = mongoose.model('Activity');
 
 var list = function(req, res) {
-  if(req.user) {
-    res.json(req.user.activity);
-  } else {
-    rollbar.handleError("User is not signed in", req);
-    res.status(401).send({
-      message: "User is not signed in"
-    });
-  }
+
+  // Activity.populate(req.user.activity, { path: 'loggedBy', select: 'fullName' })
+  //   .then(function (activities) {
+  //     res.json(activities);
+  //   })
+  //   .fail(function (err) {
+  //     rollbar.handleError(err, req);
+  //     res.status(500).send({ message: errorHandler.getErrorMessage(err) });
+  //   });
+
+
+
+  res.json(req.user.activity);
 };
 
 // GPS processing helper function
@@ -271,73 +277,116 @@ var processAndSavePhoto = function(file) {
 };
 
 var create = function(req, res, next) {
-  var user = req.user;
-  var activity = req.body;
 
-  // console.log(req.body, req.files);
-  // don't forget to delete all req.files when done
+  if(req.user) {
 
-  // if we're coming from users.requiresLogin, is this still necessary?
-  if(user) {
+    // format req.body;
+    var newActivity = _.clone(req.body);
+    req.body = {};
+
+    // updating a managed tenant
+    if(res.locals.tenant) {
+      req.body.activity = res.locals.tenant.activity;
+      // store updates to flag objects
+      req.body.followUpFlags = res.locals.tenant.followUpFlags;
+      req.body.actionFlags = res.locals.tenant.actionFlags;
+    } else {
+      req.body.activity = req.user.activity;
+      // store updates to flag objects
+      req.body.followUpFlags = req.user.followUpFlags;
+      req.body.actionFlags = req.user.actionFlags;
+    }
 
     // remove from follow up flags
-    var idx = _.findIndex(user.followUpFlags, { key: activity.key});
+    var idx = _.findIndex(req.body.followUpFlags, { key: newActivity.key});
     // if(idx < 0) return res.status(500).send({ message: 'Follow up key not found, this is bad' });
+<<<<<<< HEAD
     if(idx !== -1) user.followUpFlags.splice(idx, 1);
+=======
+    if(idx !== -1) req.body.followUpFlags.splice(idx, 1);
+>>>>>>> org-mvp
 
     // add to action flags
-    if(!_.contains(user.actionFlags, activity.key)) user.actionFlags.push(activity.key);
+    if(!_.contains(req.body.actionFlags, newActivity.key)) req.body.actionFlags.push(newActivity.key);
 
+<<<<<<< HEAD
+=======
+    // stored logged by info
+    // we aren't gonna store a reference to the author
+    // in the interest of all activity data
+    // being *unchangable* from the time that its created.
+    // so instead this is just the author's name at the time
+    newActivity.loggedBy = req.user.fullName;
+
+
+
+    // this will allow you to store a reference to the author
+    //
+    // newActivity.loggedBy = req.user._userdata;
+    //
+    // // for the time being there's only one referenced role
+    // // how to acct when there could be multiple types of user data?
+    // var role = req.user.roles[0];
+    // // convert from role to Model, bleh
+    // newActivity.loggedByKind = role.charAt(0).toUpperCase() + role.substring(1);
+
+    // console.log(newActivity);
+
+>>>>>>> org-mvp
     // init photos array
-    activity.photos = [];
+    newActivity.photos = [];
 
     var files = req.files['photos'];
 
-    console.log('files', req.files);
+    // console.log('files', req.files);
 
     // init photos queue
     var uploadQueue = [];
 
     for(var file in files) uploadQueue.push(processAndSavePhoto(files[file]));
 
-    Q.allSettled(uploadQueue).then(function (results) {
+    Q.allSettled(uploadQueue)
+      .then(function (results) {
 
-      results.forEach(function (r) {
+        results.forEach(function (r) {
 
-        if(r.state !== 'fulfilled') {
-          console.log(r.reason);
-          rollbar.handleError(r.reason, req);
-          res.status(500).send({ message: "Photo is not fulfilled" });
-        }
+          if(r.state !== 'fulfilled') {
+            console.log(r.reason);
+            rollbar.handleError(r.reason, req);
+            res.status(500).send({ message: "Photo is not fulfilled" });
+          }
 
-        activity.photos.push({
-          url: r.value.url,
-          thumb: r.value.thumb,
-          exif: r.value.exif
+          newActivity.photos.push({
+            url: r.value.url,
+            thumb: r.value.thumb,
+            exif: r.value.exif
+          });
         });
+
+        // add ref to problems
+        // we aren't using this right now so i'll handle it later
+        // if(_.contains(problemsHandler.getProblemKeys(), newActivity.key)) {
+        //   var prob = req.user.problems.getByKey(newActivity.key);
+        //   prob.startDate = newActivity.startDate;
+        //   prob.description = newActivity.description;
+        //   prob.photos = newActivity.photos;
+        // }
+
+        // add activity object
+        req.body.activity.push(newActivity);
+
+        next();
+
+      })  // end of Q.allSettled
+      .fail(function (err) {
+
+        // s3 error
+
+        // console.log('s3 error', err);
+        rollbar.handleError(err, req);
+        res.status(500).send({ message: errorHandler.getErrorMessage(err) });
+
       });
-
-      // add ref to problems
-      if(_.contains(problemsHandler.getProblemKeys(), activity.key)) {
-        var prob = user.problems.getByKey(activity.key);
-        prob.startDate = activity.startDate;
-        prob.description = activity.description;
-        prob.photos = activity.photos;
-      }
-
-      // console.log('new activity', activity);
-
-      // add activity object
-      user.activity.push(activity);
-      req.body = {};
-
-      next();
-
-    })  // end of Q.allSettled
-    .fail(function (err) {
-      // console.log('s3 error', err);
-      rollbar.handleError(err, req);
-    });
 
   } else {
     res.status(400).send({

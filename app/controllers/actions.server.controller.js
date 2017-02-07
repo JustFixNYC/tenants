@@ -4,7 +4,7 @@ var _ = require('lodash'),
   errorHandler = require('./errors.server.controller'),
   addressHandler = require('../services/address.server.service'),
   mongoose = require('mongoose'),
-  User = mongoose.model('User'),
+  Tenant = mongoose.model('Tenant'),
   fullActions = require('../data/actions.json');
 
 /* things:
@@ -169,20 +169,28 @@ var list = function(req, res) {
   }
 };
 
-
+/**
+ *
+ *      TODO: decouple this from req.user and updating tenant directly
+ *
+ */
 var followUp = function(req, res) {
 
-  var id = req.user._id,
+  var userdata = req.user._userdata,
       key = req.body.key,
       startDate = req.body.startDate;       // this might be undefined - mongoose assigns the default value
   var query;
 
+  // var oldBody = _.clone(req.body);
+  // req.body = {};                          // building this to send to users.update
+
+
   if(req.query.type === 'add') {
-    query = User.update({ '_id': id }, {$addToSet: { 'followUpFlags': { key: key, startDate: startDate } }});
+    query = Tenant.update({ '_id': userdata }, {$addToSet: { 'followUpFlags': { key: key, startDate: startDate } }});
     req.body.isFollowUp = true;
   }
   else {
-    query = User.update({ '_id': id }, {$pull: { 'followUpFlags': { key : key } }});
+    query = Tenant.update({ '_id': userdata }, {$pull: { 'followUpFlags': { key : key } }});
     req.body.isFollowUp = false;
   }
 

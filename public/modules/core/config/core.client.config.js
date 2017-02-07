@@ -11,10 +11,20 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
         $rootScope.globalStyles = '';
       }
 
-      if(Authentication.user && toState.name === 'landing') {
+      if(Authentication.user && Authentication.user.roles.indexOf('advocate') !== -1) {
+        $rootScope.globalStyles += ' advocate-view';
+      }
+
+      if(Authentication.user && Authentication.user.roles.indexOf('tenant') !== -1 && toState.name === 'landing') {
         event.preventDefault();
         $rootScope.globalStyles = '';
         $state.go('home');
+      }
+
+      if(Authentication.user && Authentication.user.roles.indexOf('advocate') !== -1 && toState.name === 'landing') {
+        event.preventDefault();
+        $rootScope.globalStyles = '';
+        $state.go('advocateHome');
       }
 
       if(!Authentication.user && toState.data && toState.data.protected) {

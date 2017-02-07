@@ -7,7 +7,9 @@ var getUniqueErrorMessage = function(err) {
 	var output;
 
 	try {
-		var fieldName = err.err.substring(err.err.lastIndexOf('.$') + 2, err.err.lastIndexOf('_1'));
+		// support mongodb >= 3.2 (default: WiredTiger engine)
+		// "errmsg" : "E11000 duplicate key error collection: mean-dev.users index: email_1 dup key: { : \"test@user.com\" }"
+		var fieldName = err.errmsg.substring(err.errmsg.lastIndexOf('index: ') + 7, err.errmsg.lastIndexOf('_1'));
 		output = fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + ' is already registered.';
 
 	} catch (ex) {

@@ -5,52 +5,123 @@
   </div>
   <div class="row">
   <!-- <div class="col-xs-offset-2 col-xs-8 col-md-offset-5 col-md-12"> -->
-    <form name="userForm" data-ng-submit="updateUserProfile(userForm.$valid)" class="signin form-horizontal edit-profile-form col-xs-12 col-md-12" autocomplete="off">
-      <div class="form-group" ng-class="{ 'has-error' : userForm.$submitted && userForm.firstName.$invalid }">
-				<label class="control-label" for="firstName">{{'modules.onboarding.partials.onboardingDetails.firstName' | translate}}</label>
-				<input class="form-control" type="text" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.firstName' | translate}}" name="firstName" ng-model="user.firstName" required>
-				<div ng-show="userForm.$submitted || userForm.firstName.$touched">
-					<p ng-show="userForm.firstName.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.firstNameError' | translate}}</p>
-				</div>
-			</div>
+    <form name="userForm" data-ng-submit="updateUserProfile(userForm.$valid)" class="signin form-horizontal edit-profile-form" autocomplete="off">
 
-			<div class="form-group" ng-class="{ 'has-error' : userForm.$submitted && userForm.lastName.$invalid }">
-				<label class="control-label" for="lastName">{{'modules.onboarding.partials.onboardingDetails.lastName' | translate}}</label>
-				<input class="form-control" type="text" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.lastName' | translate}}" name="lastName" ng-model="user.lastName" required>
-				<div ng-show="userForm.$submitted || userForm.lastName.$touched">
-					<p ng-show="userForm.lastName.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.lastNameError' | translate}}</p>
-				</div>
-			</div>
+      <div class="row">
+        <div class="form-group col-xs-6" ng-class="{ 'has-error' : userForm.$submitted && userForm.firstName.$invalid }">
+  				<label class="control-label" for="firstName">{{'modules.onboarding.partials.onboardingDetails.firstName' | translate}}</label>
+  				<input class="form-control" type="text" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.firstName' | translate}}" name="firstName" ng-model="user.firstName" required>
+  				<div ng-show="userForm.$submitted || userForm.firstName.$touched">
+  					<p ng-show="userForm.firstName.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.firstNameError' | translate}}</p>
+  				</div>
+  			</div>
 
-			<div class="form-group" ng-class="{ 'has-error' : userForm.$submitted && userForm.borough.$invalid }">
-				<label class="control-label" for="borough">{{'modules.onboarding.partials.onboardingDetails.borough' | translate}}</label>
-				<div class="controls">
-					<label class="btn btn-default" ng-model="user.borough" btn-radio="'Brooklyn'" name="borough" required>{{'modules.onboarding.partials.onboardingDetails.brooklyn' | translate}}</label>
-					<label class="btn btn-default" ng-model="user.borough" btn-radio="'Queens'" name="borough" required>{{'modules.onboarding.partials.onboardingDetails.queens' | translate}}</label>
-					<label class="btn btn-default" ng-model="user.borough" btn-radio="'Bronx'" name="borough" required>{{'modules.onboarding.partials.onboardingDetails.bronx' | translate}}</label>
-					<label class="btn btn-default" ng-model="user.borough" btn-radio="'Manhattan'" name="borough" required>{{'modules.onboarding.partials.onboardingDetails.manhattan' | translate}}</label>
-					<label class="btn btn-default" ng-model="user.borough" btn-radio="'Staten Island'" name="borough" required>{{'modules.onboarding.partials.onboardingDetails.statenIsland' | translate}}</label>
-				</div>
-				<div ng-show="userForm.$submitted || userForm.borough.$touched">
-					<p ng-show="userForm.borough.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.errorBorough' | translate}}</p>
-				</div>
-			</div>
+  			<div class="form-group col-xs-6" ng-class="{ 'has-error' : userForm.$submitted && userForm.lastName.$invalid }">
+  				<label class="control-label" for="lastName">{{'modules.onboarding.partials.onboardingDetails.lastName' | translate}}</label>
+  				<input class="form-control" type="text" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.lastName' | translate}}" name="lastName" ng-model="user.lastName" required>
+  				<div ng-show="userForm.$submitted || userForm.lastName.$touched">
+  					<p ng-show="userForm.lastName.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.lastNameError' | translate}}</p>
+  				</div>
+  			</div>
+      </div>
 
-			<div class="form-group" ng-class="{ 'has-error' : userForm.$submitted && userForm.address.$invalid }">
-				<label class="control-label" for="address">{{'modules.users.views.settings.editProfile.address' | translate}}</label>
-				<input class="form-control" type="text" ng-attr-placeholder="{{'modules.users.views.settings.editProfile.title' | translate}}" name="address" ng-model="user.address" required>
-				<div ng-show="userForm.$submitted || userForm.address.$touched">
-					<p ng-show="userForm.address.$error.required" class="text-danger">{{'modules.onbarding.partials.onboardingDetails.streetError' | translate}}</p>
-				</div>
-			</div>
 
-			<div class="form-group apt-field" ng-class="{ 'has-error' : userForm.$submitted && userForm.unit.$invalid }">
-				<label class="control-label" for="unit">{{'modules.onboarding.partials.onboardingDetails.apt' | translate}}</label>
-				<input class="form-control" type="text" placeholder="{{'modules.onboarding.partials.onboardingDetails.apt' | translate}}" name="unit" ng-model="user.unit" required>
-				<div ng-show="userForm.$submitted || userForm.unit.$touched">
-					<p ng-show="userForm.unit.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.aptError' | translate}}</p>
-				</div>
-			</div>
+      <div ng-if="user.roles.indexOf('tenant') !== -1">
+        <div class="form-group" ng-class="{ 'has-error' : userForm.$submitted && userForm.borough.$invalid }">
+  				<label class="control-label" for="borough">{{'modules.onboarding.partials.onboardingDetails.borough' | translate}}</label>
+  				<div class="controls">
+  					<label class="btn btn-default" ng-model="user.borough" btn-radio="'Brooklyn'" name="borough" required>{{'modules.onboarding.partials.onboardingDetails.brooklyn' | translate}}</label>
+  					<label class="btn btn-default" ng-model="user.borough" btn-radio="'Queens'" name="borough" required>{{'modules.onboarding.partials.onboardingDetails.queens' | translate}}</label>
+  					<label class="btn btn-default" ng-model="user.borough" btn-radio="'Bronx'" name="borough" required>{{'modules.onboarding.partials.onboardingDetails.bronx' | translate}}</label>
+  					<label class="btn btn-default" ng-model="user.borough" btn-radio="'Manhattan'" name="borough" required>{{'modules.onboarding.partials.onboardingDetails.manhattan' | translate}}</label>
+  					<label class="btn btn-default" ng-model="user.borough" btn-radio="'Staten Island'" name="borough" required>{{'modules.onboarding.partials.onboardingDetails.statenIsland' | translate}}</label>
+  				</div>
+  				<div ng-show="userForm.$submitted || userForm.borough.$touched">
+  					<p ng-show="userForm.borough.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.errorBorough' | translate}}</p>
+  				</div>
+  			</div>
+
+  			<div class="form-group" ng-class="{ 'has-error' : userForm.$submitted && userForm.address.$invalid }">
+  				<label class="control-label" for="address">{{'modules.users.views.settings.editProfile.address' | translate}}</label>
+  				<input class="form-control" type="text" ng-attr-placeholder="{{'modules.users.views.settings.editProfile.title' | translate}}" name="address" ng-model="user.address" required>
+  				<div ng-show="userForm.$submitted || userForm.address.$touched">
+  					<p ng-show="userForm.address.$error.required" class="text-danger">{{'modules.onbarding.partials.onboardingDetails.streetError' | translate}}</p>
+  				</div>
+  			</div>
+
+  			<div class="form-group apt-field" ng-class="{ 'has-error' : userForm.$submitted && userForm.unit.$invalid }">
+  				<label class="control-label" for="unit">{{'modules.onboarding.partials.onboardingDetails.apt' | translate}}</label>
+  				<input class="form-control" type="text" placeholder="{{'modules.onboarding.partials.onboardingDetails.apt' | translate}}" name="unit" ng-model="user.unit" required>
+  				<div ng-show="userForm.$submitted || userForm.unit.$touched">
+  					<p ng-show="userForm.unit.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.aptError' | translate}}</p>
+  				</div>
+  			</div>
+      </div>
+
+
+
+
+      <div ng-if="user.roles.indexOf('advocate') !== -1">
+
+        <!-- <div class="form-group" ng-class="{ 'has-error' : userForm.$submitted && userForm.code.$invalid }">
+      		<label class="control-label" for="code">Your Advocate Code</label>
+      		<p><em>This is what your client will enter to connect and share information with you.</em></p>
+      		<input class="form-control" placeholder="Ex: janedoe" name="code" ng-model="user.code" required>
+      		<div ng-show="userForm.$submitted || userForm.code.$touched">
+      			<p ng-show="userForm.code.$error.required" class="text-danger">Please enter an advocate code.</p>
+      		</div>
+      	</div> -->
+
+      	<div class="form-group" ng-class="{ 'has-error' : userForm.$submitted && userForm.email.$invalid }">
+      		<label class="control-label" for="email">Contact Email Address</label>
+      		<input class="form-control" placeholder="Email Address" name="email" type="email" ng-model="user.email" required>
+      		<div ng-show="userForm.$submitted || userForm.email.$touched">
+      			<p ng-show="userForm.email.$error.required" class="text-danger">Please enter an email address.</p>
+      			<p ng-show="userForm.email.$error.email" class="text-danger">Please enter a valid email address.</p>
+      		</div>
+      	</div>
+
+      	<div class="row">
+
+      		<div class="form-group col-xs-9" ng-class="{ 'has-error' : userForm.$submitted && userForm.contactPhone.$invalid }">
+      			<label class="control-label" for="contactPhone">Contact Phone</label>
+      			<!-- <p><em>If you use an extension, such as <b>(212) 555-8000 ext. 12</b> enter it as <b>2125558000,12</b></em></p> -->
+      			<input class="form-control" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.phoneNumber' | translate}}" name="contactPhone" type="tel" ng-model="user.contactPhone" required phone-input>
+      		</div>
+
+      		<div class="form-group col-xs-3" ng-class="{ 'has-error' : userForm.$submitted && userForm.ext.$invalid }">
+      			<label class="control-label" for="ext">Ext.</label>
+      			<!-- <p><em>If you use an extension, such as <b>(212) 555-8000 ext. 12</b> enter it as <b>2125558000,12</b></em></p> -->
+      			<input class="form-control" placeholder="Ext. (optional)" name="ext" ng-model="user.contactPhoneExt">
+      		</div>
+
+      		<div ng-show="userForm.$submitted || userForm.contactPhone.$touched">
+      			<p ng-show="userForm.contactPhone.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.phoneError' | translate}}</p>
+      		</div>
+
+      		<!-- <div ng-show="userForm.$submitted || userForm.contactPhone.$touched">
+      			<p ng-show="userForm.contactPhone.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.phoneError' | translate}}</p>
+      		</div> -->
+
+      	</div>
+
+
+      	<div class="form-group" ng-class="{ 'has-error' : userForm.$submitted && userForm.organization.$invalid }">
+      		<label class="control-label" for="organization">Name of your Organization</label>
+      		<input class="form-control" placeholder="Organization Name" name="organization" ng-model="user.organization" required>
+      		<div ng-show="userForm.$submitted || userForm.organization.$touched">
+      			<p ng-show="userForm.organization.$error.required" class="text-danger">Please enter the name of your organization.</p>
+      		</div>
+      	</div>
+
+      </div>
+
+
+
+
+
+
+
 
       <div class="form-group">
 				<fieldset>

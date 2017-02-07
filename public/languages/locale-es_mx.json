@@ -22,6 +22,7 @@
 		"call": "Llamar",
 		"signIn": "Iniciar sesión",
 		"signOut": "Cerrar sesión",
+		"save": "Guardar",
 		"continue": "Continuar",
 		"back": "Atrás",
 		"close": "Cerrar",
@@ -173,12 +174,14 @@
 	  			"alert": "¡Esta es la vista para compartir!",
 	  			"print": "Imprimir",
 	  			"caseHistory": "@:repeating.caseHistory",
-	  			"loggedOn": "En sesión",
+	  			"loggedOn": "Registrado el",
+	  			"loggedOnAttrib": "por",
 	  			"empty": "aún no se ha añadido nada a su Historial del Caso. ¡Regrese en otro momento!"
 	  		},
 	  		"listActivity": {
 	  			"title": "@:repeating.caseHistory",
-          "loggedOn": "En sesión",
+          "loggedOn": "Registrado el",
+          "loggedOnAttrib": "por",
 	  			"description": "Este es un registro de todas las acciones que usted ha tomado para resolver sus problemas de vivienda.",
 	  			"share": "Compartir mi caso",
 	  			"email": "Enviar email",
@@ -189,7 +192,11 @@
 	  			"alert": "Esto le permite compartir su Historial del Caso con defensores. <b>No otorga acceso al resto de su cuenta.</b>",
 	  			"labelShare": "Copie y pegue este enlace para compartir su Historial del Caso: ",
 	  			"empty": "¡Aún no se le ha añadido nada a su caso! <a ui-sref=\"listActions\">Haga clic aquí</a> para ver algunas cosas que puede hacer.",
-	  			"experienced": "Primera experiencia en:"
+	  			"experienced": "Primera experiencia en:",
+          "activityTab": "Registro de Actividades",
+          "issuesTab": "Asuntos Actuales",
+          "photosTab": "Fotos",
+          "noPhotosTab": "¡No has subido fotos!"
 	  		}
 	  	},
 	  	"other": {
@@ -262,7 +269,9 @@
   				"kyr": "@:repeating.kyr",
   				"advocate": "Información del defensor",
   				"call": "@:repeating.call",
-  				"signOut": "@:repeating.signOut"
+  				"signOut": "@:repeating.signOut",
+          "friendShare": "Referir a un vecino",
+          "contact": "Contáctenos"
   			},
   			"landing": {
   				"bigText": "JustFix.nyc es un registro digital de documentos para sus problemas de vivienda.",
