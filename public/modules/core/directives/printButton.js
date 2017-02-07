@@ -5,7 +5,9 @@ angular.module('core')
   function (deviceDetector, $window, $timeout, $rootScope) {
     return {
       restrict: 'A',
-      scope: false,
+      scope: {
+        userId: '='
+      },
       link: function (scope, element, attrs) {
       	var printPg;
 
@@ -38,20 +40,20 @@ angular.module('core')
         		}, 500);
         	} else {
 
-        		// If we are loaded, let this button be free! 
+        		// If we are loaded, let this button be free!
 	        	element.removeClass('disabled');
 
 		        element.on('click', function (event) {
 					    window.frames['print-frame'].print();
-		        }); 
+		        });
 
         	}
         };
 
         var iframe = document.getElementById('print-frame');
         var queryKey = '';
-        if(scope.query) {
-        	queryKey = scope.query.key;
+        if(scope.userId) {
+        	queryKey = scope.userId;
         }
 
         if (iframe) {
@@ -67,7 +69,7 @@ angular.module('core')
 	        printPg.height = 0;
 	        printPg.setAttribute('id', 'print-frame');
 	        printPg.name = 'print-frame';
-	        document.body.appendChild(printPg);	
+	        document.body.appendChild(printPg);
         }
 
         // Listen for when iFrame is loaded if the first time (safety measure so we KNOW the following will init printView var correctly)

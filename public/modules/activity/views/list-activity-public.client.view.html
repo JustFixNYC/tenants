@@ -7,7 +7,7 @@
         <p class="text-center">{{'modules.activity.views.listActivityPublic.contact' | translate}} <a ng-href="tel:{{user.phone}}">{{ user.phone | tel }}</a></p>
         <p class="text-danger text-center">{{'modules.activity.views.listActivityPublic.alert' | translate}}</p>
     </div>
-    <button class="btn btn-primary btn-block" print-button>
+    <button class="btn btn-primary btn-block" print-button user-id="query.key">
       {{'modules.activity.views.listActivityPublic.print' | translate}}
     </button>
     <!-- <div class="section-header">

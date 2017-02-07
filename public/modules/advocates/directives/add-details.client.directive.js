@@ -16,7 +16,7 @@ angular.module('advocates')
         scope.problems = [];
 
         scope.$watch('tenant', function (tenant) {
-          console.log('add details');
+          // console.log('add details');
           if(tenant) {
             scope.tenant = tenant;
             for(var i = 0; i < scope.tenant.problems.length; i++) {

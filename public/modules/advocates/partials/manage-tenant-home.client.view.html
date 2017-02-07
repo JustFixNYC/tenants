@@ -8,7 +8,7 @@
     <a ng-href="tel:{{ tenant.phone }}" class="btn btn-success btn-block pull-right" ng-if="!isDesktop">
         Call {{ tenant.firstName }}
     </a>
-    <button class="btn btn-primary btn-block pull-right" ng-if="isDesktop" print-button>
+    <button class="btn btn-primary btn-block pull-right" ng-if="isDesktop" print-button user-id="tenant.sharing.key">
         {{'modules.activity.views.listActivity.print' | translate}}
     </button>
   </div>

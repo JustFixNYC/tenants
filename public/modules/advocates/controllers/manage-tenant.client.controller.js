@@ -8,9 +8,9 @@ angular.module('advocates').controller('ManageTenantController', [
 		$scope.tenant = tenant;
 
 
-		$scope.$watch('tenant', function (tenant) {
-			console.log('change in root', tenant);
-		}, true);
+		// $scope.$watch('tenant', function (tenant) {
+		// 	console.log('change in root', tenant);
+		// }, true);
 
 	}])
 	.controller('ManageTenantHomeController', ['$scope', '$stateParams', '$filter', 'deviceDetector', 'Advocates', 'Lightbox',
@@ -19,7 +19,7 @@ angular.module('advocates').controller('ManageTenantController', [
 
 
 			$scope.$watch('tenant', function (tenant) {
-				console.log('change in home', tenant);
+				// console.log('change in home', tenant);
 				$scope.photos = [];
 				$scope.tenant.activity.forEach(function (act) {
 					$scope.photos = $scope.photos.concat(act.photos);

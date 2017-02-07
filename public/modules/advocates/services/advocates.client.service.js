@@ -55,12 +55,12 @@ angular.module('advocates')
 				};
 
 				if(_this._currentTenant) {
-					console.log('current');
+					// console.log('current');
 					filtered.resolve(_this._currentTenant);
 				} else {
-					console.log('query');
+					// console.log('query');
 					AdvocatesResource.query(function (tenants) {
-						console.log(tenants);
+						// console.log(tenants);
 						filtered.resolve(tenants.filter(function (t) { return t._id === id; })[0]);
 					});
 				}
