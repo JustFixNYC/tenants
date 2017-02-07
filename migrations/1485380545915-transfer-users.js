@@ -50,6 +50,7 @@ exports.up = function(next) {
           var newTenant = new Tenant(doc);
 
           newIdentity.provider = 'local';
+          newIdentity.roles = [ "tenant" ];
 
           // If they have a referral:
           if(doc.referral) {

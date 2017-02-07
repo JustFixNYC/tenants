@@ -16,11 +16,20 @@ exports.up = function(next) {
     // });
     // //
     mongodb.collection('users_old')
-      .deleteMany({ $or:
-        [ { "geo.bbl": "3012380016" },  { "geo.bbl": "3012170028" },   { "geo.bbl": "1004510016" } ]
+      .deleteMany({ "geo" : { $exists: false }})
+      .then(function (res) {
+        console.log('deleted (no geo)', res.result.n);
+        // mongodb.close();
+        return mongodb.collection('users_old').deleteMany({ $or:
+          [
+            { "geo.bbl": "3012380016" },
+            // { "geo.bbl": "3012170028" },
+            { "geo.bbl": "1004510016" }
+          ]
+        });
       })
       .then(function (res) {
-        console.log('deleted', res.result.n);
+        console.log('deleted (dummy addr)', res.result.n);
         // mongodb.close();
         next();
       })
