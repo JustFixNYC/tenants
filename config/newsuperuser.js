@@ -35,8 +35,15 @@ var db = mongoose.connect(config.db, function(err) {
 		var admin = new Admin();
 		var user = new User({ kind: 'Admin' });
 
+		console.log('iden', identity);
+		console.log('admin', admin);
+
 		Q.allSettled([identity.save(), admin.save()])
 	    .spread(function (identity, admin) {
+
+				console.log('iden', identity);
+				console.log('admin', admin);
+
 				// save the ObjectID references of the two documents
 	      user._identity = identity.value._id;
 	      user._userdata = admin.value._id;
