@@ -1525,7 +1525,8 @@ angular.module('admin').config(['$stateProvider', '$urlRouterProvider',
 		state('admin', {
 			url: '/admin',
 			templateUrl: 'modules/admin/views/admin.client.view.html',
-			data: { protected: true }
+			data: { protected: true },
+			user: 'admin'
 		});
 
 	}
@@ -1608,6 +1609,7 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 				templateUrl: 'modules/advocates/views/new-tenant.client.view.html',
 				controller: 'NewTenantSignupController',
 				abstract: true,
+				user: 'advocate',
 				data: {
 					disableBack: true
 				}
@@ -1625,6 +1627,7 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 				templateUrl: 'modules/advocates/views/home.client.view.html',
 				controller: 'AdvocateController',
 				globalStyles: 'fluid-container',
+				user: 'advocate',
 				data: {
 					disableBack: true
 				},
@@ -1638,12 +1641,14 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 			.state('advocateHelp', {
 				url: '/advocate/information',
 				templateUrl: 'modules/advocates/views/help.client.view.html',
-				controller: 'AdvocateHelpController'
+				controller: 'AdvocateHelpController',
+				user: 'advocate'
 			})
 			.state('manageTenant', {
 				url: '/advocate/manage/:id',
 				templateUrl: 'modules/advocates/views/manage-tenant.client.view.html',
 				controller: 'ManageTenantController',
+				user: 'advocate',
 				abstract: true,
 				resolve: {
 					tenant: ['Advocates', '$stateParams', function(Advocates, $stateParams) {
@@ -1666,10 +1671,10 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 
 'use strict';
 
-angular.module('advocates').controller('AdvocateHelpController', ['$rootScope', '$scope', '$state', '$location', '$timeout', '$filter', 'Authentication', 'Advocates', '$http', '$modal', 'tenants',
-	function($rootScope, $scope, $state, $location, $timeout, $filter, Authentication, Advocates, $http, $modal, tenants) {
+angular.module('advocates').controller('AdvocateHelpController', ['$rootScope', '$scope', '$state', '$location', '$timeout', '$filter', 'Authentication', 'Advocates', '$http', '$modal',
+	function($rootScope, $scope, $state, $location, $timeout, $filter, Authentication, Advocates, $http, $modal) {
 
-
+		$scope.user = Authentication.user;
 
 	}]);
 
@@ -2192,26 +2197,36 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
   function($rootScope, $state, $window, Authentication) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
-      if(toState.globalStyles) {
-        $rootScope.globalStyles = toState.globalStyles;
-      } else {
-        $rootScope.globalStyles = '';
-      }
+      // prevent different roles from going different places
+      if(toState.user) {
+				if(!Authentication.user) {
+					event.preventDefault();
+					$state.go('signin');
+				} else if(Authentication.user.roles.indexOf(toState.user) === -1) {
+					event.preventDefault();
+					$state.go('not-found');
+				}
+			}
 
-      if(Authentication.user && Authentication.user.roles.indexOf('advocate') !== -1) {
-        $rootScope.globalStyles += ' advocate-view';
-      }
-
-      if(Authentication.user && Authentication.user.roles.indexOf('tenant') !== -1 && toState.name === 'landing') {
-        event.preventDefault();
-        $rootScope.globalStyles = '';
-        $state.go('home');
-      }
-
-      if(Authentication.user && Authentication.user.roles.indexOf('advocate') !== -1 && toState.name === 'landing') {
-        event.preventDefault();
-        $rootScope.globalStyles = '';
-        $state.go('advocateHome');
+      if(Authentication.user && toState.name === 'landing') {
+        switch(Authentication.user.roles[0]) {
+          case 'admin':
+            event.preventDefault();
+            $state.go('admin');
+            break;
+          case 'advocate':
+            event.preventDefault();
+            $state.go('advocateHome');
+            break;
+          case 'tenant':
+            event.preventDefault();
+            $state.go('home');
+            break;
+          default:
+            event.preventDefault();
+            $state.go('home');
+            break;
+        }
       }
 
       if(!Authentication.user && toState.data && toState.data.protected) {
@@ -2222,8 +2237,20 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
 
     });
 
+    // set global styles
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
       $window.scrollTo(0, 0);
+
+      if(toState.globalStyles) {
+        $rootScope.globalStyles = toState.globalStyles;
+      } else {
+        $rootScope.globalStyles = '';
+      }
+
+      if(Authentication.user && Authentication.user.roles.indexOf('advocate') !== -1) {
+        $rootScope.globalStyles += ' advocate-view';
+      }
+
     });
   }
 ]);
@@ -4641,7 +4668,7 @@ angular.module('tutorial').controller('TutorialController', ['$scope', '$sce', '
 
 // Config HTTP Error Handling
 angular.module('users').config(['$httpProvider',
-	// TODO: uhhh wut diz
+
 	function($httpProvider) {
 		// Set the httpProvider "not authorized" interceptor
 		$httpProvider.interceptors.push(['$rootScope', '$q', '$location', 'Authentication',
@@ -4659,8 +4686,16 @@ angular.module('users').config(['$httpProvider',
 								$location.path('signin');
 								break;
 							case 403:
-								// Add unauthorized behaviour
+
+								console.log('unauthorized');
 								$location.path('not-found');
+
+								// $rootScope.evalAsync(function () {
+								// 	// Add unauthorized behaviour
+								//
+								// });
+
+								// $state.go('not-found');
 								break;
 						}
 
