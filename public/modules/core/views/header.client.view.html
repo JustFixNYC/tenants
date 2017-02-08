@@ -64,7 +64,7 @@
 					 ng-if="authentication.user && authentication.user.roles.indexOf('advocate') !== -1 && $root.state == 'advocateHome'"></a>
 			 <a class="header-btn pull-right glyphicon glyphicon-info-sign"
 					 ui-sref="advocateHelp"
-					 ng-if="authentication.user && authentication.user.roles.indexOf('advocate') !== -1 && $root.state != 'advocateHelp'"></a>
+					 ng-if="authentication.user && authentication.user.roles.indexOf('advocate') !== -1 && $root.state == 'advocateHome'"></a>
 		</div> <!-- end of .container -->
 	</div>	<!-- end of #header -->
 

@@ -54,9 +54,10 @@
                 <span
                   ng-if="t.sharing.enabled"
                   class="glyphicon glyphicon-link copy-link"
-                  clipboard
+                  clipboard on-copied="copied()"
+                  ng-mouseleave="mouseleave()"
                   text="currentLocation + '/share/' + t.sharing.key"
-                  tooltip="Link Copied!" tooltip-trigger="click" tooltip-placement="bottom">
+                  tooltip="{{copyTooltipText}}" tooltip-trigger="mouseenter" tooltip-placement="bottom">
                 </span>
               </td>
               <td class="table-mobile-view">
@@ -67,13 +68,13 @@
               </td>
 
 
-              <td ng-if="t.advocateRole === 'managed'">
+              <td class="case-link" ng-if="t.advocateRole === 'managed'">
                 <a ng-click="viewTenant(t)" class="btn btn-info">Manage</a>
               </td>
-              <td ng-if="t.advocateRole === 'linked' && t.sharing.enabled">
+              <td class="case-link" ng-if="t.advocateRole === 'linked' && t.sharing.enabled">
                 <a ng-href="/share/{{ t.sharing.key }}">View Case</a>
               </td>
-              <td ng-if="t.advocateRole === 'linked' && !t.sharing.enabled">
+              <td class="case-link" ng-if="t.advocateRole === 'linked' && !t.sharing.enabled">
                 <em>Not Shared</em>
               </td>
             </tr>
@@ -105,15 +106,16 @@
                 <tr ng-repeat="t in members | orderBy:['!updated', '-updated']">
                   <td class="table-desktop-view" ng-bind="t.fullName"></td>
                   <td class="table-desktop-view">{{ t.updated ? (t.updated | date:'short') : (t.created | date:'short') }}</td>
-                  <td class="table-desktop-view">{{ t.geo.bbl | toAddress:bbls }}</td>
+                  <td class="table-desktop-view">{{ t.unit }}</td>
                   <td class="table-desktop-view">{{ t.phone | tel }}</td>
                   <td class="table-desktop-view text-center">
                     <span
                       ng-if="t.sharing.enabled"
                       class="glyphicon glyphicon-link copy-link"
-                      clipboard
+                      clipboard on-copied="copied()"
+                      ng-mouseleave="mouseleave()"
                       text="currentLocation + '/share/' + t.sharing.key"
-                      tooltip="Link Copied!" tooltip-trigger="click" tooltip-placement="bottom">
+                      tooltip="{{copyTooltipText}}" tooltip-trigger="mouseenter" tooltip-placement="bottom">
                     </span>
                   </td>
                   <td class="table-mobile-view">
@@ -122,13 +124,13 @@
                     Apt. {{ t.unit }}<br />
                     <a ng-href="tel:{{t.phone}}">{{ t.phone | tel }}</a>
                   </td>
-                  <td ng-if="t.advocateRole === 'managed'">
+                  <td class="case-link" ng-if="t.advocateRole === 'managed'">
                     <a ng-click="viewTenant(t)" ng-click="$event.stopPropagation();" class="btn btn-info">Manage</a>
                   </td>
-                  <td ng-if="t.advocateRole === 'linked' && t.sharing.enabled">
+                  <td class="case-link" ng-if="t.advocateRole === 'linked' && t.sharing.enabled">
                     <a ng-href="/share/{{ t.sharing.key }}" ng-click="$event.stopPropagation();">View Case</a>
                   </td>
-                  <td ng-if="t.advocateRole === 'linked' && !t.sharing.enabled">
+                  <td class="case-link" ng-if="t.advocateRole === 'linked' && !t.sharing.enabled">
                     <em>Not Shared</em>
                   </td>
                 </tr>

@@ -46,7 +46,11 @@
 
     @media (max-width: $screen-xs-max) {
 
-
+      td.case-link {
+        a, em {
+          float: right;
+        }
+      }
 
       thead {
         display: none;
@@ -78,6 +82,13 @@
 
   h2 {
     margin-top: 30px;
+  }
+
+  .ashley-box {
+    background-color: #fff;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    // border: 1px dashed $mediumgray-light;
   }
 
   .advocate-code-box {

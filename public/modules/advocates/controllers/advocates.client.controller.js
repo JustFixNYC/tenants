@@ -7,7 +7,7 @@ angular.module('advocates').controller('AdvocateController', ['$rootScope', '$sc
 		$scope.tenants = tenants;
 		$scope.bbls = {};
 
-		$scope.currentLocation = $location.protocol() + '://' + $location.host() + ($location.port() !== '80' ? ':' + $location.port() : '');
+		$scope.currentLocation = $location.protocol() + '://' + $location.host() + ($location.port() !== 80 ? ':' + $location.port() : '');
 		console.log($scope.currentLocation);
 
 		// used for the bblsToAddress filter
@@ -20,6 +20,18 @@ angular.module('advocates').controller('AdvocateController', ['$rootScope', '$sc
 		$scope.view = 'individual';
 		$scope.changeView = function(newView) {
 			$scope.view = newView;
+		};
+
+		$scope.copyTooltipText = "Click to copy";
+
+		$scope.copied = function() {
+			$scope.copyTooltipText = "Link copied!";
+		};
+
+		$scope.mouseleave = function() {
+			$timeout(function () {
+				$scope.copyTooltipText = "Click to copy";
+			}, 300);
 		};
 
 		$scope.viewTenant = function(tenant) {

@@ -1,7 +1,10 @@
+<!-- <div class="row">
+  <a ui-sref="">&#8592; Back to profile</a>
+</div> -->
 <div class="problems-container">
   <problems-checklist our-user="tenant"></problems-checklist>
 </div>
-<div class="form-group">
+<div class="form-group" ng-if="device.isDesktop()">
     <div class="row">
         <div class="col-xs-4">
             <a ui-sref="manageTenant.home" class="btn btn-block btn-default">

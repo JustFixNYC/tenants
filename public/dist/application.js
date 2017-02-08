@@ -59,14 +59,14 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     // enable this for speed enhancement b4 production push
     // $compileProvider.debugInfoEnabled(false);
   }])
-  .config(['$tooltipProvider', function($tooltipProvider){
-   $tooltipProvider.setTriggers({
-    'mouseenter': 'mouseleave',
-    'click': 'mouseleave',
-    'focus': 'blur',
-    'hideonclick': 'click'
-   });
-  }])
+  // .config(['$tooltipProvider', function($tooltipProvider){
+  //  $tooltipProvider.setTriggers({
+  //   'mouseenter': 'mouseleave',
+  //   'click': 'mouseleave',
+  //   'focus': 'blur',
+  //   'hideonclick': 'click'
+  //  });
+  // }])
   // internationalization constants
   .constant('LOCALES', {
     'locales': {
@@ -1134,8 +1134,9 @@ angular.module('activity').config(['$stateProvider', '$urlRouterProvider', 'Ligh
 			})
 			.state('showPublic', {
 				url: '/share/:key',
-				templateUrl: 'modules/activity/views/list-activity-public.client.view.html',
-				data: { disableBack: true }
+				templateUrl: 'modules/activity/views/list-activity-public.client.view.html'
+				// ,
+				// data: { disableBack: true }
 			})
 			.state('print', {
 				url: '/print/:key',
@@ -1767,7 +1768,7 @@ angular.module('advocates').controller('AdvocateController', ['$rootScope', '$sc
 		$scope.tenants = tenants;
 		$scope.bbls = {};
 
-		$scope.currentLocation = $location.protocol() + '://' + $location.host() + ($location.port() !== '80' ? ':' + $location.port() : '');
+		$scope.currentLocation = $location.protocol() + '://' + $location.host() + ($location.port() !== 80 ? ':' + $location.port() : '');
 		console.log($scope.currentLocation);
 
 		// used for the bblsToAddress filter
@@ -1782,6 +1783,18 @@ angular.module('advocates').controller('AdvocateController', ['$rootScope', '$sc
 			$scope.view = newView;
 		};
 
+		$scope.copyTooltipText = "Click to copy";
+
+		$scope.copied = function() {
+			$scope.copyTooltipText = "Link copied!";
+		};
+
+		$scope.mouseleave = function() {
+			$timeout(function () {
+				$scope.copyTooltipText = "Click to copy";
+			}, 300);
+		};
+
 		$scope.viewTenant = function(tenant) {
 			// Advocates.setCurrent(tenant);
 			Advocates.setCurrentTenant(tenant);
@@ -1793,12 +1806,12 @@ angular.module('advocates').controller('AdvocateController', ['$rootScope', '$sc
 'use strict';
 
 angular.module('advocates').controller('ManageTenantController', [
-					'$scope', '$stateParams', 'Authentication', 'Advocates', 'tenant',
-	function($scope, $stateParams, Authentication, Advocates, tenant) {
+					'$scope', '$stateParams', 'deviceDetector', 'Authentication', 'Advocates', 'tenant',
+	function($scope, $stateParams, deviceDetector, Authentication, Advocates, tenant) {
 
 		$scope.user = Authentication.user;
+		$scope.device = deviceDetector;
 		$scope.tenant = tenant;
-
 
 		// $scope.$watch('tenant', function (tenant) {
 		// 	console.log('change in root', tenant);
@@ -1817,9 +1830,6 @@ angular.module('advocates').controller('ManageTenantController', [
 					$scope.photos = $scope.photos.concat(act.photos);
 				});
 			}, true);
-
-
-
 
 			$scope.isDesktop = deviceDetector.isDesktop();
 
@@ -1843,6 +1853,45 @@ angular.module('advocates').controller('ManageTenantController', [
 			function($rootScope, $scope, $state, $stateParams, Advocates, ProblemsResource) {
 
 				$scope.problemsAlert = false;
+
+				$scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
+
+					// make sure this only happens once (no infinite loops)
+					// AND only happens if they've actually changed anything...
+					if($scope.hasChangedProblems && !toState.updated) {
+
+					  event.preventDefault();
+						toState.updated = true;
+					  $rootScope.loading = true;
+						$scope.problemsAlert = false;
+
+						var tenant = new ProblemsResource($scope.tenant);
+						tenant.$updateManagedChecklist({ id: $scope.tenant._id },
+							function(response) {
+								console.log('after', response);
+
+								// need to use angular.extend rather than scope.tenant = response
+								// this will actually update all the attributes
+								// (and trigger an update in parent controllers)
+								angular.extend($scope.tenant, response);
+
+								$rootScope.dashboardSuccess = true;
+								$rootScope.loading = false;
+								$state.go(toState);
+							}, function(err) {
+								$rootScope.loading = false;
+								$scope.problemsAlert = true;
+
+							});
+
+					// this gets called a second time with $state.go,
+					// so we're just going to pass things along
+					} else if(toState.updated) {
+					  toState.updated = false;
+					}
+
+				});
+
 
 				$scope.saveProblems = function () {
 
@@ -2426,8 +2475,15 @@ angular.module('core').controller('HeaderController', ['$rootScope', '$state', '
         // moved to application.js to ensure it runs on pageload...
         // setHeaderState(toState.name);
 
-        $rootScope.showBack = true;
-        if(toState.data && toState.data.disableBack) $rootScope.showBack = false;
+        if(Authentication.user) {
+          $rootScope.showBack = true;
+          if(toState.data && toState.data.disableBack) {
+            $rootScope.showBack = false;
+          }
+        } else {
+          $rootScope.showBack = false;
+        }
+
       });
 
       // console.log('state current name is:', $state.current.name);

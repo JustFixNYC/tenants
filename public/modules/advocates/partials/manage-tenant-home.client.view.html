@@ -14,6 +14,12 @@
   </div>
 </div>
 <add-details tenant="tenant"></add-details>
+<alert
+      data-ng-show="$root.dashboardSuccess"
+      type="success"
+      close="$root.dashboardSuccess = false">
+  <span ng-bind-html="'modules.core.views.home.success' | trustTranslate" compile-template></span>
+</alert>
 <!-- <div class="section-header">
   <h2>{{'modules.activity.views.listActivityPublic.caseHistory' | translate}}
   </h2>

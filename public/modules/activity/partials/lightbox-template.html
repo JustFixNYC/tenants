@@ -8,16 +8,16 @@
 
     <div class="btn-group" ng-if="Lightbox.images.length > 1">
       <a class="btn btn-xs btn-default" ng-click="Lightbox.prevImage()">
-        ‹ Previous
+        <span class="glyphicon glyphicon-chevron-left"></span> Prev&nbsp;
       </a>
 
       <a ng-href="{{Lightbox.imageUrl}}" target="_blank"
           class="btn btn-xs btn-default" title="Open in new tab">
-        Open image in new tab
+        &nbsp;Open&nbsp;
       </a>
 
       <a class="btn btn-xs btn-default" ng-click="Lightbox.nextImage()">
-        Next ›
+        &nbsp;Next <span class="glyphicon glyphicon-chevron-right"></span>
       </a>
     </div>
   </div>

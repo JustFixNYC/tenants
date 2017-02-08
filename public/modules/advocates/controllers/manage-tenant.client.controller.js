@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('advocates').controller('ManageTenantController', [
-					'$scope', '$stateParams', 'Authentication', 'Advocates', 'tenant',
-	function($scope, $stateParams, Authentication, Advocates, tenant) {
+					'$scope', '$stateParams', 'deviceDetector', 'Authentication', 'Advocates', 'tenant',
+	function($scope, $stateParams, deviceDetector, Authentication, Advocates, tenant) {
 
 		$scope.user = Authentication.user;
+		$scope.device = deviceDetector;
 		$scope.tenant = tenant;
-
 
 		// $scope.$watch('tenant', function (tenant) {
 		// 	console.log('change in root', tenant);
@@ -25,9 +25,6 @@ angular.module('advocates').controller('ManageTenantController', [
 					$scope.photos = $scope.photos.concat(act.photos);
 				});
 			}, true);
-
-
-
 
 			$scope.isDesktop = deviceDetector.isDesktop();
 
@@ -51,6 +48,45 @@ angular.module('advocates').controller('ManageTenantController', [
 			function($rootScope, $scope, $state, $stateParams, Advocates, ProblemsResource) {
 
 				$scope.problemsAlert = false;
+
+				$scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
+
+					// make sure this only happens once (no infinite loops)
+					// AND only happens if they've actually changed anything...
+					if($scope.hasChangedProblems && !toState.updated) {
+
+					  event.preventDefault();
+						toState.updated = true;
+					  $rootScope.loading = true;
+						$scope.problemsAlert = false;
+
+						var tenant = new ProblemsResource($scope.tenant);
+						tenant.$updateManagedChecklist({ id: $scope.tenant._id },
+							function(response) {
+								console.log('after', response);
+
+								// need to use angular.extend rather than scope.tenant = response
+								// this will actually update all the attributes
+								// (and trigger an update in parent controllers)
+								angular.extend($scope.tenant, response);
+
+								$rootScope.dashboardSuccess = true;
+								$rootScope.loading = false;
+								$state.go(toState);
+							}, function(err) {
+								$rootScope.loading = false;
+								$scope.problemsAlert = true;
+
+							});
+
+					// this gets called a second time with $state.go,
+					// so we're just going to pass things along
+					} else if(toState.updated) {
+					  toState.updated = false;
+					}
+
+				});
+
 
 				$scope.saveProblems = function () {
 
