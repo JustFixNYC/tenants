@@ -7,7 +7,7 @@
   <h1>How It Works</h1>
 
   <p>
-    Welcome! The JustFix.nyc Advocate Dashboard helps you stay connected with the tenants you are working with and assist them on their housing issues. It can help you keeps information organized and streamline the process of building a strong legal case. With this dashboard you can:
+    The JustFix.nyc Advocate Dashboard helps you stay connected with the tenants you are working with and assist them on their housing issues. It can help you keeps information organized and streamline the process of building a strong case. With this dashboard you can:
     <ul>
       <li>View cases of JustFix.nyc users who have shared their account with you</li>
       <li>Create and manage cases on behalf of tenants who are unable to create accounts for themselves</li>
@@ -17,14 +17,17 @@
 
   <h2>USING YOUR ADVOCATE CODE</h2>
   <p>
-    The Advocate Code you created when making your account is unique to you. Share your Advocate Code with the tenants you are working with so they can connect with you through the Tenant App. <i>Your Advocate Code is <b>{{ user.code }}</b></i>.
+    The Advocate Code you created is unique to you. Share your Advocate Code with tenants so they can connect with you through the Tenant App.
     <ol>
-      <li>When you refer a tenant to JustFix.nyc, give them your code to use.</li>
+      <li>When you refer a tenant to JustFix.nyc, give them your Advocate Code.</li>
       <li>They will enter your code when signing up at <b>www.justfix.nyc</b>.</li>
       <li>Your contact information is shared with them, so they can reach out to you if necessary.</li>
       <li>If you change your contact email address or phone number, that will automatically be passed to the tenant as well!</li>
     </ol>
   </p>
+  <div class="advocate-code-box">
+    Your Advocate Code is <b>{{ user.code }}</b>!
+  </div>
 
   <h2>DIFFERENT TYPES OF TENANT ACCOUNTS</h2>
   <p>
@@ -36,16 +39,20 @@
       </div>
       <div class="col-xs-6">
         <b>Managed Accounts</b>
-        <p>A managed account is one you create and maintain on behalf of a tenant. Adding a managed account helps you track information for a tenant who will not be using a JustFix.nyc account personally for whatever reason.</p>
+        <p>A managed account is one you create and maintain on behalf of a tenant. Adding a managed account helps you track information for a tenant who will not be using JustFix.nyc directly.</p>
         <!-- <a href="">View Case</a> -->
       </div>
     </div>
     <i><b>Tip:</b> Creating a managed tenant account is easy to do during a home visit - you can conduct the room-by-room inspection, gather photo evidence, and have it all organized for later!</i>
   </p>
 
+  <br />
+  <br />
+  <h1>Best Practices</h1>
+
   <h2>USING JUSTFIX.NYC IN YOUR EVERYDAY WORK</h2>
   <p>
-    The features of this dashboard (still in beta!) have been the result of many months of research and testing. We have been using it iternally to work with hundreds of tenants across NYC, and have found some best practices:
+    The features of this dashboard have been the result of many months of research and testing. We have been using it internally to work with hundreds of tenants across NYC, and have found some best practices:
     <ul>
       <li>
         Schedule follow ups and check ins based on how you work. Suggest specific things for your tenants to be doing through the app (see example actions)</li>
@@ -56,7 +63,7 @@
         Make sure to track outcomes or resolutions as well!
       </li>
     </ul>
-    <i><b>Tip:</b> The more you are checking in on your tenants cases, the more they will be documenting!</i>
+    <i><b>Tip:</b> The more you check in on your tenants and their JustFix.nyc cases, the more they will document!</i>
   </p>
 
   <h2>ACTIONS THAT TENANTS CAN TAKE ON JUSTFIX.NYC</h2>
@@ -77,7 +84,7 @@
         Access crucial Know Your Rights information and links to hotlines and other online resources.
       </li>
       <li>
-        Automatically generate a letter of complaint which can be sent to the landlord via certified mail. <i>If a tenant has shared their account with you, you can access this letter for easy printing.</i> <a href="https://pdfbucket001.s3.amazonaws.com/pdf-start-urUDeNmT.pdf" target="_blank">Click here to see a sample letter!</a>
+        Automatically generate a letter of complaint which can be sent to the landlord via certified mail. <i>If a tenant has shared their account with you, you can access this letter for easy printing.</i> <a href="https://pdfbucket001.s3.amazonaws.com/pdf-start-urUDeNmT.pdf" target="_blank">Click here to see a sample letter of complaint!</a>
       </li>
       <li>
         Share or print their case to be used as evidence in Housing Court or to show to legal representatives. <i>You can also do this for a tenant by clicking "Print" from their case page.</i> <a href="https://drive.google.com/file/d/0B-Z-WQWD9O2iTnZjN0Q0Qy1qY2s/view?usp=sharing" target="_blank">Click here to see a sample JustFix.nyc case!</a>
@@ -86,9 +93,11 @@
     <i>The JustFix.nyc Tenant App is currently available in English and Spanish. Spanish speakers can sign up at <b>justfix.nyc/espanol</b>.</i>
   </p>
 
-  <h2>WHAT'S NEXT</h2>
+  <br />
+  <br />
+  <h1>What's Next</h1>
   <p>
-    We’ve got lots of great features in store that we will be introducing over the next few months. It is our goal to build tools that support the work you are doing, so if you have feedback or suggestions, please contact us! Here’s a sneak peek at what we’re building next:
+    We will be introducing many great new features over the next few months. Here’s a sneak peek at what we’re building next:
     <ul>
       <li>
         Ability to refer tenants to JustFix.nyc with a text message.
@@ -100,10 +109,11 @@
         Export “aggregate issues list” for buildings.
       </li>
     </ul>
+    Our goal is to build tools that support your work. If you have feedback or suggestions, please contact us!
     <br />
     <br />
     <div class="row">
-      <a class="col-xs-4 col-xs-offset-1 btn btn-primary" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdV5LD991smTd6ntBIrX7zomZDDfABo3tAuGf-XITm6XtdSng/viewform?c=0&w=1">Give Feedback!</a>
+      <a class="col-xs-4 col-xs-offset-1 btn btn-primary" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdV5LD991smTd6ntBIrX7zomZDDfABo3tAuGf-XITm6XtdSng/viewform?c=0&w=1">Feedback Form</a>
       <a class="col-xs-4 col-xs-offset-2 btn btn-warning" ui-sref="contact">Contact Us</a>
     </div>
   </p>
