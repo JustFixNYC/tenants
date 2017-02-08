@@ -7,12 +7,12 @@
     </div>
 
     <div>
-      <a ui-sref="newTenantSignup.problems" class="btn btn-primary btn-block pull-right-on-desktop">+ Managed Tenant</a>
+      <a ui-sref="newTenantSignup.problems" class="btn btn-info btn-block pull-right-on-desktop"><span class="glyphicon glyphicon-plus"></span> Managed Tenant</a>
     </div>
   </div>
 
   <div class="alert alert-warning text-center" data-ng-if="!tenants.length">
-    You don't have any tenants linked to your account yet! <a ui-sref="advocateHelp">Click here</a> to read more about linked and managed tenant accounts. 
+    You don't have any tenants linked to your account yet! <a ui-sref="advocateHelp">Click here</a> to read more about linked and managed tenant accounts.
   </div>
 
   <div ng-if="tenants.length">

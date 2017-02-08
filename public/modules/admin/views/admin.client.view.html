@@ -88,6 +88,7 @@
     </tab>
   </tabset> -->
 
+  <h3>Temporary Passwords</h3>
   <form>
     <div class="form-group">
       <label class="control-label">Phone Number</label><br/>
@@ -98,5 +99,9 @@
       <input class="btn btn-primary pull-right" type="submit" value="Submit" ng-click="createTempPassword()">
     </div>
   </form>
+
+  <div class="row">
+    <a class="btn btn-block btn-primary" href="/api/auth/signout" target="_self">{{'modules.core.views.home.signOut' | translate}}</a>
+  </div>
 
 </section>

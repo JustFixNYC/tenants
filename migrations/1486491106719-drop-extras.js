@@ -12,6 +12,9 @@ exports.up = function(next) {
           return mongodb.collection('sessions').remove({});
         })
         .then(function (res) {
+          return mongodb.collection('referrals').drop();
+        })
+        .then(function (res) {
           mongodb.close();
           next();
         })

@@ -36,6 +36,7 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 				templateUrl: 'modules/advocates/views/new-tenant.client.view.html',
 				controller: 'NewTenantSignupController',
 				abstract: true,
+				user: 'advocate',
 				data: {
 					disableBack: true
 				}
@@ -53,6 +54,7 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 				templateUrl: 'modules/advocates/views/home.client.view.html',
 				controller: 'AdvocateController',
 				globalStyles: 'fluid-container',
+				user: 'advocate',
 				data: {
 					disableBack: true
 				},
@@ -66,12 +68,14 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 			.state('advocateHelp', {
 				url: '/advocate/information',
 				templateUrl: 'modules/advocates/views/help.client.view.html',
-				controller: 'AdvocateHelpController'
+				controller: 'AdvocateHelpController',
+				user: 'advocate'
 			})
 			.state('manageTenant', {
 				url: '/advocate/manage/:id',
 				templateUrl: 'modules/advocates/views/manage-tenant.client.view.html',
 				controller: 'ManageTenantController',
+				user: 'advocate',
 				abstract: true,
 				resolve: {
 					tenant: ['Advocates', '$stateParams', function(Advocates, $stateParams) {
