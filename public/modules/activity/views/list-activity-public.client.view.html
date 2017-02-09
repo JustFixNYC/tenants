@@ -1,4 +1,5 @@
-<section class="activities-container" data-ng-controller="ActivityPublicController" data-ng-init="list()">
+<!-- <section class="activities-container" data-ng-controller="ActivityPublicController" data-ng-init="list()"> -->
+<section class="activities-container">
     <div class="page-header">
         <img src="/modules/core/img/sections/history.svg" alt="Case History" />
         <h1>{{ user.fullName }}</h1>
@@ -7,7 +8,7 @@
         <p class="text-center">{{'modules.activity.views.listActivityPublic.contact' | translate}} <a ng-href="tel:{{user.phone}}">{{ user.phone | tel }}</a></p>
         <p class="text-danger text-center">{{'modules.activity.views.listActivityPublic.alert' | translate}}</p>
     </div>
-    <button class="btn btn-primary btn-block" print-button user-id="query.key">
+    <button class="btn btn-primary btn-block" print-button user-id="shareID">
       {{'modules.activity.views.listActivityPublic.print' | translate}}
     </button>
     <br />

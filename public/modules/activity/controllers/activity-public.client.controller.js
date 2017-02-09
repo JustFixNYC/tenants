@@ -7,23 +7,19 @@
 // });
 
 
-angular.module('activity').controller('ActivityPublicController', ['$scope', '$stateParams', '$state', '$http', '$filter', 'Activity', 'Lightbox',
-  function($scope, $stateParams, $state, $http, $filter, Activity, Lightbox) {
-		
-		$scope.query = $stateParams;
-    if(!$scope.query.key) $state.go('/');
+angular.module('activity').controller('ActivityPublicController', ['$scope', '$stateParams', '$state', '$http', '$filter', 'Activity', 'Lightbox', 'user',
+  function($scope, $stateParams, $state, $http, $filter, Activity, Lightbox, user) {
+
+		$scope.shareID = $stateParams.key;
+    if(!$scope.shareID) $state.go('home');
 
     $scope.photos = [];
 
-    $scope.list = function() {
-      Activity.public({ key: $scope.query.key }, function(user) {
-        $scope.user = user;
-        $scope.activities = $scope.user.activity;
-        $scope.activities.forEach(function (act) {
-          $scope.photos = $scope.photos.concat(act.photos);
-        });
-      });
-    };
+    $scope.user = user;
+    $scope.activities = $scope.user.activity;
+    $scope.activities.forEach(function (act) {
+      $scope.photos = $scope.photos.concat(act.photos);
+    });
 
     $scope.activityTemplate = function(key) {
       return $filter('activityTemplate')(key);
