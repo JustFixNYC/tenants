@@ -79,7 +79,7 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 				abstract: true,
 				resolve: {
 					tenant: ['Advocates', '$stateParams', function(Advocates, $stateParams) {
-						return Advocates.getTenantByCurrentOrId($stateParams.id).$promise;
+						return Advocates.getTenantByCurrentOrId($stateParams.id);
 					}]
 				}
 			})

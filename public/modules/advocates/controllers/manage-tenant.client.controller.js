@@ -8,6 +8,7 @@ angular.module('advocates').controller('ManageTenantController', [
 		$scope.device = deviceDetector;
 		$scope.tenant = tenant;
 
+		// 
 		// $scope.$watch('tenant', function (tenant) {
 		// 	console.log('change in root', tenant);
 		// }, true);

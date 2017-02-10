@@ -8,7 +8,6 @@ angular.module('advocates').controller('AdvocateController', ['$rootScope', '$sc
 		$scope.bbls = {};
 
 		$scope.currentLocation = $location.protocol() + '://' + $location.host() + ($location.port() !== 80 ? ':' + $location.port() : '');
-		console.log($scope.currentLocation);
 
 		// used for the bblsToAddress filter
 		angular.forEach(tenants, function(tenant) {
