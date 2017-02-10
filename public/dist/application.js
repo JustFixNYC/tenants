@@ -1655,7 +1655,7 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 				abstract: true,
 				resolve: {
 					tenant: ['Advocates', '$stateParams', function(Advocates, $stateParams) {
-						return Advocates.getTenantByCurrentOrId($stateParams.id).$promise;
+						return Advocates.getTenantByCurrentOrId($stateParams.id);
 					}]
 				}
 			})
@@ -1771,7 +1771,6 @@ angular.module('advocates').controller('AdvocateController', ['$rootScope', '$sc
 		$scope.bbls = {};
 
 		$scope.currentLocation = $location.protocol() + '://' + $location.host() + ($location.port() !== 80 ? ':' + $location.port() : '');
-		console.log($scope.currentLocation);
 
 		// used for the bblsToAddress filter
 		angular.forEach(tenants, function(tenant) {
@@ -1815,6 +1814,7 @@ angular.module('advocates').controller('ManageTenantController', [
 		$scope.device = deviceDetector;
 		$scope.tenant = tenant;
 
+		// 
 		// $scope.$watch('tenant', function (tenant) {
 		// 	console.log('change in root', tenant);
 		// }, true);
