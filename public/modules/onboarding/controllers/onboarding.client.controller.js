@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$filter', 'Authentication', 'Referrals', '$http', '$modal', '$timeout',
-	function($rootScope, $scope, $location, $filter, Authentication, Referrals, $http, $modal, $timeout) {
+angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$filter', 'Authentication', 'AdvocatesResource', '$http', '$modal',
+	function($rootScope, $scope, $location, $filter, Authentication, AdvocatesResource, $http, $modal) {
 
 		$scope.authentication = Authentication;
 		$scope.newUser = {};
@@ -50,14 +50,15 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			// handles back button
 			if(!$scope.accessCode.valueEntered || $scope.accessCode.valueEntered !== $scope.accessCode.value) {
 
-				var referral = new Referrals();
-		    referral.$validate({ code: $scope.accessCode.value },
+				var referral = new AdvocatesResource();
+		    referral.$validateNewUser({ code: $scope.accessCode.value },
 		      function(success) {
-		        if(success.referral) {
+		        if(success.advocate) {
 		          $scope.accessCode.valid = $rootScope.validated = true;
 		          $scope.accessCode.valueEntered = $scope.accessCode.value;
-		          $scope.newUser.referral = success.referral;
-							$scope.newUser.referral.code = $scope.accessCode.value;
+							$scope.newUser.advocate = success.advocate;
+							$scope.newUser.advocateRole = success.advocateRole;
+		          $scope.referral = success.referral;
 							$scope.newUser.sharing.enabled = true;
 							$location.path('/onboarding/success');
 							$scope.codeError = false;
@@ -114,7 +115,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 				$scope.error = undefined;
 				$rootScope.loading = true;
 
-				$http.post('/api/auth/signup', $scope.newUser).success(function(response) {
+				$http.post('/api/tenants/signup', $scope.newUser).success(function(response) {
 
 					// If successful we assign the response to the global user model
 					$scope.authentication.user = response;

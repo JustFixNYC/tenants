@@ -1,6 +1,22 @@
 'use strict';
 
-angular.module('onboarding').factory('Problems', ['$http', '$q', 'Authentication',
+angular.module('onboarding')
+.factory('ProblemsResource', ['$resource', 'UpdateUserInterceptor',
+	function($resource, UpdateUserInterceptor) {
+		return $resource('', {}, {
+			updateChecklist: {
+				method: 'PUT',
+				url: 'api/tenants/checklist',
+				interceptor: UpdateUserInterceptor
+			},
+			updateManagedChecklist: {
+				method: 'PUT',
+				url: 'api/advocates/tenants/:id/checklist'
+			}
+		});
+	}
+])
+.factory('Problems', ['$http', '$q', 'Authentication',
 	function($http, $q, Authentication){
 
 		var requestLocalFile = function() {
@@ -30,7 +46,4 @@ angular.module('onboarding').factory('Problems', ['$http', '$q', 'Authentication
 				return problems;
 			}
 		};
-
-
-
-	}]);
+}]);

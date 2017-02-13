@@ -5,7 +5,8 @@
  */
 var passport = require('passport'),
 	LocalStrategy = require('passport-local').Strategy,
-	User = require('mongoose').model('User');
+	// User = require('mongoose').model('User');
+	Identity = require('mongoose').model('Identity');
 
 module.exports = function() {
 	// Use local strategy
@@ -14,25 +15,26 @@ module.exports = function() {
 			passwordField: 'password'
 		},
 		function(phone, password, done) {
-			User.findOne({
+
+			Identity.findOne({
 				phone: phone
 			},
-			function(err, user) {
+			function(err, identity) {
 				if (err) {
 					return done(err);
 				}
-				if (!user) {
+				if (!identity) {
 					return done(null, false, {
 						message: 'Sorry! This phone number was not found. Check that you are using the same one you used to register'
 					});
 				}
-				if (!user.authenticate(password)) {
+				if (!identity.authenticate(password)) {
 					return done(null, false, {
 						message: 'Wrong password - remember that they are case sensitive!'
 					});
 				}
 
-				return done(null, user);
+				return done(null, identity);
 			});
 		}
 	));

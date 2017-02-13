@@ -1,0 +1,102 @@
+#advocates {
+
+  .advocates-header {
+    margin-top: 0;
+    margin-bottom: 45px;
+    text-align: center;
+
+    @media (min-width: $screen-xs-min) {
+      margin-top: 25px;
+      text-align: left;
+    }
+
+
+  }
+
+  .advocates-view-toggle {
+    a:hover {
+      cursor: pointer;
+    }
+    a.disabled {
+      color: #434A54;
+
+      &:hover {
+        cursor: default;
+      }
+    }
+  }
+
+  .table {
+    td {
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+
+    .table-mobile-view {
+      display: none;
+    }
+
+    &.buildings-table {
+        .buildings-table-item {
+          .glyphicon {
+            padding-right: 10px;
+          }
+        }
+    }
+
+    @media (max-width: $screen-xs-max) {
+
+      td.case-link {
+        a, em {
+          float: right;
+        }
+      }
+
+      thead {
+        display: none;
+      }
+
+      .table-desktop-view {
+        display: none;
+      }
+      .table-mobile-view {
+        display: table-cell;
+      }
+
+      &.buildings-table {
+
+        .table {
+          margin-bottom: 0;
+        }
+        .panel-body {
+          padding-left: 0;
+          padding-right: 0;
+        }
+      }
+
+    }
+  }
+}
+
+#advocates-faq {
+
+  h2 {
+    margin-top: 30px;
+  }
+
+  .ashley-box {
+    background-color: #fff;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    // border: 1px dashed $mediumgray-light;
+  }
+
+  .advocate-code-box {
+    width: 100%;
+    text-align: center;
+    border: 2px solid $justfix-blue-dark;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+}

@@ -47,7 +47,9 @@ module.exports = {
 				'public/external/mapbox-gl.js',
 				'public/external/leaflet-mapbox-gl.js',
 				'public/lib/deep-diff/releases/deep-diff-0.3.3.min.js',
-		    'public/lib/angular-sanitize/angular-sanitize.min.js'
+		    'public/lib/angular-sanitize/angular-sanitize.min.js',
+		    'public/lib/angular-filter/dist/angular-filter.js',
+				'public/lib/angular-clipboard/angular-clipboard.js'
 		  ]
 	  },
 	  css: [

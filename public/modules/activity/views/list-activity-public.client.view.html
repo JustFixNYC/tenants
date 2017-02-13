@@ -1,37 +1,72 @@
-<section class="activities-container" data-ng-controller="ActivityPublicController" data-ng-init="list()">
+<!-- <section class="activities-container" data-ng-controller="ActivityPublicController" data-ng-init="list()"> -->
+<section class="activities-container">
     <div class="page-header">
         <img src="/modules/core/img/sections/history.svg" alt="Case History" />
         <h1>{{ user.fullName }}</h1>
-        <p class="text-center">
-          {{'modules.activity.views.listActivityPublic.contact' | translate}} {{ user.phone | tel }}<br />
-          {{ user.address }} {{ user.unit }}<br />
-          {{ user.borough }} NY, {{ user.geo.zip }}
-        </p>
+        <p class="text-center">{{ user.address }}, {{ user.unit }}</p>
+        <p class="text-center">{{ user.borough }}, NY {{ user.geo.zip }}</p>
+        <p class="text-center">{{'modules.activity.views.listActivityPublic.contact' | translate}} <a ng-href="tel:{{user.phone}}">{{ user.phone | tel }}</a></p>
         <p class="text-danger text-center">{{'modules.activity.views.listActivityPublic.alert' | translate}}</p>
     </div>
-    <button class="btn btn-primary btn-block" print-button>
+    <button class="btn btn-primary btn-block" print-button user-id="shareID">
       {{'modules.activity.views.listActivityPublic.print' | translate}}
     </button>
-    <div class="section-header">
+    <br />
+    <!-- <div class="section-header">
       <h2>{{'modules.activity.views.listActivityPublic.caseHistory' | translate}}
       </h2>
-    </div>
+    </div> -->
     <div data-ng-if="activities.length">
-        <div data-ng-repeat="activity in activities | orderBy:'createdDate':true" class="panel activity-panel">
-            <div class="panel-heading">
-                <h3>{{ activity.title | translate }}</h3>
+      <div class="row">
+        <tabset>
+          <tab>
+            <tab-heading>
+              {{'modules.activity.views.listActivity.activityTab' | translate}}
+            </tab-heading>
+            <div data-ng-repeat="activity in activities | orderBy:'createdDate':true" class="panel activity-panel">
+                <div class="panel-heading">
+                    <h3>{{ activity.title | translate }}</h3>
+                </div>
+                <div class="panel-body">
+                  <div ng-include="activityTemplate(activity.key)"></div>
+                  <div ng-include="'/modules/activity/partials/attribution.html'"></div>
+                </div>
             </div>
-            <div class="panel-body">
-
-              <div ng-include="activityTemplate(activity.key)"></div>
-
-                <!-- <p><b>{{ activity.key | areaTitle }} {{ activity.title === 'Text/Photos' ? 'Details' : activity.title }}</b></p> -->
-
-
-                <span class="pull-right activity-logged-date"><i>{{'modules.activity.views.listActivityPublic.loggedOn' | translate}} {{ activity.createdDate | date:'short' }}</i></span>
-
+          </tab>
+          <tab>
+            <tab-heading>
+              {{'modules.activity.views.listActivity.issuesTab' | translate}}
+            </tab-heading>
+            <div data-ng-repeat="problem in user.problems">
+              <h2>{{ problem.title | translate }}</h2>
+              <ul>
+                <li data-ng-repeat="issue in problem.issues">{{ issue.key | translate }}</li>
+              </ul>
             </div>
-        </div>
+          </tab>
+          <tab>
+            <tab-heading>
+              {{'modules.activity.views.listActivity.photosTab' | translate}} ({{photos.length}})
+            </tab-heading>
+            <div ng-if="photos.length">
+              <div class="photos-grid">
+                <div data-ng-repeat="photo in photos" class="photos-grid-item">
+                    <a ng-click="openLightboxModal(photos, $index)">
+                        <img ng-src="{{ photo.thumb }}" class="img-thumbnail" />
+                    </a>
+                </div>
+              </div>
+            </div>
+            <div ng-if="!photos.length" class="text-center">
+              <br />
+              <i>{{'modules.activity.views.listActivity.noPhotosTab' | translate}}</i>
+              <br />
+              <br />
+            </div>
+
+          </tab>
+        </tabset>
+      </div>
     </div>
     <div class="alert alert-warning text-center" data-ng-if="!activities.length">
       {{ user.fullName }} {{'modules.activity.views.listActivityPublic.empty' | translate}}

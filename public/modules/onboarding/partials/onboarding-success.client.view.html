@@ -7,10 +7,10 @@
 		<p>{{'modules.onboarding.partials.onboardingSuccess.subtitle' | translate}}</p>
 	</div>
 	<h2 class="text-center">
-		{{ newUser.referral.name }}<br />
-		{{ newUser.referral.organization }}<br />
-		{{ newUser.referral.phone | tel }}<br />
-		{{ newUser.referral.email }}
+		{{ referral.name }}<br />
+		{{ referral.organization }}<br />
+		{{ referral.contactPhone + (referral.contactPhoneExt ? (',' + referral.contactPhoneExt) : '') | tel }}<br />
+		{{ referral.email }}
 	</h2>
 	<div class="share-section">
 		<h2>

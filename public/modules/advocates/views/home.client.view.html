@@ -1,0 +1,147 @@
+<section id="advocates" data-ng-init="list()">
+
+  <div class="advocates-header clearfix">
+    <div class="pull-left-on-desktop">
+      <h1 >Your Accounts</h1>
+      <p><b>Your Advocate Code:</b> {{ user.code }}</p>
+    </div>
+
+    <div>
+      <a ui-sref="newTenantSignup.problems" class="btn btn-info btn-block pull-right-on-desktop"><span class="glyphicon glyphicon-plus"></span> Managed Tenant</a>
+    </div>
+  </div>
+
+  <div class="alert alert-warning text-center" data-ng-if="!tenants.length">
+    You don't have any tenants linked to your account yet! <a ui-sref="advocateHelp">Click here</a> to read more about linked and managed tenant accounts.
+  </div>
+
+  <div ng-if="tenants.length">
+
+    <div class="advocates-view-toggle">
+
+      <ul class="list-inline">
+        <li><span>Sort By:</span></li>
+        <li><a ng-click="changeView('individual')"
+               ng-class="{ 'disabled' : view === 'individual' }">
+            <span class="glyphicon glyphicon glyphicon-align-justify"></span> Individual</a>
+        </li> /
+        <li><a ng-click="changeView('building')"
+               ng-class="{ 'disabled' : view === 'building' }">
+            <span class="glyphicon glyphicon glyphicon-th-large"></span> Building</a>
+        </li>
+      </ul>
+    </div>
+
+    <div ng-if="view === 'individual'">
+      <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Last Updated <span style="font-size:12px;" class="glyphicon glyphicon-triangle-top"></span></th>
+              <th>Address</th>
+              <th>Phone Number</th>
+              <th>Share Link</th>
+              <th>Case</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="tenant-list-item" ng-repeat="t in tenants | orderBy:['!updated', '-updated']">
+              <td class="table-desktop-view" ng-bind="t.fullName"></td>
+              <td class="table-desktop-view">{{ t.updated ? (t.updated | date:'short') : (t.created | date:'short') }}</td>
+              <td class="table-desktop-view">{{ t.geo.bbl | toAddress:bbls }}</td>
+              <td class="table-desktop-view">{{ t.phone | tel }}</td>
+              <td class="table-desktop-view text-center">
+                <span
+                  ng-if="t.sharing.enabled"
+                  class="glyphicon glyphicon-link copy-link"
+                  clipboard on-copied="copied()"
+                  ng-mouseleave="mouseleave()"
+                  text="currentLocation + '/share/' + t.sharing.key"
+                  tooltip="{{copyTooltipText}}" tooltip-trigger="mouseenter" tooltip-placement="bottom">
+                </span>
+              </td>
+              <td class="table-mobile-view">
+                <b>{{t.fullName}}</b><br />
+                {{ t.geo.bbl | toAddress:bbls }}<br />
+                Apt. {{ t.unit }}<br />
+                <a ng-href="tel:{{t.phone}}">{{ t.phone | tel }}</a>
+              </td>
+
+
+              <td class="case-link" ng-if="t.advocateRole === 'managed'">
+                <a ng-click="viewTenant(t)" class="btn btn-info">Manage</a>
+              </td>
+              <td class="case-link" ng-if="t.advocateRole === 'linked' && t.sharing.enabled">
+                <a ng-href="/share/{{ t.sharing.key }}">View Case</a>
+              </td>
+              <td class="case-link" ng-if="t.advocateRole === 'linked' && !t.sharing.enabled">
+                <em>Not Shared</em>
+              </td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
+
+    <div ng-if="view === 'building'">
+      <accordion template-url='/modules/advocates/partials/accordion/accordion.html'>
+        <!-- ng-repeat="(building, members) in tenants | groupBy: 'address'" -->
+        <accordion-group
+          ng-repeat="(bbl, members) in tenants | groupBy: 'geo.bbl'"
+          template-url='/modules/advocates/partials/accordion/accordion-group.html'>
+          <accordion-heading>
+            {{ bbl | toAddress:bbls }} <em>({{members.length}} accounts)</em>
+          </accordion-heading>
+          <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Last Updated</th>
+                  <th>Unit</th>
+                  <th>Phone Number</th>
+                  <th>Share Link</th>
+                  <th>Case</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="t in members | orderBy:['!updated', '-updated']">
+                  <td class="table-desktop-view" ng-bind="t.fullName"></td>
+                  <td class="table-desktop-view">{{ t.updated ? (t.updated | date:'short') : (t.created | date:'short') }}</td>
+                  <td class="table-desktop-view">{{ t.unit }}</td>
+                  <td class="table-desktop-view">{{ t.phone | tel }}</td>
+                  <td class="table-desktop-view text-center">
+                    <span
+                      ng-if="t.sharing.enabled"
+                      class="glyphicon glyphicon-link copy-link"
+                      clipboard on-copied="copied()"
+                      ng-mouseleave="mouseleave()"
+                      text="currentLocation + '/share/' + t.sharing.key"
+                      tooltip="{{copyTooltipText}}" tooltip-trigger="mouseenter" tooltip-placement="bottom">
+                    </span>
+                  </td>
+                  <td class="table-mobile-view">
+                    <b>{{t.fullName}}</b><br />
+                    {{ t.geo.bbl | toAddress:bbls }}<br />
+                    Apt. {{ t.unit }}<br />
+                    <a ng-href="tel:{{t.phone}}">{{ t.phone | tel }}</a>
+                  </td>
+                  <td class="case-link" ng-if="t.advocateRole === 'managed'">
+                    <a ng-click="viewTenant(t)" ng-click="$event.stopPropagation();" class="btn btn-info">Manage</a>
+                  </td>
+                  <td class="case-link" ng-if="t.advocateRole === 'linked' && t.sharing.enabled">
+                    <a ng-href="/share/{{ t.sharing.key }}" ng-click="$event.stopPropagation();">View Case</a>
+                  </td>
+                  <td class="case-link" ng-if="t.advocateRole === 'linked' && !t.sharing.enabled">
+                    <em>Not Shared</em>
+                  </td>
+                </tr>
+              </tbody>
+          </table>
+        </accordion-group>
+      </accordion>
+    </div>
+
+  </div>
+
+
+
+</section>

@@ -1,15 +1,27 @@
+<!-- <div class="row">
+  <a ui-sref="">&#8592; Back to profile</a>
+</div> -->
 <div class="problems-container">
   <problems-checklist our-user="tenant"></problems-checklist>
 </div>
-<div class="row">
-    <div class="col-xs-4">
-        <a ng-click="cancelProblemsUpdate()" class="btn btn-block btn-default">
-          Cancel
-        </a>
+<div class="form-group" ng-if="device.isDesktop()">
+    <div class="row">
+        <div class="col-xs-4">
+            <a ui-sref="manageTenant.home" class="btn btn-block btn-default">
+              {{'modules.onboarding.partials.onboardingProblems.back' | translate}}
+            </a>
+        </div>
+        <div class="col-xs-8">
+            <a ng-click="saveProblems()" class="btn btn-primary btn-block pull-right">
+                Save
+            </a>
+        </div>
     </div>
-    <div class="col-xs-8">
-        <a ng-click="saveProblems()" class="btn btn-primary btn-block pull-right">
-          Save
-        </a>
-    </div>
+    <br />
+    <alert
+          data-ng-show="problemsAlert"
+          type="danger"
+          close="problemsAlert = false">
+      <span ng-bind-html="'modules.core.views.home.error' | trustTranslate" compile-template></span>
+    </alert>
 </div>

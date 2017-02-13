@@ -17,3 +17,4 @@ public/styles/vendor.css
 public/styles/style.css.map
 public/styles/vendor.css.map
 migrations/advocates.json
+migrations/.migrate

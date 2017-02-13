@@ -5,8 +5,12 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
     return {
       templateUrl: '/modules/problems/partials/problems-list.client.view.html',
       restrict: 'E',
-      scope: false,
+      scope: {
+        ourUser: '='
+      },
       link: function postLink(scope, element, attrs) {
+
+        console.log(scope.ourUser);
 
 					// problemAssembler, if we don't have the problem set we just clear it out here
 					var newProblem = function(problem) {
@@ -22,18 +26,17 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 				    return newProb;
 					};
 
-
           // this is a reference to whichever user we're working with, i.e.
           // scope.newUser or Authentication.user
           // scope.ourUser;
 
-          // user exists
-          if(!Authentication.user) {
-            // This needs to be tested to see if it actually... works...
-            scope.ourUser = scope.newUser;
-          } else {
-            scope.ourUser = Authentication.user;
-          }
+          // // user exists
+          // if(!Authentication.user) {
+          //   // This needs to be tested to see if it actually... works...
+          //   scope.ourUser = scope.newUser;
+          // } else {
+          //   scope.ourUser = Authentication.user;
+          // }
 
           // get problems from service
           Problems.getLocalFile().then(function (data) {
@@ -56,8 +59,7 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 
           });
 
-
-          scope.hasChangedProblems = false;
+          scope.$parent.hasChangedProblems = false;
 
           // modal opening/closing
           // passing scopes
@@ -103,7 +105,7 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
 
               // check if anything has changed...
               if(numIssuesOnModalOpen != ourUserCurrentProblem.issues.length) {
-                scope.hasChangedProblems = true;
+                scope.$parent.hasChangedProblems = true;
               }
 
               // check if the modal was closed and no issues were selectedIssues

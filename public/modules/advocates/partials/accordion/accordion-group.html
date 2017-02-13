@@ -1,0 +1,14 @@
+<tr>
+  <td class="buildings-table-item">
+    <div ng-click="$event.preventDefault(); toggleOpen()">
+      <a href="#" tabindex="0" class="accordion-toggle" accordion-transclude="heading">
+        <span ng-if="!isOpen" class="glyphicon glyphicon-plus"></span>
+        <span ng-if="isOpen" class="glyphicon glyphicon-minus"></span>
+        <span ng-class="{'text-muted': isDisabled}">  {{heading}}</span>
+      </a>
+    </div>
+    <div class="panel-collapse collapse" collapse="!isOpen">
+      <div class="panel-body" ng-transclude></div>
+    </div>
+  </td>
+</tr>

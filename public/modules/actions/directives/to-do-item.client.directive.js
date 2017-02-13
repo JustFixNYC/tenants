@@ -106,7 +106,11 @@ angular.module('actions')
             scope.newActivity.startDate = scope.action.startDate = new Date();
           }
 
+          // console.log()
+
           scope.action.$followUp({ type: 'add' });
+
+
 
           if(url && type === 'tel') window.location.href = url;
           else if(url && type === 'link') window.open(url, '_blank');

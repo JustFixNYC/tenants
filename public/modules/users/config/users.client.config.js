@@ -2,7 +2,7 @@
 
 // Config HTTP Error Handling
 angular.module('users').config(['$httpProvider',
-	// TODO: uhhh wut diz
+
 	function($httpProvider) {
 		// Set the httpProvider "not authorized" interceptor
 		$httpProvider.interceptors.push(['$rootScope', '$q', '$location', 'Authentication',
@@ -20,8 +20,16 @@ angular.module('users').config(['$httpProvider',
 								$location.path('signin');
 								break;
 							case 403:
-								// Add unauthorized behaviour
+
+								console.log('unauthorized');
 								$location.path('not-found');
+
+								// $rootScope.evalAsync(function () {
+								// 	// Add unauthorized behaviour
+								//
+								// });
+
+								// $state.go('not-found');
 								break;
 						}
 

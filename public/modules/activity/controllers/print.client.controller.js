@@ -5,11 +5,11 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
   function($scope, $rootScope, $filter, Activity, Authentication, $state, $stateParams) {
 
   	$scope.printable = false;
-    $scope.user = Authentication.user;
+    // $scope.user = Authentication.user;
 
   	// If we need to reload view (should be fired in parent)
   	$scope.reloadView = function() {
-  		$scope.printable = false; 
+  		$scope.printable = false;
   		$state.reload();
   	};
 
@@ -30,29 +30,35 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
       		}
       	}
       	return data;
-    	}
+    	};
 
-    	if($scope.user && $scope.user.roles.indexOf('admin') === -1){
+      // logged in user printing from their case history page
+      if(Authentication.user && !$stateParams.key) {
 
-    		// if we have a logged in user, the activity array will be updated, and we can return that saved val
-				$scope.activities = dataTagAndOrder($scope.user.activity);
-	    } else {
+        // console.log('user');
 
-	    	// if we don't have a logged in user, make sure we have a public key (otherwise disable button)
-		  	var key = $stateParams.key;
-		  	if(!key) {
-		  		return $scope.stopPrint = true;
-		  	}
+        $scope.user = Authentication.user;
+        $scope.activities = dataTagAndOrder($scope.user.activity);
 
-	    	// if we have a key, we'll need to query via the 'public' method on the Activity service (diff query params)
-	    	Activity.public({'key': key}, function(data) {
-	    		$scope.user = data;
-	    		$scope.activities = dataTagAndOrder(data.activity);
-	    	}, function(error) {
-	    		console.log(error);
-	    	});
+      // all other situations
+      } else if($stateParams.key) {
 
-	    }
+        // console.log('key');
+
+        // if we have a key, we'll need to query via the 'public' method on the Activity service (diff query params)
+      	Activity.public({'key': $stateParams.key}, function(data) {
+      		$scope.user = data;
+      		$scope.activities = dataTagAndOrder(data.activity);
+      	}, function(error) {
+      		console.log(error);
+      	});
+
+      } else {
+        // return $scope.stopPrint = true;
+        $scope.stopPrint = true;
+      }
+
+
     };
 
     $rootScope.headerLightBG = true;
@@ -65,7 +71,7 @@ angular.module('activity').controller('PrintController', ['$scope', '$rootScope'
       var startDate = new Date(start).setHours(0,0,0,0);
       var createdDate = new Date(created).setHours(0,0,0,0);
       return startDate !== createdDate;
-    }
+    };
 
     $rootScope.$on('$viewContentLoaded', function() {
     	if(!$scope.stopPrint) {

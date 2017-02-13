@@ -34,10 +34,13 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
       var message;
       switch(type) {
         case 'share':
-        message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
-           ' I\'m experiencing issues with my apartment and would like to get them resolved.' +
-           ' A link to my Case History can be found at http://' + $location.host() + '/share/' + user.sharing.key + '. Thank you!';
-        break;
+          message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
+             ' I\'m experiencing issues with my apartment and would like to get them resolved.' +
+             ' A link to my Case History can be found at http://' + $location.host() + '/share/' + user.sharing.key + '. Thank you!';
+          break;
+        case 'friendShare':
+          message = 'I am using JustFix.nyc to take action on my housing issues! Click here to sign up: http://justfix.nyc/signup';
+          break;
         default:
           message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
              ' I\'m experiencing issues with my apartment and would like to get them resolved.' +

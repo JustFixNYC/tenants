@@ -12,8 +12,15 @@ angular.module('core').controller('HeaderController', ['$rootScope', '$state', '
         // moved to application.js to ensure it runs on pageload...
         // setHeaderState(toState.name);
 
-        $rootScope.showBack = true;
-        if(toState.data && toState.data.disableBack) $rootScope.showBack = false;
+        if(Authentication.user) {
+          $rootScope.showBack = true;
+          if(toState.data && toState.data.disableBack) {
+            $rootScope.showBack = false;
+          }
+        } else {
+          $rootScope.showBack = false;
+        }
+
       });
 
       // console.log('state current name is:', $state.current.name);

@@ -12,7 +12,8 @@ angular.module('admin').config(['$stateProvider', '$urlRouterProvider',
 		state('admin', {
 			url: '/admin',
 			templateUrl: 'modules/admin/views/admin.client.view.html',
-			data: { protected: true }
+			data: { protected: true },
+			user: 'admin'
 		});
 
 	}

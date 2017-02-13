@@ -19,7 +19,14 @@ angular.module('activity').config(['$stateProvider', '$urlRouterProvider', 'Ligh
 			.state('showPublic', {
 				url: '/share/:key',
 				templateUrl: 'modules/activity/views/list-activity-public.client.view.html',
-				data: { disableBack: true }
+				controller: 'ActivityPublicController',
+				resolve: {
+					user: ['Activity', '$stateParams', function(Activity, $stateParams) {
+						return Activity.public({ key: $stateParams.key }).$promise;
+					}]
+				}
+				// ,
+				// data: { disableBack: true }
 			})
 			.state('print', {
 				url: '/print/:key',

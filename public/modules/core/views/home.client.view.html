@@ -44,7 +44,7 @@
     </a>
   </div>
 
-  <div ng-if="authentication.user.referral">
+  <div ng-if="authentication.user.advocate">
     <!-- <div class="section-header" ng-click="shareCollapsed = !shareCollapsed"> -->
     <div class="section-header">
       <h2>{{'modules.core.views.home.advocate' | translate}}
@@ -54,19 +54,29 @@
     <!-- <div class="share-section" collapse="shareCollapsed"> -->
     <div class="share-section">
       <h2>
-        {{ ::authentication.user.referral.name }}<br />
-        {{ ::authentication.user.referral.organization }}<br />
-        {{ ::authentication.user.referral.phone | tel }}<br />
-        {{ ::authentication.user.referral.email }}
+        {{ ::authentication.user.advocate.fullName }}<br />
+        {{ ::authentication.user.advocate.organization }}<br />
+        {{ authentication.user.advocate.contactPhone  + (authentication.user.advocate.contactPhoneExt ? (',' + authentication.user.advocate.contactPhoneExt) : '') | tel }}<br />
+        {{ ::authentication.user.advocate.email }}
       </h2>
       <div class="row share-controls">
-        <a class="btn btn-success btn-block" ng-href="tel:{{authentication.user.referral.phone}}">
-            {{'modules.core.views.home.call' | translate}} {{ ::authentication.user.referral.name | firstname }}
+        <a class="btn btn-success btn-block" ng-href="tel:{{ authentication.user.advocate.contactPhone + (authentication.user.advocate.contactPhoneExt ? (',' + authentication.user.advocate.contactPhoneExt) : '') }}">
+            {{'modules.core.views.home.call' | translate}} {{ ::authentication.user.advocate.fullName | firstname }}
         </a>
       </div>
     </div>
   </div>
 
+  <br />
+  <!-- <div class="row"> -->
+  <div class="clearfix">
+    <a class="btn btn-success col-xs-6" ng-if="!device.isDesktop()" sms-message type="friendShare">
+        {{'modules.core.views.home.friendShare' | translate}}
+    </a>
+    <a class="btn btn-warning col-xs-5 col-xs-offset-1" ng-if="!device.isDesktop()" ui-sref="contact">
+        {{'modules.core.views.home.contact' | translate}}
+    </a>
+  </div>
   <br />
   <div class="row">
     <a class="btn btn-block btn-primary" href="/api/auth/signout" target="_self">{{'modules.core.views.home.signOut' | translate}}</a>

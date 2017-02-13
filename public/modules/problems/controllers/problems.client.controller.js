@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('problems').controller('ProblemsController', ['$rootScope', '$scope', '$state', 'Authentication', 'Users', 'Problems',
-	function($rootScope, $scope, $state, Authentication, Users, Problems) {
+angular.module('problems').controller('ProblemsController', ['$rootScope', '$scope', '$state', 'Authentication', 'Users', 'ProblemsResource', 'Problems',
+	function($rootScope, $scope, $state, Authentication, Users, ProblemsResource, Problems) {
 
 		$scope.user = Authentication.user;
 
@@ -15,7 +15,7 @@ angular.module('problems').controller('ProblemsController', ['$rootScope', '$sco
 				toState.updated = true;
 			  $rootScope.loading = true;
 
-			  var user = new Users(Authentication.user);
+			  var user = new ProblemsResource(Authentication.user);
 				user.$updateChecklist(function(response) {
 
 			    $rootScope.loading = false;

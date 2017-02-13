@@ -8,28 +8,68 @@
     <a ng-href="tel:{{ tenant.phone }}" class="btn btn-success btn-block pull-right" ng-if="!isDesktop">
         Call {{ tenant.firstName }}
     </a>
-    <button class="btn btn-primary btn-block pull-right" ng-if="isDesktop" print-button>
+    <button class="btn btn-primary btn-block pull-right" ng-if="isDesktop" print-button user-id="tenant.sharing.key">
         {{'modules.activity.views.listActivity.print' | translate}}
     </button>
   </div>
 </div>
 <add-details tenant="tenant"></add-details>
-<div class="section-header">
+<alert
+      data-ng-show="$root.dashboardSuccess"
+      type="success"
+      close="$root.dashboardSuccess = false">
+  <span ng-bind-html="'modules.core.views.home.success' | trustTranslate" compile-template></span>
+</alert>
+<!-- <div class="section-header">
   <h2>{{'modules.activity.views.listActivityPublic.caseHistory' | translate}}
   </h2>
-</div>
+</div> -->
 <div data-ng-if="tenant.activity.length">
-    <div data-ng-repeat="activity in tenant.activity | orderBy:'createdDate':true" class="panel activity-panel">
-        <div class="panel-heading">
-            <h3>{{ activity.title | translate }}</h3>
-        </div>
-        <div class="panel-body">
 
-          <div ng-include="activityTemplate(activity.key)"></div>
-            <span class="pull-right activity-logged-date"><i>{{'modules.activity.views.listActivityPublic.loggedOn' | translate}} {{ activity.createdDate | date:'short' }}</i></span>
-
+  <div class="row">
+    <tabset>
+      <tab heading="Activity Log">
+        <div data-ng-repeat="activity in tenant.activity | orderBy:'createdDate':true" class="panel activity-panel">
+            <div class="panel-heading">
+                <h3>{{ activity.title | translate }}</h3>
+            </div>
+            <div class="panel-body">
+              <div ng-include="activityTemplate(activity.key)"></div>
+              <div ng-include="'/modules/activity/partials/attribution.html'"></div>
+            </div>
         </div>
-    </div>
+      </tab>
+      <tab heading="Current Issues">
+        <div data-ng-repeat="problem in tenant.problems">
+          <h2>{{ problem.title | translate }}</h2>
+          <ul>
+            <li data-ng-repeat="issue in problem.issues">{{ issue.key | translate }}</li>
+          </ul>
+        </div>
+      </tab>
+      <tab>
+        <tab-heading>
+          Photos ({{photos.length}})
+        </tab-heading>
+        <div ng-if="photos.length">
+          <div class="photos-grid">
+            <div data-ng-repeat="photo in photos" class="photos-grid-item">
+                <a ng-click="openLightboxModal(photos, $index)">
+                    <img ng-src="{{ photo.thumb }}" class="img-thumbnail" />
+                </a>
+            </div>
+          </div>
+        </div>
+        <div ng-if="!photos.length" class="text-center">
+          <br />
+          <i>No photos have been uploaded yet!</i>
+          <br />
+          <br />
+        </div>
+
+      </tab>
+    </tabset>
+  </div>
 </div>
 <div class="alert alert-warning text-center" data-ng-if="!tenant.activity.length">
   {{ tenant.fullName }} {{'modules.activity.views.listActivityPublic.empty' | translate}}
