@@ -26,7 +26,6 @@ var db = mongoose.connect(config.db, function(err) {
 
 
     var identity = new Identity({
-			provider: "local",
       phone: config.superuser.phone,
       password: config.superuser.pwd,
 			roles: ['admin'],
@@ -37,7 +36,7 @@ var db = mongoose.connect(config.db, function(err) {
 
 		Q.allSettled([identity.save(), admin.save()])
 	    .spread(function (identity, admin) {
-
+				
 				// save the ObjectID references of the two documents
 	      user._identity = identity.value._id;
 	      user._userdata = admin.value._id;
