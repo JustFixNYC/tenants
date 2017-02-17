@@ -92,13 +92,13 @@
 		<fieldset>
 				<div data-ng-show="error.errors" class="alert alert-danger">
 						<strong data-ng-repeat="err in error.errors">
-							<p data-ng-bind="err.message"></p>
+							<p ng-bind-html="err.message | trustAs"></p>
 							<span ng-bind-html="'modules.onboarding.partials.onboardingDetails.errorMsg' | trustTranslate" compile-template></span>
 						</strong>
 				</div>
 				<div data-ng-show="error && !error.errors" class="alert alert-danger">
 						<strong>
-							<p data-ng-bind="error"></p>
+							<p ng-bind-html="error | trustAs"></p>
 							<span ng-bind-html="'modules.onboarding.partials.onboardingDetails.errorMsg' | trustTranslate" compile-template></span>
 						</strong>
 				</div>

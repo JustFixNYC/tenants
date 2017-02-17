@@ -35,13 +35,13 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 				disableBack: true
 			}
 		})
-		.state('manifesto', {
-			url: '/manifesto',
-			templateUrl: 'modules/core/views/manifesto.client.view.html',
-			data: {
-				disableBack: true
-			}
-		})
+		// .state('manifesto', {
+		// 	url: '/manifesto',
+		// 	templateUrl: 'modules/core/views/manifesto.client.view.html',
+		// 	data: {
+		// 		disableBack: true
+		// 	}
+		// })
 		.state('espanol', {
 			url: '/espanol',
 			onEnter: function(LocaleService, $state) {

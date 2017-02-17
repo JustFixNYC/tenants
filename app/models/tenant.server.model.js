@@ -99,7 +99,7 @@ var TenantSchema = new Schema({
     type: String,
     trim: true,
     default: '',
-    validate: [validateGeoclientAddress, 'Your address was not found! Please try again.'],
+    validate: [validateGeoclientAddress, 'Your address was not found! Make sure that your apartment number is separated from your street address.'],
     required: true
   },
   unit: {

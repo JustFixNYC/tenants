@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$filter', 'Authentication', 'AdvocatesResource', '$http', '$modal',
-	function($rootScope, $scope, $location, $filter, Authentication, AdvocatesResource, $http, $modal) {
+angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$timeout', '$filter', 'Authentication', 'AdvocatesResource', '$http', '$modal',
+	function($rootScope, $scope, $location, $timeout, $filter, Authentication, AdvocatesResource, $http, $modal) {
 
 		$scope.authentication = Authentication;
 		$scope.newUser = {};

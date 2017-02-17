@@ -2343,13 +2343,13 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 				disableBack: true
 			}
 		})
-		.state('manifesto', {
-			url: '/manifesto',
-			templateUrl: 'modules/core/views/manifesto.client.view.html',
-			data: {
-				disableBack: true
-			}
-		})
+		// .state('manifesto', {
+		// 	url: '/manifesto',
+		// 	templateUrl: 'modules/core/views/manifesto.client.view.html',
+		// 	data: {
+		// 		disableBack: true
+		// 	}
+		// })
 		.state('espanol', {
 			url: '/espanol',
 			onEnter: function(LocaleService, $state) {
@@ -3279,6 +3279,20 @@ angular.module('core').filter('titlecase', function() {
 
 'use strict';
 
+angular.module('core').filter('trustAs', ['$sce',
+    function($sce) {
+        return function (input, type) {
+            if (typeof input === "string") {
+                return $sce.trustAs(type || 'html', input);
+            }
+            // console.log("trustAs filter. Error. input isn't a string");
+            return "";
+        };
+    }
+]);
+
+'use strict';
+
 angular.module('core').filter('trustTranslate', ['$sce', '$filter', 'Authentication',
 	function($sce, $filter, Authentication) {
 		
@@ -4035,8 +4049,8 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
 
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$filter', 'Authentication', 'AdvocatesResource', '$http', '$modal',
-	function($rootScope, $scope, $location, $filter, Authentication, AdvocatesResource, $http, $modal) {
+angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$timeout', '$filter', 'Authentication', 'AdvocatesResource', '$http', '$modal',
+	function($rootScope, $scope, $location, $timeout, $filter, Authentication, AdvocatesResource, $http, $modal) {
 
 		$scope.authentication = Authentication;
 		$scope.newUser = {};
