@@ -30,7 +30,7 @@ var makeNewURL = function(deferred) {
 
   // check if url already exists
   Tenant.find({ 'sharing.key': newUrl }, function(err, referrals) {
-    if(referrals.length) makeNewUrl(deferred);
+    if(referrals.length) makeNewURL(deferred);
     else deferred.resolve(newUrl);
   });
 
