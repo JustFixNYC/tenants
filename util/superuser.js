@@ -1,5 +1,7 @@
-var init = require('./init')(),
-    config = require('./config'),
+'use strict';
+
+var init = require('../init')(),
+    config = require('../config'),
 	  mongoose = require('mongoose'),
     UserSchema = require('../app/models/user.server.model'),
     User = mongoose.model('User'),

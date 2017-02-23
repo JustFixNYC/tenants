@@ -1,7 +1,7 @@
 'use strict';
 
 var Q = require('q'),
-		config = require('./config'),
+		config = require('../config'),
 	  mongoose = require('mongoose'),
     UserSchema = require('../app/models/user.server.model'),
     AdminSchema = require('../app/models/admin.server.model'),
@@ -36,7 +36,7 @@ var db = mongoose.connect(config.db, function(err) {
 
 		Q.allSettled([identity.save(), admin.save()])
 	    .spread(function (identity, admin) {
-				
+
 				// save the ObjectID references of the two documents
 	      user._identity = identity.value._id;
 	      user._userdata = admin.value._id;
