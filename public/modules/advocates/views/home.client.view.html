@@ -39,6 +39,8 @@
               <th>Name</th>
               <th>Last Updated <span style="font-size:12px;" class="glyphicon glyphicon-triangle-top"></span></th>
               <th>Address</th>
+              <th>RS? <span style="font-size:12px;" tooltip="This apartment is likely to be rent stablized." tooltip-placement="bottom" class="glyphicon glyphicon-question-sign"></span></th>
+              <th>THA <a href="http://www1.nyc.gov/nyc-resources/service/4860/tenant-harassment-assistance" target="_blank"><span style="font-size:12px;" class="glyphicon glyphicon-question-sign"></span></a></th>
               <th>Phone Number</th>
               <th>Share Link</th>
               <th>Case</th>
@@ -49,6 +51,8 @@
               <td class="table-desktop-view" ng-bind="t.fullName"></td>
               <td class="table-desktop-view">{{ t.updated ? (t.updated | date:'short') : (t.created | date:'short') }}</td>
               <td class="table-desktop-view">{{ t.geo.bbl | toAddress:bbls }}</td>
+              <td class="table-desktop-view"><span ng-if="t.actionFlags.indexOf('isRentStabilized') !== -1" class="glyphicon glyphicon glyphicon-ok"></span></td>
+              <td class="table-desktop-view"><span ng-if="t.actionFlags.indexOf('isHarassmentElligible') !== -1" class="glyphicon glyphicon glyphicon-ok"></span></td>
               <td class="table-desktop-view">{{ t.phone | tel }}</td>
               <td class="table-desktop-view text-center">
                 <span

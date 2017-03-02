@@ -50,7 +50,7 @@ exports.listTenants = function(req, res) {
 
         if(t.advocateRole !== 'managed') {
           t.activity = undefined;
-          t.actionFlags = undefined;
+          // t.actionFlags = undefined;
           t.followUpFlags = undefined;
           t.problems = undefined;
         }
