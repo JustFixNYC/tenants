@@ -281,7 +281,7 @@ TenantSchema.pre('save', function(next) {
     next();
   } else {
 
-    console.log('ADDR CHANGED');
+    // console.log('ADDR CHANGED');
 
     this._addressChanged = false;
     var user = this;
