@@ -137,6 +137,9 @@ module.exports = function(db) {
 	app.use(helmet.ienoopen());
 	app.disable('x-powered-by');
 
+	app.use('/.well-known/acme-challenge/02Y5FAssy4m5uQ5wAtXDJNiindNN5JpV605yQfLfnQE', function(req, res) {
+    res.send('02Y5FAssy4m5uQ5wAtXDJNiindNN5JpV605yQfLfnQE.EOZzTp0S7MjcUFG-kQ-VvyNzS2KcZl_EgBiW-BM_Tq0');
+  });
 	// Globbing routing files
 	config.getGlobbedFiles('./app/routes/**/*.js').forEach(function(routePath) {
 		require(path.resolve(routePath))(app);
