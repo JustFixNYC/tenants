@@ -49,7 +49,8 @@ module.exports = {
 				'public/lib/deep-diff/releases/deep-diff-0.3.3.min.js',
 		    'public/lib/angular-sanitize/angular-sanitize.min.js',
 		    'public/lib/angular-filter/dist/angular-filter.js',
-				'public/lib/angular-clipboard/angular-clipboard.js'
+				'public/lib/angular-clipboard/angular-clipboard.js',
+				'https://d3gxy7nm8y4yjr.cloudfront.net/js/embed.js'
 		  ]
 	  },
 	  css: [
