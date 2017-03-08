@@ -42,6 +42,11 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
         url: '/personal',
         templateUrl: 'modules/onboarding/partials/onboarding-details.client.view.html',
         onboarding: true
+      })
+      .state('onboarding.schedule', {
+        url: '/consultation',
+        templateUrl: 'modules/onboarding/partials/onboarding-schedule.client.view.html',
+        onboarding: true
       });
 
 }]);
