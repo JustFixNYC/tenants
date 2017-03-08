@@ -179,11 +179,6 @@ module.exports = function(db) {
 		 */
 	});
 
-	app.use('/.well-known/acme-challenge/02Y5FAssy4m5uQ5wAtXDJNiindNN5JpV605yQfLfnQE', function(req, res) {
-  	res.send('02Y5FAssy4m5uQ5wAtXDJNiindNN5JpV605yQfLfnQE.EOZzTp0S7MjcUFG-kQ-VvyNzS2KcZl_EgBiW-BM_Tq0');
-	});
-
-
 	// Assume 404 since no middleware responded
 	app.use(function(req, res) {
 		res.status(404).render('404', {

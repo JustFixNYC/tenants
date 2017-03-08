@@ -15,6 +15,10 @@ module.exports = function(app) {
 	// app.route('/').get(core.index);
 	// app.route(/^\/(?!api|share).*/).get(core.index);
 
+  app.route('/.well-known/acme-challenge/02Y5FAssy4m5uQ5wAtXDJNiindNN5JpV605yQfLfnQE', function(req, res) {
+    res.send('02Y5FAssy4m5uQ5wAtXDJNiindNN5JpV605yQfLfnQE.EOZzTp0S7MjcUFG-kQ-VvyNzS2KcZl_EgBiW-BM_Tq0');
+  });
+
 	app.route(/^\/(?!api).*/).get(core.index);
 
   // app.route('/demo').get(function (req, res) {
