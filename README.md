@@ -75,7 +75,9 @@ You should see the process running, as well as the `grep mongo` command process 
 
 3. Go to `http://localhost:3000` to see your development version! Grunt will watch for any changes you make to the code and automatically restart the server for live development.
 
+#### More Questions
 
+Check out [MEAN.JS](http://meanjs.org/docs/0.3.x/) - will have more tutorials on the architecture setup and things for troubleshooting.
 
 
 ## License
