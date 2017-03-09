@@ -137,9 +137,19 @@ module.exports = function(db) {
 	app.use(helmet.ienoopen());
 	app.disable('x-powered-by');
 
-	app.use('/.well-known/acme-challenge/cvX7vm2EUW7ZLqhkYDE3g-qeXXS1rGE7T4hq88Mgoig', function(req, res) {
-    res.send('cvX7vm2EUW7ZLqhkYDE3g-qeXXS1rGE7T4hq88Mgoig.EOZzTp0S7MjcUFG-kQ-VvyNzS2KcZl_EgBiW-BM_Tq0');
-  });
+	// Force HTTPS
+	if (process.env.NODE_ENV === 'production') {
+		app.use('*',function(req,res,next) {
+		  if(req.headers['x-forwarded-proto'] !== 'https') {
+				res.redirect('https://' + req.hostname + req.url);
+			}
+		  else {
+				next(); /* Continue to other routes if we're not redirecting */
+			}
+		});
+	}
+
+
 	// Globbing routing files
 	config.getGlobbedFiles('./app/routes/**/*.js').forEach(function(routePath) {
 		require(path.resolve(routePath))(app);
