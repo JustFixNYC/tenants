@@ -21,7 +21,7 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
     	var deferred = $q.defer;
     	$http.get('languages/locale-en_US.json')
 	    	.then(function(res){
-	    		deferred.resolve(res);	
+	    		deferred.resolve(res);
 	    	}, function(err) {
 	    		deferred.reject();
 	    	});
@@ -36,10 +36,10 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
         case 'share':
           message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
              ' I\'m experiencing issues with my apartment and would like to get them resolved.' +
-             ' A link to my Case History can be found at http://' + $location.host() + '/share/' + user.sharing.key + '. Thank you!';
+             ' A link to my Case History can be found at https://' + $location.host() + '/share/' + user.sharing.key + '. Thank you!';
           break;
         case 'friendShare':
-          message = 'I am using JustFix.nyc to take action on my housing issues! Click here to sign up: http://justfix.nyc/signup';
+          message = 'I am using JustFix.nyc to take action on my housing issues! Click here to sign up: https://justfix.nyc/signup';
           break;
         default:
           message = 'Hello, this is ' + user.fullName + ' at ' + user.address + ', Apt. ' + user.unit + '.' +
@@ -69,7 +69,7 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
 
       var problemsContent = '';
 
-      for(var i = 0; i < user.problems.length; i++) { 
+      for(var i = 0; i < user.problems.length; i++) {
 
         var prob = user.problems[i];
         if (prob.key === 'landlordIssues') {

@@ -108,11 +108,18 @@ module.exports = function(db) {
 	// Express MongoDB session storage
 	// [TODO] this is still causing issues (see https://github.com/meanjs/mean/issues/224)
 	// this is inconsistent, be wary of it...
+
+	var cookieSettings = {};
+	cookieSettings.maxAge = 14 * 24 * 60 * 60 * 1000;
+	if(process.env.NODE_ENV !== 'development') {
+		cookieSettings.domain = 'justfix.nyc';
+	}
+
 	app.use(session({
 		saveUninitialized: false,
 		resave: true,
 		secret: config.sessionSecret,
-		cookie: { maxAge: 14 * 24 * 60 * 60 * 1000 },		// 14 days
+		cookie: cookieSettings,
 		store: new mongoStore({
 			mongooseConnection: db.connection,
 			collection: config.sessionCollection
@@ -141,6 +148,7 @@ module.exports = function(db) {
 	if (process.env.NODE_ENV === 'production') {
 		app.use('*',function(req,res,next) {
 		  if(req.headers['x-forwarded-proto'] !== 'https') {
+
 				res.redirect('https://' + req.hostname + req.url);
 			}
 		  else {
