@@ -28,6 +28,11 @@ angular.module('users').factory('Users', ['$resource', 'UpdateUserInterceptor',
 			toggleSharing: {
 				method: 'GET',
 				url: 'api/tenants/public'
+			},
+			addScheduledEventAndLinkProfile: {
+				method: 'PUT',
+				url: 'api/tenants/schedule',
+				interceptor: UpdateUserInterceptor
 			}
       // ,
       // getIssues: {

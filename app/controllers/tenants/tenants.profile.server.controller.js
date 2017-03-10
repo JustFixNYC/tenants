@@ -86,3 +86,19 @@ exports.togglePublicView = function(req, res, next) {
 		});
 	}
 };
+
+/**
+ *  Add Acuity booking id for later reference.
+ *	Also link this tenant acct to our support staff dashboard.
+ */
+exports.scheduleEvent = function(req, res, next) {
+
+	if(!req.body.currentAcuityEventId) {
+		res.status(500).send({
+			message: 'Error: No acuity event ID'
+		});
+	} else {
+		next();
+	}
+
+};

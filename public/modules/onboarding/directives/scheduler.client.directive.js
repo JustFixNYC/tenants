@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('onboarding').directive('scheduler', ['$sce', '$location', 'Authentication', function scheduler($sce, $location, Authentication) {
+angular.module('onboarding').directive('scheduler', ['$sce', '$location', 'Authentication', 'Users', function scheduler($sce, $location, Authentication, Users) {
   return {
     template: '<iframe ng-src="{{trustSrc(acuity)}}" width="100%" height="800" frameBorder="0"></iframe>' +
               '<button class="btn btn-primary btn-block-full scheduler-done-btn">Continue</button>',
@@ -31,6 +31,8 @@ angular.module('onboarding').directive('scheduler', ['$sce', '$location', 'Authe
           if(height > 0) element.find('iframe').attr('height', height + 'px');
         } else if (e.origin === 'https://sandbox.acuityinnovation.com' && e.data.includes('custombooking')) {
           var bookingID = e.data.split(':')[1];
+
+          Users.addScheduledEventAndLinkProfile({ currentAcuityEventId: bookingID });
           console.log('redirect!!!!', bookingID);
         }
       });

@@ -29,7 +29,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 				lastName: "Stevenson",
 				password: "password",
 				borough: 'Brooklyn',
-				address: '123 Example Drive',
+				address: '654 Park Place',
 				unit: '1RF',
 				phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
 				problems: [],

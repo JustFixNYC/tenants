@@ -73,6 +73,11 @@ var TenantSchema = new Schema({
     enum: ['linked', 'managed', 'none'],
     default: 'none'
   },
+  currentAcuityEventId: {
+    type: String,
+    trim: true,
+    default: ''
+  },
   firstName: {
     type: String,
     trim: true,
