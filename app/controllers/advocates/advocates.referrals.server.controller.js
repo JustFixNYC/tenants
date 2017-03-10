@@ -88,3 +88,21 @@ exports.validateExistingUser = function(req, res) {
   // TODO
 
 };
+
+exports.linkToSupport = function(req, res, next) {
+
+  var SUPPORT_CODE = 'justfixsupport';
+
+  validateCode(SUPPORT_CODE)
+    .then(function (advocate) {
+
+      if(!advocate) {
+        res.status(500).send({
+          message: 'Error: No support advocate'
+        });
+      }
+      req.body.advocateRole = 'linked';
+      req.body.advocate = advocate._id;
+      next();
+    });
+};

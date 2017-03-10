@@ -7,6 +7,7 @@ var passport = require('passport');
 // User Routes
 var users = require('../../app/controllers/users.server.controller'),
 		tenants = require('../../app/controllers/tenants.server.controller'),
+		advocates = require('../../app/controllers/advocates.server.controller'),
 		problems = require('../../app/controllers/problems.server.controller');
 
 module.exports = function(app) {
@@ -18,6 +19,10 @@ module.exports = function(app) {
 
 	// Public URLs
 	app.route('/api/tenants/public').get(tenants.togglePublicView, users.updateUserData);
+
+	// Schedule and Linking
+	app.route('/api/tenants/schedule').put(tenants.scheduleEvent, advocates.linkToSupport, users.updateUserData);
+
 
 	// Updating the users phone number
 	// app.route('/api/users/phone').put(users.updatePhoneNumber);
