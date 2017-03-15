@@ -67,7 +67,7 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 
       $http({
 	  		method: 'POST',
-	  		url:'http://pdf-microservice.herokuapp.com/complaint-letter',
+	  		url:'//pdf-microservice.herokuapp.com/complaint-letter',
 	  		// url: 'http://localhost:5000/complaint-letter',
 	  		data: assembledObject
 	  	}).then(
