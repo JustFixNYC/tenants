@@ -3,13 +3,15 @@
 angular.module('onboarding').directive('scheduler', ['$sce', '$location', 'Authentication', 'Users', function scheduler($sce, $location, Authentication, Users) {
   return {
     template: '<iframe ng-src="{{trustSrc(acuity)}}" width="100%" height="800" frameBorder="0"></iframe>' +
-              '<button class="btn btn-primary btn-block-full scheduler-done-btn">Continue</button>',
+              '<a ui-sref="home" ng-if="hasScheduled" class="btn btn-primary btn-block-full scheduler-done-btn">Continue</button>',
     restrict: 'E',
     link: function postLink(scope, element, attrs) {
 
       scope.trustSrc = function(src) {
         return $sce.trustAsResourceUrl(src);
       };
+
+      scope.hasScheduled = false;
 
       var currentLocation = $location.protocol() + '://' + $location.host() + ($location.port() !== 80 ? ':' + $location.port() : '');
 
@@ -36,8 +38,9 @@ angular.module('onboarding').directive('scheduler', ['$sce', '$location', 'Authe
           // i.e. simply do Users.me();
           // (Instead we're doing it when the user leaves this view -
           //  see: line 11, public/modules/onboarding/config/onboarding.client.config.js)
-
-          console.log('redirect!!!!', bookingID);
+          scope.hasScheduled = true;
+          scope.$apply();
+          console.log('scheduled', bookingID);
         }
       });
     }

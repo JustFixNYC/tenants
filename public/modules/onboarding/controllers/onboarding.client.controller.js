@@ -46,6 +46,18 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 
 		}
 
+		$scope.hasAdvocateCode = false;
+
+		$scope.openAdvocateCodeForm = function($event) {
+			$scope.hasAdvocateCode = true;
+		};
+
+		$scope.closeAdvocateCodeForm = function($event) {
+			$event.stopPropagation();
+			$event.preventDefault();
+			$scope.hasAdvocateCode = false;
+		};
+
 	  $scope.validateCode = function() {
 			// handles back button
 			if(!$scope.accessCode.valueEntered || $scope.accessCode.valueEntered !== $scope.accessCode.value) {
@@ -83,12 +95,6 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			}
 	  };
 
-		$scope.cancelAccessCode = function() {
-			// $scope.accessCode.value = '';
-			$scope.accessCode.valid = false;
-			$location.path('/onboarding/referral');
-		};
-
 	  // SIGNUP
 		$scope.additionalInfo = function() {
 			// Open modal
@@ -122,7 +128,15 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 					if(typeof DEBUG !== 'undefined' && DEBUG == true) console.log('create account post save', response);
 					$rootScope.loading = false;
 					$rootScope.takeActionAlert = true;
-					$location.path('/tutorial');
+
+					// Advocate code user
+					if($rootScope.validated) {
+						$location.path('/home');
+					} else {
+						$location.path('/onboarding/consultation');
+					}
+
+
 
 				}).error(function(err) {
 

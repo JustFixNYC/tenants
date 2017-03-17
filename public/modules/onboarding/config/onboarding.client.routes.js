@@ -5,7 +5,7 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider){
 
     // Jump to first child state
-    $urlRouterProvider.when('/signup', '/onboarding/referral');
+    $urlRouterProvider.when('/signup', '/onboarding/get-started');
 
     // Disabling access codes
     // $urlRouterProvider.when('/onboarding', '/onboarding/checklist');
@@ -21,12 +21,18 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
           disableBack: true
         }
       })
-      .state('onboarding.accessCode', {
-        url: '/referral',
-        templateUrl: 'modules/onboarding/partials/onboarding-code.client.view.html',
+      .state('onboarding.orientation', {
+        url: '/get-started',
+        templateUrl: 'modules/onboarding/partials/onboarding-orientation.client.view.html',
         onboarding: true,
         globalStyles: 'white-bg'
       })
+      // .state('onboarding.accessCode', {
+      //   url: '/referral',
+      //   templateUrl: 'modules/onboarding/partials/onboarding-orientation.client.view.html',
+      //   onboarding: true,
+      //   globalStyles: 'white-bg'
+      // })
       .state('onboarding.success', {
         url: '/success',
         templateUrl: 'modules/onboarding/partials/onboarding-success.client.view.html',
@@ -43,8 +49,13 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
         templateUrl: 'modules/onboarding/partials/onboarding-details.client.view.html',
         onboarding: true
       })
-      .state('onboarding.schedule', {
+      .state('onboarding.schedulePrompt', {
         url: '/consultation',
+        templateUrl: 'modules/onboarding/partials/onboarding-schedule-prompt.client.view.html',
+        onboarding: true
+      })
+      .state('onboarding.scheduleNew', {
+        url: '/consultation/new',
         templateUrl: 'modules/onboarding/partials/onboarding-schedule.client.view.html',
         onboarding: true
       });

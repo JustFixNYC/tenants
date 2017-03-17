@@ -1,0 +1,47 @@
+<div class="page-header">
+	<img src="/modules/core/img/brand/icon_only.svg" alt="JustFix.nyc" />
+	<h1 ng-bind-html="'modules.onboarding.partials.onboardingCode.title' | trustTranslate" compile-template></h1>
+	<p>
+		{{'modules.onboarding.partials.onboardingCode.enterText' | translate}}
+	</p>
+</div>
+<div class="error-text alert alert-danger" ng-show="majorError">Whoa, looks like we're having some trouble on our end. Please refresh this page and try again.</div>
+<form>
+
+	<div class="orientation-button" ng-click="openAdvocateCodeForm($event)">
+		<span>{{'modules.onboarding.partials.onboardingCode.hasAdvocateCode' | translate}}</span>
+		<div ng-if="hasAdvocateCode">
+			<br />
+			<div class="form-group" ng-class="{ 'has-error': codeWrong }">
+				<input class="form-control" type="text" placeholder="{{'modules.onboarding.partials.onboardingCode.placeholder' | translate}}" ng-model="accessCode.value">
+			</div>
+			<div class="error-text alert alert-danger"
+						ng-if="!codeErrorMessage.length"
+						ng-show="codeError"
+						ng-bind-html="'modules.onboarding.partials.onboardingCode.errorSubmit' | trustTranslate" compile-template>
+			</div>
+			<div class="error-text alert alert-warning"
+						ng-show="codeWrong"
+						ng-bind-html="'modules.onboarding.partials.onboardingCode.errorCode' | trustTranslate" compile-template>
+			</div>
+			<div class="form-group form-group-center">
+				<div class="row">
+					<div class="col-xs-4">
+						<!-- <a ng-click="closeAdvocateCodeForm($event); $event.stopPropagation();" stop-event="click" class="btn btn-block btn-default"> -->
+						<div ng-click="closeAdvocateCodeForm($event)" class="btn btn-block btn-default">
+							{{'modules.onboarding.partials.onboardingDetails.back' | translate}}
+						</div>
+					</div>
+					<div class="col-xs-8">
+						<button class="btn btn-primary btn-block pull-right" ng-click="validateCode()" go-to-top>{{'modules.onboarding.partials.onboardingCode.continue' | translate}}</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<a ui-sref="onboarding.problems" class="orientation-button">
+		<span>{{'modules.onboarding.partials.onboardingCode.organicUser' | translate}}</span>
+	</a>
+</form>
+<br />
+<p ng-bind-html="'modules.onboarding.partials.onboardingCode.learnMore' | trustTranslate" compile-template></p>
