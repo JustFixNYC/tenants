@@ -2259,6 +2259,12 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
 				}
 			}
 
+      // New orientation flow
+      if(!Authentication.user && toState.name === 'landing') {
+        event.preventDefault();
+        $state.go('onboarding.orientation');
+      }
+
       if(Authentication.user && toState.name === 'landing') {
         switch(Authentication.user.roles[0]) {
           case 'admin':
@@ -2326,11 +2332,13 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 		// $urlRouterProvider.otherwise('/');
 		$urlRouterProvider.otherwise('/not-found');
 
+		// New onboarding flow with orientation view!
+		// $urlRouterProvider.when('/', '/signup');
+
 		// Home state routing
 		$stateProvider
 		.state('landing', {
 			url: '/',
-			templateUrl: 'modules/core/views/landing.client.view.html',
 			data: {
 				disableBack: true
 			},
@@ -2516,11 +2524,19 @@ angular.module('core').controller('HeaderController', ['$rootScope', '$state', '
 'use strict';
 
 
-angular.module('core').controller('HomeController', ['$rootScope', '$scope', 'Authentication', 'deviceDetector',
-	function($rootScope, $scope, Authentication, deviceDetector) {
+angular.module('core').controller('HomeController', ['$rootScope', '$scope', '$timeout', 'Authentication', 'Users', 'deviceDetector',
+	function($rootScope, $scope, $timeout, Authentication, Users, deviceDetector) {
 		// This provides Authentication context.
 		$scope.authentication = Authentication;
     $scope.device = deviceDetector;
+
+		// After a client finishes scheduling we force an update to the user object
+		// See line 11, public/modules/onboarding/config/onboarding.client.config.js
+		$scope.$watch("authentication.user", function () {
+			if($scope.authentication.user.currentAcuityEventId) {
+				$scope.appt = Users.getScheduledEventInfo();
+			}
+		});
 
 		$rootScope.closeDashboardAlert = false;
 
@@ -3988,13 +4004,17 @@ angular.module('kyr').factory('kyrService', ['$resource', '$http', '$q',
 'use strict';
 
 // TODO: discuss putting all 'run' methods together
-angular.module('onboarding').run(['$rootScope', '$state', 'Authentication', '$window', function($rootScope, $state, Authentication, $window) {
+angular.module('onboarding').run(['$rootScope', '$state', 'Authentication', 'Users', '$window', function($rootScope, $state, Authentication, Users, $window) {
 
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-		// if(!Authentication.user && toState.onboarding && !$rootScope.validated && toState.name !== 'onboarding.accessCode') {
-		// 	event.preventDefault();
-		// 	$state.go('onboarding.accessCode');
-		// }
+
+
+		// Force an update to the user object if an appt has been scheduled
+		// If not, this is harmless
+		if(fromState.name === 'onboarding.scheduleNew') {
+			Users.me();
+		}
+
 	});
 
 }]);
@@ -4006,7 +4026,7 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider){
 
     // Jump to first child state
-    $urlRouterProvider.when('/signup', '/onboarding/referral');
+    $urlRouterProvider.when('/signup', '/onboarding/get-started');
 
     // Disabling access codes
     // $urlRouterProvider.when('/onboarding', '/onboarding/checklist');
@@ -4022,12 +4042,18 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
           disableBack: true
         }
       })
-      .state('onboarding.accessCode', {
-        url: '/referral',
-        templateUrl: 'modules/onboarding/partials/onboarding-code.client.view.html',
+      .state('onboarding.orientation', {
+        url: '/get-started',
+        templateUrl: 'modules/onboarding/partials/onboarding-orientation.client.view.html',
         onboarding: true,
         globalStyles: 'white-bg'
       })
+      // .state('onboarding.accessCode', {
+      //   url: '/referral',
+      //   templateUrl: 'modules/onboarding/partials/onboarding-orientation.client.view.html',
+      //   onboarding: true,
+      //   globalStyles: 'white-bg'
+      // })
       .state('onboarding.success', {
         url: '/success',
         templateUrl: 'modules/onboarding/partials/onboarding-success.client.view.html',
@@ -4042,6 +4068,16 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
       .state('onboarding.details', {
         url: '/personal',
         templateUrl: 'modules/onboarding/partials/onboarding-details.client.view.html',
+        onboarding: true
+      })
+      .state('onboarding.schedulePrompt', {
+        url: '/consultation',
+        templateUrl: 'modules/onboarding/partials/onboarding-schedule-prompt.client.view.html',
+        onboarding: true
+      })
+      .state('onboarding.scheduleNew', {
+        url: '/consultation/new',
+        templateUrl: 'modules/onboarding/partials/onboarding-schedule.client.view.html',
         onboarding: true
       });
 
@@ -4078,7 +4114,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 				lastName: "Stevenson",
 				password: "password",
 				borough: 'Brooklyn',
-				address: '123 Example Drive',
+				address: '654 Park Place',
 				unit: '1RF',
 				phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
 				problems: [],
@@ -4094,6 +4130,18 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			};
 
 		}
+
+		$scope.hasAdvocateCode = false;
+
+		$scope.openAdvocateCodeForm = function($event) {
+			$scope.hasAdvocateCode = true;
+		};
+
+		$scope.closeAdvocateCodeForm = function($event) {
+			$event.stopPropagation();
+			$event.preventDefault();
+			$scope.hasAdvocateCode = false;
+		};
 
 	  $scope.validateCode = function() {
 			// handles back button
@@ -4132,12 +4180,6 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			}
 	  };
 
-		$scope.cancelAccessCode = function() {
-			// $scope.accessCode.value = '';
-			$scope.accessCode.valid = false;
-			$location.path('/onboarding/referral');
-		};
-
 	  // SIGNUP
 		$scope.additionalInfo = function() {
 			// Open modal
@@ -4171,7 +4213,15 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 					if(typeof DEBUG !== 'undefined' && DEBUG == true) console.log('create account post save', response);
 					$rootScope.loading = false;
 					$rootScope.takeActionAlert = true;
-					$location.path('/tutorial');
+
+					// Advocate code user
+					if($rootScope.validated) {
+						$location.path('/home');
+					} else {
+						$location.path('/onboarding/consultation');
+					}
+
+
 
 				}).error(function(err) {
 
@@ -4207,6 +4257,55 @@ angular.module('onboarding')
       }
     }
   }]); 
+'use strict';
+
+angular.module('onboarding').directive('scheduler', ['$sce', '$location', 'Authentication', 'Users', function scheduler($sce, $location, Authentication, Users) {
+  return {
+    template: '<iframe ng-src="{{trustSrc(acuity)}}" width="100%" height="800" frameBorder="0"></iframe>' +
+              '<a ui-sref="home" ng-if="hasScheduled" class="btn btn-primary btn-block-full scheduler-done-btn">Continue</button>',
+    restrict: 'E',
+    link: function postLink(scope, element, attrs) {
+
+      scope.trustSrc = function(src) {
+        return $sce.trustAsResourceUrl(src);
+      };
+
+      scope.hasScheduled = false;
+
+      var currentLocation = $location.protocol() + '://' + $location.host() + ($location.port() !== 80 ? ':' + $location.port() : '');
+
+
+      scope.acuity = 'https://app.acuityscheduling.com/schedule.php?owner=13287615';
+
+      if(Authentication.user) {
+        scope.acuity += '&firstName=' + Authentication.user.firstName;
+        scope.acuity += '&lastName=' + Authentication.user.lastName;
+        scope.acuity += '&email=' + 'support@justfix.nyc';
+        scope.acuity += '&phone=' + Authentication.user.phone;
+        scope.acuity += '&field:2631340=' + currentLocation + '/share/' + Authentication.user.sharing.key;
+      }
+
+
+      window.addEventListener("message", function(e) {
+        if (e.origin === 'https://app.acuityscheduling.com' && e.data.includes('sizing')) {
+          var height = parseInt(e.data.split(':')[1], 10);
+          if(height > 0) element.find('iframe').attr('height', height + 'px');
+        } else if (e.origin === 'https://sandbox.acuityinnovation.com' && e.data.includes('custombooking')) {
+          var bookingID = e.data.split(':')[1];
+
+          // We could force update the user document post-webhook here
+          // i.e. simply do Users.me();
+          // (Instead we're doing it when the user leaves this view -
+          //  see: line 11, public/modules/onboarding/config/onboarding.client.config.js)
+          scope.hasScheduled = true;
+          scope.$apply();
+          console.log('scheduled', bookingID);
+        }
+      });
+    }
+  };
+}]);
+
 'use strict';
 
 angular.module('onboarding').directive('selectionList', function selectionList(/*Example: $state, $window */) {
@@ -5190,6 +5289,7 @@ angular.module('users').factory('UpdateUserInterceptor', ['Authentication',
     //Code
     return {
         response: function(res) {
+					console.log('update', res.resource);
 					Authentication.user = res.resource;
 					return res;
         }
@@ -5200,6 +5300,10 @@ angular.module('users').factory('UpdateUserInterceptor', ['Authentication',
 angular.module('users').factory('Users', ['$resource', 'UpdateUserInterceptor',
 	function($resource, UpdateUserInterceptor) {
 		return $resource('api/users', {}, {
+			me: {
+				url: 'api/users/me',
+				interceptor: UpdateUserInterceptor
+			},
 			update: {
 				method: 'PUT',
 				interceptor: UpdateUserInterceptor
@@ -5212,11 +5316,10 @@ angular.module('users').factory('Users', ['$resource', 'UpdateUserInterceptor',
 			toggleSharing: {
 				method: 'GET',
 				url: 'api/tenants/public'
+			},
+			getScheduledEventInfo: {
+				url: 'api/acuity'
 			}
-      // ,
-      // getIssues: {
-      //   method: 'GET'
-      // }
 		});
 	}
 ]);
