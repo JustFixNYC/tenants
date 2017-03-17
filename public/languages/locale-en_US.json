@@ -265,6 +265,7 @@
   				"findHelp": "@:repeating.findHelp",
   				"kyr": "@:repeating.kyr",
   				"advocate": "Advocate Information",
+  				"appt": "Your Next Appointment",
   				"call": "@:repeating.call",
   				"signOut": "@:repeating.signOut",
           "friendShare": "Refer a Neighbor!",

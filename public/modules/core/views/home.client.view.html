@@ -59,6 +59,9 @@
         {{ authentication.user.advocate.contactPhone  + (authentication.user.advocate.contactPhoneExt ? (',' + authentication.user.advocate.contactPhoneExt) : '') | tel }}<br />
         {{ ::authentication.user.advocate.email }}
       </h2>
+      <div class="event-info" ng-if="appt.date">
+        <p><b>{{'modules.core.views.home.appt' | translate}}:</b> {{ appt.date }} - {{ appt.time }} </p>
+      </div>
       <div class="row share-controls">
         <a class="btn btn-success btn-block" ng-href="tel:{{ authentication.user.advocate.contactPhone + (authentication.user.advocate.contactPhoneExt ? (',' + authentication.user.advocate.contactPhoneExt) : '') }}">
             {{'modules.core.views.home.call' | translate}} {{ ::authentication.user.advocate.fullName | firstname }}
