@@ -1,13 +1,17 @@
 'use strict';
 
 // TODO: discuss putting all 'run' methods together
-angular.module('onboarding').run(['$rootScope', '$state', 'Authentication', '$window', function($rootScope, $state, Authentication, $window) {
+angular.module('onboarding').run(['$rootScope', '$state', 'Authentication', 'Users', '$window', function($rootScope, $state, Authentication, Users, $window) {
 
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-		// if(!Authentication.user && toState.onboarding && !$rootScope.validated && toState.name !== 'onboarding.accessCode') {
-		// 	event.preventDefault();
-		// 	$state.go('onboarding.accessCode');
-		// }
+
+
+		// Force an update to the user object if an appt has been scheduled
+		// If not, this is harmless
+		if(fromState.name === 'onboarding.schedule') {
+			Users.me();
+		}
+
 	});
 
 }]);

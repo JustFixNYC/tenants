@@ -32,7 +32,11 @@ angular.module('onboarding').directive('scheduler', ['$sce', '$location', 'Authe
         } else if (e.origin === 'https://sandbox.acuityinnovation.com' && e.data.includes('custombooking')) {
           var bookingID = e.data.split(':')[1];
 
-          Users.addScheduledEventAndLinkProfile({ currentAcuityEventId: bookingID });
+          // We could force update the user document post-webhook here
+          // i.e. simply do Users.me();
+          // (Instead we're doing it when the user leaves this view -
+          //  see: line 11, public/modules/onboarding/config/onboarding.client.config.js)
+
           console.log('redirect!!!!', bookingID);
         }
       });

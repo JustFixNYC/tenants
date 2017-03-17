@@ -20,10 +20,6 @@ module.exports = function(app) {
 	// Public URLs
 	app.route('/api/tenants/public').get(tenants.togglePublicView, users.updateUserData);
 
-	// Schedule and Linking
-	app.route('/api/tenants/schedule').put(tenants.scheduleEvent, advocates.linkToSupport, users.updateUserData);
-
-
 	// Updating the users phone number
 	// app.route('/api/users/phone').put(users.updatePhoneNumber);
 
