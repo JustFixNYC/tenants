@@ -116,7 +116,7 @@
 	<script type="text/javascript">
 		var user = {{ user | json | safe }};
 
-		{% if process.env.NODE_ENV === 'development' %}
+		{% if process.env.NODE_ENV === 'development' || process.env.DEBUG === 'true' %}
 			var DEBUG = true;
 		{% endif %}
 	</script>
