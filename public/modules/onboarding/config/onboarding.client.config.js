@@ -8,7 +8,7 @@ angular.module('onboarding').run(['$rootScope', '$state', 'Authentication', 'Use
 
 		// Force an update to the user object if an appt has been scheduled
 		// If not, this is harmless
-		if(fromState.name === 'onboarding.schedule') {
+		if(fromState.name === 'onboarding.scheduleNew') {
 			Users.me();
 		}
 

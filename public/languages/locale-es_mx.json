@@ -370,13 +370,16 @@
 				},
 				"onboardingCode": {
 					"title": "¡Bienvenidos a<br/>JustFix.nyc!",
-					"enterText": "JustFix.nyc es una aplicación móvil gratuita que ayudará a fortalecer su caso y obtener reparaciones en su hogar. <br /><br /> Si ha recibido un código defensor, lo introduzcan abajo:",
+					"enterText": "JustFix.nyc es un servicio gratis que le ayuda a conseguir reparaciones para su hogar. Para comenzar, cuéntenos sobre su situación:",
+          "hasAdvocateCode": "Recibí un Código del Defensor.",
+          "organicUser": "Utilizo JustFix.nyc por cuenta propia.",
 					"accessCode": "Código defensor (opcional)",
-					"placeholder": "Empieza con...",
+					"placeholder": "Introduzca su código",
 					"continue": "@:repeating.continue",
 					"getHelp": "Continuar sin código",
 					"errorSubmit": "Hubo un error con la introducción de este código. <a ui-sref=\"contact\">Contáctenos</a> si necesita asistencia.",
-					"errorCode": "¡Lo sentimos! Este código de acceso no compagina con nada en nuestra base de datos – asegúrese de haber introducido el código correcto. <a ui-sref=\"contact\">Contáctenos</a> si necesita asistencia."
+					"errorCode": "¡Lo sentimos! Este código de acceso no compagina con nada en nuestra base de datos – asegúrese de haber introducido el código correcto. <a ui-sref=\"contact\">Contáctenos</a> si necesita asistencia.",
+          "learnMore": "¿Tiene interés en saber más acerca de nuestra organización? <a href=\"https://www.justfix.nyc/our-mission\">Lea nuestra misión.</a>"
 				},
 				"onboardingDetails": {
 					"header": "(Paso 2 de 2)",
@@ -416,15 +419,23 @@
 				"onboardingProblems": {
 					"header": "(Paso 1 de 2)",
 					"title": "Lista de revisión de asuntos",
-					"headerSubtitle": "Indique todos los problemas que tiene – después le pediremos más detalles. <b><em>Puede actualizar esta lista en cualquier momento.</em></b>",
+					"headerSubtitle": "Para empezar, indique todos los problemas que enfrenta – después le pediremos más detalles. <b><em>Puede actualizar esta lista en cualquier momento.</em></b>",
 					"back": "@:repeating.back",
 					"continue": "@:repeating.continue",
 					"skip": "Saltar por ahora"
 				},
+        "onboardingSchedule": {
+          "title" : "Conéctese con un asesor de JustFix.nyc",
+          "desc": "Los asesores de JustFix.nyc son expertos en los derechos de inquilinos. Pueden ofrecer apoyo y revisar su caso. ¡Anótese ahora para una cita <b>gratis</b> de 30 minutos por teléfono! ",
+          "schedNow": "Haga la cita ahora",
+          "schedLater": "Haré la cita en otro momento",
+          "disclaimer": "Utilizar este servicio significa que está de acuerdo con que los empleados y voluntarios de JustFix.nyc tengan acceso a la información en su cuenta personal para poder asistirle. Además está de acuerdo con utilizar todos los servicios de JustFix.nyc solo para el propósito de obtener información y no para sustituir asesoramiento o consulta legal. Los servicios de JustFix.nyc no sustituyen el asesoramiento de un abogado calificado para impartir asesoramiento sobre asuntos legales con respecto a la vivienda.",
+          "schedulerTitle": "Su cita"
+        },
 				"onboardingSuccess": {
 					"success": "@:repeating.success",
-					"advocate": "El defensor de su edificio",
-					"subtitle": "¡Le hemos conectado con un defensor que trabaja con su edificio! Guardaremos su información de contacto en su cuenta para que usted pueda conectarse con su defensor en cualquier momento.",
+					"advocate": "Su defensor",
+					"subtitle": "Grabaremos esta información de contacto en su cuenta para que pueda conectarse en cualquier momento.",
 					"share": "Compartir mi caso:",
 					"shareEnabled": "Compartir (activado):",
 					"shareDesc": "Esto permite que su defensor vea las pruebas que usted subió al sitio; no le da acceso al resto de su cuenta. Usted puede desactivar luego o activarlo en cualquier momento.",

@@ -16,6 +16,12 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
 				}
 			}
 
+      // New orientation flow
+      if(!Authentication.user && toState.name === 'landing') {
+        event.preventDefault();
+        $state.go('onboarding.orientation');
+      }
+
       if(Authentication.user && toState.name === 'landing') {
         switch(Authentication.user.roles[0]) {
           case 'admin':

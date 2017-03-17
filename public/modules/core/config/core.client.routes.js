@@ -18,11 +18,13 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 		// $urlRouterProvider.otherwise('/');
 		$urlRouterProvider.otherwise('/not-found');
 
+		// New onboarding flow with orientation view!
+		// $urlRouterProvider.when('/', '/signup');
+
 		// Home state routing
 		$stateProvider
 		.state('landing', {
 			url: '/',
-			templateUrl: 'modules/core/views/landing.client.view.html',
 			data: {
 				disableBack: true
 			},

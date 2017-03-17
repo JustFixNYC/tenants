@@ -367,13 +367,16 @@
 				},
 				"onboardingCode": {
 					"title": "Welcome to<br/>JustFix.nyc!",
-					"enterText": "JustFix.nyc is a free mobile app that will assist you in building your case and getting repairs in your home. <br /><br /> If you received an advocate code, please enter it below:",
+					"enterText": "JustFix.nyc is a free service that helps you get repairs in your home. To get started, please tell us more about your situation:",
+          "hasAdvocateCode": "I was given an Advocate Code.",
+          "organicUser": "I’m using JustFix.nyc on my own.",
 					"accessCode": "Advocate Code (optional)",
-					"placeholder": "Starts with...",
+					"placeholder": "Please enter your advocate code",
 					"continue": "@:repeating.continue",
 					"getHelp": "Continue Without Code",
 					"errorSubmit": "There was an error submitting this code. Please <a ui-sref=\"contact\">Contact Us</a> if you need assistance.",
-					"errorCode": "Sorry! This access code does not match anything in our database - please double check that you entered the correct code. Please <a ui-sref=\"contact\">Contact Us</a> if you need assistance."
+					"errorCode": "Sorry! This access code does not match anything in our database - please double check that you entered the correct code. Please <a ui-sref=\"contact\">Contact Us</a> if you need assistance.",
+          "learnMore": "Interested in learning more about our nonprofit organization? <a href=\"https://www.justfix.nyc/our-mission\">Read Our Mission.</a>"
 				},
 				"onboardingDetails": {
 					"header": "(Step 2 of 2)",
@@ -412,16 +415,24 @@
 				},
 				"onboardingProblems": {
 					"header": "(Step 1 of 2)",
-					"title": "Issues Checklist",
-					"headerSubtitle": "Please select all the issues that you are experiencing - we’ll ask you for more details later on. <b><em>You can update this list at any time.</em></b>",
+					"title": "Issue Checklist",
+					"headerSubtitle": "To get started, please select all the issues that you are experiencing - we’ll ask you for more details later on. <b><em>You can update this list at any time.</em></b>",
 					"back": "@:repeating.back",
 					"continue": "@:repeating.continue",
 					"skip": "Skip For Now"
 				},
+        "onboardingSchedule": {
+          "title" : "Connect with a JustFix.nyc Coach",
+          "desc": "JustFix.nyc Coaches are tenants rights experts who can offer support and review your case. Sign up now for a <b>free</b> 30 minute appointment over the phone!",
+          "schedNow": "Schedule Now",
+          "schedLater": "I’ll schedule this later.",
+          "disclaimer": "By using this service, you agree that JustFix.nyc employees and volunteers may have access to  the information on your personal account in order to assist you. You further agree to use all JustFix.nyc services for informational purposes only and not as a replacement for legal advice or legal consultation. JustFix.nyc services are not substitutes for the advice of a lawyer qualified to give advice on legal issues pertaining to housing.",
+          "schedulerTitle": "Your Appointment"
+        },
 				"onboardingSuccess": {
 					"success": "@:repeating.success",
-					"advocate": "Your Building Advocate",
-					"subtitle": "We've connected you to the advocate working with your building! Their contact information will be stored in your account, so you can connect with them at any time.",
+					"advocate": "Your Advocate",
+					"subtitle": "This contact information will be stored in your account, so you can connect with your advocate at any time.",
 					"share": "Share My Case:",
 					"shareEnabled": "Sharing (on):",
 					"shareDesc": "This allows your advocate to view the evidence you upload to the site; it does not give access to the rest of your account. You can opt out later or disable at any time.",
