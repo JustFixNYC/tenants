@@ -80,5 +80,9 @@ module.exports = {
 		servertoken: process.env.ROLLBAR_ACCESS_TOKEN,
 		clienttoken: process.env.ROLLBAR_ACCESS_TOKEN_CLIENT,
 		endpoint: process.env.ROLLBAR_ENDPOINT
+	},
+	acuity: {
+		id: process.env.ACUITY_ID,
+		key: process.env.ACUITY_API_KEY
 	}
 };
