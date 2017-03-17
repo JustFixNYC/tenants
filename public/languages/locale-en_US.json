@@ -366,7 +366,7 @@
 					"gotIt": "@:repeating.gotIt"
 				},
 				"onboardingCode": {
-					"title": "Welcome to<br/>JustFix.nyc!",
+					"title": "Welcome to the<br/>JustFix.nyc Tenant App!",
 					"enterText": "JustFix.nyc is a free service that helps you get repairs in your home. To get started, please tell us more about your situation:",
           "hasAdvocateCode": "I was given an Advocate Code.",
           "organicUser": "I’m using JustFix.nyc on my own.",
