@@ -2794,6 +2794,21 @@ angular.module('core').directive('inheritHeight', ['$window', '$timeout', 'devic
 
 'use strict';
 
+angular.module('core').directive('inputFocusFn', ['$timeout', function ($timeout) {
+    return {
+      restrict: 'A',
+      link: function (scope, element, attr) {
+        scope.$parent[attr.inputFocusFn] = function () {
+          $timeout(function () {
+            element[0].focus();
+          });
+        };
+      }
+    };
+  }]);
+
+'use strict';
+
 angular.module('core').directive('jumpTo', ['$document', function($document) {
   return {
     controller: function($parse, $element, $attrs, $scope) {
@@ -4096,9 +4111,9 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			enabled: false
 		};
 
-		$scope.accessCode = {
-			valid: false
-		};
+		// $scope.accessCode = {
+		// 	valid: false
+		// };
 
 
 		/**
@@ -4135,6 +4150,8 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 
 		$scope.openAdvocateCodeForm = function($event) {
 			$scope.hasAdvocateCode = true;
+			console.log($scope.focusOnCodeEntry);
+			$scope.focusOnCodeEntry();
 		};
 
 		$scope.closeAdvocateCodeForm = function($event) {

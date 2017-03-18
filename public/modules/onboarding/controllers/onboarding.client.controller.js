@@ -11,9 +11,9 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			enabled: false
 		};
 
-		$scope.accessCode = {
-			valid: false
-		};
+		// $scope.accessCode = {
+		// 	valid: false
+		// };
 
 
 		/**
@@ -50,6 +50,8 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 
 		$scope.openAdvocateCodeForm = function($event) {
 			$scope.hasAdvocateCode = true;
+			console.log($scope.focusOnCodeEntry);
+			$scope.focusOnCodeEntry();
 		};
 
 		$scope.closeAdvocateCodeForm = function($event) {

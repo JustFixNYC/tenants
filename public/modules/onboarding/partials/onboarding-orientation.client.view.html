@@ -6,13 +6,13 @@
 	</p>
 </div>
 <div class="error-text alert alert-danger" ng-show="majorError">Whoa, looks like we're having some trouble on our end. Please refresh this page and try again.</div>
-<form>
+<!-- <form novalidate> -->
 	<div class="orientation-button" ng-click="openAdvocateCodeForm($event)">
 		<span>{{'modules.onboarding.partials.onboardingCode.hasAdvocateCode' | translate}}</span>
 		<div ng-show="hasAdvocateCode">
 			<br />
 			<div class="form-group" ng-class="{ 'has-error': codeWrong }" stop-event="touchend">
-				<input class="form-control" type="text" placeholder="{{'modules.onboarding.partials.onboardingCode.placeholder' | translate}}" ng-model="accessCode.value">
+				<input class="form-control" input-focus-fn="focusOnCodeEntry" type="text" placeholder="{{'modules.onboarding.partials.onboardingCode.placeholder' | translate}}" ng-model="accessCode.value">
 			</div>
 			<div class="error-text alert alert-danger"
 						ng-if="!codeErrorMessage.length"
@@ -41,6 +41,6 @@
 	<a ui-sref="onboarding.problems" class="orientation-button">
 		<span>{{'modules.onboarding.partials.onboardingCode.organicUser' | translate}}</span>
 	</a>
-</form>
+<!-- </form> -->
 <br />
 <p ng-bind-html="'modules.onboarding.partials.onboardingCode.learnMore' | trustTranslate" compile-template></p>
