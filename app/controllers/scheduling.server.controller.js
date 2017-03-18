@@ -19,6 +19,7 @@ exports.bookDate = function (req, res) {
       if(tenant.advocateRole === 'none') {
         tenant.advocateRole = req.body.advocateRole;
         tenant.advocate = req.body.advocate;
+        tenant.sharing.enabled = true;
       }
 
       tenant.currentAcuityEventId = req.body.id;
