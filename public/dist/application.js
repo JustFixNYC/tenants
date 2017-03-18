@@ -4180,6 +4180,12 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			}
 	  };
 
+		$scope.cancelAccessCode = function() {
+			// $scope.accessCode.value = '';
+			$scope.accessCode.valid = false;
+			$location.path('/onboarding/get-started');
+		};
+
 	  // SIGNUP
 		$scope.additionalInfo = function() {
 			// Open modal
