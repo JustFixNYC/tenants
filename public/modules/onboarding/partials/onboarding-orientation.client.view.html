@@ -10,7 +10,7 @@
 
 	<div class="orientation-button" ng-click="openAdvocateCodeForm($event)">
 		<span>{{'modules.onboarding.partials.onboardingCode.hasAdvocateCode' | translate}}</span>
-		<div ng-if="hasAdvocateCode">
+		<div ng-show="hasAdvocateCode">
 			<br />
 			<div class="form-group" ng-class="{ 'has-error': codeWrong }">
 				<input class="form-control" type="text" placeholder="{{'modules.onboarding.partials.onboardingCode.placeholder' | translate}}" ng-model="accessCode.value">
