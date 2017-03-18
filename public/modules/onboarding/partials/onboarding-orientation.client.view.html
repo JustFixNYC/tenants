@@ -7,12 +7,11 @@
 </div>
 <div class="error-text alert alert-danger" ng-show="majorError">Whoa, looks like we're having some trouble on our end. Please refresh this page and try again.</div>
 <form>
-
 	<div class="orientation-button" ng-click="openAdvocateCodeForm($event)">
 		<span>{{'modules.onboarding.partials.onboardingCode.hasAdvocateCode' | translate}}</span>
 		<div ng-show="hasAdvocateCode">
 			<br />
-			<div class="form-group" ng-class="{ 'has-error': codeWrong }">
+			<div class="form-group" ng-class="{ 'has-error': codeWrong }" stop-event="touchend">
 				<input class="form-control" type="text" placeholder="{{'modules.onboarding.partials.onboardingCode.placeholder' | translate}}" ng-model="accessCode.value">
 			</div>
 			<div class="error-text alert alert-danger"
