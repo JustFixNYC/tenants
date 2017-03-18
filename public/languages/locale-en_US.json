@@ -863,6 +863,16 @@
 	      "url": "findHelp"
 	    }
   	},
+    "scheduleAppt": {
+      "title": "Talk with a JustFix.nyc Coach",
+      "content": "JustFix.nyc coaches are tenants rights experts who can offer support and review your case. Sign up now for a <b>free</b> 30 minute appointment over the phone!",
+      "cta": {
+        "type": "link-internal",
+        "buttonTitle": "Schedule",
+        "url": "onboarding.scheduleNew"
+      },
+	    "hasFollowUp": false
+    },
   	"contactSuper": {
 	    "title": "Contact Your Super (Step 1 of 3)",
 	    "activityTitle": "Contacted Super/Management",

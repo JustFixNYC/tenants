@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$timeout', '$filter', 'Authentication', 'AdvocatesResource', '$http', '$modal',
-	function($rootScope, $scope, $location, $timeout, $filter, Authentication, AdvocatesResource, $http, $modal) {
+angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$timeout', '$filter', 'Users', 'Authentication', 'AdvocatesResource', '$http', '$modal',
+	function($rootScope, $scope, $location, $timeout, $filter, Users, Authentication, AdvocatesResource, $http, $modal) {
 
 		$scope.authentication = Authentication;
 		$scope.newUser = {};
@@ -45,6 +45,13 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			};
 
 		}
+
+
+		/**
+			*
+			*   ORIENTATION / ADVOCATE CODE
+			*
+			*/
 
 		$scope.hasAdvocateCode = false;
 
@@ -102,7 +109,19 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			$location.path('/onboarding/get-started');
 		};
 
-	  // SIGNUP
+
+		/**
+			*
+			*   SIGNUP
+			*
+			*/
+
+		$scope.scheduleLater = function () {
+			Users.scheduleLater();
+			$location.path('/home');
+		};
+
+
 		$scope.additionalInfo = function() {
 			// Open modal
 			var modalInstance = $modal.open({

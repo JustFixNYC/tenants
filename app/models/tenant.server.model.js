@@ -238,6 +238,7 @@ TenantSchema.pre('save', function(next) {
   // - selected emergency issues, or not
   // - completed details for all issues, or not
   // - if the user hasn't selected any issues
+  // - has a scheduled appointment
 
 
 

@@ -22,6 +22,14 @@ exports.bookDate = function (req, res) {
         tenant.sharing.enabled = true;
       }
 
+      if(_.contains(tenant.actionFlags, 'scheduleLater')) {
+        _.pull(tenant.actionFlags, 'scheduleLater');
+
+        // need to notify of array change
+        // http://stackoverflow.com/a/13350955/991673
+        tenant.markModified('actionFlags');
+      }
+
       tenant.currentAcuityEventId = req.body.id;
 
       return tenant.save();
@@ -32,13 +40,17 @@ exports.bookDate = function (req, res) {
       });
     })
     .catch(function (err) {
-
-      console.log(err);
       rollbar.handleError("Scheduling Error", { phone: req.body.appt.phone, error: err }, req);
       res.status(500).send({ message: errorHandler.getErrorMessage(err) });
-
     });
+};
 
-
-
+// add the scheduling card to actions
+// could be done easily by tracking currentAcuityEventId,
+// but do we want to make this available to everyone
+// or just people who came to the site organically?
+exports.saveForLater = function (req, res, next) {
+  req.body.actionFlags = req.user.actionFlags;
+  req.body.actionFlags.push('scheduleLater');
+  next();
 };

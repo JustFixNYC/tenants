@@ -16,16 +16,16 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
         url: '/onboarding',
         templateUrl: 'modules/onboarding/views/onboarding.client.view.html',
         controller: 'OnboardingController',
-        abstract: true,
-        data: {
-          disableBack: true
-        }
+        abstract: true
       })
       .state('onboarding.orientation', {
         url: '/get-started',
         templateUrl: 'modules/onboarding/partials/onboarding-orientation.client.view.html',
         onboarding: true,
-        globalStyles: 'white-bg'
+        globalStyles: 'white-bg',
+        data: {
+          disableBack: true
+        }
       })
       // .state('onboarding.accessCode', {
       //   url: '/referral',
@@ -37,12 +37,15 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
         url: '/success',
         templateUrl: 'modules/onboarding/partials/onboarding-success.client.view.html',
         onboarding: true,
-        globalStyles: 'white-bg'
+        globalStyles: 'white-bg',
+        data: {
+          disableBack: true
+        }
       })
       .state('onboarding.problems', {
         url: '/checklist',
         templateUrl: 'modules/onboarding/partials/onboarding-problems.client.view.html',
-        onboarding: true
+        onboarding: true,
       })
       .state('onboarding.details', {
         url: '/personal',
@@ -52,7 +55,10 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
       .state('onboarding.schedulePrompt', {
         url: '/consultation',
         templateUrl: 'modules/onboarding/partials/onboarding-schedule-prompt.client.view.html',
-        onboarding: true
+        onboarding: true,
+        data: {
+          disableBack: true
+        }
       })
       .state('onboarding.scheduleNew', {
         url: '/consultation/new',

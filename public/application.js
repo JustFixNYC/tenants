@@ -42,6 +42,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     });
 
     $translateProvider.preferredLanguage('en_US');// is applied on first load
+    $translateProvider.fallbackLanguage('en_US'); // fallback! for pdf and msg generation
 
     $translateProvider.useLocalStorage(); // saves selected language to localStorage
     // NOTE: This shit causes all sorts of issues with our UI-SREF attribute. Not recognized in any sanitizer module, and causes it to break
@@ -108,7 +109,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
   })
   .run(function($rootScope, $location, LocaleService, $translate) {
 
-  	$translate.use('en_US');
+  	// $translate.use('en_US');
 
     var browserLanguage = navigator.language || navigator.userLanguage;
 

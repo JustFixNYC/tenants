@@ -8,7 +8,7 @@
 <a ui-sref="onboarding.scheduleNew" class="btn btn-block btn-primary">
 	<span ng-bind-html="'modules.onboarding.partials.onboardingSchedule.schedNow' | trustTranslate" compile-template></span>
 </a>
-<a ui-sref="home" class="btn btn-block btn-link">
+<a ng-click="scheduleLater()" class="btn btn-block btn-link">
 	<span ng-bind-html="'modules.onboarding.partials.onboardingSchedule.schedLater' | trustTranslate" compile-template></span>
 </a>
 <br />

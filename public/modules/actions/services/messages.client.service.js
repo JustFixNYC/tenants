@@ -1,33 +1,9 @@
 'use strict';
 
-angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$location', 'Authentication', '$translate', 'LocaleService',
-  function Issues($http, $q, $filter, $location, Authentication, $translate, LocaleService) {
+angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$timeout', '$location', 'Authentication', '$translate', 'LocaleService',
+  function Issues($http, $q, $filter, $timeout, $location, Authentication, $translate, LocaleService) {
 
     var user = Authentication.user;
-    var request = function(url) {
-      var deferred = $q.defer();
-
-      $http.get(url).
-        then(function(response) {
-          deferred.resolve(response.data);
-        }, function(err) {
-          deferred.reject();
-        });
-
-      return deferred.promise;
-    };
-
-    var language = function() {
-    	var deferred = $q.defer;
-    	$http.get('languages/locale-en_US.json')
-	    	.then(function(res){
-	    		deferred.resolve(res);
-	    	}, function(err) {
-	    		deferred.reject();
-	    	});
-
-	    	return deferred.promise;
-    };
 
     var getShareMessage = function(type) {
 
@@ -78,7 +54,8 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
 
         problemsContent += $translate.instant(prob.title, undefined, undefined, 'en_US') + ':\n';
         for(var j = 0; j < prob.issues.length; j++) {
-          problemsContent += ' - ' + $translate.instant(prob.issues[j].key, undefined, undefined, 'en_US');
+          var issue = $translate.instant(prob.issues[j].key, undefined, undefined, 'en_US');
+          problemsContent += ' - ' + issue;
           if(prob.issues[j].emergency) problemsContent += ' (FIX IMMEDIATELY)';
           problemsContent += '\n';
         }

@@ -111,6 +111,20 @@
     "hasFollowUp": false
   },
   {
+    "title": "actions.scheduleAppt.title",
+    "activityTitle": "actions.scheduleAppt.activityTitle",
+    "content": "actions.scheduleAppt.content",
+    "key": "scheduled",
+    "addIf": ["scheduleLater"],
+    "type": "recurring",
+    "cta": {
+      "type": "link-internal",
+      "buttonTitle": "actions.scheduleAppt.cta.buttonTitle",
+      "url": "onboarding.scheduleNew"
+    },
+    "hasFollowUp": false
+  },
+  {
     "title": "actions.contactSuper.title",
     "activityTitle": "actions.contactSuper.activityTitle",
     "content": "actions.contactSuper.content",

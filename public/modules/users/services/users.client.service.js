@@ -6,7 +6,6 @@ angular.module('users').factory('UpdateUserInterceptor', ['Authentication',
     //Code
     return {
         response: function(res) {
-					console.log('update', res.resource);
 					Authentication.user = res.resource;
 					return res;
         }
@@ -35,7 +34,13 @@ angular.module('users').factory('Users', ['$resource', 'UpdateUserInterceptor',
 				url: 'api/tenants/public'
 			},
 			getScheduledEventInfo: {
+				method: 'GET',
 				url: 'api/acuity'
+			},
+			scheduleLater: {
+				method: 'PUT',
+				url: 'api/acuity',
+				interceptor: UpdateUserInterceptor
 			}
 		});
 	}

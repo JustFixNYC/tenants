@@ -867,6 +867,16 @@
 	    },
 	    "hasFollowUp": false
   	},
+    "scheduleAppt": {
+      "title": "Conéctese con un asesor",
+      "content": "Los asesores de JustFix.nyc son expertos en los derechos de inquilinos. Pueden ofrecer apoyo y revisar su caso. ¡Anótese ahora para una cita <b>gratis</b> de 30 minutos por teléfono!",
+      "cta": {
+        "type": "link-internal",
+        "buttonTitle": "Haga una cita",
+        "url": "onboarding.scheduleNew"
+      },
+	    "hasFollowUp": false
+    },
   	"contactSuper": {
 	    "title": "Contacte al Súper (Paso 1 de 3)",
 	    "activityTitle": "Contacté al Súper",
