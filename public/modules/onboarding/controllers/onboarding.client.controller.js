@@ -50,6 +50,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 
 		$scope.openAdvocateCodeForm = function($event) {
 			$scope.hasAdvocateCode = true;
+			$scope.focusOnCodeEntry();
 		};
 
 		$scope.closeAdvocateCodeForm = function($event) {
@@ -94,6 +95,12 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 				$scope.codeWrong = false;
 			}
 	  };
+
+		$scope.cancelAccessCode = function() {
+			// $scope.accessCode.value = '';
+			$scope.accessCode.valid = false;
+			$location.path('/onboarding/get-started');
+		};
 
 	  // SIGNUP
 		$scope.additionalInfo = function() {
