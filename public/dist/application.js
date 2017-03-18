@@ -86,6 +86,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     });
 
     $translateProvider.preferredLanguage('en_US');// is applied on first load
+    $translateProvider.fallbackLanguage('en_US'); // fallback! for pdf and msg generation
 
     $translateProvider.useLocalStorage(); // saves selected language to localStorage
     // NOTE: This shit causes all sorts of issues with our UI-SREF attribute. Not recognized in any sanitizer module, and causes it to break
@@ -152,7 +153,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
   })
   .run(function($rootScope, $location, LocaleService, $translate) {
 
-  	$translate.use('en_US');
+  	// $translate.use('en_US');
 
     var browserLanguage = navigator.language || navigator.userLanguage;
 
@@ -902,34 +903,10 @@ angular.module('actions').factory('Actions', ['$resource',
 
 'use strict';
 
-angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$location', 'Authentication', '$translate', 'LocaleService',
-  function Issues($http, $q, $filter, $location, Authentication, $translate, LocaleService) {
+angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$timeout', '$location', 'Authentication', '$translate', 'LocaleService',
+  function Issues($http, $q, $filter, $timeout, $location, Authentication, $translate, LocaleService) {
 
     var user = Authentication.user;
-    var request = function(url) {
-      var deferred = $q.defer();
-
-      $http.get(url).
-        then(function(response) {
-          deferred.resolve(response.data);
-        }, function(err) {
-          deferred.reject();
-        });
-
-      return deferred.promise;
-    };
-
-    var language = function() {
-    	var deferred = $q.defer;
-    	$http.get('languages/locale-en_US.json')
-	    	.then(function(res){
-	    		deferred.resolve(res);
-	    	}, function(err) {
-	    		deferred.reject();
-	    	});
-
-	    	return deferred.promise;
-    };
 
     var getShareMessage = function(type) {
 
@@ -980,7 +957,8 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$locat
 
         problemsContent += $translate.instant(prob.title, undefined, undefined, 'en_US') + ':\n';
         for(var j = 0; j < prob.issues.length; j++) {
-          problemsContent += ' - ' + $translate.instant(prob.issues[j].key, undefined, undefined, 'en_US');
+          var issue = $translate.instant(prob.issues[j].key, undefined, undefined, 'en_US');
+          problemsContent += ' - ' + issue;
           if(prob.issues[j].emergency) problemsContent += ' (FIX IMMEDIATELY)';
           problemsContent += '\n';
         }
@@ -4052,16 +4030,16 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
         url: '/onboarding',
         templateUrl: 'modules/onboarding/views/onboarding.client.view.html',
         controller: 'OnboardingController',
-        abstract: true,
-        data: {
-          disableBack: true
-        }
+        abstract: true
       })
       .state('onboarding.orientation', {
         url: '/get-started',
         templateUrl: 'modules/onboarding/partials/onboarding-orientation.client.view.html',
         onboarding: true,
-        globalStyles: 'white-bg'
+        globalStyles: 'white-bg',
+        data: {
+          disableBack: true
+        }
       })
       // .state('onboarding.accessCode', {
       //   url: '/referral',
@@ -4073,12 +4051,15 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
         url: '/success',
         templateUrl: 'modules/onboarding/partials/onboarding-success.client.view.html',
         onboarding: true,
-        globalStyles: 'white-bg'
+        globalStyles: 'white-bg',
+        data: {
+          disableBack: true
+        }
       })
       .state('onboarding.problems', {
         url: '/checklist',
         templateUrl: 'modules/onboarding/partials/onboarding-problems.client.view.html',
-        onboarding: true
+        onboarding: true,
       })
       .state('onboarding.details', {
         url: '/personal',
@@ -4088,7 +4069,10 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
       .state('onboarding.schedulePrompt', {
         url: '/consultation',
         templateUrl: 'modules/onboarding/partials/onboarding-schedule-prompt.client.view.html',
-        onboarding: true
+        onboarding: true,
+        data: {
+          disableBack: true
+        }
       })
       .state('onboarding.scheduleNew', {
         url: '/consultation/new',
@@ -4100,8 +4084,8 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
 
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$timeout', '$filter', 'Authentication', 'AdvocatesResource', '$http', '$modal',
-	function($rootScope, $scope, $location, $timeout, $filter, Authentication, AdvocatesResource, $http, $modal) {
+angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$timeout', '$filter', 'Users', 'Authentication', 'AdvocatesResource', '$http', '$modal',
+	function($rootScope, $scope, $location, $timeout, $filter, Users, Authentication, AdvocatesResource, $http, $modal) {
 
 		$scope.authentication = Authentication;
 		$scope.newUser = {};
@@ -4145,6 +4129,13 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			};
 
 		}
+
+
+		/**
+			*
+			*   ORIENTATION / ADVOCATE CODE
+			*
+			*/
 
 		$scope.hasAdvocateCode = false;
 
@@ -4202,7 +4193,19 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			$location.path('/onboarding/get-started');
 		};
 
-	  // SIGNUP
+
+		/**
+			*
+			*   SIGNUP
+			*
+			*/
+
+		$scope.scheduleLater = function () {
+			Users.scheduleLater();
+			$location.path('/home');
+		};
+
+
 		$scope.additionalInfo = function() {
 			// Open modal
 			var modalInstance = $modal.open({
@@ -5311,7 +5314,6 @@ angular.module('users').factory('UpdateUserInterceptor', ['Authentication',
     //Code
     return {
         response: function(res) {
-					console.log('update', res.resource);
 					Authentication.user = res.resource;
 					return res;
         }
@@ -5340,7 +5342,13 @@ angular.module('users').factory('Users', ['$resource', 'UpdateUserInterceptor',
 				url: 'api/tenants/public'
 			},
 			getScheduledEventInfo: {
+				method: 'GET',
 				url: 'api/acuity'
+			},
+			scheduleLater: {
+				method: 'PUT',
+				url: 'api/acuity',
+				interceptor: UpdateUserInterceptor
 			}
 		});
 	}
