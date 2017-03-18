@@ -12,7 +12,7 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 		};
 
 		$scope.accessCode = {
-			valid: false
+		  valid: false
 		};
 
 
