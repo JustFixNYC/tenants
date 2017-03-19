@@ -79,19 +79,40 @@ header {
 
     &.header-btn-text {
       text-transform: uppercase;
-      font-size: 16px;
       letter-spacing: 1px;
       line-height: $desktop-header-height * 0.4;
+
+      font-size: 14px;
+      @media (min-width: $screen-md-min) {
+        font-size: 16px;
+      }
     }
 
     &.header-btn-main {
       height: auto;
 
+      // justfix org site
+      // border-color: #fff;
+      // padding: 10px 26px;
+      // -webkit-transition: all .15s ease;
+      // transition: all .15s ease;
+      // font-size: 14px;
+      // width: auto;
+      // top: -1px;
+
+
+
       // vertical-align: middle;
       border: 1px solid #fff;
-      padding: 3px 10px;
       border-radius: 3px;
-      top: -4px;
+
+      padding: 2px 10px;
+      top: -6px;
+
+      @media (min-width: $screen-md-min) {
+        padding: 3px 10px;
+        top: -4px;
+      }
 
       // &:before {
       //   content: "";
@@ -100,10 +121,10 @@ header {
       //   height: 100%;
       // }
 
-      &:hover {
-        background-color: #fff;
-        color: $darkgray-dark;
-      }
+      // &:hover {
+      //   background-color: #fff;
+      //   color: $darkgray-dark;
+      // }
     }
   }
 }
@@ -193,6 +214,14 @@ header {
     color: #fff;
     border-color: #fff;
   }
+
+  .header-btn.header-btn-main:hover {
+    // background-color: lighten($justfix-blue, 10%);
+    background-color: #fff;
+    color: $darkgray-dark;
+    // border-color: $darkgray-dark;
+  }
+
 }
 
 
