@@ -97,20 +97,6 @@
     }
   },
   {
-    "title": "actions.connectAdvocate.title",
-    "activityTitle": "actions.connectAdvocate.activityTitle",
-    "content": "actions.connectAdvocate.content",
-    "key": "connectAdvocate",
-    "addIf": ["initial"],
-    "type": "recurring",
-    "cta": {
-      "type": "link-internal",
-      "buttonTitle": "actions.connectAdvocate.cta.buttonTitle",
-      "url": "findHelp"
-    },
-    "hasFollowUp": false
-  },
-  {
     "title": "actions.scheduleAppt.title",
     "activityTitle": "actions.scheduleAppt.activityTitle",
     "content": "actions.scheduleAppt.content",
@@ -121,6 +107,20 @@
       "type": "link-internal",
       "buttonTitle": "actions.scheduleAppt.cta.buttonTitle",
       "url": "onboarding.scheduleNew"
+    },
+    "hasFollowUp": false
+  },
+  {
+    "title": "actions.connectAdvocate.title",
+    "activityTitle": "actions.connectAdvocate.activityTitle",
+    "content": "actions.connectAdvocate.content",
+    "key": "connectAdvocate",
+    "addIf": ["initial"],
+    "type": "recurring",
+    "cta": {
+      "type": "link-internal",
+      "buttonTitle": "actions.connectAdvocate.cta.buttonTitle",
+      "url": "findHelp"
     },
     "hasFollowUp": false
   },
