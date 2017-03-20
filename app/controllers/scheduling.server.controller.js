@@ -35,6 +35,8 @@ exports.bookDate = function (req, res) {
       return tenant.save();
     })
     .then(function () {
+
+      rollbar.reportMessage("New Appointment Scheduled!", "info", req);
       res.send({
         message: 'Successfully Updated Appt Id'
       });
