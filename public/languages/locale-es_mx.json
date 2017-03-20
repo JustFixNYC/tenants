@@ -378,7 +378,7 @@
 					"continue": "@:repeating.continue",
 					"getHelp": "Continuar sin código",
 					"errorSubmit": "Hubo un error con la introducción de este código. <a ui-sref=\"contact\">Contáctenos</a> si necesita asistencia.",
-					"errorCode": "¡Lo sentimos! Este código de acceso no compagina con nada en nuestra base de datos – asegúrese de haber introducido el código correcto. <a ui-sref=\"contact\">Contáctenos</a> si necesita asistencia.",
+					"errorCode": "¡Lo sentimos! Este código defensor no compagina con nada en nuestra base de datos – asegúrese de haber introducido el código correcto. <a ui-sref=\"contact\">Contáctenos</a> si necesita asistencia.",
           "learnMore": "¿Tiene interés en saber más acerca de nuestra organización? <a href=\"https://www.justfix.nyc/our-mission\">Lea nuestra misión.</a>"
 				},
 				"onboardingDetails": {

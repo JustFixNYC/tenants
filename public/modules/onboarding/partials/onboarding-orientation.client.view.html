@@ -23,9 +23,8 @@
 					ng-bind-html="'modules.onboarding.partials.onboardingCode.errorCode' | trustTranslate" compile-template>
 		</div>
 		<div class="form-group form-group-center">
-			<div class="row">
+			<!-- <div class="row">
 				<div class="col-xs-4">
-					<!-- <a ng-click="closeAdvocateCodeForm($event); $event.stopPropagation();" stop-event="click" class="btn btn-block btn-default"> -->
 					<div ng-click="closeAdvocateCodeForm($event)" class="btn btn-block btn-default">
 						{{'modules.onboarding.partials.onboardingDetails.back' | translate}}
 					</div>
@@ -33,7 +32,10 @@
 				<div class="col-xs-8">
 					<button class="btn btn-primary btn-block pull-right" ng-click="validateCode()" go-to-top>{{'modules.onboarding.partials.onboardingCode.continue' | translate}}</button>
 				</div>
-			</div>
+			</div> -->
+
+			<button class="btn btn-primary btn-block" ng-click="validateCode()" go-to-top>{{'modules.onboarding.partials.onboardingCode.continue' | translate}}</button>
+
 		</div>
 	</div>
 </div>

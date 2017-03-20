@@ -265,7 +265,7 @@
   				"findHelp": "@:repeating.findHelp",
   				"kyr": "@:repeating.kyr",
   				"advocate": "Advocate Information",
-  				"appt": "Your Next Appointment",
+  				"appt": "Your Appointment",
   				"call": "@:repeating.call",
   				"signOut": "@:repeating.signOut",
           "friendShare": "Refer a Neighbor!",
@@ -375,7 +375,7 @@
 					"continue": "@:repeating.continue",
 					"getHelp": "Continue Without Code",
 					"errorSubmit": "There was an error submitting this code. Please <a ui-sref=\"contact\">Contact Us</a> if you need assistance.",
-					"errorCode": "Sorry! This access code does not match anything in our database - please double check that you entered the correct code. Please <a ui-sref=\"contact\">Contact Us</a> if you need assistance.",
+					"errorCode": "Sorry! This advocate code does not match anything in our database - please double check that you entered the correct code. Please <a ui-sref=\"contact\">Contact Us</a> if you need assistance.",
           "learnMore": "Interested in learning more about our nonprofit organization? <a href=\"https://www.justfix.nyc/our-mission\">Read Our Mission.</a>"
 				},
 				"onboardingDetails": {
@@ -426,7 +426,7 @@
           "desc": "JustFix.nyc Coaches are tenants rights experts who can offer support and review your case. Sign up now for a <b>free</b> 30 minute appointment over the phone!",
           "schedNow": "Schedule Now",
           "schedLater": "I’ll schedule this later.",
-          "disclaimer": "By using this service, you agree that JustFix.nyc employees and volunteers may have access to  the information on your personal account in order to assist you. You further agree to use all JustFix.nyc services for informational purposes only and not as a replacement for legal advice or legal consultation. JustFix.nyc services are not substitutes for the advice of a lawyer qualified to give advice on legal issues pertaining to housing.",
+          "disclaimer": "JustFix.nyc is not a legal service and should not be used as a substitute for the advice of a lawyer qualified to give advice on legal issues pertaining to housing. By using this service, you agree that JustFix.nyc employees and trained volunteers may have access to the information on your personal account in order to assist you. You further agree to use all JustFix.nyc services for informational purposes only and not as a replacement for legal advice or legal consultation.",
           "schedulerTitle": "Your Appointment"
         },
 				"onboardingSuccess": {
