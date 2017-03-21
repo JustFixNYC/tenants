@@ -11,23 +11,23 @@
 						ui-sref="kyr"
 						ng-if="!$root.showBack && showKyrBackBtn"
 				>
-				<a ng-if="$root.state == 'landing'" href="http://www.justfix.nyc" class="header-brand" ga-event="JustFix Logo,click">
+				<a ng-if="$root.state == 'landing' || $root.state == 'onboarding.orientation'" href="http://www.justfix.nyc" class="header-brand" ga-event="JustFix Logo,click">
 						<img ng-if="!$root.headerLightBG" src="/modules/core/img/brand/logo.png" class="logo" />
 						<img ng-if="$root.headerLightBG" src="/modules/core/img/brand/logo_dark.png" class="logo" />
 				</a>
 				<!-- <a ng-if="$root.state != 'landing'" href="/" class="header-brand" ga-event="JustFix Logo,click"> -->
 
-				<a ng-if="$root.state != 'landing' && !authentication.user" ui-sref="landing" class="header-brand" ga-event="JustFix Logo,click">
+				<a ng-if="$root.state != 'onboarding.orientation' && !authentication.user" ui-sref="onboarding.orientation" class="header-brand" ga-event="JustFix Logo,click">
 						<img ng-if="!$root.headerLightBG" src="/modules/core/img/brand/logo.png" class="logo" />
 						<img ng-if="$root.headerLightBG" src="/modules/core/img/brand/logo_dark.png" class="logo" />
 				</a>
 
-				<a ng-if="$root.state != 'landing' && authentication.user && authentication.user.roles.indexOf('tenant') !== -1" ui-sref="home" class="header-brand" ga-event="JustFix Logo,click">
+				<a ng-if="$root.state != 'onboarding.orientation' && authentication.user && authentication.user.roles.indexOf('tenant') !== -1" ui-sref="home" class="header-brand" ga-event="JustFix Logo,click">
 						<img ng-if="!$root.headerLightBG" src="/modules/core/img/brand/logo.png" class="logo" />
 						<img ng-if="$root.headerLightBG" src="/modules/core/img/brand/logo_dark.png" class="logo" />
 				</a>
 
-				<a ng-if="$root.state != 'landing' && authentication.user && authentication.user.roles.indexOf('advocate') !== -1" ui-sref="advocateHome" class="header-brand" ga-event="JustFix Logo,click">
+				<a ng-if="$root.state != 'onboarding.orientation' && authentication.user && authentication.user.roles.indexOf('advocate') !== -1" ui-sref="advocateHome" class="header-brand" ga-event="JustFix Logo,click">
 						<img ng-if="!$root.headerLightBG" src="/modules/core/img/brand/logo.png" class="logo" />
 						<img ng-if="$root.headerLightBG" src="/modules/core/img/brand/logo_dark.png" class="logo" />
 				</a>
