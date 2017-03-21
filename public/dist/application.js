@@ -2238,10 +2238,10 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
 			}
 
       // New orientation flow
-      if(!Authentication.user && toState.name === 'landing') {
-        event.preventDefault();
-        $state.go('onboarding.orientation');
-      }
+      // if(!Authentication.user && toState.name === 'landing') {
+      //   event.preventDefault();
+      //   $state.go('onboarding.orientation');
+      // }
 
       if(Authentication.user && toState.name === 'landing') {
         switch(Authentication.user.roles[0]) {
@@ -2311,7 +2311,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 		$urlRouterProvider.otherwise('/not-found');
 
 		// New onboarding flow with orientation view!
-		// $urlRouterProvider.when('/', '/signup');
+		$urlRouterProvider.when('/', '/onboarding/get-started');
 
 		// Home state routing
 		$stateProvider
