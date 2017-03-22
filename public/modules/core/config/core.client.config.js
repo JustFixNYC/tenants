@@ -16,35 +16,8 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
 				}
 			}
 
-      // New orientation flow
-      // if(!Authentication.user && toState.name === 'landing') {
-      //   event.preventDefault();
-      //   $state.go('onboarding.orientation');
-      // }
-
-      if(Authentication.user && toState.name === 'landing') {
-        switch(Authentication.user.roles[0]) {
-          case 'admin':
-            event.preventDefault();
-            $state.go('admin');
-            break;
-          case 'advocate':
-            event.preventDefault();
-            $state.go('advocateHome');
-            break;
-          case 'tenant':
-            event.preventDefault();
-            $state.go('home');
-            break;
-          default:
-            event.preventDefault();
-            $state.go('home');
-            break;
-        }
-      }
-
+      // protected areas
       if(!Authentication.user && toState.data && toState.data.protected) {
-      // if(toState.data && toState.data.protected) {
         event.preventDefault();
         $state.go('signin');
       }
