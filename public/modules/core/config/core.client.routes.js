@@ -84,7 +84,8 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 			data: {
 				protected: true,
 				disableBack: true
-			}
+			},
+			user: 'tenant'
 		})
 		.state('contact', {
 			url: '/contact',

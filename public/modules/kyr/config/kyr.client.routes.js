@@ -18,7 +18,8 @@
         url: '/kyr',
         templateUrl: 'modules/kyr/views/kyr.client.view.html',
         controller: 'KyrController',
-        noMargin: true
+        noMargin: true,
+        user: 'tenant'
       })
       .state('kyrDetail', {
       	url: '/kyr/:kyrId',
@@ -29,7 +30,8 @@
 					disableBack: true
 				},
 				localHistory: true,
-        globalStyles: 'white-bg'
+        globalStyles: 'white-bg',
+        user: 'tenant'
       });
   }
 })();

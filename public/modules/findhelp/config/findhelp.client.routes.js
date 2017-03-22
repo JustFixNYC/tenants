@@ -12,7 +12,8 @@ angular.module('findhelp').config(['$stateProvider', '$urlRouterProvider',
 			.state('findHelp', {
 				url: '/find-help',
 				templateUrl: 'modules/findhelp/views/find-help.client.view.html',
-				data: { protected: true }
+				data: { protected: true },
+				user: 'tenant'
 			});
 
 	}

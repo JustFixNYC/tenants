@@ -14,7 +14,8 @@ angular.module('activity').config(['$stateProvider', '$urlRouterProvider', 'Ligh
 			.state('listActivity', {
 				url: '/your-case',
 				templateUrl: 'modules/activity/views/list-activity.client.view.html',
-				data: { protected: true }
+				data: { protected: true },
+				user: 'tenant'
 			})
 			.state('showPublic', {
 				url: '/share/:key',

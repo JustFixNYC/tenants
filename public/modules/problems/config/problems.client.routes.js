@@ -8,7 +8,8 @@ angular.module('problems').config(['$stateProvider', '$urlRouterProvider',
 		$stateProvider.
 		state('updateProblems', {
 			url: '/checklist',
-			templateUrl: 'modules/problems/views/update-problems.client.view.html'
+			templateUrl: 'modules/problems/views/update-problems.client.view.html',
+			user: 'tenant'
 		});
 
 	}

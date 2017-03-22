@@ -255,7 +255,8 @@ angular.module('actions').config(['$stateProvider', '$urlRouterProvider',
 			.state('listActions', {
 				url: '/take-action',
 				templateUrl: 'modules/actions/views/list-actions.client.view.html',
-				data: { protected: true }
+				data: { protected: true },
+				user: 'tenant'
 			});
 
 	}
@@ -1108,7 +1109,8 @@ angular.module('activity').config(['$stateProvider', '$urlRouterProvider', 'Ligh
 			.state('listActivity', {
 				url: '/your-case',
 				templateUrl: 'modules/activity/views/list-activity.client.view.html',
-				data: { protected: true }
+				data: { protected: true },
+				user: 'tenant'
 			})
 			.state('showPublic', {
 				url: '/share/:key',
@@ -2222,25 +2224,28 @@ angular.module('advocates')
 'use strict';
 
 // Setting up route
-angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
-  function($rootScope, $state, $window, Authentication) {
+angular.module('core').run(['$rootScope', '$state', '$location', '$window', 'Authentication',
+  function($rootScope, $state, $location, $window, Authentication) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
       // prevent different roles from going different places
       if(toState.user) {
 				if(!Authentication.user) {
-					event.preventDefault();
-					$state.go('signin');
+					// event.preventDefault();
+					// $state.go('signin');
+          $location.path('/signin');
 				} else if(Authentication.user.roles.indexOf(toState.user) === -1) {
-					event.preventDefault();
-					$state.go('not-found');
+					// event.preventDefault();
+					// $state.go('not-found');
+          $location.path('/not-found');
 				}
 			}
 
       // protected areas
       if(!Authentication.user && toState.data && toState.data.protected) {
-        event.preventDefault();
-        $state.go('signin');
+        // event.preventDefault();
+        // $state.go('signin');
+        $location.path('/signin');
       }
 
     });
@@ -2349,7 +2354,8 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 			data: {
 				protected: true,
 				disableBack: true
-			}
+			},
+			user: 'tenant'
 		})
 		.state('contact', {
 			url: '/contact',
@@ -3562,7 +3568,8 @@ angular.module('findhelp').config(['$stateProvider', '$urlRouterProvider',
 			.state('findHelp', {
 				url: '/find-help',
 				templateUrl: 'modules/findhelp/views/find-help.client.view.html',
-				data: { protected: true }
+				data: { protected: true },
+				user: 'tenant'
 			});
 
 	}
@@ -3848,7 +3855,8 @@ angular.module('kyr').run(['$rootScope', '$state', '$window', '$location',
         url: '/kyr',
         templateUrl: 'modules/kyr/views/kyr.client.view.html',
         controller: 'KyrController',
-        noMargin: true
+        noMargin: true,
+        user: 'tenant'
       })
       .state('kyrDetail', {
       	url: '/kyr/:kyrId',
@@ -3859,7 +3867,8 @@ angular.module('kyr').run(['$rootScope', '$state', '$window', '$location',
 					disableBack: true
 				},
 				localHistory: true,
-        globalStyles: 'white-bg'
+        globalStyles: 'white-bg',
+        user: 'tenant'
       });
   }
 })();
@@ -4382,7 +4391,8 @@ angular.module('problems').config(['$stateProvider', '$urlRouterProvider',
 		$stateProvider.
 		state('updateProblems', {
 			url: '/checklist',
-			templateUrl: 'modules/problems/views/update-problems.client.view.html'
+			templateUrl: 'modules/problems/views/update-problems.client.view.html',
+			user: 'tenant'
 		});
 
 	}

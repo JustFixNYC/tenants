@@ -10,7 +10,8 @@ angular.module('actions').config(['$stateProvider', '$urlRouterProvider',
 			.state('listActions', {
 				url: '/take-action',
 				templateUrl: 'modules/actions/views/list-actions.client.view.html',
-				data: { protected: true }
+				data: { protected: true },
+				user: 'tenant'
 			});
 
 	}
