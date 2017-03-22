@@ -2237,35 +2237,8 @@ angular.module('core').run(['$rootScope', '$state', '$window', 'Authentication',
 				}
 			}
 
-      // New orientation flow
-      // if(!Authentication.user && toState.name === 'landing') {
-      //   event.preventDefault();
-      //   $state.go('onboarding.orientation');
-      // }
-
-      if(Authentication.user && toState.name === 'landing') {
-        switch(Authentication.user.roles[0]) {
-          case 'admin':
-            event.preventDefault();
-            $state.go('admin');
-            break;
-          case 'advocate':
-            event.preventDefault();
-            $state.go('advocateHome');
-            break;
-          case 'tenant':
-            event.preventDefault();
-            $state.go('home');
-            break;
-          default:
-            event.preventDefault();
-            $state.go('home');
-            break;
-        }
-      }
-
+      // protected areas
       if(!Authentication.user && toState.data && toState.data.protected) {
-      // if(toState.data && toState.data.protected) {
         event.preventDefault();
         $state.go('signin');
       }
@@ -2310,8 +2283,29 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 		// $urlRouterProvider.otherwise('/');
 		$urlRouterProvider.otherwise('/not-found');
 
-		// New onboarding flow with orientation view!
-		$urlRouterProvider.when('/', '/onboarding/get-started');
+
+		// Redirect rules for when the user comes to the root domain for the app
+		$urlRouterProvider.rule(function ($injector, $location) {
+
+			var user = $injector.get('Authentication').user;
+
+			if($location.path() === '/') {
+				if(!user) {
+					return '/signup';
+				} else {
+				  switch(user.roles[0]) {
+	          case 'admin':
+							return '/admin';
+	          case 'advocate':
+	            return '/advocate';
+	          case 'tenant':
+							return '/home';
+	          default:
+							return '/home';
+	        }
+				}
+			}
+		});
 
 		// Home state routing
 		$stateProvider
@@ -2346,7 +2340,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 		.state('donate', {
 			url: '/donate',
 			onEnter: function($window) {
-		 		$window.open('https://www.nycharities.org/give/donate.aspx?cc=4125', '_self');
+		 		$window.open('https://www.justfix.nyc/donate', '_self');
  			}
 		})
 		.state('home', {
