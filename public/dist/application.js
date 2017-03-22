@@ -4300,20 +4300,28 @@ angular.module('onboarding').directive('scheduler', ['$sce', '$location', 'Authe
 
 
       window.addEventListener("message", function(e) {
-        if (e.origin === 'https://app.acuityscheduling.com' && e.data.includes('sizing')) {
-          var height = parseInt(e.data.split(':')[1], 10);
-          if(height > 0) element.find('iframe').attr('height', height + 'px');
-        } else if (e.origin === 'https://sandbox.acuityinnovation.com' && e.data.includes('custombooking')) {
-          var bookingID = e.data.split(':')[1];
 
-          // We could force update the user document post-webhook here
-          // i.e. simply do Users.me();
-          // (Instead we're doing it when the user leaves this view -
-          //  see: line 11, public/modules/onboarding/config/onboarding.client.config.js)
-          scope.hasScheduled = true;
-          scope.$apply();
-          console.log('scheduled', bookingID);
+
+        if(e.data && typeof e.data === 'string') {
+          if (e.origin === 'https://app.acuityscheduling.com' && e.data.indexOf('sizing') > -1) {
+            var height = parseInt(e.data.split(':')[1], 10);
+            if(height > 0) element.find('iframe').attr('height', height + 'px');
+          } else if (e.origin === 'https://sandbox.acuityinnovation.com' && e.data.indexOf('custombooking') > -1) {
+            var bookingID = e.data.split(':')[1];
+
+            // We could force update the user document post-webhook here
+            // i.e. simply do Users.me();
+            // (Instead we're doing it when the user leaves this view -
+            //  see: line 11, public/modules/onboarding/config/onboarding.client.config.js)
+            scope.hasScheduled = true;
+            scope.$apply();
+            console.log('scheduled', bookingID);
+          }
         }
+
+
+
+
       });
     }
   };
