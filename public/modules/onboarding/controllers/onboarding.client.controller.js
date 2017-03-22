@@ -116,12 +116,6 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			*
 			*/
 
-		$scope.scheduleLater = function () {
-			Users.scheduleLater();
-			$location.path('/home');
-		};
-
-
 		$scope.additionalInfo = function() {
 			// Open modal
 			var modalInstance = $modal.open({

@@ -4194,12 +4194,6 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			*
 			*/
 
-		$scope.scheduleLater = function () {
-			Users.scheduleLater();
-			$location.path('/home');
-		};
-
-
 		$scope.additionalInfo = function() {
 			// Open modal
 			var modalInstance = $modal.open({
@@ -5338,11 +5332,6 @@ angular.module('users').factory('Users', ['$resource', 'UpdateUserInterceptor',
 			getScheduledEventInfo: {
 				method: 'GET',
 				url: 'api/acuity'
-			},
-			scheduleLater: {
-				method: 'PUT',
-				url: 'api/acuity',
-				interceptor: UpdateUserInterceptor
 			}
 		});
 	}

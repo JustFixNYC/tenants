@@ -36,11 +36,6 @@ angular.module('users').factory('Users', ['$resource', 'UpdateUserInterceptor',
 			getScheduledEventInfo: {
 				method: 'GET',
 				url: 'api/acuity'
-			},
-			scheduleLater: {
-				method: 'PUT',
-				url: 'api/acuity',
-				interceptor: UpdateUserInterceptor
 			}
 		});
 	}

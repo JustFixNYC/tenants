@@ -46,13 +46,3 @@ exports.bookDate = function (req, res) {
       res.status(500).send({ message: errorHandler.getErrorMessage(err) });
     });
 };
-
-// add the scheduling card to actions
-// could be done easily by tracking currentAcuityEventId,
-// but do we want to make this available to everyone
-// or just people who came to the site organically?
-exports.saveForLater = function (req, res, next) {
-  req.body.actionFlags = req.user.actionFlags;
-  req.body.actionFlags.push('scheduleLater');
-  next();
-};
