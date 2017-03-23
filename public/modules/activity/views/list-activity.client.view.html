@@ -30,6 +30,11 @@
           </div>
         </div>
 
+        <span ng-if="!isDesktop">
+          <em>{{'modules.activity.views.listActivity.printNotification' | translate}}</em>
+        </span>
+
+
         <h2>
           <span ng-if="!authentication.user.sharing.enabled">{{'modules.activity.views.listActivity.enable' | translate}}</span>
           <span ng-if="authentication.user.sharing.enabled">{{'modules.activity.views.listActivity.shareLinkText' | translate}}</span>

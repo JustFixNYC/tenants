@@ -95,7 +95,7 @@
           <accordion-heading>
             {{ bbl | toAddress:bbls }} <em>({{members.length}} accounts)</em>
           </accordion-heading>
-          <table class="table table-striped">
+          <table class="table table-striped" stop-event="touchend">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -132,7 +132,7 @@
                     <a ng-click="viewTenant(t)" ng-click="$event.stopPropagation();" class="btn btn-info">Manage</a>
                   </td>
                   <td class="case-link" ng-if="t.advocateRole === 'linked' && t.sharing.enabled">
-                    <a ng-href="/share/{{ t.sharing.key }}" ng-click="$event.stopPropagation();">View Case</a>
+                    <a ng-href="/share/{{ t.sharing.key }}">View Case</a>
                   </td>
                   <td class="case-link" ng-if="t.advocateRole === 'linked' && !t.sharing.enabled">
                     <em>Not Shared</em>

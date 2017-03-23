@@ -187,6 +187,7 @@
 	  			"email": "Enviar email",
 	  			"text": "Enviar texto",
 	  			"print": "Imprimir",
+          "printNotification": "Iniciar sesión en una computadora para imprimir su caso para avisos y corte de vivienda.",
 	  			"enable": "Activar Compartir Enlace:",
 	  			"shareLinkText": "Compartir Enlace (activado):",
 	  			"alert": "Esto le permite compartir su Historial del Caso con defensores. <b>No otorga acceso al resto de su cuenta.</b>",

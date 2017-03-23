@@ -184,6 +184,7 @@
 	  			"email": "Email",
 	  			"text": "Text",
 	  			"print": "Print",
+          "printNotification": "Sign in on a computer to print your case for notices and housing court.",
 	  			"enable": "Enable Share Link:",
 	  			"shareLinkText": "Share Link (on):",
 	  			"alert": "This allows you to share your Case History with advocates. <b>It does not give access to the rest of your account.</b>",
