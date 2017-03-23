@@ -4283,10 +4283,11 @@ angular.module('onboarding')
 
 angular.module('onboarding').directive('scheduler', ['$sce', '$location', 'Authentication', 'Users', function scheduler($sce, $location, Authentication, Users) {
   return {
-    template: '<iframe ng-src="{{trustSrc(acuity)}}" width="100%" height="800" frameBorder="0"></iframe>' +
-              '<a ui-sref="home" ng-if="hasScheduled" class="btn btn-primary btn-block-full scheduler-done-btn">Continue</button>',
+    templateUrl: 'modules/onboarding/partials/scheduler.client.view.html',
     restrict: 'E',
     link: function postLink(scope, element, attrs) {
+
+      scope.user = Authentication.user;
 
       scope.trustSrc = function(src) {
         return $sce.trustAsResourceUrl(src);
@@ -4299,12 +4300,12 @@ angular.module('onboarding').directive('scheduler', ['$sce', '$location', 'Authe
 
       scope.acuity = 'https://app.acuityscheduling.com/schedule.php?owner=13287615';
 
-      if(Authentication.user) {
-        scope.acuity += '&firstName=' + Authentication.user.firstName;
-        scope.acuity += '&lastName=' + Authentication.user.lastName;
+      if(scope.user) {
+        scope.acuity += '&firstName=' + scope.user.firstName;
+        scope.acuity += '&lastName=' + scope.user.lastName;
         scope.acuity += '&email=' + 'support@justfix.nyc';
-        scope.acuity += '&phone=' + Authentication.user.phone;
-        scope.acuity += '&field:2631340=' + currentLocation + '/share/' + Authentication.user.sharing.key;
+        scope.acuity += '&phone=' + scope.user.phone;
+        scope.acuity += '&field:2631340=' + currentLocation + '/share/' + scope.user.sharing.key;
       }
 
 

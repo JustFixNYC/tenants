@@ -136,7 +136,11 @@ $grey: #E0E0E0;
 	}
 }
 
-.scheduler-done-btn {
+.scheduler-done {
 	position: relative;
   top: -20px;
+}
+
+.scheduler-done-btn {
+	margin-top: 20px;
 }
