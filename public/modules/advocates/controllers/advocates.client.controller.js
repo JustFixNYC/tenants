@@ -12,7 +12,12 @@ angular.module('advocates').controller('AdvocateController', ['$rootScope', '$sc
 		// used for the bblsToAddress filter
 		angular.forEach(tenants, function(tenant) {
 			// get a title case version of the streetname from geoclient
-			var streetName = tenant.geo.streetName.split(' ').map(function(i) { return i[0].toUpperCase() + i.substr(1).toLowerCase(); }).join(' ');
+			var streetName = tenant.geo.streetName
+				.split(' ')
+				.map(function(i) {
+					return i.length ? i[0].toUpperCase() + i.substr(1).toLowerCase() : i;
+				})
+				.join(' ');
 			$scope.bbls[tenant.geo.bbl] = tenant.geo.streetNum + ' ' + streetName;
 		});
 
