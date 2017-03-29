@@ -55,15 +55,13 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
       .state('onboarding.schedulePrompt', {
         url: '/consultation',
         templateUrl: 'modules/onboarding/partials/onboarding-schedule-prompt.client.view.html',
-        onboarding: true,
         data: {
           disableBack: true
         }
       })
       .state('onboarding.scheduleNew', {
         url: '/consultation/new',
-        templateUrl: 'modules/onboarding/partials/onboarding-schedule.client.view.html',
-        onboarding: true
+        templateUrl: 'modules/onboarding/partials/onboarding-schedule.client.view.html'
       });
 
 }]);
