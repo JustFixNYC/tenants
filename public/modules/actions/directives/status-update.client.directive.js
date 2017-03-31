@@ -26,6 +26,11 @@ angular.module('actions')
         };
         //if(!scope.completed) scope.completed = false;
 
+        if($rootScope.expandStatus) {
+          scope.status.expanded = true;
+          setTimeout(function() { element[0].querySelector('textarea').focus(); }, 0);
+        }
+
         scope.newActivity = {
           date: '',
           title: 'modules.activity.other.statusUpdate',
@@ -39,7 +44,6 @@ angular.module('actions')
           scope.status.expanded = true;
           // setTimeout(function() { element[0].querySelector('textarea').focus(); }, 0);
           // setTimeout(function() { element[0].querySelector('textarea').focus(); }, 0);
-
         }
 
         scope.toggleTagging = function() {

@@ -3,6 +3,21 @@
 // Setting up route
 angular.module('core').run(['$rootScope', '$state', '$location', '$window', 'Authentication',
   function($rootScope, $state, $location, $window, Authentication) {
+
+    // preserve query string across location redirects
+    $rootScope.$on('$locationChangeStart', function(event, newUrl, oldUrl) {
+
+      if (oldUrl.indexOf('?') >= 0) {
+        var queryString =  oldUrl.split('?')[1];
+        newUrl = $location.$$path + '?' + queryString;
+        $location.url(newUrl);
+      }
+
+      // is this necessary?
+      // event.preventDefault();
+      // return;
+    });
+
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
       // prevent different roles from going different places
@@ -23,6 +38,12 @@ angular.module('core').run(['$rootScope', '$state', '$location', '$window', 'Aut
         // event.preventDefault();
         // $state.go('signin');
         $location.path('/signin');
+      }
+
+      // expand and focus status update area
+      // if($location.search().status && $location.search().status === '1') {
+      if($location.search().status) {
+        $rootScope.expandStatus = true;
       }
 
     });
