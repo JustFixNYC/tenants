@@ -18,6 +18,7 @@ angular.module('actions')
 
         scope.status = {
           expanded: false,
+          extraExpanded: false,
           tagging: false,
           closeAlert: false,
           closeErrorAlert: true,
@@ -28,7 +29,12 @@ angular.module('actions')
 
         if($rootScope.expandStatus) {
           scope.status.expanded = true;
+          scope.status.extraExpanded = true;
           setTimeout(function() { element[0].querySelector('textarea').focus(); }, 0);
+        }
+
+        if(!$rootScope.takeActionAlert) {
+          scope.status.expanded = true;
         }
 
         scope.newActivity = {
