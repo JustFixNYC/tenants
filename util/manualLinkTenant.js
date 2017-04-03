@@ -18,6 +18,7 @@ var promptSchema = {
   properties: {
     advocatePhone: {
       description: 'Enter the advocate\'s phone number',
+      default: '6468200349',
       required: true
     },
     tenantPhone: {
