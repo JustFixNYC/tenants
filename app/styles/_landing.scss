@@ -1,0 +1,223 @@
+#landing {
+
+  // landing pages use bigger header and margin
+  margin-top: -$desktop-header-height - $header-bottom-margin;
+  // @media (min-width: $screen-md-min) {
+  //   margin-top: -$desktop-header-height;
+  // }
+
+  .btn-block {
+    max-width: 260px;
+
+    @media (min-width: $screen-sm-min) {
+      font-size: 20px;
+    }
+  }
+
+  section {
+
+
+    margin-top: 50px;
+    @media (min-width: $screen-sm-min) {
+      margin-top: 75px;
+    }
+
+
+    padding: 15px 0;
+
+    h1 {
+      font-weight: 600;
+
+      &.big-text {
+        margin-top: 0;
+        margin-bottom: 45px;
+        font-size: 35px;
+        line-height: 1.2;
+
+        @media (min-width: $screen-xs-min) {
+          font-size: 45px;
+        }
+        @media (min-width: $screen-md-min) {
+          font-size: 60px;
+        }
+      }
+    }
+
+
+    &.above-fold {
+
+      margin-top: 0;
+      height: 100vh;
+      overflow: hidden;
+
+      .above-fold-content {
+        position: relative;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        z-index: 10;
+        // color: #fff;
+
+        @media (max-width: $screen-xs-max) {
+          top: 45%;
+        }
+
+        @media (max-width: 350px) {
+          margin-left: 0;
+          width: 100%;
+        }
+        // @media (min-width: $screen-md-min) {
+        //   margin-left: 0;
+        //   width: 100%;
+        // }
+
+        h1 {
+          // text-shadow: 0px 2px 4px rgba(0,0,0,0.50);
+
+        }
+
+        .btn-link {
+          // color: #fff;
+          color: $darkgray-dark;
+          font-size: 16px;
+          text-decoration: underline;
+        }
+      }
+
+
+      &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        // background: url("http://degy28l8twq8c.cloudfront.net/brownstones_small.jpg") no-repeat center;
+        // background-size: cover;
+        background-color: $mediumgray-light;
+        opacity: 0.3;
+        z-index: -1;
+      }
+
+      // @media (min-width: $screen-xs-min) {
+      //   &:before {
+      //     background: url("http://degy28l8twq8c.cloudfront.net/brownstones.jpg") no-repeat center;
+      //     background-size: cover;
+      //   }
+      // }
+
+    }  // above fold
+
+
+    &.product-desc {
+
+      text-align: center;
+
+      h1.big-text {
+        margin-bottom: 25px;
+      }
+
+      .desc-item {
+        margin-bottom: 60px;
+
+        @media (min-width: $screen-xs-min) {
+          margin-bottom: 75px;
+
+        }
+        @media (min-width: $screen-md-min) {
+          font-size: 125%;
+        }
+
+        // &.col-md-6 {
+        //   @media (min-width: $screen-md-min) {
+        //     margin-top: 30px;
+        //   }
+        // }
+
+        img {
+          margin-bottom: 20px;
+          width: 75px;
+          height: 75px;
+
+          @media (min-width: $screen-sm-min) {
+
+          }
+        }
+      }
+
+
+    }
+
+    &.just-questions {
+
+      padding: 60px 0;
+      text-align: center;
+      position: relative;
+
+      p {
+        margin-bottom: 25px;
+      }
+
+      &:before {
+        content: "";
+        position: absolute;
+        display: block;
+        top: 0;
+        bottom: 0;
+        width: 200%;
+        left: -50%;
+        height: 100%;
+        background-color: $mediumgray-light;
+        opacity: 0.3;
+        z-index: -1;
+      }
+    }
+
+    &.manifesto-idea {
+
+      a {
+
+        text-decoration: underline;
+
+        .big-text {
+          text-shadow: none;
+        }
+      }
+    }
+
+
+  } // section
+
+
+
+} // #landing
+
+
+.learn-more {
+
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  // color: #fff;
+
+  span {
+    margin-top: 5px;
+    font-size: 30px;
+    line-height: 24px;
+    display:inline-block;
+
+    @include transform(scale(1.25,1));
+
+  }
+}

@@ -1,0 +1,20 @@
+<div class="activity-panel-letter" ng-init="instructionsCollapsed = true">
+  <p>{{'modules.activity.partials.complaintLetter.printLink' | translate}}</p>
+  <p><span class="glyphicon glyphicon-file text-success"></span><a class="text-link" ng-href="{{ activity.fields[0].value }}" target="_blank"><span class="print-hidden">{{'modules.activity.partials.complaintLetter.letterOfComplaint' | translate}}</span></a></p>
+  <a href="" class="instructions-toggle print-hidden" ng-click="instructionsCollapsed = !instructionsCollapsed">
+    <span ng-if="instructionsCollapsed">+</span>
+    <span ng-if="!instructionsCollapsed">-</span>
+    {{'modules.activity.partials.complaintLetter.instructions' | translate}}
+  </a>
+  <div collapse="instructionsCollapsed">
+    <p>
+    {{'modules.activity.partials.complaintLetter.alternatives' | translate}}
+    <ol>
+      <li>{{'modules.activity.partials.complaintLetter.one' | translate}}</li>
+      <li>{{'modules.activity.partials.complaintLetter.two' | translate}}</li>
+      <li>{{'modules.activity.partials.complaintLetter.three' | translate}}</li>
+      <li>{{'modules.activity.partials.complaintLetter.four' | translate}}</li>
+    </ol>
+    </p>
+  </div>
+</div>

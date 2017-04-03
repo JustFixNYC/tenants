@@ -2,7 +2,7 @@
 
 module.exports = {
 	app: {
-	  title: 'JustFix.nyc',
+	  title: 'JustFix.nyc - Technology for Housing Justice',
 	  description: 'JustFix.nyc is a tool for New Yorkers to document, organize, and take action in getting repairs made on their apartment.',
 	  keywords: 'something'
 	},
@@ -15,8 +15,9 @@ module.exports = {
 		  css: [
 		    'lib/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.css',
 				'public/lib/ui-select/dist/select.min.css',
-		    'public/styles/bootstrap.css',
-		    'public/styles/bootflat.css'
+				'public/lib/cartodb.js/themes/css/cartodb.css',
+				'https://api.tiles.mapbox.com/mapbox-gl-js/v0.14.3/mapbox-gl.css',
+		    'public/styles/vendor.css'
 		  ],
 		  js: [
 		    'public/lib/angular/angular.js',
@@ -41,7 +42,15 @@ module.exports = {
 				'public/lib/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
 				'public/lib/angular-translate-storage-local/angular-translate-storage-local.js',
 				'public/lib/angular-translate-handler-log/angular-translate-handler-log.js',
-				'public/lib/angular-dynamic-locale/src/tmhDynamicLocale.js'
+				'public/lib/angular-dynamic-locale/src/tmhDynamicLocale.js',
+				'public/lib/cartodb.js/cartodb.js',
+				'public/external/mapbox-gl.js',
+				'public/external/leaflet-mapbox-gl.js',
+				'public/lib/deep-diff/releases/deep-diff-0.3.3.min.js',
+		    'public/lib/angular-sanitize/angular-sanitize.min.js',
+		    'public/lib/angular-filter/dist/angular-filter.js',
+				'public/lib/angular-clipboard/angular-clipboard.js',
+				'https://d3gxy7nm8y4yjr.cloudfront.net/js/embed.js'
 		  ]
 	  },
 	  css: [
@@ -66,5 +75,14 @@ module.exports = {
 	aws: {
 		id: process.env.AWS_ACCESS_KEY_ID,
 		key: process.env.AWS_SECRET_ACCESS_KEY
+	},
+	rollbar: {
+		servertoken: process.env.ROLLBAR_ACCESS_TOKEN,
+		clienttoken: process.env.ROLLBAR_ACCESS_TOKEN_CLIENT,
+		endpoint: process.env.ROLLBAR_ENDPOINT
+	},
+	acuity: {
+		id: process.env.ACUITY_ID,
+		key: process.env.ACUITY_API_KEY
 	}
 };

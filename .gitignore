@@ -7,7 +7,14 @@ public/lib
 app/tests/coverage/
 .bower-*/
 .idea/
-app/mongodb
+app/mongodb/
+app/mongodb/*
 uploads
-public/dist
 config/env/development.js
+public/styles/*
+public/styles/style.css
+public/styles/vendor.css
+public/styles/style.css.map
+public/styles/vendor.css.map
+migrations/advocates.json
+migrations/.migrate

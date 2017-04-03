@@ -1,0 +1,58 @@
+<section class="print" ng-controller="PrintController" ng-init="list()" id="print-view">
+
+	<div class="page-header">
+      <img src="/modules/core/img/sections/history.svg" alt="Case History" />
+      <h1>{{ user.fullName }}</h1>
+      <p class="text-center">{{'modules.activity.views.listActivityPublic.contact' | translate}} {{ user.phone | tel }}</p>
+      <p class="text-center">{{ user.address }} {{ user.unit }}</p>
+      <p class="text-center">{{ user.borough }} NY, {{ user.geo.zip }}</p>
+  </div>
+  <div data-ng-if="activities.length" class="activity-list">
+    <div data-ng-repeat="activity in activities | orderBy:'createdDate':true" class="panel activity-panel">
+        <div class="panel-body">
+
+        	<div class="image-share" ng-show="activity.key == 'statusUpdate'">
+
+						<div ng-include="'/modules/activity/partials/print-image-template.html'"></div>
+
+            <span class="pull-right activity-logged-date"><i>{{'modules.activity.views.listActivityPublic.loggedOn' | translate}} {{ activity.createdDate | date:'short' }}</i></span>
+
+        	</div>
+
+        	<div class="other-share" ng-show="activity.key != 'statusUpdate'">
+
+            <h2>{{ activity.title | translate }}</h2>
+
+            <div ng-include="activityTemplate(activity.key)"></div>
+
+            <span class="pull-right activity-logged-date"><i>{{'modules.activity.views.listActivityPublic.loggedOn' | translate}} {{ activity.createdDate | date:'short' }}</i></span>
+
+          </div>
+
+        </div>
+    </div>
+  </div>
+  <div class="appendix">
+		<div class="items" ng-repeat="activity in activities | orderBy:'createdDate':true" ng-if="activity.key == 'statusUpdate' || activity.photosExist == true">
+			<div ng-repeat="photo in activity.photos" class="photo-wrap">
+				<h2>Appendix {{photo.order + 1}}</h2>
+				<img ng-src="{{photo.url}}" />
+        <p ng-if="!activity.photos[0].exif.lat && !activity.photos[0].exif.make"><em>No location data available for this photo.</em></p>
+				<div ng-if="activity.photos[0].exif.lat || activity.photos[0].exif.make" class="row">
+					<div class="cell-one">
+		        <p ng-if="activity.photos[0].exif.make"><b>Phone Make/Model:</b> {{ activity.photos[0].exif.make }} / {{ activity.photos[0].exif.model }}</p>
+		        <p ng-if="activity.photos[0].exif.created"><b>Date Captured:</b> {{ activity.photos[0].exif.created | date:'short' }}</p>
+		        <p ng-if="activity.photos[0].exif.dir"><b>Facing Direction (approx.):</b> {{ activity.photos[0].exif.dir }}</p>
+		        <p ng-if="activity.photos[0].exif.lat"><b>Latitude/Longitude:</b> {{ activity.photos[0].exif.lat }} {{ activity.photos[0].exif.lng }}</p>
+	        </div>
+	        <div class="cell-two" ng-if="activity.photos[0].exif.lat">
+		      	<img ng-src="https://maps.googleapis.com/maps/api/staticmap?center={{activity.photos[0].exif.lat}},{{activity.photos[0].exif.lng}}&markers=color%3A0x0096D7%7C{{activity.photos[0].exif.lat}},{{activity.photos[0].exif.lng}}&zoom=15&size=150x150&maptype=roadmap&key=AIzaSyAEKIXDSbYyeg_dqLHa0KZR561nV81Tr8g">
+	        </div>
+        </div>
+			</div>
+		</div>
+  </div>
+  <div class="alert alert-warning text-center" data-ng-if="!activities.length">
+    {{ user.fullName }} {{'modules.activity.views.listActivityPublic.empty' | translate}}
+  </div>
+</section>

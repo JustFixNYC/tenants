@@ -1,0 +1,79 @@
+<div class="modal-body"
+    ng-swipe-left="Lightbox.nextImage()"
+    ng-swipe-right="Lightbox.prevImage()">
+  <!-- navigation -->
+  <div class="lightbox-nav">
+    <!-- close button -->
+    <button class="close" aria-hidden="true" ng-click="$dismiss()">×</button>
+
+    <div class="btn-group" ng-if="Lightbox.images.length > 1">
+      <a class="btn btn-xs btn-default" ng-click="Lightbox.prevImage()">
+        <span class="glyphicon glyphicon-chevron-left"></span> Prev&nbsp;
+      </a>
+
+      <a ng-href="{{Lightbox.imageUrl}}" target="_blank"
+          class="btn btn-xs btn-default" title="Open in new tab">
+        &nbsp;Open&nbsp;
+      </a>
+
+      <a class="btn btn-xs btn-default" ng-click="Lightbox.nextImage()">
+        &nbsp;Next <span class="glyphicon glyphicon-chevron-right"></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="lightbox-image-container">
+    <!-- caption -->
+    <div class="lightbox-image-caption">
+      <span>{{Lightbox.imageCaption}}</span>
+    </div>
+
+    <!-- image -->
+    <img ng-if="!Lightbox.isVideo(Lightbox.image)" lightbox-src="{{Lightbox.imageUrl}}">
+    <!-- <img ng-if="!Lightbox.isVideo(Lightbox.image)" ng-src="{{Lightbox.imageUrl}}" image-orient="{{Lightbox.image.exif.orientation}}"> -->
+
+    <!-- video -->
+    <div ng-if="Lightbox.isVideo(Lightbox.image)"
+        class="embed-responsive embed-responsive-16by9">
+      <!-- video file embedded directly -->
+      <video ng-if="!Lightbox.isSharedVideo(Lightbox.image)"
+          lightbox-src="{{Lightbox.imageUrl}}"
+          controls
+          autoplay="true">
+      </video>
+
+      <!-- video embedded with an external service using
+           `ng-videosharing-embed` -->
+      <embed-video ng-if="Lightbox.isSharedVideo(Lightbox.image)"
+          lightbox-src="{{Lightbox.imageUrl}}"
+          ng-href="{{Lightbox.imageUrl}}"
+          iframe-id="lightbox-video"
+          class="embed-responsive-item">
+        <a ng-href="{{Lightbox.imageUrl}}">Watch video</a>
+      </embed-video>
+    </div>
+
+    <div ng-if="Lightbox.image.exif">
+      <div class="row">
+        <div class="col-sm-4">
+          <div ng-if="Lightbox.image.exif.lat">
+            <meta-map lat="{{ Lightbox.image.exif.lat }}" lng="{{ Lightbox.image.exif.lng }}"></meta-map>
+          </div>
+        </div>
+        <div class="col-sm-8">
+          <p ng-if="Lightbox.image.exif.make"><b>Phone Make/Model:</b> {{ Lightbox.image.exif.make }} / {{ Lightbox.image.exif.model }}</p>
+          <p ng-if="Lightbox.image.exif.created"><b>Date Captured:</b> {{ Lightbox.image.exif.created | date:'short' }}</p>
+          <p ng-if="Lightbox.image.exif.dir"><b>Facing Direction (approx.):</b> {{ Lightbox.image.exif.dir }}</p>
+          <p ng-if="Lightbox.image.exif.lat"><b>Latitude/Longitude:</b> {{ Lightbox.image.exif.lat }} {{ Lightbox.image.exif.lng }}</p>
+          <p ng-if="!Lightbox.image.exif.lat"><em>No location data available for this photo.</em></p>
+        </div>
+      </div>
+    </div>
+    <div ng-if="!Lightbox.image.exif">
+        <p class="text-center"><em>(image metadata not available for this photo)</em></p>
+    </div>
+  </div>
+
+
+
+</div>

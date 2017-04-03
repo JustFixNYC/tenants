@@ -1,0 +1,63 @@
+<section data-ng-controller="LandingController" id="landing">
+  <!-- <section class="above-fold text-center" window-height> -->
+  <section class="above-fold text-center">
+
+    <!-- <div class="above-fold-content col-xs-10 col-xs-offset-1"> -->
+    <div class="above-fold-content col-sm-10 col-sm-offset-1">
+      <h1 class="big-text">{{'modules.core.views.landing.bigText' | translate}}</h1>
+      <a href="/signup" class="btn btn-primary btn-block" ga-event="Potential User,click,First Button">{{'modules.core.views.landing.start' | translate}}</a>
+      <!-- <a ui-sref="signin" class="btn btn-link btn-block">Sign In</a> -->
+      <!-- <a href="mailto:hello@justfix.nyc?subject=Tell me more about JustFix.nyc!" target="_blank" class="btn btn-primary btn-block">Contact Us</a> -->
+      <!-- <a href="https://twitter.com/JustFixNYC" target="_blank" class="btn btn-link btn-block" ga-event="Twitter,click,Landing">{{'modules.core.views.landing.twitter' | translate}}</a> -->
+    </div>
+    <div class="learn-more" jump-to="main-idea">
+      {{'modules.core.views.landing.how' | translate}} <br /><span class="glyphicon glyphicon-menu-down"></span>
+    </div>
+  </section>
+
+
+  <section id="main-idea" class="product-desc">
+    <div class="desc-item">
+      <h1 class="big-text">{{'modules.core.views.landing.build' | translate}}</h1>
+      <p>{{'modules.core.views.landing.buildBody' | translate}}</p>
+    </div>
+    <div class="clearfix">
+      <div class="desc-item col-md-6">
+        <img src="/modules/core/img/landing/camera.svg" alt="Document" />
+        <h1>{{'modules.core.views.landing.one' | translate}}</h1>
+        <p>{{'modules.core.views.landing.oneBody' | translate}}</p>
+      </div>
+      <div class="desc-item col-md-6">
+        <img src="/modules/core/img/landing/checklist.svg" alt="Take Action" />
+        <h1>{{'modules.core.views.landing.two' | translate}}</h1>
+        <p>{{'modules.core.views.landing.twoBody' | translate}}</p>
+      </div>
+      <div class="desc-item col-md-6">
+        <img src="/modules/core/img/landing/action.svg" alt="Keep Records" />
+        <h1>{{'modules.core.views.landing.three' | translate}}</h1>
+        <p>{{'modules.core.views.landing.threeBody' | translate}}</p>
+      </div>
+      <div class="desc-item col-md-6">
+        <img src="/modules/core/img/landing/share.svg" alt="Share Your Story" />
+        <h1>{{'modules.core.views.landing.four' | translate}}</h1>
+        <p ng-bind-html="'modules.core.views.landing.fourBody' | trustTranslate" compile-template></p>
+      </div>
+    </div>
+    <a href="/signup" class="btn btn-primary btn-block">{{'modules.core.views.landing.start' | translate}}</a>
+  </section>
+  <section class="just-questions">
+    <h1>{{'modules.core.views.landing.immediate' | translate}}</h1>
+    <p>{{'modules.core.views.landing.immediateBody' | translate}}</p>
+    <a href="http://findhelp.justfix.nyc" class="btn btn-warning btn-block" ga-event="Find Help,click">{{'modules.core.views.landing.findHelp' | translate}}</a>
+  </section>
+
+  <!-- <section id="manifesto-idea" class="manifesto-idea text-center">
+    <div class="features-content">
+      <h1>{{'modules.core.views.landing.more' | translate}}</h1>
+      <a href="http://www.justfix.nyc/our-mission"  class="manifesto-link"><h1 class="big-text">{{'modules.core.views.landing.read' | translate}}</h1></a>
+    </div>
+  </section> -->
+
+
+
+</section>

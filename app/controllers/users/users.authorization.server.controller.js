@@ -5,21 +5,22 @@
  */
 var _ = require('lodash'),
 	mongoose = require('mongoose'),
-	User = mongoose.model('User');
+	rollbar = require('rollbar'),
+	Identity = mongoose.model('Identity');
 
 /**
  * User middleware
  */
-exports.userByID = function(req, res, next, id) {
-	User.findOne({
-		_id: id
-	}).exec(function(err, user) {
-		if (err) return next(err);
-		if (!user) return next(new Error('Failed to load User ' + id));
-		req.profile = user;
-		next();
-	});
-};
+// exports.userByID = function(req, res, next, id) {
+// 	User.findOne({
+// 		_id: id
+// 	}).exec(function(err, user) {
+// 		if (err) return next(err);
+// 		if (!user) return next(new Error('Failed to load User ' + id));
+// 		req.profile = user;
+// 		next();
+// 	});
+// };
 
 /**
  * Require login routing middleware
@@ -35,6 +36,7 @@ exports.requiresLogin = function(req, res, next) {
 	next();
 };
 
+
 /**
  * User authorizations routing middleware
  */
@@ -43,9 +45,11 @@ exports.hasAuthorization = function(roles) {
 
 	return function(req, res, next) {
 		_this.requiresLogin(req, res, function() {
+
 			if (_.intersection(req.user.roles, roles).length) {
 				return next();
 			} else {
+				rollbar.handleError('User is not authorized', req);
 				return res.status(403).send({
 					message: 'User is not authorized'
 				});

@@ -1,23 +1,77 @@
 .activities-container {
 
-  .panel-body {
-    padding-bottom: 0;
-  }
+  .activity-panel {
+    // @include make-row();
 
-  .thumb-list {
+    .panel-heading {
 
-    margin-top: 15px;
+      padding-top: 15px;
+      padding-bottom: 0;
 
-    & > div {
-      padding: 0;
+      h3 {
+        font-size: 16px;
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+      }
+
+      p {
+        margin-bottom: 5px;
+      }
+    }
+
+    .panel-body {
+      .activity-logged-date {
+        margin-top: 5px;
+        font-size: 12px;
+      }
     }
   }
 
-  img {
-    height: 100%;
-    max-height: 125px;
+
+  .activity-panel-letter {
+    .glyphicon {
+      font-size: 16px;
+    }
+    a.text-link {
+      margin-left: 10px;
+      margin-bottom: 5px;
+    }
+    a.instructions-toggle {
+      display: block;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    ol {
+      padding-left: 15px;
+    }
   }
 
+
+  .thumb-list {
+
+    // margin-top: 15px;
+
+    & > div {
+      padding: 0;
+      text-align: center;
+    }
+
+    img {
+      margin: 0 auto;
+      max-height: 125px;
+      cursor: pointer;
+    }
+  }
+
+
+
+}
+
+.lightbox-modal .modal-content {
+  background-color: rgba(0,0,0,0.8);
+  color: $lightgray-light;
 }
 
 .lightbox-nav {
@@ -25,16 +79,33 @@
   .close {
     font-size: 40px;
     z-index: 10;
+    color: $lightgray-light;
+    opacity: 1;
   }
 
   .btn-group {
-    display: none;
+    display: block;
+    width: auto;
+    margin-top: 15px;
+
+    .btn {
+      margin-bottom: 15px;
+      background: transparent;
+      color: $lightgray-light;
+      border-color: darken($lightgray-light, 10%);
+    }
   }
 }
 
 .lightbox-image-container {
   top: 40px;
-} 
+
+  & > img {
+    max-height: 60vh;
+    height: inherit !important;
+    width: auto !important;
+  }
+}
 
 .upload-thumb {
   clip: rect(0px,60px,200px,0px);
@@ -44,3 +115,17 @@
   height: 150px;
   overflow: hidden;
 }
+
+.photos-grid {
+    /* Prevent vertical gaps */
+  line-height: 0;
+
+  -webkit-column-count: 3;
+  -webkit-column-gap:   0px;
+  -moz-column-count:    3;
+  -moz-column-gap:      0px;
+  column-count:         3;
+  column-gap:           0px;
+}
+
+.photo-grid-item {}

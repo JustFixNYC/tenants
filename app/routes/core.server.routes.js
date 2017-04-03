@@ -12,28 +12,31 @@ var serialize = function(obj) {
 module.exports = function(app) {
 	// Root routing
 	var core = require('../../app/controllers/core.server.controller');
-	app.route('/').get(core.index);
+	// app.route('/').get(core.index);
+	// app.route(/^\/(?!api|share).*/).get(core.index);
 
-  app.route('/demo').get(function (req, res) {
+	app.route(/^\/(?!api).*/).get(core.index);
 
-    var demoUser = {
-      name: 'Amy Moore',
-      phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
-      borough: 'Brooklyn',
-      address: '654 Park Place',
-      unit: '10F',
-      nycha: 'no',
-      password: 'password'
-    };
+  // app.route('/demo').get(function (req, res) {
+  //
+  //   var demoUser = {
+  //     name: 'Amy Moore',
+  //     phone: (Math.floor(Math.random() * 9999999999) + 1111111111).toString(),
+  //     borough: 'Brooklyn',
+  //     address: '654 Park Place',
+  //     unit: '10F',
+  //     nycha: 'no',
+  //     password: 'password'
+  //   };
+  //
+  //   //console.log(serialize(demoUser));
+  //   res.redirect('/#!/issues/create/checklist?' + serialize(demoUser));
+  // });
 
-    //console.log(serialize(demoUser));
-    res.redirect('/#!/issues/create/checklist?' + serialize(demoUser));
-  });
-
-  app.route('/test').get(function (req, res) {
-
-    //console.log(serialize(demoUser));
-    res.redirect('/#!/issues/create');
-  });
+  // app.route('/test').get(function (req, res) {
+  //
+  //   //console.log(serialize(demoUser));
+  //   res.redirect('/#!/issues/create');
+  // });
 
 };

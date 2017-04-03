@@ -3,9 +3,18 @@ html, body {
 }
 
 body {
-  background-color: rgb(241, 242, 246);
+  background-color: #F6F6F6;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 
+  font-size: 16px;
 
+  &.white-bg {
+    background-color: #fff;
+  }
+
+  @include transition(background-color 750ms ease);
   // &.modal-open {
   //   #modal-open-wrapper {
   //     position:relative; //that's it
@@ -14,17 +23,78 @@ body {
   // }
 }
 
+a.text-link {
+  color: $grass-dark;
+  font-size: 16px;
+  text-decoration: underline;
+
+  &:active, &:focus, &:hover {
+    color: $grass-light;
+  }
+}
+.text-success {
+  color: $grass-dark !important;
+}
+.text-danger {
+  color: $grapefruit-dark !important;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 400;
+  margin-top: 0;
+}
+h2 {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.4;
+  margin-top: 15px;
+}
+h3 {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.4;
+}
+h4 {
+  text-transform: uppercase;
+  font-size: 14px;
+  line-height: 1.4;
+  margin-top: 30px;
+}
+.no-margin-top {
+
+  @media (min-width: $screen-xs-min) {
+    margin-top: 0;
+  }
+
+
+}
+
 .content {
-  // margin-bottom: 50px;
-	// margin-top: 100px;
+
+  flex: 1;
+  margin-bottom: 50px;
+  z-index: 10;
 
   // @media (min-width: $screen-xs-min) {
   //   margin-top: 130px;
   // }
 
-
   section.container {
     min-height: 300px;
+    max-width: 640px;
+  }
+  body.landing & {
+    margin-bottom: 0;
+    // removing manifesto link
+  }
+  body.landing & section.container {
+    max-width: 970px;
+  }
+  body.fluid-container & section.container {
+    max-width: 970px;
+    width: auto !important;
+    @include container-fixed;
   }
 }
 .undecorated-link:hover {
@@ -34,84 +104,208 @@ body {
 	display: none !important;
 }
 .ng-invalid.ng-dirty {
-	border-color: #FA787E;
+	border-color: $grapefruit-dark;
 }
 .ng-valid.ng-dirty {
-	border-color: #78FA89;
+	border-color: $grass-dark;
+}
+label.control-label em {
+  font-weight: normal;
+}
+.controls .btn {
+  margin: 3px;
+
+  &:focus, &:active, &.active {
+    background-color: $justfix-blue;
+    border-color: $justfix-blue !important;
+    color: #fff;
+  }
+}
+
+.copy-link {
+  cursor: pointer;
 }
 
 .page-header {
   margin-top: 0;
-  border-bottom-color: $mediumgray-light;
+  margin-bottom: 15px;
+  border-bottom: none;
+  // padding-left: 15px;
+  // padding-right: 15px;
+
+  small {
+  	display: block;
+  	text-align: center;
+  }
+
+  img {
+    display: block;
+    width: 35px;
+    margin: 0 auto 10px auto;
+  }
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: center;
+  }
 
   h1 {
-    margin-top: 0;
     margin-bottom: 0;
-    font-size: 35px;
+    text-align: center;
   }
 
   p {
-    margin: 10px 0 0 0;
+    margin: 15px 0 0 0;
   }
+
+  &.left {
+    h1, p {
+      text-align: left;
+    }
+  }
+
+  @media (min-width: $screen-xs-min) {
+    p {
+      text-align: center;
+    }
+  }
+
+  p + p:not(.text-danger) {
+    margin-top: 0;
+  }
+
+
+}
+
+
+.alert-fade {
+  @include transition(background-color 500ms ease);
+}
+.alert-danger {
+  font-weight: 600;
+}
+.alert-success {
+  background-color: $grass-dark;
+}
+.alert-major {
+  position: absolute;
+  left: 0;
+  top: $mobile-header-height;
+  width: 100%;
+  border-radius: 0px;
+  color: white;
+  text-align: center;
+  letter-spacing: 2px;
+
+  @media (min-width: $screen-md-min) {
+    top: $desktop-header-height;
+  }
+
+  .success-check {
+    margin-right: 5px;
+    padding: 5px;
+    border-radius: 50%;
+    background: white;
+    color: $grass-dark;
+  }
+
+}
+.alert-major + div {
+  margin-top: $mobile-header-height;
+  @media (min-width: $screen-md-min) {
+    margin-top: $desktop-header-height;
+  }
+
+}
+.alert-dismissable .close, .alert-dismissible .close {
+  top: -10px;
+  right: -24px;
+  font-size: 30px;
+  opacity: 0.6;
+  text-shadow: none;
+}
+
+
+.section-header {
+  @include make-row();
+  padding: 1em 0;
+  margin-bottom: 15px;
+  background-color: $justfix-blue-dark;
+
+  h2 {
+    @include container-fixed();
+    margin: 0;
+    font-weight: 400;
+    font-size: 16px;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+  }
+
+  &.bg-danger {
+    background-color: $justfix-red;
+  }
+  &.bg-success {
+    background-color: $mint-dark;
+  }
+
+  // @media (min-width: $screen-sm-min) {
+  //   background-color: transparent;
+  //   border-bottom: 2px solid $mediumgray-light;
+  //
+  //   h2 {
+  //     color: $darkgray-dark;
+  //   }
+  //
+  // }
 
 }
 
 .btn:not(.btn-sm), .form-control {
   padding-top: 10px;
   padding-bottom: 10px;
+  height: auto;
+  -webkit-appearance: none;
+}
+input[type="date"].form-control, input[type="time"].form-control, input[type="datetime-local"].form-control, input[type="month"].form-control {
+    line-height: 24px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+input[type="date"].date-mobile:before {
+  content: attr(placeholder) !important;
+}
+input[type="date"].date-mobile:focus:before {
+  content: '' !important;
 }
 
+.form-group-center {
+  text-align: center;
+}
+.btn {
+  font-size: 16px;
+}
 .btn-block {
-  max-width: 300px;
+  max-width: 180px;
   margin: 0 auto;
+
+  &.btn-link {
+    max-width: none;
+  }
 
   &.initial {
     float: none !important;
   }
 }
+.btn-block-full {
+  display: block;
+  width: 100%;
+}
+
 
 .btn .glyphicon {
   padding-top: 2px;
   padding-right: 5px;
-}
-
-.modal-title {
-  line-height: 1.1;
-  font-weight: 400;
-}
-
-.modal-body {
-
-  .modal-issue-list {
-    padding-left: 30px;
-    margin-bottom: 0;
-  }
-
-  .btn-group {
-    width: 100%;
-
-    & .btn {
-      text-align: left;
-    }
-  }
-
-  .ui-select-bootstrap .dropdown-menu li a {
-    color: #fff;
-
-    &:hover, &:focus {
-      color: #262626;
-    }
-  }
-  .ui-select-toggle {
-    min-height: 40px;
-  }
-
-  img {
-    margin: 0 auto 10px auto;
-    display: block;
-    max-height: 250px;
-    max-width: 100%;
-  }
 }
 
 .img-thumbnail {
@@ -119,12 +313,28 @@ body {
   padding: 0;
 }
 
+.print-button {
+  margin-bottom: 15px;
+}
+
+.language-select-wrap {
+	float: right;
+}
+
 .language-select {
   position: relative;
 
+  span {
+  	color: white;
+  }
+
   .language-select-toggle {
     display: inline-block;
-    padding-top: 15px;
+    // padding-top: 15px;
+
+   	&.option {
+   		cursor: pointer;
+   	}
   }
 
   .language-select-menu {
@@ -136,7 +346,13 @@ body {
   padding: 0;
 }
 
-
-footer {
-  margin-top: 75px;
+.pull-left-on-desktop {
+  @media (min-width: $screen-xs-min) {
+    float: left !important;
+  }
+}
+.pull-right-on-desktop {
+  @media (min-width: $screen-xs-min) {
+    float: right !important;
+  }
 }

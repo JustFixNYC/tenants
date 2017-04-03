@@ -1,0 +1,16 @@
+<div class="issues-modal">
+	<!-- <div class="close-modal glyphicon glyphicon-remove" ng-click="$close()">
+	</div> -->
+  <div class="modal-header">
+      <h4 class="modal-title">
+        {{'modules.onboarding.partials.additionalInfo.title' | translate}}
+			</h4>
+  </div>
+	<div class="modal-body" stop-event="touchend" ng-bind-html="'modules.onboarding.partials.additionalInfo.body' | trustTranslate" compile-template>
+	</div>
+	<div class="modal-footer">
+		<span class="btn btn-primary btn-block" ng-click="$close()">
+        {{'modules.onboarding.partials.additionalInfo.gotIt' | translate}}</span>
+	</div>
+
+</div>

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('actions')
-  .directive('statusUpdate', ['$rootScope', '$modal', '$sce', '$timeout', 'Activity', 'Actions', 'Issues',
-    function ($rootScope, $modal, $sce, $timeout, Activity, Actions) {
+  .directive('statusUpdate', ['$rootScope', '$filter', '$sce', '$timeout', 'Activity', 'Actions', 'Problems',
+    function ($rootScope, $filter, $sce, $timeout, Activity, Actions, Problems) {
     return {
       restrict: 'E',
       templateUrl: 'modules/actions/partials/status-update.client.view.html',
@@ -14,89 +14,121 @@ angular.module('actions')
         // $modal has issues with ngTouch... see: https://github.com/angular-ui/bootstrap/issues/2280
         // scope.action is a $resource!
 
+        scope.problems = Problems.getUserProblems();
+
         scope.status = {
+          expanded: false,
+          extraExpanded: false,
+          tagging: false,
           closeAlert: false,
           closeErrorAlert: true,
+          formSubmitted: false,
           completed: false
         };
         //if(!scope.completed) scope.completed = false;
 
+        if($rootScope.expandStatus) {
+          scope.status.expanded = true;
+          scope.status.extraExpanded = true;
+          $timeout(function() { element[0].querySelector('textarea').focus(); }, 0);
+        }
+
+        if(!$rootScope.takeActionAlert) {
+          scope.status.expanded = true;
+          $timeout(function() { element[0].querySelector('textarea').focus(); }, 0);
+        }
+
         scope.newActivity = {
           date: '',
-          title: 'Status Update',
-          key: 'statusUpdate'
+          title: 'modules.activity.other.statusUpdate',
+          key: 'statusUpdate',
+          relatedProblems: [],
+          photos: []
         };
 
-        var openModal = function(templateUrl, controller) {
+        scope.expand = function(event) {
+          event.preventDefault();
+          scope.status.expanded = true;
+          // setTimeout(function() { element[0].querySelector('textarea').focus(); }, 0);
+          // setTimeout(function() { element[0].querySelector('textarea').focus(); }, 0);
+        }
 
-          var modalInstance = $modal.open({
-            //animation: false,
-            templateUrl: templateUrl,
-            controller: controller,
-            resolve: {
-              newActivity: function () { return scope.newActivity; }
-            }
-          });
+        scope.toggleTagging = function() {
+          scope.status.tagging = !scope.status.tagging;
+        }
 
-          modalInstance.result.then(function (newActivity) {
-            scope.newActivity = newActivity;
-            scope.createActivity();
-          }, function () {
-            // modal cancelled
-          });
+        scope.selectProblem = function(problem) {
+
+          if(!this.isSelectedProblem(problem)) {
+            scope.newActivity.relatedProblems.push(problem);
+          } else {
+            var i = scope.newActivity.relatedProblems.indexOf(problem);
+            scope.newActivity.relatedProblems.splice(i, 1);
+            // $scope.checklist[area].numChecked--;
+          }
+        };
+        scope.isSelectedProblem = function(problem) {
+          // if(!$scope.newIssue.issues[area]) return false;
+          return scope.newActivity.relatedProblems.indexOf(problem) !== -1;
         };
 
+        scope.addPhoto = function(file) {
 
-        scope.openCheckIn = function() {
-          openModal('modules/actions/partials/modals/check-in.client.view.html', 'UpdateActivityController');
-        };
-        scope.openPhotoPreview = function(file) {
-          console.log(file);
-          console.log(file.lastModifiedDate);
-          if(file.lastModifiedDate) scope.newActivity.date = file.lastModifiedDate;
-          openModal('modules/actions/partials/modals/photo-preview.client.view.html', 'UpdateActivityController');
+          if(file) {
+            scope.newActivity.photos.push(file);
+            // console.log(file);
+            // console.log(file.lastModifiedDate);
+            if(file.lastModifiedDate) scope.newActivity.date = file.lastModifiedDate;
+          }
+
         };
 
         scope.closeAlert = function() {
           scope.status.closeAlert = true;
         };
 
-        scope.createActivity = function() {
+        scope.createActivity = function(isValid) {
 
-          $rootScope.loading = true;
+          scope.status.formSubmitted = true;
 
-          console.log('create activity pre creation', scope.newActivity);
+          if(isValid) {
+            $rootScope.loading = true;
 
-          // [TODO] have an actual section for the 'area' field in the activity log
-          if(scope.newActivity.description && scope.newActivity.area) scope.newActivity.description = scope.newActivity.area + ' - ' + scope.newActivity.description;
-          else if(scope.newActivity.area) scope.newActivity.description = scope.newActivity.area;
+            console.time("statusUpdate");
 
-          var activity = new Activity(scope.newActivity);
+            // console.log('create activity pre creation', scope.newActivity);
 
-          console.log('create activity post creation', scope.newActivity);
+            // [TODO] have an actual section for the 'area' field in the activity log
+            // if(scope.newActivity.description && scope.newActivity.area) scope.newActivity.description = scope.newActivity.area + ' - ' + scope.newActivity.description;
+            // else if(scope.newActivity.area) scope.newActivity.description = scope.newActivity.area;
 
-          activity.$save(function(response) {
+            var activity = new Activity(scope.newActivity);
 
-            console.log('create activity post save', response);
+            // console.log('create activity post creation', scope.newActivity);
 
-            $rootScope.loading = false;
-            scope.status.completed = true;
+            activity.$save(function(response) {
 
-            // load new actions
-            // var idx = scope.$index;
-            // var newActions = Actions.query(
-            //   {key: scope.newActivity.key},
-            //   function() {
-            //     newActions.forEach(function (action) {
-            //       scope.actions.splice(++idx, 0, action);
-            //     });
-            //   });
+              // console.log('create activity post save', response);
+              console.timeEnd("statusUpdate");
 
-          }, function(errorResponse) {
-            $rootScope.loading = false;
-            scope.error = errorResponse.data.message;
-            scope.status.closeErrorAlert = false;
-          });
+              $rootScope.loading = false;
+              scope.status.completed = true;
+              scope.status.formSubmitted = false;
+              scope.status.expanded = false;
+              scope.newActivity = {
+                date: '',
+                title: 'modules.activity.other.statusUpdate',
+                key: 'statusUpdate',
+                relatedProblems: [],
+                photos: []
+              };
+
+            }, function(errorResponse) {
+              $rootScope.loading = false;
+              scope.error = errorResponse.data.message;
+              scope.status.closeErrorAlert = false;
+            });
+          }
 
         }; // end of create activity
 

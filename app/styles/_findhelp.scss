@@ -1,0 +1,50 @@
+#findHelp {
+
+  #map {
+    width: 100%;
+    height: 35vh;
+    margin: 15px auto 30px auto;
+
+    @media (min-width: $screen-md-min) {
+      height: 50vh;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+
+
+
+  .btn-center {
+    text-align: center;
+  }
+
+  .panel {
+      -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+      -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .tab-content {
+    padding: 0;
+  }
+
+
+  .resources-container {
+    @include make-row();
+    background-color: #fff;
+
+    & > .resources {
+      padding: 15px;
+    }
+
+    @media (min-width: $screen-md-min) {
+      margin: 0 auto;
+
+      & > .resources {
+        padding-top: 0;
+      }
+    }
+  }
+
+}

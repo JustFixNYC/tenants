@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('core').directive('languageSelect', function (LocaleService) { 'use strict';
+angular.module('core').directive('languageSelect', function (LocaleService, $window, $location) { 'use strict';
   return {
     restrict: 'A',
     replace: true,
@@ -13,6 +13,7 @@ angular.module('core').directive('languageSelect', function (LocaleService) { 'u
 
       $scope.changeLanguage = function (locale) {
         LocaleService.setLocaleByDisplayName(locale);
+        // FYI: locale changes happens in LocaleService at /services/locale.client.service.js
       };
     }
   };

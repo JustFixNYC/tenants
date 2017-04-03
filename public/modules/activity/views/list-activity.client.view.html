@@ -1,56 +1,132 @@
-<section data-ng-controller="ActivityController" data-ng-init="list()">
+<section class="activities-container" data-ng-controller="ActivityController" data-ng-init="list()">
     <div class="page-header">
-        <h1>Your Case</h1>
-        <p><em>Share your case with case workers, attorneys, and judges as a way to tell your story. Your case can be found anytime you need it by going to <b style="text-decoration:underline;">JustFix.nyc/{{ authentication.user.phone }}</b> (thats your phone number!)</em></p>
-        <br />
-        <div class="row">
+        <img src="/modules/core/img/sections/history.svg" alt="Case History" />
+        <h1>{{'modules.activity.views.listActivity.title' | translate}}</h1>
+        <p>{{'modules.activity.views.listActivity.description' | translate}}</p>
+    </div>
+    <!-- <div class="section-header share-section-header" ng-click="shareCollapsed = !shareCollapsed" ng-class="{ 'open': shareCollapsed == false}"> -->
+    <div class="section-header share-section-header" ng-class="{ 'open': shareCollapsed == false}">
+      <h2>{{'modules.activity.views.listActivity.share' | translate}}
+        <!-- <span class="pull-right glyphicon" ng-class="shareCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span> -->
+      </h2>
+    </div>
+    <!-- <div class="share-section" collapse="shareCollapsed"> -->
+    <div class="share-section">
+      <!-- <div class="container"> -->
+
+        <div class="row share-controls">
           <div class="col-xs-6">
-            <a  class="btn btn-primary disabled btn-block pull-left">
-                Export PDF
+            <a  class="btn btn-success btn-block pull-left" ng-class="{ 'disabled' : !authentication.user.sharing.enabled }" email="{{authentication.user.advocate.email}}" target="_blank" email-message>
+                {{'modules.activity.views.listActivity.email' | translate}}
             </a>
           </div>
           <div class="col-xs-6">
-            <button class="btn btn-primary disabled btn-block pull-right">
-                <!-- <span class="glyphicon glyphicon-ok pull-left" style="padding-top:1px"></span> -->
-                Share Case
+            <a class="btn btn-success btn-block pull-right" ng-if="!isDesktop" ng-class="{ 'disabled' : !authentication.user.sharing.enabled }" sms-message type="share">
+                {{'modules.activity.views.listActivity.text' | translate}}
+            </a>
+            <button class="btn btn-success btn-block pull-right" ng-if="isDesktop" print-button>
+                {{'modules.activity.views.listActivity.print' | translate}}
             </button>
           </div>
         </div>
-    </div>
-    <div data-ng-if="activities.length" class="activities-container">
-        <div data-ng-repeat="activity in activities | orderBy:'date':true" class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">{{ activity.date | date:'longDate' }}</h3>
-            </div>
-            <div class="panel-body">
 
-                <!-- <p><b>{{ activity.key | areaTitle }} {{ activity.title === 'Text/Photos' ? 'Details' : activity.title }}</b></p> -->
-                <p><b>{{ activity.title }}</b></p>
-
-                <div data-ng-if="activity.fields.length">
-                  <p data-ng-repeat="field in activity.fields"><b>{{field.title}}</b> {{field.value}}</p>
-                </div>
-
-                {{ activity.description }}
-
-                <div class="row thumb-list">
+        <span ng-if="!isDesktop">
+          <em>{{'modules.activity.views.listActivity.printNotification' | translate}}</em>
+        </span>
 
 
-                    <div data-ng-repeat="photo in activity.photos" class="col-xs-4">
+        <h2>
+          <span ng-if="!authentication.user.sharing.enabled">{{'modules.activity.views.listActivity.enable' | translate}}</span>
+          <span ng-if="authentication.user.sharing.enabled">{{'modules.activity.views.listActivity.shareLinkText' | translate}}</span>
+          <label class="toggle pull-right" toggle-sharing>
+            <input type="checkbox">
+            <span class="handle"></span>
+          </label>
+        </h2>
 
-                <!-- $parent.$index -->
-                        <a ng-click="openLightboxModal(activity.photos, $index)">
-                            <img ng-src="{{ activity.photos[$index].thumb }}" alt="{{ activity.key | areaTitle }}" class="img-thumbnail" />
-                        </a>
-                    </div>
+        <div class="alert alert-warning" ng-if="!authentication.user.sharing.enabled" ng-bind-html="'modules.activity.views.listActivity.alert' | trustTranslate" compile-template>
 
-                </div>
-
-
-            </div>
         </div>
+
+        <div class="share-link" ng-if="authentication.user.sharing.enabled">
+          <label>{{'modules.activity.views.listActivity.labelShare' | translate}}</label>
+          <h2><a ng-href="/share/{{authentication.user.sharing.key}}" target="_blank">https://{{location}}/share/{{authentication.user.sharing.key}}</a></h2>
+        </div>
+
+
+
+
+
+    <!--  </div>   .container -->
+
+    </div>  <!-- .share-section -->
+
+
+
+    <!-- <div class="section-header bg-success" ng-click="activityCollapsed = !activityCollapsed"> -->
+    <!-- <div class="section-header bg-success">
+      <h2>{{'modules.activity.views.listActivity.title' | translate}} -->
+        <!-- <span class="pull-right glyphicon" ng-class="activityCollapsed ? 'glyphicon-plus' : 'glyphicon-minus'"></span> -->
+      <!-- </h2>
+    </div> -->
+    <!-- <div collapse="activityCollapsed"> -->
+    <br />
+    <div>
+      <div data-ng-if="activities.length">
+        <div class="row">
+          <tabset>
+            <tab>
+              <tab-heading>
+                {{'modules.activity.views.listActivity.activityTab' | translate}}
+              </tab-heading>
+              <div data-ng-repeat="activity in activities | orderBy:'createdDate':true" class="panel activity-panel">
+                  <div class="panel-heading">
+                      <h3>{{ activity.title | translate }}</h3>
+                  </div>
+                  <div class="panel-body">
+                    <div ng-include="activityTemplate(activity.key)"></div>
+                    <div ng-include="'/modules/activity/partials/attribution.html'"></div>
+                  </div>
+              </div>
+            </tab>
+            <tab>
+              <tab-heading>
+                {{'modules.activity.views.listActivity.issuesTab' | translate}}
+              </tab-heading>
+              <div data-ng-repeat="problem in authentication.user.problems">
+                <h2>{{ problem.title | translate }}</h2>
+                <ul>
+                  <li data-ng-repeat="issue in problem.issues">{{ issue.key | translate }}</li>
+                </ul>
+              </div>
+            </tab>
+            <tab>
+              <tab-heading>
+                {{'modules.activity.views.listActivity.photosTab' | translate}} ({{photos.length}})
+              </tab-heading>
+              <div ng-if="photos.length">
+                <div class="photos-grid">
+                  <div data-ng-repeat="photo in photos" class="photos-grid-item">
+                      <a ng-click="openLightboxModal(photos, $index)">
+                          <img ng-src="{{ photo.thumb }}" class="img-thumbnail" />
+                      </a>
+                  </div>
+                </div>
+              </div>
+              <div ng-if="!photos.length" class="text-center">
+                <br />
+                <i>{{'modules.activity.views.listActivity.noPhotosTab' | translate}}</i>
+                <br />
+                <br />
+              </div>
+
+            </tab>
+          </tabset>
+        </div>
+      </div>
+      <div class="alert alert-warning text-center" data-ng-if="!activities.length" ng-bind-html="'modules.activity.views.listActivity.empty' | trustTranslate" compile-template>
+
+      </div>
     </div>
-    <div class="alert alert-warning text-center" data-ng-if="!activities.length">
-    	Nothing has been added to your case yet! <a ui-sref="listActions">Click here</a> to see some things to do.
-    </div>
+
 </section>

@@ -1,47 +1,23 @@
-<section class="row" data-ng-controller="AuthenticationController">
-<!--  <h3 class="col-md-12 text-center">Sign in using your social accounts</h3>
-  <div class="col-md-12 text-center">
-    <a href="/auth/facebook" class="undecorated-link">
-      <img src="/modules/users/img/buttons/facebook.png">
-    </a>
-    <a href="/auth/twitter" class="undecorated-link">
-      <img src="/modules/users/img/buttons/twitter.png">
-    </a>
-    <a href="/auth/google" class="undecorated-link">
-      <img src="/modules/users/img/buttons/google.png">
-    </a>
-    <a href="/auth/linkedin" class="undecorated-link">
-      <img src="/modules/users/img/buttons/linkedin.png">
-    </a>
-    <a href="/auth/github" class="undecorated-link">
-      <img src="/modules/users/img/buttons/github.png">
-    </a>
-  </div>
-  <h3 class="col-md-12 text-center">Or with your account</h3> -->
-  <h3 class="col-md-12 text-center">Sign in to start using JustFix.nyc!</h3>
-  <div class="col-xs-offset-2 col-xs-8 col-md-offset-5 col-md-2">
-    <form data-ng-submit="signin()" class="signin form-horizontal" autocomplete="off">
-      <fieldset>
-        <div class="form-group">
-          <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" name="phone" class="form-control" data-ng-model="credentials.phone" placeholder="Phone Number" phone-input>
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Password">
-        </div>
-        <div class="text-center form-group">
-          <button type="submit" class="btn btn-primary">Sign in</button>
-          <!-- &nbsp; or&nbsp; -->
-          <!-- <a ui-sref="createIssue.checklist">Get started</a> -->
-        </div>
-        <div class="forgot-password">
-          <a href="/#!/password/forgot">Forgot your password?</a>
-        </div>
-        <div data-ng-show="error" class="text-center text-danger">
-          <strong data-ng-bind="error"></strong>
-        </div>
-      </fieldset>
-    </form>
-  </div>
+<section data-ng-controller="AuthenticationController">
+
+	<div class="page-header">
+		<img src="/modules/core/img/brand/icon_only.svg" alt="JustFix.nyc" />
+		<h1>{{'modules.users.views.authentication.signIn.title' | translate}}</h1>
+	</div>
+	<form data-ng-submit="signin()" autocomplete="off" novalidate>
+    <div class="form-group">
+      <label for="phone">{{'modules.users.views.authentication.signIn.phone' | translate}}</label>
+      <input type="tel" id="phone" name="phone" class="form-control" data-ng-model="credentials.phone" placeholder="{{'modules.users.views.authentication.signIn.phone' | translate}}" phone-input>
+    </div>
+    <div class="form-group">
+      <label for="password">{{'modules.users.views.authentication.signIn.password' | translate}}</label>
+      <input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="{{'modules.users.views.authentication.signIn.password' | translate}}">
+    </div>
+		<div class="error-text alert alert-danger" ng-show="error">{{ error }}. <br /><br /><a ui-sref="contact">{{'modules.users.views.authentication.signIn.contactText' | translate}}</a>{{'modules.users.views.authentication.signIn.contactUsFinal' | translate}}</div>
+	  <div class="form-group">
+	    <button type="submit" class="btn btn-primary btn-block" go-to-top>{{'modules.users.views.authentication.signIn.signIn' | translate}}</button>
+			<a class="btn btn-link btn-block" ui-sref="forgot">{{'modules.users.views.authentication.signIn.forgot' | translate}}</a>
+			<a class="btn btn-link btn-block" href="/signup">{{'modules.users.views.authentication.signIn.signUp' | translate}}</a>
+	  </div>
+	</form>
 </section>

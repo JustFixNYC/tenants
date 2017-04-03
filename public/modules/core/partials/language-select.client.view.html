@@ -1,9 +1,9 @@
 <div class="language-select" dropdown>
-<!--       <a href class="language-select-toggle" dropdown-toggle translate>
+      <!-- <span class="language-select-toggle" dropdown-toggle translate>
             directives.language-select.Language
-      </a> -->
-      <a  class="language-select-toggle" 
-          ng-repeat="lang in localesDisplayNames" 
+      </span> -->
+      <a  class="language-select-toggle option"
+          ng-repeat="lang in localesDisplayNames"
           ng-click="changeLanguage(lang)">
           {{ lang }}<span ng-if="!$last">&nbsp;/&nbsp;</span>
       </a>

@@ -1,98 +1,109 @@
 <div class="panel action-panel" data-ng-show="!action.completed">
   <div class="panel-heading">
+    <!-- <h3 class="panel-title">
+      {{ action.-title }}{{ action.isFollowUp ? ' - Follow Up' : '' }}
+    </h3> -->
     <h3 class="panel-title">
-      {{ action.title }}{{ action.isFollowUp ? ' - Follow Up' : '' }}
+      <span ng-if="action.cta.type == 'initialContent'" class="glyphicon-addl" ng-class="action.key"></span>
+      <span data-ng-bind-html="filterTitleHTML | trustTranslate" compile-template></span>
+      {{ action.isFollowUp ? 'modules.actions.partials.toDoItem.followUp' : '' | translate}}
     </h3>
   </div>
   <div class="panel-body" data-ng-if="!action.isFollowUp">
-    <div class="panel-content" data-ng-bind-html="filterContentHTML()"></div>
+    <div class="panel-content" data-ng-bind-html="filterContentHTML | trustTranslate" compile-template></div>
     <div class="row">
       <div class="col-xs-6">
         <a  class="btn btn-default btn-block pull-left"
-            data-ng-if="action.cta.type !== 'initialContent'"
-            data-ng-click="triggerFollowUp()">
-            I've tried this
+            data-ng-if="action.hasFollowUp"
+            data-ng-click="triggerFollowUp(false)">
+            {{'modules.actions.partials.toDoItem.tried' | translate}}
         </a>
       </div>
-      <div ng-class="action.cta.type === 'initialContent' ? 'col-xs-12' : 'col-xs-6'">
+      <div ng-class="!action.hasFollowUp ? 'col-xs-12' : 'col-xs-6'">
         <button class="btn btn-primary btn-block pull-right"
                 data-ng-if="isModal()"
-                data-ng-class="action.cta.type === 'initialContent' ? 'initial' : 'regular'"
+                data-ng-class="!action.hasFollowUp ? 'initial' : 'regular'"
                 data-ng-click="openModal()"
-                data-ng-bind-html="filterButtonTitleHTML()">
+                data-ng-bind-html="filterButtonTitleHTML | trustTranslate" 
+                compile-template>
         </button>
         <a  class="btn btn-success btn-block pull-right"
             data-ng-if="action.cta.type === 'call'"
-            data-ng-click="triggerFollowUp('tel:' + action.cta.phone, 'tel')">
+            data-ng-click="triggerFollowUp(true, 'tel:' + action.cta.phone, 'tel')">
             <span class="glyphicon glyphicon-earphone pull-left"></span>
-            {{ action.cta.buttonTitle }}
+            {{ action.cta.buttonTitle | translate }}
         </a>
         <a  class="btn btn-success btn-block pull-right"
             data-ng-if="action.cta.type === 'link'"
-            data-ng-click="triggerFollowUp(action.cta.url, 'link')"
+            data-ng-click="triggerFollowUp(true, action.cta.url, 'link')"
             target="_blank">
             <span class="glyphicon glyphicon-link pull-left"></span>
-            {{ action.cta.buttonTitle }}
+            {{ action.cta.buttonTitle | translate }}
+        </a>
+        <a  class="btn btn-primary btn-block"
+            data-ng-if="action.cta.type === 'link-internal'"
+            ui-sref="{{action.cta.url}}">
+            {{ action.cta.buttonTitle | translate }}
         </a>
       </div>
     </div>
   </div>
   <div class="panel-body" data-ng-if="action.isFollowUp">
-    <div class="panel-content">
-      <form class="resolve-action-form" novalidate>
-          <div class="form-group">
-              <label class="control-label" for="title">Date of {{ action.cta.buttonTitle }}</label>
-              <div class="controls">
-                  <!-- <p class="input-group"> -->
-                    <!-- <input type="date" class="form-control" datepicker-popup ng-model="newActivity.date" is-open="openedDatepicker" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" /> -->
-<!--                     <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="openDP($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span> -->
-                  <!-- </p> -->
+    <form name="followUpForm" novalidate>
+      <div class="panel-content">
+        <!-- <p ng-bind-html="newActivity.successResponse"></p> -->
+            <div class="form-group" ng-class="{ 'has-error': followUpSubmitted && followUpForm.startDate.$invalid }">
+                <label class="control-label" for="title">{{'modules.actions.partials.toDoItem.dateOf' | translate }} {{ action.cta.buttonTitle | translate }}</label>
+                <div class="controls">
+                    <!-- <p class="input-group"> -->
+                      <!-- <input type="date" class="form-control" datepicker-popup ng-model="newActivity.date" is-open="openedDatepicker" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" /> -->
+  <!--                     <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="openDP($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                      </span> -->
+                    <!-- </p> -->
 
-                  <input type="date" class="form-control"  ng-model="newActivity.date"  />
-              </div>
-          </div>
-          <div class="form-group" data-ng-if="action.followUp.fields">
-            <div data-ng-repeat="field in action.followUp.fields">
-              <label class="control-label" for="field">{{ field.prompt }}</label>
-              <div class="controls" data-ng-if="field.type === 'text'">
-                  <input type="text" class="form-control" ng-model="newActivity.fields[$index].value" placeholder="{{field.placeholder}}" />
-                  <!-- <textarea name="field" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="3" maxlength="500" placeholder="Briefly describe what happened."></textarea> -->
-              </div>
-              <div class="controls" data-ng-if="field.type === 'binary'">
-                  <div class="btn-group">
-                      <label class="btn btn-default" data-ng-model="newActivity.fields[$index].value" btn-radio="'yes'">Yes</label>
-                      <label class="btn btn-default" data-ng-model="newActivity.fields[$index].value" btn-radio="'no'">No</label>
-                  </div>
+                    <input type="date" class="form-control" name="startDate" ng-model="newActivity.startDate" mobile-date-placeholder placeholder="mm/dd/yyyy" required />
+                </div>
+            </div>
+            <div data-ng-if="action.followUp.fields">
+              <div class="form-group" data-ng-repeat="field in action.followUp.fields" ng-class="{ 'has-error': followUpSubmitted && followUpForm['field{{$index}}'].$invalid }">
+                <label class="control-label" for="field">{{ field.prompt | translate }}</label>
+                <div class="controls" data-ng-if="field.type === 'text'">
+                    <input type="text" class="form-control" name="{{ 'field' + $index }}" ng-model="newActivity.fields[$index].value" placeholder="{{field.placeholder | translate}}" required />
+                    <!-- <textarea name="field" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="3" maxlength="500" placeholder="Briefly describe what happened."></textarea> -->
+                </div>
+                <div class="controls" data-ng-if="field.type === 'binary'">
+                  <label class="btn btn-default" name="{{ 'field' + $index }}" data-ng-model="newActivity.fields[$index].value" btn-radio="'yes'" required>{{'repeating.yes' | translate}}</label>
+                  <label class="btn btn-default" name="{{ 'field' + $index }}" data-ng-model="newActivity.fields[$index].value" btn-radio="'no'" required>{{'repeating.no' | translate}}</label>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="form-group">
-              <label class="control-label" for="description">{{ action.followUp.title }}</label>
-              <div class="controls">
-                  <textarea name="description" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="3" maxlength="500" placeholder="Briefly describe what happened."></textarea>
-              </div>
-          </div>
-        </form>
-    </div>
-    <div class="row">
-      <div class="col-xs-4">
-        <a  class="btn btn-default btn-block pull-left"
-            data-ng-click="cancelFollowUp()">
-            Cancel
-        </a>
+            <div class="form-group">
+                <label class="control-label" for="description">{{ action.followUp.title | translate}}</label>
+                <div class="controls">
+                    <textarea name="description" data-ng-model="newActivity.description" id="description" class="form-control" cols="30" rows="3" maxlength="500" placeholder="{{ 'modules.actions.partials.statusUpdate.description' | translate}}"></textarea>
+                </div>
+            </div>
+            <span class="text-danger" ng-show="followUpSubmitted && followUpForm.$invalid">{{ 'modules.actions.partials.toDoItem.enterRequired' | translate}}</span>
       </div>
-      <div class="col-xs-8">
-        <button class="btn btn-info btn-block pull-right"
-                data-ng-click="createActivity()">
-            <span class="glyphicon glyphicon-ok pull-left" style="padding-top:1px"></span>
-            Add To Your Case
-        </button>
+      <div class="row">
+        <div class="col-xs-4">
+          <a  class="btn btn-default btn-block pull-left"
+              data-ng-click="cancelFollowUp()">
+              {{'repeating.cancel' | translate}}
+          </a>
+        </div>
+        <div class="col-xs-8">
+          <button class="btn btn-info btn-block pull-right"
+                  data-ng-click="createActivity(followUpForm.$valid, true)">
+              <span class="glyphicon glyphicon-ok pull-left" style="padding-top:1px"></span>
+              {{'repeating.add' | translate}}
+          </button>
+        </div>
       </div>
-    </div>
+    </form>
   </div>
 </div>
-<alert data-ng-show="action.completed" data-ng-show="!action.closeAlert" type="success" close="closeAlert()"><strong>Well done!</strong> We've added <em>{{ action.title }}</em> to <a ui-sref="listActivity">Your Case</a>.</alert>
-<alert data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert>
+<alert data-ng-show="action.completed" data-ng-show="!action.closeAlert" type="success" close="closeAlert()"><strong>{{ 'modules.actions.partials.toDoItem.wellDone' | translate}}</strong> {{ 'modules.actions.partials.toDoItem.added' | translate}} <em>{{ action.title | translate}}</em> {{ 'modules.actions.partials.toDoItem.to' | translate}} <a ui-sref="listActivity">{{'repeating.caseHistory' | translate}}</a>.</alert>
+<alert data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true" ng-bind-html="'modules.actions.partials.toDoItem.error' | trustTranslate" compile-template></alert>
 <!-- <alert data-ng-if="error.length" data-ng-show="!closeErrorAlert" type="danger" close="closeErrorAlert = true">We're sorry, something went wrong...</alert> -->

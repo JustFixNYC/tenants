@@ -1,16 +1,16 @@
 <div class="modal-header">
-  <h3 class="modal-title">Status Update</h3>
+  <h3 class="modal-title">{{'modules.actions.partials.modals.checkIn.title' | translate}}</h3>
 </div>
 <div class="modal-body" stop-event="touchend">
   <form class="update-activity-form" novalidate>
     <div class="form-group">
-        <label class="control-label" for="title">When did this happen?</label>
+        <label class="control-label" for="title">{{'modules.actions.partials.modals.checkIn.when' | translate}}</label>
         <div class="controls">
-          <input type="date" class="form-control"  ng-model="newActivity.date"  />
+          <input type="date" class="form-control"  ng-model="newActivity.date" mobile-date-placeholder placeholder="mm/dd/yyyy"  />
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label" for="description">What is this update about?</label>
+        <label class="control-label" for="description">{{'modules.actions.partials.modals.checkIn.what' | translate}}</label>
         <div class="controls">
 
           <label  data-ng-if="areas.length < 5"
@@ -42,9 +42,9 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-default pull-left" ng-click="cancel()">Cancel</button>
+  <button class="btn btn-default pull-left" ng-click="cancel()">{{'modules.actions.partials.modals.checkIn.cancel' | translate}}</button>
   <button class="btn btn-info" data-ng-click="done()">
       <span class="glyphicon glyphicon-ok pull-left" style="padding-top:1px"></span>
-      Add To Your Case
+      {{'modules.actions.partials.modals.checkIn.add' | translate}}
   </button>
 </div>

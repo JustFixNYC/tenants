@@ -1,0 +1,12 @@
+<div class="problem-wrap col-lg-3 col-md-4 col-sm-4 col-xs-6" ng-repeat="problem in problems">
+  <div class="problem" ng-click="open(problem)" ng-class="{'active': ourUser.problems.containsByKey(problem.key) }">
+    <div class="problem-icon">
+      <span class="glyphicon-addl" ng-class="problem.key"></span>
+      <p>{{problem.title | translate}}</p>
+      <span class="problem-num" ng-if="problem.numChecked && problem.numChecked > 0">
+        <i>({{ problem.numChecked }} {{'modules.problems.partials.problemModal.issue' | translate}}{{ problem.numChecked == 1 ? '' : 's' }})</i>
+      </span>
+    </div>
+  </div>
+</div>
+<div class="clearfix"></div>

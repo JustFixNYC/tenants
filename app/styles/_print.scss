@@ -1,0 +1,192 @@
+@media print {
+	body {
+		size: auto;
+		margin: auto auto;
+		display: block;
+		min-height: auto;
+		font-size: 12px;
+
+		p {
+			font-size: 1em;
+		}
+	}
+
+	.print-hidden {
+		display: none !important;
+	}
+
+	#header-wrapper.inner #header .header-brand {
+		left: auto;
+		transform: none;
+		right: 0;
+	}
+}
+
+@page {
+	margin: 25mm auto;
+}
+
+.print-title {
+	display: none;
+}
+
+.show-print {
+	display: none;
+}
+
+.print {
+	position: relative;
+	display: block;
+
+	.page-header {
+		margin-top: 15px;
+
+		h1 {
+			margin-bottom: 15px;
+			font-size: 1.75em;
+		}
+
+		p {
+			margin-top: 0px;
+		}
+	}
+
+	.row {
+		display: table;
+	}
+
+	.col-sm-4 {
+		display: table-cell;
+		vertical-align: middle;
+
+		&.col-missing-override {
+			width: 50%;
+		}
+	}
+
+	h2 {
+		margin-top: 0px;
+		font-size: 1.5em;
+	}
+
+	.print-title {
+		display: block;
+	}
+
+	h3 {
+		margin-top: 15px;
+		font-style: italic;
+	}
+
+	.activity-list {
+		position: relative;
+		display: block;
+		height: 100%;
+		width: 100%;
+
+		> div {
+			border-top: 1px solid $darkgray-light;
+
+			&:first-child {
+				border-top: none;
+			}
+		}
+	}
+
+	.panel-body {
+		position: relative;
+		margin-top: 15px;
+	}
+
+	img {
+		max-height: 100%;
+	}
+
+	.show-print {
+		display: block;
+
+		&.col-sm-4 {
+			display: table-cell;
+		}
+	}
+
+	.other-share {
+		page-break-inside:avoid;
+	}
+
+	.photo-row {
+		page-break-inside: avoid;
+	}
+
+	.exifdata {
+		margin: 10px 0px 0px 20px;
+	}
+
+	.meta-map {
+    height: 150px;
+    width: 150px;
+    padding-bottom: 15px;
+
+    img {
+    	position: relative;
+	    margin: 50px auto 10px auto;
+	    display: block;
+	    max-width: 100%;
+	    height: auto !important;
+		}
+	}
+
+	.appendix {
+		position: relative;
+		display: block;
+	}
+
+	.items {
+		display: block;
+		display: block;
+		text-align: center;
+		page-break-before: always;
+		break-before: always;
+    page-break-inside: avoid;
+    break-inside: avoid;
+	}
+
+	.cell-one {
+		display: table-cell;
+		vertical-align: middle;
+	}
+
+	.cell-two {
+		display: table-cell;
+		vertical-align: middle;
+		padding-left: 20px;
+
+		img {
+			width: 125px;
+			height: 105px;
+		}
+	}
+
+	.photo-wrap {
+
+		img {
+			margin: auto;
+			max-height: 700px;
+		}
+
+		.row {
+			margin-top: 15px;
+			text-align: left;
+			font-size: 14px;
+
+			p {
+				margin: 0;
+			}
+		}
+	}
+}
+
+iframe {
+	border: none;
+	border-width: 0px;
+}

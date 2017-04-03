@@ -1,0 +1,17 @@
+<div class="alert alert-major alert-success">
+	<span class="success-check glyphicon glyphicon-ok"></span> {{'modules.tutorial.partials.intro.banner' | translate}}
+</div>
+<div class="page-header">
+	<h1 ng-bind-html="'modules.onboarding.partials.onboardingSchedule.title' | trustTranslate" compile-template></h1>
+	<p ng-bind-html="'modules.onboarding.partials.onboardingSchedule.desc' | trustTranslate" compile-template></p>
+</div>
+<a ui-sref="onboarding.scheduleNew" class="btn btn-block btn-primary">
+	<span ng-bind-html="'modules.onboarding.partials.onboardingSchedule.schedNow' | trustTranslate" compile-template></span>
+</a>
+<a ui-sref="home" class="btn btn-block btn-link">
+	<span ng-bind-html="'modules.onboarding.partials.onboardingSchedule.schedLater' | trustTranslate" compile-template></span>
+</a>
+<br />
+<div class="error-text alert alert-warning"
+	ng-bind-html="'modules.onboarding.partials.onboardingSchedule.disclaimer' | trustTranslate" compile-template>
+</div>

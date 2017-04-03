@@ -1,0 +1,58 @@
+<div ng-if="successfulUpdate == true" class="alert alert-major alert-success">
+	<span class="success-check glyphicon glyphicon-ok"></span> {{'modules.users.views.settings.landing.updated' | translate}}
+</div>
+
+<div class="page-header">
+	<img src="/modules/core/img/sections/profile.svg" alt="Profile" />
+	<h1>{{'modules.users.views.settings.landing.profile' | translate}}</h1>
+</div>
+<div class="user-profile">
+
+	<div ng-if="user.roles.indexOf('tenant') !== -1">
+		<p>{{user.fullName}}</p>
+		<p>{{user.phone | tel}}</p>
+		<p>{{user.address}}</p>
+		<p>{{user.unit}}</p>
+		<p>{{user.borough}}, NY  {{user.geo.zip}}</p>
+	</div>
+	<div ng-if="user.roles.indexOf('advocate') !== -1">
+		<p><b>Personal Information</b></p>
+		<p>{{ user.fullName }}</p>
+		<p>{{ user.phone | tel }}</p>
+		<br />
+		<p><b>Contact Information</b></p>
+		<p>Advocate Code: {{ user.code }}</p>
+		<p>{{ user.organization }}</p>
+		<p>{{ user.contactPhone  + (user.contactPhoneExt ? (',' + user.contactPhoneExt) : '') | tel }}</p>
+		<p>{{ user.email }}</p>
+	</div>
+
+	<br />
+	<div ng-if="user.advocate">
+		<p><strong>{{'modules.users.views.settings.landing.advocateInfo' | translate}}</strong></p>
+		<p>{{user.advocate.fullName}}</p>
+		<p>{{user.advocate.organization}}</p>
+		<p><a ng-href="tel:{{user.advocate.contactPhone + (authentication.user.advocate.contactPhoneExt ? (',' + authentication.user.advocate.contactPhoneExt) : '') }}"
+					class="text-link">
+						{{user.advocate.contactPhone + (authentication.user.advocate.contactPhoneExt ? (',' + authentication.user.advocate.contactPhoneExt) : '') | tel}}
+				</a>
+		</p>
+		<p><a ng-href="mailto:{{user.advocate.email}}" class="text-link">{{user.advocate.email}}</a></p>
+		<br/>
+	</div>
+	<div class="user-container">
+		<a ui-sref="settings.edit">
+			<strong>{{'modules.users.views.settings.landing.editProfile' | translate}} <span class="glyphicon glyphicon-menu-right pull-right"></span></strong>
+		</a>
+		<a ui-sref="settings.phone">
+			<strong>{{'modules.users.views.settings.landing.changePhone' | translate}} <span class="glyphicon glyphicon-menu-right pull-right"></span></strong>
+		</a>
+		<a ui-sref="settings.password">
+			<strong>{{'modules.users.views.settings.landing.changePassword' | translate}} <span class="glyphicon glyphicon-menu-right pull-right"></span></strong>
+		</a>
+	</div>
+	<br/>
+	<div class="btn-wrap">
+		<a class="btn btn-primary btn-block" href="/api/auth/signout" target="_self">{{'modules.users.views.settings.landing.signOut' | translate}}</a>
+	</div>
+</div>

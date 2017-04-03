@@ -3,6 +3,80 @@
 		position: fixed;
 	}
 }
+.share-section-header.open {
+	margin-bottom: 0;
+}
+
+.share-section {
+
+	margin-bottom: 30px;
+
+	.activities-container & {
+		@include make-row;
+		padding: 20px 15px 5px 15px;
+		background-color: #fff;
+		margin-bottom: 0;
+	}
+
+
+	.share-controls {
+		margin-bottom: 15px;
+	}
+
+	h2 {
+		margin-top: 20px;
+
+		span {
+			line-height: 28px;
+		}
+	}
+
+	.alert {
+
+	}
+
+	.share-link {
+		h2 {
+			margin-top: 0;
+		}
+	}
+}
+
+.event-info {
+	margin-bottom: 20px;
+}
+
+.user-profile {
+	p {
+		margin: 0;
+		font-size: 16px;
+	}
+
+	.user-container {
+		@include make-row;
+
+		a {
+			display: block;
+			background: #fff;
+			padding: 15px 20px;
+			border-bottom: 1px solid $gray-lighter;
+			color: $gray;
+			cursor: pointer;
+
+			.glyphicon {
+				color: lighten($gray-light, 20);
+			}
+
+			&:first-child {
+				border-top: 1px solid $gray-lighter;
+			}
+		}
+	}
+
+	.btn {
+		float: none;
+	}
+}
 .remove-account-container {
 	display: inline-block;
 	position: relative;
@@ -14,7 +88,7 @@
 }
 
 .edit-profile-form {
-  
+
   .form-group {
     margin-left: 0;
     margin-right: 0;
@@ -22,6 +96,11 @@
 
   .btn {
     margin: 2px 0;
+
+    &.active {
+    	background-color: $justfix-blue;
+    	color: $white;
+    }
 
     &.btn-step {
       width: 100%;

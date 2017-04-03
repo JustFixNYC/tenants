@@ -1,0 +1,28 @@
+<section class="kyr">
+	<div class="page-header">
+	  <img src="/modules/core/img/sections/kyr.svg" alt="Know Your Rights" />
+	  <h1>{{'modules.kyr.title' | translate}}</h1>
+	  <p>{{'modules.kyr.description' | translate}}</p>
+  </div>
+  <div class="legal-disclaimer-trigger pull-right">
+		<a class="text" ng-click="showDisclaimer = !showDisclaimer">
+			<span ng-show="!showDisclaimer">+</span>
+			<span ng-show="showDisclaimer">-</span>
+			 {{'modules.kyr.disclaimerTitle' | translate}}
+		</a>
+  </div>
+  <div class="clearfix"></div>
+  <div class="alert alert-warning legal-disclaimer-body" collapse="!showDisclaimer" ng-bind-html="'modules.kyr.disclaimer' | trustTranslate" compile-template>
+		<div class="btn-wrap">
+			<button class="btn btn-warning btn-block" ng-click="showDisclaimer = false">Got it!</button>
+		</div>
+  </div>
+  <div class="kyr-container">
+		<a class="kyr-item" ng-repeat="kyr in kyrResponse track by $index" ng-if="lang == 'en_US'" ng-href="/#!/kyr/{{$index + 1}}">
+			<strong>{{kyr.title}} <span class="glyphicon glyphicon-menu-right pull-right"></span></strong>
+		</a>
+		<a class="kyr-item" ng-repeat="kyr in kyrResponse track by $index" ng-if="lang == 'es_mx'" target="_blank" ng-href="{{kyr.href}}">
+			<strong>{{kyr.title}} <span class="glyphicon glyphicon-menu-right pull-right"></span></strong>
+		</a>
+  </div>
+</section>

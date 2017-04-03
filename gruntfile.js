@@ -9,8 +9,8 @@ module.exports = function(grunt) {
 		serverSASS: ['app/styles/{,*/}*.{scss,sass}'],
 		//serverSASS: ['app/styles/{,*/}*.{scss,sass}', '!app/styles/bootstrap-config.scss'],
 		clientViews: ['public/modules/**/views/**/*.html'],
-		clientJS: ['public/*.js', 'public/modules/*/*.js'],
-		clientCSS: ['public/styles/*.css', '!public/styles/bootstrap.css', '!public/styles/bootflat.css'],
+		clientJS: ['public/*.js', 'public/modules/**/*.js'],
+		clientCSS: ['public/styles/main.css', '!public/styles/vendor.css'],
 		mochaTests: ['app/tests/**/*.js']
 	};
 
@@ -33,10 +33,11 @@ module.exports = function(grunt) {
 			},
 			serverJSON: {
 				files: watchFiles.serverJSON,
+				tasks: ['jshint'],
 				options: {
 					livereload: true,
 				}
-			},			
+			},
 			serverSASS: {
 			    files: watchFiles.serverSASS,
 			    tasks: ['sass:dev'],
@@ -90,7 +91,8 @@ module.exports = function(grunt) {
 		uglify: {
 			production: {
 				options: {
-					mangle: false
+					mangle: false,
+					sourceMap: true
 				},
 				files: {
 					'public/dist/vendor.min.js': 'public/dist/vendor.js',
@@ -163,6 +165,22 @@ module.exports = function(grunt) {
 				configFile: 'karma.conf.js'
 			}
 		},
+		// Automatically inject Bower components into files
+		wiredep: {
+			sass: {
+				src: ['app/styles/{,*/}*.{scss,sass}'],
+				ignorePath: /^(\.\.\/)+/,
+				options: {
+					fileTypes: {
+							scss: {
+									replace: {
+											scss: '@import "../../{{filePath}}";'
+									}
+							}
+					}
+				}
+			}
+		},
 		/**
 		 * Sass
 		 */
@@ -170,30 +188,30 @@ module.exports = function(grunt) {
 		  dev: {
 		  	options: {
 		  		loadPath: [
+						'app/styles',
 		  			'public/lib/bootstrap-sass-official/assets/stylesheets',
 		  			'public/lib/Bootflat/bootflat/scss'
 		  		],
-		  		update: true,
 		  		sourceMap: false
-		  	},		    
+		  	},
 		    files: {
-		      'public/styles/style.css': 'app/styles/main.scss',
-		      'public/styles/bootstrap.css': 'app/styles/bootstrap-config.scss',
-		      'public/styles/bootflat.css': 'app/styles/bootflat-config.scss'
-		      //next line is not necessary if you include your bootstrap into the *.scss files
-		      //'public/styles/bootstrap.css': 'public/lib/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss'		      		     
+		      'public/styles/vendor.css': 'app/styles/vendor.scss',
+		      'public/styles/style.css': 'app/styles/main.scss'
 		    }
 		  },
 		  dist: {
 		  	//you could use this as part of the build job (instead of using cssmin)
 		    options: {
-		    	loadPath: ['public/lib/bootstrap-sass-official/assets/stylesheets','public/lib/Bootflat/bootflat/scss','app/styles'],
+					loadPath: [
+						'app/styles',
+		  			'public/lib/bootstrap-sass-official/assets/stylesheets',
+		  			'public/lib/Bootflat/bootflat/scss'
+		  		],
 		      style: 'compressed',
 		      compass: false
 		    },
 		    files: {
-		    	'public/dist/bootstrap.min.css': 'app/styles/bootstrap-config.scss',
-		    	'public/dist/bootflat.min.css': 'app/styles/bootflat-config.scss',
+		      'public/dist/vendor.min.css': 'app/styles/vendor.scss',
 		      'public/dist/style.min.css': 'app/styles/main.scss'
 		    }
 		  }
@@ -217,7 +235,8 @@ module.exports = function(grunt) {
 	});
 
 	// Default task(s).
-	grunt.registerTask('default', ['lint', 'sass:dev', 'concurrent:default']);
+	grunt.registerTask('default', ['lint', 'wiredep', 'sass:dev', 'concurrent:default']);
+	grunt.registerTask('serve', ['default']);
 
 	// Debug task.
 	grunt.registerTask('debug', ['lint', 'concurrent:debug']);

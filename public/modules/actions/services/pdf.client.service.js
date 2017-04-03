@@ -1,79 +1,74 @@
 'use strict';
 
-angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$filter',
-  function Pdf($http, $q, Authentication, $filter) {
+angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$filter', '$translate',
+  function Pdf($http, $q, Authentication, $filter, $translate) {
 
-  	// SPLIT THIS OUT OMG
-  	var postRequest = function (dataObj) {
+    var user = Authentication.user;
 
-  		var deferred = $q.defer();
-    	var user = Authentication.user;
-    	console.log(user);
+  	var assemble = function(landlordName, landlordAddr) {
 
   		// This block assembles our issues list PhantomJS
   		var assembledObject = {
-  			issuesAssembled: []
+  			issues: [],
+  			emergency: false
   		};
   		var issuesCount = 0;
 
+      var zip;
   		if(user.geo) {
-  			user.zip = user.geo.zip;
+  			zip = user.geo.zip;
   		} else {
-  			user.zip = '';
+  			zip = '';
   		}
 
   		// Kick off assembly of obj sent to PDF service
 			assembledObject.tenantInfo = {
-  			'phone': user.phone,
+  			'phone': $filter('tel')(user.phone),
   			'name': user.fullName,
-  			'address': user.address + 
+  			'address': user.address + ' ' + user.unit +
   								' <br> ' + user.borough +
-  								' <br> New York  ' + user.zip // This needs to be replaced, talk to dan ASAP
+  								' <br> New York, ' + zip
 	  	};
 	  	assembledObject.landlordInfo = {
-  			'name': 'Sir/Madam',
-  			'address': '600 Main St <br> Brooklyn, NY  11235'
-	  	}
+  			'name': landlordName.length ? 'Dear ' + landlordName : 'To whom it may concern',
+  			'address': landlordAddr.length ? landlordAddr : ''
+	  	};
 
-      for(var issue in user.issues) {
-        var key = issue,
-            title = $filter('areaTitle')(key),
-            vals = user.issues[issue];
+      for(var i = 0; i < user.problems.length; i++) {
 
-        if(vals.length) {
-        	var tempObject = {};
+      	if(user.problems[i].key === 'landlordIssues') {
+      		continue;
+      	}
 
-        	// Here we go...
-          var activityIdx = user.activity.map(function(i) { return i.key; }).indexOf(key);
-          if(activityIdx !== -1) var activity = user.activity[activityIdx];
+      	var problemPush = angular.copy(user.problems[i]);
 
-          tempObject.title = title;
-          tempObject.vals = [];
+      	problemPush.title = $translate.instant(problemPush.title, undefined, undefined, 'en_US');
 
-          vals.forEach(function(v) {
-            tempObject.vals.push({title: v.title, emergency: v.emergency});
-          });
+      	problemPush.issues.map(function(curr, idx, arr) {
+      		curr.key = $translate.instant(curr.key, undefined, undefined, 'en_US');
+      		if(curr.emergency === true) {
+      			assembledObject.emergency = true;
+      		}
+      	});
 
-          if(activity) {
-            tempObject.startDate = $filter('date')(activity.date, 'longDate'); 
-
-            if(activity.description) {
-            	tempObject.description = activity.description;
-            }
-
-            activity = undefined;
-          }
-
-          assembledObject.issuesAssembled.push(tempObject);
-
-          issuesCount++;
-        }
+      	assembledObject.issues.push(problemPush);
       }
 
-	  	$http({
+      return assembledObject;
+  	};
+
+    var createComplaint = function(landlord, accessDates) {
+
+      var deferred = $q.defer();
+
+      var assembledObject = assemble(landlord.name, landlord.address);
+      // Hmm, handle this differently? pass into assembled object, maybe?
+      assembledObject.accessDates = accessDates;
+
+      $http({
 	  		method: 'POST',
-	  		// Placeholder URL, needs to be attached to a real URL w/ JustFix (Also, using goddamnedtestbucket, let's get that out of there...)
-	  		url:'http://pdf-microservice.herokuapp.com/complaint-letter',
+	  		url:'//pdf-microservice.herokuapp.com/complaint-letter',
+	  		// url: 'http://localhost:5000/complaint-letter',
 	  		data: assembledObject
 	  	}).then(
 	  		function successfulPdfPost(response){
@@ -86,20 +81,10 @@ angular.module('actions').factory('Pdf', ['$http', '$q', 'Authentication', '$fil
 	  	);
 
 	  	return deferred.promise;
-  	};
 
-  	var getRequest = function () {
-  		var user = Authentication.user;
-
-  		if(user.complaintUrl !== '') {
-  			return user.complaintUrl;
-  		} else {
-  			postRequest();
-  		}
-  	};
+    };
 
   	return {
-  		postComplaint: postRequest,
-  		getComplaint: getRequest
+  		createComplaint : createComplaint
   	};
   }]);

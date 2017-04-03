@@ -1,8 +1,24 @@
-<ul class="list-inline">
-  <li><a ui-sref="home">Home</a></li>
-  <li><a ui-sref="manifesto">Manifesto</a></li>
-  <li><a href="https://twitter.com/JustFixNYC" target="_blank">Twitter</a></li>
-  <li><a href="mailto:hello@justfix.nyc">Contact</a></li>
-  <!-- <li><div language-select></div></li> -->
-</ul>
-<p><small><b>Disclaimer:</b> The information contained in JustFix.nyc does not constitute legal advice and must not be used as a substitute for the advice of a lawyer qualified to give advice on legal issues pertaining to housing. We can help direct you to free legal services as necessary.</small></p>
+<div data-ng-controller="FooterController">
+  <div ng-if="footerLinks.length" class="footer-links">
+    <div ng-repeat="link in footerLinks">
+    	<a ui-sref="{{link.link}}">
+        <img ng-src="{{link.icon}}" />
+  			{{ link.title | translate }}
+  		</a>
+    </div>
+  </div>
+
+  <div class="footer-main container">
+    <ul class="list-inline">
+      <li><a twitter-follow class="twitter-link"></a></li>
+      <!-- <li ng-if="authentication.user"><a ui-sref="home">{{'modules.core.views.footer.home' | translate}}</a></li> -->
+      <li><a href="/">{{'modules.core.views.footer.home' | translate}}</a></li>
+      <!-- <li ng-if="!authentication.user"><a ui-sref="landing">{{'modules.core.views.footer.home' | translate}}</a></li> -->
+      <li><a ui-sref="contact">{{'modules.core.views.footer.contact' | translate}}</a></a></li>
+      <li><a href="http://www.justfix.nyc">{{'modules.core.views.footer.about' | translate}}</a></a></li>
+      <li><a href="https://www.nycharities.org/give/donate.aspx?cc=4125" target="_blank" ga-event="Donate,click,Footer">{{'modules.core.views.footer.donate' | translate}}</a></li>
+      <li class="language-select-wrap"><div language-select></div></li>
+    </ul>
+    <p ng-bind-html="'modules.core.views.footer.description' | trustTranslate" compile-template></p>
+  </div>
+</div>

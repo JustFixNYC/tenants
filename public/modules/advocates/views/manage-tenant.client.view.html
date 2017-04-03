@@ -1,0 +1,12 @@
+<section id="advocates" class="activities-container">
+
+  <div class="page-header">
+      <img src="/modules/core/img/sections/history.svg" alt="Case History" />
+      <h1>{{ tenant.fullName }}</h1>
+      <p class="text-center">{{ tenant.phone | tel }}</p>
+      <p class="text-center">{{ tenant.address }}, {{ tenant.unit }}</p>
+      <p class="text-center">{{ tenant.borough }}, NY {{ tenant.geo.zip }}</p>
+  </div>
+
+  <div data-ui-view></div>
+</section>

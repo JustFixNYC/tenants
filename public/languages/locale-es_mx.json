@@ -1,0 +1,947 @@
+{
+  "directives.language-select.Language": "Idioma",
+  "repeating": {
+  	"cancel": "Cancelar",
+  	"add": "Añadir a su caso",
+  	"success": "¡Éxito!",
+  	"error": "Error",
+  	"gotIt": "¡Entendido!",
+  	"submit": "Enviar",
+		"description": "Descripción",
+		"done": "Fin",
+		"delete": "Borrar",
+    "donate": "Donar",
+		"takeAction": "Tomar acción",
+		"listActions": "@:repeating.takeAction",
+		"caseHistory": "Historial del Caso",
+		"gatherEvidence": "<span class=\"glyphicon glyphicon-camera pull-left\"></span> Colectar pruebas",
+		"issueChecklist": "Asuntos de casa",
+		"profile": "Perfil",
+		"findHelp": "Buscar ayuda local",
+		"kyr": "Conozca sus derechos",
+		"call": "Llamar",
+		"signIn": "Iniciar sesión",
+		"signOut": "Cerrar sesión",
+		"save": "Guardar",
+		"continue": "Continuar",
+		"back": "Atrás",
+		"close": "Cerrar",
+		"yes": "Sí",
+		"no": "No"
+  },
+  "modules": {
+  	"actions": {
+  		"partials" : {
+  			"modals" : {
+  				"addDetails": {
+  					"title": "Detalles",
+  					"body": "Añada algunos detalles sobre los siguientes asuntos:",
+  					"startDate": "¿Cuándo empezaron estos problemas?",
+  					"errorStartDate": "Añada una fecha.",
+  					"addPhotos": "Añada algunas fotos",
+  					"photoWord": "Foto",
+  					"description": "@:repeating.description",
+  					"descriptionHeaderPlaceholder": "¡Añada aquí una actualizacion de estatos!",
+  					"descriptionBodyPlaceholder": "Añada una breve descripción.",
+  					"descriptionPlaceholder": "Añada una breve descripción.",
+  					"cancel": "@:repeating.cancel",
+  					"add": "@:repeating.add"
+  				},
+  				"checkIn": {
+  					"title": "Actualización de estatus",
+  					"when": "¿Cuándo sucedió esto?",
+  					"what": "¿De qué se trata esta actualización?",
+  					"cancel": "@:repeating.cancel",
+  					"add": "@:repeating.add"
+  				},
+  				"complaintLetter": {
+  					"title": "Envíe una Carta de Queja Oficial",
+  					"success": "@:repeating.success",
+  					"error": "@:repeating.error",
+  					"bodyText": "Esta Carta de Queja utiliza los asuntos de reparaciones de la lista de revisión de reparaciones y los detalles que usted ha añadido.",
+  					"bodyTextBold": "¡Asegúrese de enviar esta carta por correo certificado para probar que el casero la recibió!",
+  					"landlordName": "Nombre del casero",
+  					"accessDateTitle": "Indique algunas fechas para cuando se pueda entrar al apartamento y hacer las reparaciones.",
+  					"accessDateAdd": "+ Añada una fecha de acceso",
+  					"loaderText": "En proceso de generar su carta...",
+  					"successTitle": "Ha creado su Carta de Queja y podrá verla aquí:",
+  					"successLinkText": "Ver Carta de Queja (PDF)",
+  					"successBody": "El PDF siempre estará disponible en la página de su <a ui-sref=\"listActivity\" ng-click=\"done()\">Historial del Caso</a> para que pueda regresar a ella en otro momento. <b>¡No se olvide de enviarla por correo certificado!</b>",
+  					"errorBody": "¡Ay! Lo sentimos, el servicio de creación de cartas no está funcionando por ahora – intente de nuevo en otro momento.",
+  					"cancel": "@:repeating.cancel",
+  					"submit": "@:repeating.submit",
+  					"gotIt": "@:repeating.close"
+  				},
+  				"contactSuper": {
+  					"title": "Comuníquese con el conserje de su edificio",
+  					"body": "Le recomendamos que su primer paso sea comunicarse con el conserje de su edificio – la persona que es directamente responsable por hacer reparaciones en su hogar. Llame o envíele un texto al conserje por lo menos dos veces antes de comunicarse con el casero.",
+  					"askPhone": "¿Cuál es el teléfono de su conserje? (podría encontrarlo en el vestíbulo de su edificio):",
+  					"cancel": "@:repeating.cancel",
+  					"call": "@:repeating.call"
+  				},
+  				"decreasedServices": {
+  					"title": "Decreased Services",
+  					"description": "@:repeating.description",
+  					"cancel": "@:repeating.cancel",
+  					"submit": "@:repeating.submit"
+
+  				},
+  				"hpAction": {
+  					"title": "Acción de HP",
+  					"description": "@:repeating.description",
+  					"cancel": "@:repeating.cancel",
+  					"submit": "@:repeating.submit"
+  				},
+  				"messageLandlord": {
+  					"title": "Mensaje para el casero",
+  					"body": "Si su conserje no responde, envíele un correo electrónico o llame al casero para notificarle de los problemas y del intento que ha hecho para comunicarse con el conserje.",
+  					"sendText": "Esto es lo que enviaremos:",
+  					"emailDescription": "Un correo electrónico al cual se pueda contactar al casero (consulte los contratos de arrendamiento u otros avisos):",
+  					"emailPlaceholder": "Qué enviarle al casero",
+  					"addressPlaceholder": "ej: alphamanagement@gmail.com",
+  					"cancel": "@:repeating.cancel",
+  					"sendEmail": "Enviar correo electrónico"
+  				},
+  				"photoPreview": {
+  					"title": "Revisar",
+  					"addTag": "Añadirle una etiqueta a esta foto:",
+  					"cancel": "@:repeating.cancel",
+  					"addCase": "@:repeating.add"
+  				},
+  				"rentalHistory": {
+  					"title": "Solicitar su Historial de Alquiler",
+  					"body": "Solicitar este documento en la División de Vivienda y Renovación de la Comunidad (DHCR) le ayudará a determinar si usted tiene alquiler estabilizado o no. Si tiene alquiler estabilizado, podría tener derechos adicionales como inquilino. Guarde la carta en sus archivos, ¡súbala a su <b>Historial del Caso!</b>",
+  					"description": "Esto es lo que enviaremos:",
+  					"placeholder": "Qué enviarle a la División de Vivienda y Renovación de la Comunidad",
+  					"cancel": "@:repeating.cancel",
+  					"send": "Enviar correo electrónico"
+  				}
+  			},
+  			"statusUpdate": {
+  				"description": "Añada una breve descripción.",
+  				"tagTitle": "Etiquetar el asunto",
+  				"addCase": "@:repeating.add",
+  				"success": "<strong>¡Felicitaciones!</strong> Hemos añadido <em>Actualizacion de Estatos</em> a su <a ui-sref=\"listActivity\">Historial del Caso</a>.",
+  				"error": "Lo sentimos, ¡pero algo no funcionó! <a ui-sref=\"contact\">Contáctenos</a> para reportar el problema."
+  			},
+  			"toDoItem": {
+  				"tried": "Hice esto",
+  				"dateOf": "Fecha de",
+  				"followUp": " - Seguimiento",
+  				"enterRequired": "Por favor, añada los campos requeridos.",
+  				"wellDone": "¡Bien hecho!",
+  				"added": "Hemos añadido",
+  				"to": "a su",
+  				"error": "We're sorry, something went wrong! Please <a ui-sref=contact>Contact Us</a> to report this issue.",
+  				"error": "¡Lo sentimos. Algo salió mal! Por favor <a ui-sref=contact>Contactemos</a> para informar de este problema.",
+  				"occurredDate": "This occurred on:"
+  			}
+  		},
+  		"views": {
+  			"listActions": {
+  				"title": "Tomar acción",
+  				"headerDescription": "Estas son algunas de las acciones que puede tomar para fortalecer su caso. <b>¡Aparecerán nuevos recursos cuando se complete estas acciones!</b>",
+  				"toDoHeader": "Qué hacer",
+  				"outreachHeader": "Alcance",
+  				"legalHeader": "Acciones legales",
+  				"empty": "Discúlpenos, pero no hay nada que hacer por ahora. ¿Revisar el contenido de <a ui-sref=\"listActivity\">Su Caso</a>?"
+  			}
+  		}
+  	},
+  	"activity": {
+  		"partials": {
+  			"checklist": {
+
+  			},
+  			"complaintLetter": {
+  				"printLink": "Enlace para imprimir:",
+  				"letterOfComplaint": "PDF de la Carta de Queja",
+  				"instructions": "Instrucciones para imprimir",
+  				"alternatives": "¿No tiene impresora en casa?",
+  				"one": "Inicie una sesión en el sitio web de JustFix.nyc en una biblioteca u otra computadora pública",
+  				"two": "Haga clic en el enlace de arriba para abrir el PDF",
+  				"three": "Archivo > Imprima desde el navegador",
+  				"four": "¡Asegúrese de cerrar la sesión!"
+  			},
+  			"defaultActivity": {
+  				"areas": "Áreas:",
+  				"issues": "Problemas reportados:"
+  			}
+  		},
+	  	"views": {
+	  		"listActivityPublic": {
+	  			"contact": "Contacto:",
+	  			"alert": "¡Esta es la vista para compartir!",
+	  			"print": "Imprimir",
+	  			"caseHistory": "@:repeating.caseHistory",
+	  			"loggedOn": "Registrado el",
+	  			"loggedOnAttrib": "por",
+	  			"empty": "aún no se ha añadido nada a su Historial del Caso. ¡Regrese en otro momento!"
+	  		},
+	  		"listActivity": {
+	  			"title": "@:repeating.caseHistory",
+          "loggedOn": "Registrado el",
+          "loggedOnAttrib": "por",
+	  			"description": "Este es un registro de todas las acciones que usted ha tomado para resolver sus problemas de vivienda.",
+	  			"share": "Compartir mi caso",
+	  			"email": "Enviar email",
+	  			"text": "Enviar texto",
+	  			"print": "Imprimir",
+          "printNotification": "Iniciar sesión en una computadora para imprimir su caso para avisos y corte de vivienda.",
+	  			"enable": "Activar Compartir Enlace:",
+	  			"shareLinkText": "Compartir Enlace (activado):",
+	  			"alert": "Esto le permite compartir su Historial del Caso con defensores. <b>No otorga acceso al resto de su cuenta.</b>",
+	  			"labelShare": "Copie y pegue este enlace para compartir su Historial del Caso: ",
+	  			"empty": "¡Aún no se le ha añadido nada a su caso! <a ui-sref=\"listActions\">Haga clic aquí</a> para ver algunas cosas que puede hacer.",
+	  			"experienced": "Primera experiencia en:",
+          "activityTab": "Registro de Actividades",
+          "issuesTab": "Asuntos Actuales",
+          "photosTab": "Fotos",
+          "noPhotosTab": "¡No has subido fotos!"
+	  		}
+	  	},
+	  	"other": {
+		    "added": "Añadí asuntos nuevos a la Lista de revisión",
+		    "removed": "Quité asuntos de la Lista de revisión",
+		    "created": "He creado una cuenta en on JustFix.nyc",
+        "statusUpdate": "Actualizacion de estatos"
+	  	}
+  	},
+  	"admin": {
+  		"partials": {
+  			"showCodes": {
+  				"title": "Códigos de acceso",
+  				"done": "@:repeating.done"
+  			}
+  		},
+  		"views": {
+  			"title": "Panel de instrumentos administrativos de JustFix.nyc",
+  			"referrals": {
+  				"name": "Nombre",
+  				"organization": "Organización",
+  				"phone": "Teléfono",
+  				"email": "Correo electrónico",
+  				"code": "Código",
+  				"remainingCodes": "Códigos restantes",
+  				"totalUsers": "Total de usuarios",
+  				"delete": "@:repeating.delete",
+  				"numberCodes": "Número de códigos",
+  				"create": "¡Crear un referido!"
+  			}
+  		}
+  	},
+  	"core": {
+  		"partials": {
+  			"loading": {
+  				"loading": "cargando"
+  			}
+  		},
+  		"views": {
+  			"404": {
+  				"title": "No se encuentra la página",
+  				"body": "Disculpe, la página que busca no existe o no tiene permiso para verla. <a ui-sref=\"contact\">Contáctenos</a> si necesita asistencia."
+  			},
+  			"contact": {
+  				"title": "Contáctenos",
+  				"body": "Para ayuda con la aplicación de JustFix.nyc o para reportar un error, contáctenos a:",
+  				"phone": "(646) 820-0349",
+  				"email": "hello@justfix.nyc",
+          "findhelp": "Si necesita <b>ayuda inmediata</b> o desea hablar con una persona acerca de su situación de vivienda, visite la sección <b>Buscar ayuda</b> en nuestra página para conectarse con recursos comunitarios y líneas de asistencia para inquilinos:",
+  				"findhelpActual": "@:repeating.findHelp"
+  			},
+  			"footer": {
+  				"home": "Página principal",
+  				"contact": "Contacto",
+  				"about": "Información",
+          "donate": "@:repeating.donate",
+  				"description": "<small><b>Relevo de responsabilidad:</b> La información que contiene JustFix.nyc no constituye asesoramiento legal y no deberá sustituir el asesoramiento de un abogado cualificado para impartir asesoramiento sobre asuntos legales con respecto a la vivienda. Podemos dirigirle a servicios legales gratuitos o de bajo costo, si es necesario.</small>"
+  			},
+  			"header": {
+  				"signIn": "Iniciar sesión"
+  			},
+  			"home": {
+  				"success": "<strong>¡Felicitaciones!</strong> Su lista de revisión de asuntos ha sido actualizada. Revise su <a ui-sref=\"listActivity\" ng-click=\"close($event)\">Historial del Caso</a> para ver los cambios.",
+  				"error": "Lo sentimos pero algo no funcionó mientras actualizábamos su lista de revisión. <a ui-sref=\"contact\">Contáctenos</a> para reportar este problema.",
+  				"takeAction": "@:repeating.takeAction",
+  				"caseHistory": "@:repeating.caseHistory",
+  				"issueChecklist": "@:repeating.issueChecklist",
+  				"profile": "@:repeating.profile",
+  				"findHelp": "@:repeating.findHelp",
+  				"kyr": "@:repeating.kyr",
+  				"advocate": "Información del defensor",
+  				"appt": "Su cita próxima",
+  				"call": "@:repeating.call",
+  				"signOut": "@:repeating.signOut",
+          "friendShare": "Referir a un vecino",
+          "contact": "Contáctenos"
+  			},
+  			"landing": {
+  				"bigText": "JustFix.nyc es un registro digital de documentos para sus problemas de vivienda.",
+  				"start": "Crear su cuenta gratuita",
+  				"twitter": "¡Síganos en Twitter!",
+  				"how": "cómo funciona",
+  				"build": "Fortalezca su caso",
+  				"buildBody": "Su caso es su historia. Muestra un registro claro de todo lo que ha hecho para resolver sus problemas de vivienda, como tomar fotos o notificar al casero. Si las cosas empeoran, puede ayudarle a evitar disputas o utilizarse como una herramienta poderosa en la corte de vivienda. JustFix.nyc hace que el proceso de fortalecer su caso sea lo más fácil posible.",
+  				"one": "Paso 1: Documentar",
+  				"oneBody": "Crear una historia al llevar a cabo una inspección de cada cuarto o espacio y describir su situación. Su información se mantiene como privado y seguro.",
+  				"two": "Paso 2: Tomar acción",
+  				"twoBody": "Brindamos un plan de ataque personalizado para trabajar con el casero, notificar a las agencias municipales correctas y conectar con organizaciones locales.",
+  				"three": "Paso 3: Mantener registros",
+  				"threeBody": "A medida que usted tome acción, guardamos cosas como fotos y números de rastreo. Entre más información junte, más fuerte será su caso.",
+  				"four": "Paso 4: Compartir su historia",
+  				"fourBody": "Si necesita contactar a servicios legales y defensores de inquilinos, le facilitamos que comparta su <b>Historial del Caso</b> -  el registro de todas sus acciones.",
+  				"immediate": "¿Necesita asistencia inmediata?",
+  				"immediateBody": "Si busca ayuda, visite nuestro Directorio de Asistencia para Inquilinos para encontrar recursos comunitarios y legales locales.",
+  				"findHelp": "Busque ayuda",
+  				"more": "¿Quiere aprender más?",
+  				"read": "Lea nuestro manifiesto."
+  			},
+  			"manifesto": {
+  				"title": "Manifesto",
+  				"lead": "Our intentions behind the project.",
+  				"mission": "Our Mission",
+  				"missionBody": "The mission of JustFix.nyc is to allow residents in exploitative and neglectful housing situations to better track, organize, and take action in order to ensure that their fundamental rights as tenants are being met. Our goal is <b>healthy and safe homes for all.</b> We define this as housing that has clear lines of communication between tenant and landlord, conditions that are not neglected, rights and responsibilities that are enforced, and repairs that are made within a reasonable timeline.",
+  				"problem": "The Problem We Are Addressing",
+  				"problemBodyOne": "Patterns of neglect and disrepair in housing have existed in New York for almost as long as the city itself. Landlords and building managers take advantage of a lack of awareness and feelings of degradation to perpetrate poorly kept living spaces. Renters in New York face a multitude of issues including maintenance deficiencies, delayed and insufficient responses, and in many cases complete neglect when it comes to the homes that they and their families rely on. We recognize that in the current state of housing policy in New York, this neglect is often incentivized in the interest of a quick profit over the need for healthy and safe homes.",
+  				"problemBodyTwo": "Our process of research and investigation has led us to every aspect of how housing works in New York - city agencies, legal services, housing courts, advocates and case managers, supers and landlords, and most importantly the tenants themselves. We feel that exploitation and neglect starts with the inequity of information and awareness in these different groups and results in the imbalance of power where repairs are not made, complaints are not addressed, and harassment goes unaddressed.",
+  				"people": "The People",
+  				"peopleBodyOne": "Housing is fundamentally important to a person's physical welfare as well as their sense of dignity and place in the community. It is critically important to the well being and health of children and families. It has massive financial implications: the costs associated with inadequate housing conditions are far-reaching and have a devastating effect. Poor neighborhood conditions are also often associated with a lack of personal safety and fragmenting of community, adding a major mental health component as well.",
+  				"peopleBodyTwo": "While this is an issue than can span across race, class, and other factors of socioeconomic status, New Yorkers living in low-income neighborhoods - typically from minority and immigrant communities - are disproportionately affected by these patterns and are at the most risk for facing other severe difficulties as a result of inadequate housing - poor health, harassment, evictions, homelessness, depression, and further levels of poverty.",
+  				"vision": "Our Vision",
+  				"visionBodyOne": "One thing that we have heard repeatedly among experts, especially in terms of legal proceedings, is the effectiveness of tenants who keep track of how their interactions with their landlord - things such as records of communications, receipts, and photo documentation - and present their case in a manner that is succinct, well documented and irrefutable. It was a great day when we heard a judge tell one of our user’s that she seemed to be more qualified than her landlord’s entire legal team put together!",
+  				"visionBodyTwo": "We hope to simplify the process for documenting and reporting issues, provide efficient methods of action in resolving these problems, and reduce the pressure on preexisting advocacy and case management outlets. We are here to <b>augment, not replace</b> by integrating with the invaluable person-to-person services already available to tenants in the city. We cannot replace advocacy, organizing, and policy work - methods that get at the root of how neglect is incentivized and targeted - but hope to add a new tactic that ensures that tenants on the ground level can actively exercise their right to healthy and safe housing.",
+  				"approach": "Our Approach",
+  				"approachBodyOne": "We have seen the many different actions and resources that tenants have at their disposal in order to combat inadequate living conditions - at the neighbor-to-neighbor level all the way up to legal proceedings - as well as the bottlenecks they face along the way. We seek to provide:",
+  				"approachBodyTwo": "<ul><li>A single place for tenants to document and record their maintenance issues and living conditions.</li><li>A personalized guide to the most effective methods of action in resolving these issues.</li><li>A format to easily view the timeline of events that the tenant has experienced and share it with advocates, organizers, lawyers, and judges as part of the resolution process.</li></ul>",
+  				"approachBodyThree": "We believe in using transparency and organization as a tactic in providing a clear, irrefutable story, backed by awareness of one’s rights, with the goal to ensure that  healthy and safe homes are guaranteed for all.",
+  				"about": "About Us",
+  				"aboutBodyOne": "For the past year, Dan has been actively involved with civic technologists and tenant organizers in approaching the task of further utilizing open datasets in the interest of more transparency in the housing process. Georges is a product manager and the founder of <a href=\"http://www.unifischolars.org/\" target=\"_blank\">UniFi Scholars</a>, a non-profit focused on teaching financial literacy skills to high school juniors and seniors in NYC. Ashley is a UX designer and researcher with a background in information design and data visualization. She recently got her master's degree in data visualization from Northeastern and was previously working at a design consultancy in Boston called Dockyard. Through the <a href=\"http://labs.robinhood.org\" target=\"_blank\">Blue Ridge Labs fellowship</a>, we began to conduct more in-depth user research (including interviews, focus groups, and case management) and sought expert advice (housing court judges, legal experts, and tenant organizers) to further validate our approach and discover problems that could be addressed in part by technology. The fellowship is a 12-week program for teams to build digital products aimed at addressing key issues faced by low-income New Yorkers, with an approach focused on human-centered design, testing, and outreach work.",
+  				"aboutBodyTwo": "<b>We are currently seeking partnerships and further collaboration with any groups dedicated to tenant’s rights in New York City, and are hoping to establish initial pilot programs in 2016-2017 to continue building, testing, and refining JustFix.nyc. Please <a href=\"mailto:hello@justfix.nyc?subject=Tell me more about JustFix.nyc!\" target=\"_blank\">contact us</a> if you are interested in discussing further or would like a demonstration.</b>"
+  			}
+  		}
+  	},
+  	"findHelp": {
+  		"views": {
+  			"findHelp": {
+  				"title": "Busque ayuda",
+  				"address": "<b>Según su dirección,</b> aquí hay algunos recursos que puede contactar para ayudarle a resolver sus problemas de vivienda.",
+  				"community": "Grupos comunitarios",
+  				"legal": "Servicios legales",
+  				"hotlines": "Líneas de asistencias",
+  				"away": "fuera",
+  				"empty": "¡No encontramos nada! Intente otra dirección."
+  			}
+  		}
+  	},
+  	"issues": {
+  		"partials": {
+  			"accessCode": {
+  				"title": "¡Bienvenidos a<br/>JustFix.nyc!",
+  				"body": "Introduzca el código de acceso que le dio su defensor para poder acceder al sitio web.",
+  				"majorError": "Whoa, looks like we're having some trouble on our end. Please refresh this page and try again.",
+  				"accessCode": "Código de acceso",
+  				"starts": "Empieza con...",
+  				"start": "Get started!",
+  				"minorError": "Uh oh! There was an error with this code. Please double check the code entered is correct and try again."
+  			},
+  			"createIssueChecklist": {
+  				"intro": "Please go from room-to-room and select the issues you need fixed - we'll ask for details later. <em>You can come back to this checklist anytime.</em>",
+  				"submit": "@:repeating.submit"
+  			},
+  			"createIssueContact": {
+  				"who": "Who should we contact?",
+  				"landlord": "Landlord",
+  				"super": "Super",
+  				"other": "Other"
+  			}
+  		}
+  	},
+  	"kyr": {
+      "title": "@:repeating.kyr",
+      "description": "Es importante conocer sus derechos como inquilino. Aquí hay algunos temas comunes y recursos para aprender más.",
+      "disclaimerTitle": "Relevo de responsabilidad",
+  		"disclaimer": "<b>Relevo de responsabilidad:</b> La información que contiene JustFix.nyc no constituye asesoramiento legal y no deberá sustituir el asesoramiento de un abogado cualificado para impartir asesoramiento sobre asuntos legales con respecto a la vivienda. Podemos dirigirle a servicios legales gratuitos o de bajo costo, si es necesario."
+  	},
+		"onboarding": {
+			"partials": {
+				"additionalInfo": {
+					"title": "Información sobre su privacidad",
+					"body": "<p>Su privacidad es muy importante para nosotros. Utilizamos su dirección para buscar información sobre su edificio y casero y también para referirle a organizaciones locales. Utilizamos los datos de las siguientes agencias estatales y de la ciudad de Nueva York: el Departamento de Preservación y Desarrollo de Vivienda (HPD), la División de Vivienda y Renovación de la Comunidad (DHCR), Departamento de Finanzas (DOF), el Departamento de Edificios (DOB) y el Departamento de Planificación Urbana (DCP).</p><p>Todos los datos de JustFix.nyc se mantienen privados e internos – jamás publicaremos o venderemos su información a ningún tercero. JustFix.nyc es una organización registrada bajo la clasificación 501(c)(3) sin fines de lucro y no colecta ingresos de publicidad o cualquier otro contenido generado por usuarios.</p><p>Si tiene más preguntas, <a ui-sref=\"contact\" target=\"_blank\">contáctenos</a>.</p>",
+					"gotIt": "@:repeating.gotIt"
+				},
+				"onboardingCode": {
+					"title": "¡Bienvenidos a la<br/>aplicación móvil de JustFix.nyc!",
+					"enterText": "JustFix.nyc es un servicio gratis que le ayuda a conseguir reparaciones para su hogar. Para comenzar, cuéntenos sobre su situación:",
+          "hasAdvocateCode": "Recibí un Código del Defensor.",
+          "organicUser": "Utilizo JustFix.nyc por cuenta propia.",
+					"accessCode": "Código defensor (opcional)",
+					"placeholder": "Introduzca su código",
+					"continue": "@:repeating.continue",
+					"getHelp": "Continuar sin código",
+					"errorSubmit": "Hubo un error con la introducción de este código. <a ui-sref=\"contact\">Contáctenos</a> si necesita asistencia.",
+					"errorCode": "¡Lo sentimos! Este código defensor no compagina con nada en nuestra base de datos – asegúrese de haber introducido el código correcto. <a ui-sref=\"contact\">Contáctenos</a> si necesita asistencia.",
+          "learnMore": "¿Tiene interés en saber más acerca de nuestra organización? <a href=\"https://www.justfix.nyc/our-mission\">Lea nuestra misión.</a>"
+				},
+				"onboardingDetails": {
+					"header": "(Paso 2 de 2)",
+					"title": "Crear su cuenta",
+					"headerDesc": "Su cuenta guardará su evidencia y los detalles del caso. <b><em>Jamás compartiremos esta información sin primero pedirle permiso a usted.</em></b>",
+					"firstName": "Primer nombre",
+					"firstNameError": "Introduzca un primer nombre.",
+					"lastName": "Apellido",
+					"lastNameError": "Introduzca un apellido.",
+					"borough": "Condado/Barrio",
+					"brooklyn": "Brooklyn",
+					"queens": "Queens",
+					"bronx": "Bronx",
+					"manhattan": "Manhattan",
+					"statenIsland": "Staten Island",
+					"errorBorough": "Introduzca su condado/barrio.",
+					"streetAddress": "Dirección",
+					"streetError": "Introduzca su dirección.",
+          "streetPlaceholder": "Ej: 1432 W Sheraton Ave",
+					"apt": "# de Apto.",
+					"aptError": "Introduzca su número de apartamento.",
+          "additionalInfo": "<em><a ng-click=\"additionalInfo()\">(¿por qué necesita esta información?)</a></em>",
+					"phone": "Teléfono <em>(utilizará esto para iniciar cada sesión)</em>",
+					"phoneNumber": "Número de teléfono",
+					"phoneError": "Introduzca su teléfono.",
+					"password": "Cree una contraseña para su cuenta <em>(deberá tener un mínimo de 6 caracteres)</em>",
+					"wrongPassword": "Cree una contraseña.",
+					"shortPassword": "La contraseña deberá tener un mínimo de 6 caracteres.",
+					"verify": "Vuelva a introducir su nueva contraseña",
+					"verifyEmpty": "introduzca su contraseña",
+					"verifyWrong": "¡Estas contraseñas no son las mismas!",
+					"errorMsg": "<a ui-sref=\"contact\" target=\"_blank\">Contáctenos</a> si necesita asistencia.",
+					"notComplete": "¡Rellene los campos de arriba que faltan para poder crear su cuenta!",
+					"back": "@:repeating.back",
+					"createAcct": "Cree su cuenta"
+				},
+				"onboardingProblems": {
+					"header": "(Paso 1 de 2)",
+					"title": "Lista de revisión de asuntos",
+					"headerSubtitle": "Para empezar, indique todos los problemas que enfrenta – después le pediremos más detalles. <b><em>Puede actualizar esta lista en cualquier momento.</em></b>",
+					"back": "@:repeating.back",
+					"continue": "@:repeating.continue",
+					"skip": "Saltar por ahora"
+				},
+        "onboardingSchedule": {
+          "title" : "Conéctese con un asesor de JustFix.nyc",
+          "desc": "Los asesores de JustFix.nyc son expertos en los derechos de inquilinos. Pueden ofrecer apoyo y revisar su caso. ¡Anótese ahora para una cita <b>gratis</b> de 30 minutos por teléfono! ",
+          "schedNow": "Haga la cita ahora",
+          "schedLater": "Haré la cita en otro momento",
+          "disclaimer": "Utilizar este servicio significa que está de acuerdo con que los empleados y voluntarios de JustFix.nyc tengan acceso a la información en su cuenta personal para poder asistirle. Además está de acuerdo con utilizar todos los servicios de JustFix.nyc solo para el propósito de obtener información y no para sustituir asesoramiento o consulta legal. Los servicios de JustFix.nyc no sustituyen el asesoramiento de un abogado calificado para impartir asesoramiento sobre asuntos legales con respecto a la vivienda.",
+          "schedulerTitle": "Su cita"
+        },
+				"onboardingSuccess": {
+					"success": "@:repeating.success",
+					"advocate": "Su defensor",
+					"subtitle": "Grabaremos esta información de contacto en su cuenta para que pueda conectarse en cualquier momento.",
+					"share": "Compartir mi caso:",
+					"shareEnabled": "Compartir (activado):",
+					"shareDesc": "Esto permite que su defensor vea las pruebas que usted subió al sitio; no le da acceso al resto de su cuenta. Usted puede desactivar luego o activarlo en cualquier momento.",
+					"back": "@:repeating.back",
+					"continue": "@:repeating.continue"
+				}
+			}
+		},
+		"problems": {
+			"partials": {
+				"problemModal": {
+					"issue": "asunto",
+					"other": "Añadir otro",
+					"otherPlaceholder": "¿Cual es el problema?",
+					"cancel": "@:repeating.cancel",
+					"save": "Guardar"
+				}
+			},
+			"views": {
+				"updateProblems": {
+					"title": "Lista de revisión de asuntos"
+				}
+			}
+		},
+		"tutorial": {
+			"partials": {
+				"intro": {
+					"banner": "¡CUENTA CREADA!",
+					"introOne": "Su cuenta de JustFix.nyc le ayudará a juntar pruebas y tomar acción para resolver sus problemas de vivienda.",
+					"introTwo": "Vea como funciona...",
+					"button": "Explore el sitio"
+				},
+				"main": {
+					"title1": "Colectar pruebas",
+					"main1": "Entre más pruebas suba, más fuerte será su caso. Empiece con la sección <strong>Tomar Acción</strong> para añadir fotos, reportar quejas al 311 y enviarle avisos al casero.",
+					"title2": "Añadir actualizaciones de estatus",
+					"main2": "Añadir una <strong>Actualización de Estatus </strong> en cualquier momento desde el panel de instrumentos. Esto le ayudará a mantener un registro de cualquier actualización o comunicación con el casero.",
+					"title3": "Compartir su Historial del Caso",
+					"main3": "Todo lo que haga se guardará en su <strong>Historial del Caso</strong>. Puede imprimirlo para la corte de vivienda o compartirlo con vecinos y defensores a través del uso de Compartir Enlace.",
+					"title4": "Conozca sus derechos",
+					"main4": "Es importante que se mantenga al tanto de sus derechos como inquilino. Vea <strong>Conozca sus Derechos</strong> para consultar artículos y enlaces con más información."
+				}
+			}
+		},
+		"users": {
+			"views": {
+				"authentication": {
+					"signIn": {
+						"title": "Iniciar sesión para acceder a su cuenta de JustFix.nyc.",
+						"phone": "Número de teléfono",
+						"password": "Contraseña",
+						"forgot": "Olvidé mi contraseña.",
+						"signIn": "@:repeating.signIn",
+						"signUp": "¿No tiene cuenta? ¡Regístrese ahora!",
+            "contactText": "Contáctenos",
+						"contactUsFinal": " si necesita asistencia u olividó su contraseña."
+					}
+				},
+				"password": {
+					"forgot": {
+						"title": "Restaurar su contraseña",
+            "forgotText": "Introduzca su número de teléfono y un representante JustFix.nyc le enviará una nueva contraseña temporal pronto.",
+						"submit": "@:repeating.submit",
+            "error": "Por favor, introduzca su número de teléfono",
+            "success": "Gracias - estaremos en contacto pronto"
+					},
+					"resetInvalid": {
+						"title": "El intento para restablecer la contraseña no es válido",
+						"subtitle": "Pida establecer una contraseña nueva"
+					},
+					"resetSuccess": {
+						"title": "Contraseña restablecida con éxito",
+						"continue": "Continuar a la página principal"
+					},
+					"reset": {
+						"title": "Restablecer su contraseña",
+						"new": "Nueva contraseña",
+						"verify": "Verificar contraseña",
+						"update": "Actualizar contraseña"
+					}
+				},
+				"settings": {
+					"changePassword": {
+						"title": "Cambie su contraseña",
+						"current": "Contraseña actual",
+						"new": "Nueva contraseña",
+						"newExtend": "<em>(debe tener un mínimo de 6 caracteres)</em>",
+						"required": "Cree una contraseña.",
+						"minlength": "La contraseña deberá tener un mínimo de 6 caracteres.",
+						"confirm": "Confirme su contraseña",
+						"confirmEmpty": "Vuelva a introducir su contraseña.",
+						"confirmWrong": "¡Estas contraseñas no son las mismas!",
+						"success": "Ha cambiado su contraseña exitosamente",
+						"cancel": "@:repeating.cancel",
+						"save": "Guardar contraseña"
+					},
+					"editPhone": {
+						"title": "Cambiar el número de teléfono",
+						"password": "Verifique su cuenta y reintroduzca su contraseña:",
+						"cancel": "@:repeating.cancel",
+						"verify": "Verificar",
+						"phone": "Número de teléfono",
+						"phoneExt": "<em>(utilizará esto para iniciar cada sesión)</em>",
+						"invalid": "Introduzca un número de teléfono válido",
+						"empty": "Introduzca su número de teléfono.",
+						"cancel": "@:repeating.cancel",
+						"save": "@:repeating.save",
+						"success": "Ha cambiado su número de teléfono exitosamente"
+					},
+					"editProfile": {
+						"title": "Edite su perfil",
+						"address": "Dirección",
+						"error": "¡Rellene los campos de arriba que faltan para actualizar su cuenta!",
+						"submit": "Actualice su cuenta"
+					},
+					"landing": {
+						"updated": "CUENTA ACTUALIZADA",
+						"profile": "Perfil",
+						"advocateInfo": "Información del defensor:",
+						"editProfile": "Editar mi perfil",
+						"changePhone": "Cambiar número de teléfono",
+						"changePassword": "Cambiar la contraseña",
+						"signOut": "@:repeating.signOut"
+					}
+				}
+			}
+		}
+  },
+  "checklist": {
+  	"bedrooms": {
+  		"title": "Dormitorios",
+      "paint": "Pintura descascarada",
+      "cracked": "Paredes agrietadas",
+      "mold": "Moho en las paredes",
+      "water": "Daños por el agua",
+      "loose": "Pisos sueltos",
+      "windowGlass": "Vidrios rotos en ventanas",
+      "windowFrame": "Marco de ventana defectuoso",
+      "door": "Puerta rota",
+      "radiators": "Radiadores defectuosos o elevaciones de radiadores defectuosas",
+      "ceilingFall": "Techo caído o a punto de caerse",
+      "ceilingLeaking": "Goteras en el techo",
+      "electricity": "Electricidad defectuosa",
+      "electricExposed": "Instalaciones eléctricas expuestas",
+      "outlets": "Enchufes defectuosos"
+  	},
+  	"kitchen":{
+  		"title": "Cocina",
+  		"paint": "@:checklist.bedrooms.paint",
+      "cracked": "@:checklist.bedrooms.cracked",
+      "mold": "@:checklist.bedrooms.mold",
+      "water": "@:checklist.bedrooms.water",
+      "loose": "@:checklist.bedrooms.loose",
+      "baseboards": "Marco defectuoso al pie de la pared",
+      "windowGlass": "@:checklist.bedrooms.windowGlass",
+      "windowFrame": "@:checklist.bedrooms.windowFrame",
+      "door": "@:checklist.bedrooms.door",
+      "radiators": "@:checklist.bedrooms.radiators",
+      "ceilingFall": "@:checklist.bedrooms.ceilingFall",
+      "ceilingLeaking": "@:checklist.bedrooms.ceilingLeaking",
+      "electricity": "@:checklist.bedrooms.electricity",
+      "electricExposed": "@:checklist.bedrooms.electricExposed",
+      "outlets": "@:checklist.bedrooms.outlets",
+      "sink": "Lavabo rajado (lavabo)",
+      "leakyFaucet": "Grifo gotea (lavabo)",
+      "noFaucet": "Grifos no instalados (lavabo)",
+      "brokenFaucet": "Grifos no funcionan (lavabo)",
+      "pipesLeaking": "Tubería con goteras (lavabo)",
+      "drainBlock": "Desagüe tapado (lavabo)",
+      "fridgeDefective": "Nevera defectuosa",
+      "fridgeBroken": "Nevera rota",
+      "stoveDefective": "Estufa defectuosa",
+      "stoveBroken": "Estufa rota"
+    },
+    "livingRoom": {
+    	"title": "Sala",
+  		"paint": "@:checklist.bedrooms.paint",
+      "cracked": "@:checklist.bedrooms.cracked",
+      "mold": "@:checklist.bedrooms.mold",
+      "water": "@:checklist.bedrooms.water",
+      "loose": "@:checklist.bedrooms.loose",
+      "baseboards": "Marco defectuoso al pie de la pared",
+      "windowGlass": "@:checklist.bedrooms.windowGlass",
+      "windowFrame": "@:checklist.bedrooms.windowFrame",
+      "door": "@:checklist.bedrooms.door",
+      "radiators": "@:checklist.bedrooms.radiators",
+      "ceilingFall": "@:checklist.bedrooms.ceilingFall",
+      "ceilingLeaking": "@:checklist.bedrooms.ceilingLeaking",
+      "electricity": "@:checklist.bedrooms.electricity",
+      "electricExposed": "@:checklist.bedrooms.electricExposed",
+      "outlets": "@:checklist.bedrooms.outlets"
+    },
+    "bathroom": {
+    	"title": "Baño",
+  		"paint": "@:checklist.bedrooms.paint",
+      "cracked": "@:checklist.bedrooms.cracked",
+      "mold": "@:checklist.bedrooms.mold",
+      "water": "@:checklist.bedrooms.water",
+      "loose": "@:checklist.bedrooms.loose",
+      "baseboards": "Marco defectuoso al pie de la pared",
+      "windowGlass": "@:checklist.bedrooms.windowGlass",
+      "windowFrame": "@:checklist.bedrooms.windowFrame",
+      "door": "@:checklist.bedrooms.door",
+      "radiators": "@:checklist.bedrooms.radiators",
+      "ceilingFall": "@:checklist.bedrooms.ceilingFall",
+      "ceilingLeaking": "@:checklist.bedrooms.ceilingLeaking",
+      "electricity": "@:checklist.bedrooms.electricity",
+      "electricExposed": "@:checklist.bedrooms.electricExposed",
+      "outlets": "@:checklist.bedrooms.outlets",
+      "toiletBroken": "Inodoro no funciona (inodoro)",
+      "toiletLeaking": "Inodoro gotea (inodoro)",
+      "waterPressureToilet": "Presión de agua inadecuada (inodoro)",
+      "sink": "Lavabo rajado (lavabo)",
+      "leakyFaucet": "Grifo gotea (lavabo)",
+      "noFaucet": "Grifos no instalados (lavabo)",
+      "brokenFaucet": "Grifos no funcionan (lavabo)",
+      "pipesLeaking": "Tubería gotea (lavabo)",
+      "crackedTub": "Bañera rajada (bañera)",
+      "leakyFaucetB": "Grifo gotea (bañera)",
+      "noFaucetB": "Grifos no instalados (bañera)",
+      "faucetsNotWorkingB": "Grifos no funcionan (bañera)",
+      "pipesLeakingB": "Tubería gotea (bañera)",
+      "notWorkingShower": "No funciona (ducha)",
+      "WaterPressureShower": "Presión de agua inadecuada (ducha)",
+      "leakyShowerHead": "Cabezal de la ducha gotea (ducha)",
+      "wallTiles": "Azulejos rajados (ducha)",
+      "wallTilesMissing": "Faltan azulejos (ducha)",
+      "drainStoppage": "Desagüe tapado (ducha)"
+    },
+    "entireHome": {
+    	"title": "Toda la casa",
+      "mice": "Ratones",
+      "rats": "Ratas",
+      "cockroaches": "Cucarachas",
+      "hotWater": "No hay agua caliente",
+      "coldWater": "No hay agua fría",
+      "heat": "No hay calefacción",
+      "frontDoorDefective": "Puerta principal defectuosa",
+      "frontDoorBroken": "Puerta principal rota",
+      "doorLockDefective": "Cerradura defectuosa",
+      "doorLockBroken": "Cerradura rota",
+      "doorbellDefective": "Timbre de la puerta defectuoso",
+      "doorbellBroken": "Timbre de la puerta roto",
+      "buzzerDefective": "Timbre exterior defectuoso",
+      "buzzerBroken": "Timbre exterior roto",
+      "smoke": "No hay detector de humo",
+      "smokeDefective": "Detector de humo defectuoso",
+      "floorSags": "Piso hundido",
+      "apartmentPainting": "Apartamento necesita pintura"
+    },
+    "publicAreas": {
+    	"title": "Áreas públicas",
+      "paintOverdue": "Trabajo de pintura atrasado (3 años)",
+      "peelingFlaking": "Pintura descascarada o pelada",
+      "heat": "@:checklist.entireHome.heat",
+      "hotWater": "@:checklist.entireHome.hotWater",
+      "waterPressure": "Presión de agua inadecuada",
+      "rusty": "Agua oxidada",
+      "electricExposed": "@:checklist.bedrooms.electricExposed",
+      "electricWeak": "Corrientes eléctricas débiles (luces bajas)",
+      "windowGuards": "Faltan rejas en las ventanas",
+      "smokeCO2": "Falta o está roto el detector de CO2",
+      "fumesSmoke": "Humo/gases entran al apartamento",
+      "ratsMice": "Ratas/ratones",
+      "bug": "Infestación de insectos",
+      "illegalImpartments": "Apartamentos ilegales en el sótano",
+      "noReceipts": "No dan recibos de pago de alquiler",
+      "incompleteReceipts": "Recibos de pago de alquiler incompletos (no hay fecha o dirección en la ciudad de Nueva York para el casero, etc.)",
+      "inadequateSuper": "Servicios del conserje o súper inadecuados o inexistentes"
+    },
+    "landlordIssues": {
+    	"title": "Problemas con casero",
+    	"noReceipts": "@:checklist.publicAreas.noReceipts",
+      "noReciepts": "@:checklist.publicAreas.noReceipts",
+      "noLease": "No hay contrato de arrendamiento",
+      "falseDocuments": "Documentos falsos",
+      "illegalConstruction": "Construcción ilegal",
+      "repeatedMci": "Mejoras Mayores de Capital repetidas",
+      "overcharging": "Cobro de cargos en exceso/de más",
+      "holdover": "Casos remanentes",
+      "useForce": "Uso de fuerza o amenazas de fuerza",
+      "stopInterrupt": "Paro o interrupción de servicios esenciales",
+      "stealing": "Remoción de pertenencias de la unidad",
+      "changeLocks": "Cambio de cerraduras sin dar una llave nueva",
+      "retaliation": "Represalias por buscar reparaciones",
+      "buyout": "Exigencias constantes de pago para desalojar el apartamento",
+      "falseEviction": "Amenazas de desalojo basadas en reclamaciones falsas"
+    }
+  },
+  "actions": {
+  	"addDetails": {
+  		"bedrooms": {
+  			"title": "Añada detalles de Dormitorios",
+  			"activityTitle": "Añadí detalles de Dormitorios",
+  			"content": "Suba fotos e información sobre las problemas de <b>dormitorios</b>. Entre más documentación tenga, ¡más fuerte será su caso!",
+  			"cta": {
+  				"buttonTitle": "@:repeating.gatherEvidence"
+  			}
+  		},
+  		"kitchen": {
+        "title": "Añada detalles de Cocina",
+  			"activityTitle": "Añadí detalles de Cocina",
+  			"content": "Suba fotos e información sobre las problemas de <b>cocina</b>. Entre más documentación tenga, ¡más fuerte será su caso!",
+  			"cta": {
+  				"buttonTitle": "@:repeating.gatherEvidence"
+  			}
+  		},
+  		"livingRoom": {
+        "title": "Añada detalles de Sala",
+  			"activityTitle": "Añadí detalles de Sala",
+  			"content": "Suba fotos e información sobre las problemas de <b>sala</b>. Entre más documentación tenga, ¡más fuerte será su caso!",
+  			"cta": {
+  				"buttonTitle": "@:repeating.gatherEvidence"
+  			}
+  		},
+  		"bathroom": {
+        "title": "Añada detalles de Baño",
+  			"activityTitle": "Añadí detalles de Baño",
+  			"content": "Suba fotos e información sobre las problemas de <b>baño</b>. Entre más documentación tenga, ¡más fuerte será su caso!",
+  			"cta": {
+  				"buttonTitle": "@:repeating.gatherEvidence"
+  			}
+  		},
+  		"entireHome": {
+        "title": "Añada detalles de Toda la casa",
+  			"activityTitle": "Añadí detalles de Toda la casa",
+  			"content": "Suba fotos e información sobre las problemas de <b>toda la casa</b>. Entre más documentación tenga, ¡más fuerte será su caso!",
+  			"cta": {
+  				"buttonTitle": "@:repeating.gatherEvidence"
+  			}
+  		},
+  		"publicAreas": {
+        "title": "Añada detalles de Áreas públicas",
+  			"activityTitle": "Añadí detalles de Áreas públicas",
+  			"content": "Suba fotos e información sobre las problemas de <b>áreas públicas</b>. Entre más documentación tenga, ¡más fuerte será su caso!",
+  			"cta": {
+  				"buttonTitle": "@:repeating.gatherEvidence"
+  			}
+  		},
+  		"landlordIssues": {
+        "title": "Añada detalles de Casero",
+  			"activityTitle": "Añadí detalles de Casero",
+  			"content": "Suba fotos e información sobre las problemas de <b>casero</b>. Entre más documentación tenga, ¡más fuerte será su caso!",
+  			"cta": {
+  				"buttonTitle": "@:repeating.gatherEvidence"
+  			}
+  		}
+  	},
+  	"getRentalHistory": {
+  		"title": "Obtener su Historial de Alquiler",
+  		"activityTitle": "Historial de Alquiler solicitado",
+  		"content": "<b>Parece que tiene alquiler estabilizado.</b> Asegúrese y pida su historial de alquiler de la División de Vivienda y Renovación de la Comunidad (DHCR).",
+  		"cta": {
+  			"buttonTitle": "Pedir"
+  		},
+  		"followUp": {
+	      "title": "¿Tiene alguna otra preocupación sobre su carta de la División de Vivienda y Renovación de la Comunidad (DHCR)?",
+	      "fields": {
+	        "prompt": "¿Usted tiene alquiler estabilizado?",
+	        "title":  "Alquiler estabilizado:"
+	      }
+  		}
+  	},
+  	"contactHarassment": {
+  		"title": "Llame a la línea de asistencia para el Acoso de Inquilinos",
+    	"activityTitle": "Llamé a la línea de asistencia para el Acoso de Inquilinos",
+    	"content": "Parece que vive en una área con <b>una gran cantidad de reemplazo y acoso de inquilinos</b> y cualifica para llamar a la línea de asistencia de la ciudad de Nueva York para la Protección de los Inquilinos. Horario: lunes – viernes (10AM – 4PM)",
+    	"cta": {
+	      "buttonTitle": "Llame",
+	      "phone": "9176614500"
+    	},
+    	"followUp": {
+      	"title": "¿Qué le dijeron en la línea de asistencia en contra del acoso?"
+    	}
+  	},
+  	"contact311": {
+  		"title": "Llame al 311",
+    	"activityTitle": "Llamé a 311",
+    	"content": "Parece que algunos de sus problemas podrían ser graves. Llamar al 311 pone al casero en alerta y las cortes tomarán las violaciones más seriamente. ¡Tenga cuidado con las represalias ilegales! <b>Escriba el número de rastreo que le den.</b>",
+    	"cta": {
+	      "buttonTitle": "Llame",
+	      "phone": "311"
+	    },
+	    "followUp": {
+	      "title": "¿Cómo le fue en la llamada al 311?",
+	      "fields": {
+	        "prompt": "Introduzca su número de confirmación:",
+	        "title": "Número de confirmación:",
+	        "type": "texto",
+	        "placeholder": "Empieza con C1-1-, seguido por 9 o 10 números." }
+	    }
+  	},
+  	"contactNYCHA": {
+	    "title": "Llame al Centro de Ayuda de la Autoridad de la Vivienda de la Ciudad de Nueva York (NYCHA)",
+	    "activityTitle": "Llamé al Centro de Ayuda de la Autoridad de la Vivienda de la Ciudad de Nueva York (NYCHA)",
+	    "content": "Si el administrador de su edificio no responde, llame al Centro de Ayuda de NYCHA (abierto 24 horas al día, 7 días a la semana) y describa su situación, incluso lo que ya ha hecho. <b>Escriba el número de rastreo que le den.</b>",
+	    "cta": {
+	      "buttonTitle": "Llame",
+	      "phone": "7187077771"
+	    },
+	    "followUp": {
+	      "title": "¿Cómo le fue en la llamada a la Autoridad de la Vivienda de la Ciudad de Nueva York (NYCHA)?",
+	      "fields": {
+	        "prompt": "Introduzca su número de rastreo:",
+	        "title": "Número de rastreo:",
+	        "placeholder": "El número que le dieron para rastrear su Orden de Trabajo."
+	      }
+	    }
+  	},
+  	"contactLegalServices": {
+	    "title": "Llame a Housing Court Answers",
+	    "activityTitle": "Llamé a Housing Court Answers",
+	    "content": "Housing Court Answers es una gran fuente de información sobre asuntos legales. Horario: martes - jueves (9AM - 5PM)",
+	    "cta": {
+	      "buttonTitle": "Llame",
+	      "phone": "2129624795"
+	    },
+	    "followUp": {
+	      "title": "¿Qué le dijeron en servicios legales?"
+	    }
+  	},
+  	"connectAdvocate": {
+	    "title": "Conéctese con un Defensor",
+	    "content": "Encuentre en su área a grupos comunitarios, servicios legales, y lineas de asistencia de la cuidad que puedan ayudar con sus asuntos de vivienda.",
+    	"cta": {
+    		"type": "link-internal",
+	      "buttonTitle": "Busca ayuda",
+	      "url": "findHelp"
+	    },
+	    "hasFollowUp": false
+  	},
+    "scheduleAppt": {
+      "title": "Conéctese con un asesor",
+      "content": "Los asesores de JustFix.nyc son expertos en los derechos de inquilinos. Pueden ofrecer apoyo y revisar su caso. ¡Anótese ahora para una cita <b>gratis</b> de 30 minutos por teléfono!",
+      "cta": {
+        "type": "link-internal",
+        "buttonTitle": "Haga una cita",
+        "url": "onboarding.scheduleNew"
+      },
+	    "hasFollowUp": false
+    },
+  	"contactSuper": {
+	    "title": "Contacte al Súper (Paso 1 de 3)",
+	    "activityTitle": "Contacté al Súper",
+	    "content": "Su primer paso siempre debería ser contactar a la persona que es directamente responsable por hacer reparaciones en su hogar.",
+	    "cta": {
+	      "buttonTitle": "Contactar",
+	      "title": "@:actions.contactSuper.cta.buttonTitle"
+	    },
+	    "followUp": {
+	      "title": "¿Qué dijo su súper?"
+	    }
+	  },
+	  "emailLandlord": {
+	    "title": "Envíe un email al Casero (Paso 2 de 3)",
+	    "activityTitle": "Envié un email de asuntos al Casero",
+	    "content": "Si su súper no responde, es hora de enviar un email al casero. <b>Hemo escrito un borrador del mensaje que puede enviarle, que incluye una lista de reparaciones que necesita.</b>",
+	    "cta": {
+	      "buttonTitle": "Contactar"
+	    },
+	    "followUp": {
+	      "title": "¿Qué dijo su casero?"
+	    }
+	  },
+	  "mailLetter": {
+	    "title": "Envíe una Carta de Queja Oficial (Paso 3 de 3)",
+	    "activityTitle": "Envié una Carta de Queja Oficial",
+	    "content": "Para tener un registro formal de sus peticiones, necesitará enviar una carta al casero. <b>Hemo escrito una carta que usted puede enviar que incluye los problemas de reparaciones que indicó.</b>",
+	    "cta": {
+	      "buttonTitle": "Previsualice"
+	    }
+	  },
+  	"decreasedServices": {
+	    "title": "Aplicación de la División de Vivienda y Renovación de la Comunidad (DHCR) por Disminución de Servicios",
+	    "activityTitle": "Aplicación de la División de Vivienda y Renovación de la Comunidad (DHCR) por Disminución de Servicios",
+	    "content": "Para solicitar una reducción de alquiler para su <b>alquiler estabilizado</b>, debe presentar una querella formal a la División de Vivienda y Renovación de la Comunidad (DHCR). ¡Utilice su <b>Historial del Caso</b> para rellenar este formulario!",
+	    "cta": {
+	      "buttonTitle": "Vea más"
+	    },
+	    "followUp": {
+	      "title": "¿Ha sabido algo de la División de Vivienda y Renovación de la Comunidad (DHCR)?"
+	    }
+  	},
+  	"HPAction": {
+	    "title": "Acción de HP",
+	    "activityTitle": "Acción de HP",
+	    "content": "Las Acciones de HP son procedimientos en la corte de vivienda que ofrecen resoluciones rápidas y económicas a los problemas de reparaciones y recurso o remedios legales si su casero no cumple. <b>Debe ir a la corte de vivienda de <span ng-bind='user.borough'></span> para presentar la Acción de HP.</b>",
+	    "cta": {
+	      "buttonTitle": "Más info"
+	    },
+	    "followUp": {
+	      "title": "¿Ya fue a la corte?"
+	    }
+  	},
+  	"catchAction": {
+      "title": "Completar su Lista de revisión de asuntos",
+      "content": "Para crear una carta de queja, comience por seleccionar los asuntos que desea resolver.",
+      "addIf": ["initial"],
+      "type": "once",
+      "cta": {
+        "type": "link-internal",
+        "buttonTitle": "Comenzar",
+        "url": "updateProblems"
+      },
+      "hasFollowUp": false
+    }
+  }
+}

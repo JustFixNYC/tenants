@@ -1,8 +1,8 @@
 'use strict';
 
 //Issues service used to communicate Issues REST endpoints
-angular.module('activity').factory('Activity', ['$resource',
-  function($resource) {
+angular.module('activity').factory('Activity', ['$resource', 'UpdateUserInterceptor',
+  function($resource, UpdateUserInterceptor) {
 
     // taken from https://gist.github.com/ghinda/8442a57f22099bdb2e34
     //var transformRequest = function(data, headersGetter) { if (data === undefined) return data;var fd = new FormData();angular.forEach(data, function(value, key) { if (value instanceof FileList) { if (value.length == 1) { fd.append(key, value[0]);} else {angular.forEach(value, function(file, index) {fd.append(key + '_' + index, file);});}} else {if (value !== null && typeof value === 'object'){fd.append(key, JSON.stringify(value)); } else {fd.append(key, value);}}});return fd;}
@@ -56,13 +56,26 @@ angular.module('activity').factory('Activity', ['$resource',
     };
 
 
-    return $resource('activity', {}, {
+    return $resource('api/activity', {}, {
       save: {
-          method: 'POST',
-          transformRequest: formDataTransform,
-          headers: {
-            'Content-Type': undefined
-          }
+        method: 'POST',
+        transformRequest: formDataTransform,
+        headers: {
+          'Content-Type': undefined
+        },
+        interceptor: UpdateUserInterceptor
+      },
+      saveManagedByID: {
+        method: 'POST',
+        url: 'api/advocates/tenants/:id',
+        transformRequest: formDataTransform,
+        headers: {
+          'Content-Type': undefined
+        }
+      },
+      public: {
+        method: 'GET',
+        url: 'api/activity/public'
       }
     });
   }

@@ -1,0 +1,26 @@
+#manifesto {
+
+  img {
+
+    // @media (max-width: $screen-xs-min) {
+      margin-bottom: 15px;
+
+    // }
+  }
+
+  @media (min-width: $screen-xs-min) {
+
+    img.pull-left {
+      padding-left: 0;
+    }
+    img.pull-right {
+      padding-right: 0;
+    }
+
+  }
+
+  .manifesto-link {
+    text-decoration: underline;
+  }
+
+}

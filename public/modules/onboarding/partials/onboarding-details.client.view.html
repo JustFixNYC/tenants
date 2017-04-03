@@ -1,0 +1,123 @@
+<div class="page-header">
+	<h3>{{'modules.onboarding.partials.onboardingDetails.header' | translate}}</h3>
+	<h1>{{'modules.onboarding.partials.onboardingDetails.title' | translate}}</h1>
+	<p ng-bind-html="'modules.onboarding.partials.onboardingDetails.headerDesc' | trustTranslate" compile-template></p>
+</div>
+<form name="createUserForm" class="create-user-form" ng-submit="createAndNext(createUserForm.$valid)" novalidate>
+
+	<div class="row">
+		<div class="form-group col-xs-6" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.firstName.$invalid }">
+			<label class="control-label" for="firstName">{{'modules.onboarding.partials.onboardingDetails.firstName' | translate}}</label>
+			<input class="form-control" type="text" placeholder="{{'modules.onboarding.partials.onboardingDetails.firstName' | translate}}" name="firstName" ng-model="newUser.firstName" required>
+			<div ng-show="createUserForm.$submitted || createUserForm.firstName.$touched">
+				<p ng-show="createUserForm.firstName.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.firstNameError' | translate}}</p>
+			</div>
+		</div>
+
+		<div class="form-group col-xs-6" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.lastName.$invalid }">
+			<label class="control-label" for="lastName">{{'modules.onboarding.partials.onboardingDetails.lastName' | translate}}</label>
+			<input class="form-control" type="text" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.lastName' | translate}}" name="lastName" ng-model="newUser.lastName" required>
+			<div ng-show="createUserForm.$submitted || createUserForm.lastName.$touched">
+				<p ng-show="createUserForm.lastName.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.lastNameError' | translate}}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.borough.$invalid }">
+		<label class="control-label" for="borough">{{'modules.onboarding.partials.onboardingDetails.borough' | translate}}</label>
+		<div class="controls">
+			<label class="btn btn-default" ng-model="newUser.borough" btn-radio="'Brooklyn'" name="borough" required>{{'modules.onboarding.partials.onboardingDetails.brooklyn' | translate}}</label>
+			<label class="btn btn-default" ng-model="newUser.borough" btn-radio="'Queens'" name="borough" required>{{'modules.onboarding.partials.onboardingDetails.queens' | translate}}</label>
+			<label class="btn btn-default" ng-model="newUser.borough" btn-radio="'Bronx'" name="borough" required>{{'modules.onboarding.partials.onboardingDetails.bronx' | translate}}</label>
+			<label class="btn btn-default" ng-model="newUser.borough" btn-radio="'Manhattan'" name="borough" required>{{'modules.onboarding.partials.onboardingDetails.manhattan' | translate}}</label>
+			<label class="btn btn-default" ng-model="newUser.borough" btn-radio="'Staten Island'" name="borough" required>{{'modules.onboarding.partials.onboardingDetails.statenIsland' | translate}}</label>
+		</div>
+		<div ng-show="createUserForm.$submitted || createUserForm.borough.$touched">
+			<p ng-show="createUserForm.borough.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.errorBorough' | translate}}</p>
+		</div>
+	</div>
+
+	<div class="row">
+
+		<div class="form-group col-xs-8" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.address.$invalid }">
+			<label
+				class="control-label"
+				for="address"
+				ng-bind-html="'modules.onboarding.partials.onboardingDetails.streetAddress' | trustTranslate" compile-template></label>
+			<input class="form-control" type="text" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.streetPlaceholder' | translate}}" name="address" ng-model="newUser.address" required>
+			<div ng-show="createUserForm.$submitted || createUserForm.address.$touched">
+				<p ng-show="createUserForm.address.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.streetError' | translate}}</p>
+			</div>
+		</div>
+
+		<div class="form-group apt-field col-xs-4" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.unit.$invalid }">
+			<label class="control-label" for="unit">{{'modules.onboarding.partials.onboardingDetails.apt' | translate}}</label>
+			<input class="form-control" type="text" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.apt' | translate}}" name="unit" ng-model="newUser.unit" required>
+			<div ng-show="createUserForm.$submitted || createUserForm.unit.$touched">
+				<p ng-show="createUserForm.unit.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.aptError' | translate}}</p>
+			</div>
+		</div>
+
+		<p class="col-xs-12 more-info" ng-bind-html="'modules.onboarding.partials.onboardingDetails.additionalInfo' | trustTranslate" compile-template></p>
+
+	</div>
+
+	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.phone.$invalid }">
+		<label class="control-label" for="phone" ng-bind-html="'modules.onboarding.partials.onboardingDetails.phone' | trustTranslate" compile-template></label>
+		<input class="form-control" type="tel" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.phoneNumber' | translate}}" name="phone" ng-model="newUser.phone" name="phone" required phone-input>
+		<div ng-show="createUserForm.$submitted || createUserForm.phone.$touched">
+			<p ng-show="createUserForm.phone.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.phoneError' | translate}}</p>
+		</div>
+	</div>
+
+	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.pw.$invalid }">
+		<label class="control-label" for="pw" ng-bind-html="'modules.onboarding.partials.onboardingDetails.password' | trustTranslate"></label>
+		<input class="form-control" type="password" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.wrongPassword' | translate}}" id="pw1" name="pw" ng-model="newUser.password" ng-minlength="6" required>
+		<div ng-show="createUserForm.$submitted || createUserForm.pw.$touched">
+			<p ng-show="createUserForm.pw.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.wrongPassword' | translate}}</p>
+			<p ng-show="createUserForm.pw.$error.minlength" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.shortPassword' | translate}}</p>
+		</div>
+	</div>
+
+	<div class="form-group" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.pw2.$invalid }">
+		<label class="control-label" for="pw2">{{'modules.onboarding.partials.onboardingDetails.verify' | translate}}</label>
+		<input class="form-control" ng-model="pw2" type="password" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.verify' | translate}}" name="pw2" pw-check="pw1" ng-minlength="6" required>
+		<div ng-show="createUserForm.$submitted || createUserForm.pw2.$touched">
+			<p ng-show="createUserForm.pw2.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.verifyEmpty' | translate}}</p>
+			<p ng-show="createUserForm.pw2.$error.pwmatch" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.verifyWrong' | translate}}</p>
+		</div>
+	</div>
+
+	<div class="form-group form-submit-field">
+		<fieldset>
+				<div data-ng-show="error.errors" class="alert alert-danger">
+						<strong data-ng-repeat="err in error.errors">
+							<p ng-bind-html="err.message | trustAs"></p>
+							<span ng-bind-html="'modules.onboarding.partials.onboardingDetails.errorMsg' | trustTranslate" compile-template></span>
+						</strong>
+				</div>
+				<div data-ng-show="error && !error.errors" class="alert alert-danger">
+						<strong>
+							<p ng-bind-html="error | trustAs"></p>
+							<span ng-bind-html="'modules.onboarding.partials.onboardingDetails.errorMsg' | trustTranslate" compile-template></span>
+						</strong>
+				</div>
+				<div data-ng-show="userError" class="alert alert-danger">
+						<strong>
+							{{'modules.onboarding.partials.onboardingDetails.notComplete' | translate}}
+						</strong>
+				</div>
+		</fieldset>
+
+    <div class="row">
+      <div class="col-xs-4">
+        <a ui-sref="onboarding.problems" class="btn btn-block btn-default">
+          {{'modules.onboarding.partials.onboardingDetails.back' | translate}}
+        </a>
+      </div>
+      <div class="col-xs-8">
+        <input type="submit"  class="btn btn-primary btn-block pull-right" value="{{'modules.onboarding.partials.onboardingDetails.createAcct' | translate}}">
+      </div>
+    </div>
+	</div>
+</form>

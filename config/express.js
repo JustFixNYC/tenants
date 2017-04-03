@@ -10,18 +10,20 @@ var fs = require('fs'),
 	morgan = require('morgan'),
 	bodyParser = require('body-parser'),
 	session = require('express-session'),
+	expressSessionPassportCleanup = require('express-session-passport-cleanup'),
 	compress = require('compression'),
 	methodOverride = require('method-override'),
 	cookieParser = require('cookie-parser'),
 	helmet = require('helmet'),
 	passport = require('passport'),
-	mongoStore = require('connect-mongo')({
+	mongoStore = require('connect-mongo/es5')({
 		session: session
 	}),
 	flash = require('connect-flash'),
 	config = require('./config'),
 	consolidate = require('consolidate'),
-	path = require('path');
+	path = require('path'),
+	rollbar = require('rollbar');
 
 module.exports = function(db) {
 	// Initialize express app
@@ -66,13 +68,27 @@ module.exports = function(db) {
 	// Environment dependent middleware
 	if (process.env.NODE_ENV === 'development') {
 		// Enable logger (morgan)
-		app.use(morgan('dev'));
+		// app.use(morgan('dev'));
 
 		// Disable views cache
 		app.set('view cache', false);
 	} else if (process.env.NODE_ENV === 'production') {
 		app.locals.cache = 'memory';
 	}
+
+	// Use the rollbar error handler to send exceptions to your rollbar account
+	app.use(rollbar.errorHandler(config.rollbar.servertoken, { environment: process.env.NODE_ENV }));
+
+	// Use for rollbar client-side errors
+	app.locals.env = process.env.NODE_ENV;
+	app.locals.rollbar = config.rollbar.clienttoken;
+
+	app.locals.heap = config.heap.token;
+
+	// handles uncaught exceptions and unhandled promises
+	// I dont think this makes sense here... RTFM
+	// rollbar.handleUncaughtExceptionsAndRejections(process.env.ROLLBAR_ACCESS_TOKEN);
+
 
 	// Request body parsing middleware should be above methodOverride
 	app.use(bodyParser.urlencoded({
@@ -84,18 +100,35 @@ module.exports = function(db) {
 	// CookieParser should be above session
 	app.use(cookieParser());
 
+	// Setting the app router and static folder
+	// Keep this above sessions and passport
+	// https://github.com/jaredhanson/passport/issues/14
+	app.use(express.static(path.resolve('./public')));
+
 	// Express MongoDB session storage
 	// [TODO] this is still causing issues (see https://github.com/meanjs/mean/issues/224)
 	// this is inconsistent, be wary of it...
+
+	var cookieSettings = {};
+	cookieSettings.maxAge = 14 * 24 * 60 * 60 * 1000;
+	if(process.env.NODE_ENV !== 'development') {
+		cookieSettings.domain = 'justfix.nyc';
+	}
+
 	app.use(session({
-		saveUninitialized: true,
+		saveUninitialized: false,
 		resave: true,
 		secret: config.sessionSecret,
+		cookie: cookieSettings,
 		store: new mongoStore({
-			db: db.connection.db,
+			mongooseConnection: db.connection,
 			collection: config.sessionCollection
 		})
 	}));
+
+	// this is pretty rediculous
+	// https://github.com/wesleytodd/express-session-passport-cleanup
+	app.use(expressSessionPassportCleanup);
 
 	// use passport session
 	app.use(passport.initialize());
@@ -111,8 +144,19 @@ module.exports = function(db) {
 	app.use(helmet.ienoopen());
 	app.disable('x-powered-by');
 
-	// Setting the app router and static folder
-	app.use(express.static(path.resolve('./public')));
+	// Force HTTPS
+	if (process.env.NODE_ENV === 'production') {
+		app.use('*',function(req,res,next) {
+		  if(req.headers['x-forwarded-proto'] !== 'https') {
+
+				res.redirect('https://' + req.hostname + req.url);
+			}
+		  else {
+				next(); /* Continue to other routes if we're not redirecting */
+			}
+		});
+	}
+
 
 	// Globbing routing files
 	config.getGlobbedFiles('./app/routes/**/*.js').forEach(function(routePath) {
@@ -127,10 +171,33 @@ module.exports = function(db) {
 		// Log it
 		console.error(err.stack);
 
+		// Rollbar time!
+		rollbar.handleErrorWithPayloadData(err, {}, req);
+
+
 		// Error page
-		res.status(500).render('500', {
-			error: err.stack
+
+
+		// using the message part for the moment
+		// res.status(500).render('500', {
+		// 	error: err.stack
+		// });
+
+		res.status(500).send({
+			errors: [{
+				message: err.stack
+			}]
 		});
+
+		/*
+
+			Should this render a page or just return the error?
+			When are times that it should do one or the other, and
+			how do we distinguish that?
+
+			Questions for new versions that break less.
+
+		 */
 	});
 
 	// Assume 404 since no middleware responded

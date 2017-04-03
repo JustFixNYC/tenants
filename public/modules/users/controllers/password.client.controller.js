@@ -9,9 +9,10 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
 
 		// Submit forgotten password account id
 		$scope.askForPasswordReset = function() {
+			console.log($scope.credentials);
 			$scope.success = $scope.error = null;
 
-			$http.post('/auth/forgot', $scope.credentials).success(function(response) {
+			$http.post('/api/auth/forgot', $scope.credentials).success(function(response) {
 				// Show user success message and clear form
 				$scope.credentials = null;
 				$scope.success = response.message;
@@ -27,7 +28,9 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
 		$scope.resetUserPassword = function() {
 			$scope.success = $scope.error = null;
 
-			$http.post('/auth/reset/' + $stateParams.token, $scope.passwordDetails).success(function(response) {
+			console.log($stateParams);
+
+			$http.post('/api/auth/reset/' + $stateParams.token, $scope.passwordDetails).success(function(response) {
 				// If successful show success message and clear form
 				$scope.passwordDetails = null;
 
@@ -35,7 +38,7 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
 				Authentication.user = response;
 
 				// And redirect to the index page
-				$location.path('/password/reset/success');
+				$location.path('/api/password/reset/success');
 			}).error(function(response) {
 				$scope.error = response.message;
 			});

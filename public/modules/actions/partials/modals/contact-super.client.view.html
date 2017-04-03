@@ -1,19 +1,21 @@
 <div class="modal-header">
-  <h3 class="modal-title">Contact Your Super</h3>
+  <h3 class="modal-title">{{'modules.actions.partials.modals.contactSuper.title' | translate}}</h3>
 </div>
+<form name="contactSuperForm" novalidate>
 <div class="modal-body" stop-event="touchend">
-  <p>We recommend your first step should be to contact the superintendent for your building -- the person directly responsible for making repairs in your home.  Call or text your super at least two times before contacting your landlord.</p>
-  <label class="control-label" for="superphone">What is your super's phone pumber? (can sometimes be found in the lobby of your building):</label>
-  <input type="tel" class="form-control" id="superphone" data-ng-model="superphone" placeholder="ex: 1234567890" phone-input>
+  <p>{{'modules.actions.partials.modals.contactSuper.body' | translate}}</p>
+  <label class="control-label" for="superphone">{{'modules.actions.partials.modals.contactSuper.askPhone' | translate}}</label>
+  <input type="tel" class="form-control" id="superphone" data-ng-model="superphone" placeholder="ex: 1234567890" phone-input required>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-default pull-left" ng-click="cancel()">Cancel</button>
-  <a class="btn btn-success pull-right" data-ng-click="done('sms', $event)">
-    <span class="glyphicon glyphicon-comment pull-left"></span>
+  <button class="btn btn-default pull-left" ng-click="cancel()">{{'modules.actions.partials.modals.contactSuper.cancel' | translate}}</button>
+  <a class="btn btn-success pull-right" sms-message phone="{{superphone}}" data-ng-click="done(contactSuperForm.$valid, $event)">
+    <span class="glyphicon glyphicon-comment pull-left" style="pointer-events: none;"></span>
     Text
   </a>
   <a class="btn btn-success pull-right" data-ng-click="done('tel', $event)">
-    <span class="glyphicon glyphicon-earphone pull-left"></span>
-    Call
+    <span class="glyphicon glyphicon-earphone pull-left" style="pointer-events: none;"></span>
+    {{'modules.actions.partials.modals.contactSuper.call' | translate}}
   </a>
 </div>
+</form>
