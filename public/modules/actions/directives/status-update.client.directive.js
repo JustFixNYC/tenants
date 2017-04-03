@@ -30,11 +30,12 @@ angular.module('actions')
         if($rootScope.expandStatus) {
           scope.status.expanded = true;
           scope.status.extraExpanded = true;
-          setTimeout(function() { element[0].querySelector('textarea').focus(); }, 0);
+          $timeout(function() { element[0].querySelector('textarea').focus(); }, 0);
         }
 
         if(!$rootScope.takeActionAlert) {
           scope.status.expanded = true;
+          $timeout(function() { element[0].querySelector('textarea').focus(); }, 0);
         }
 
         scope.newActivity = {
