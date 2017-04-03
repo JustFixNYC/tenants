@@ -46,11 +46,13 @@ var ActivitySchema = new Schema({
     },
     photos: [{
       url : { type : String}, 
+      secure_url : { type : String}, 
       thumb : { type : String}, 
       exif: {
         type: Schema.Types.Mixed,
         default: {}
       },
+      cloudinary_public_id : { type : String}, 
       created : { type : Date, default : Date.now }
     }],
     fields: [{

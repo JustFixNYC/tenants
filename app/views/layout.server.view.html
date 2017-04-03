@@ -121,6 +121,13 @@
 		{% endif %}
 	</script>
 
+	<!--Embedding Cloudinary access info -->
+	<script type="text/javascript">
+		window.CLOUDINARY_CLOUD_NAME = "{{ cloudinary_name }}";
+		window.CLOUDINARY_UPLOAD_PRESET = "{{ cloudinary_preset }}";
+		window.CLOUDINARY_ALBUM_NAME = "{{ cloudinary_album }}";
+	</script>
+
 	<script>
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

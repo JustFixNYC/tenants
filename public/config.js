@@ -20,7 +20,8 @@ var ApplicationConfiguration = (function() {
 		'pascalprecht.translate',	// angular-translate
  		'tmh.dynamicLocale',// angular-dynamic-locale
 		'angular.filter',
-		'angular-clipboard'
+		'angular-clipboard',
+		'cloudinary'
  		/* 'ngSanitize'*/ // Santize translations -> /application.js at line ~40
 	];
 // 'ngAnimate',  'ngTouch', , 'bootstrapLightbox' , 'angularModalService'

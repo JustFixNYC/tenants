@@ -24,11 +24,17 @@
       </textarea>
       <span class="text-danger" ng-show="status.formSubmitted && statusUpdate.description.$invalid">{{'modules.actions.partials.statusUpdate.description' | translate}}</span>
       <div class="image-preview">
-        <img ng-repeat="photo in newActivity.photos" ngf-thumbnail="photo" />
+        <span ng-repeat="file in files">
+          <img ngf-thumbnail="file" ngf-size="{ height: 40, quality: 0.5 }" />
+        </span>
+      </div>
+      <div>
+
       </div>
       <div class="status-update-controls" ng-class="{ 'tagging' : status.tagging }">
-        <div  ngf-select="addPhoto($file)"
-              ngf-select-disabled="newActivity.photos.length >= 3"
+        <div  ngf-select="uploadFiles($files)"
+              ngf-multiple="true"
+              ngf-select-disabled="newActivity.photos.length >= 10"
               ngf-accept="'image/*'"
               name="photos"
               class="pull-left select-photos">
@@ -56,7 +62,15 @@
           </div>
         </div>
       </div>
-      <button class="btn btn-info pull-right" data-ng-click="createActivity(statusUpdate.$valid)">
+      <div ng-if="isUploadingFiles" class="uploading-text text-danger pull-left">
+        Uploading Photos... ({{ getTotalProgress() }}%)
+      </div>
+      <div ng-if="uploadingFilesError" class="uploading-text text-danger pull-left">
+        {{ uploadingFilesError }}
+      </div>
+      <button class="btn btn-info pull-right"
+              ng-class = "{ 'disabled' : isUploadingFiles }"
+              data-ng-click="createActivity(statusUpdate.$valid)">
           <span class="glyphicon glyphicon-ok pull-left" style="padding-top:1px"></span>
           {{'modules.actions.partials.statusUpdate.addCase' | translate}}
       </button>

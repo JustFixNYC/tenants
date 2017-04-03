@@ -83,6 +83,11 @@ module.exports = function(db) {
 	app.locals.env = process.env.NODE_ENV;
 	app.locals.rollbar = config.rollbar.clienttoken;
 
+	// Use for rollbar client-side errors
+	app.locals.cloudinary_name = config.cloudinary.cloudname;
+	app.locals.cloudinary_preset = config.cloudinary.uploadpreset;
+	app.locals.cloudinary_album = config.cloudinary.albumname;
+
 	app.locals.heap = config.heap.token;
 
 	// handles uncaught exceptions and unhandled promises

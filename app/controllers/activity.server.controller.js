@@ -326,60 +326,78 @@ var create = function(req, res, next) {
 
     // console.log(newActivity);
 
-    // init photos array
-    newActivity.photos = [];
 
-    var files = req.files['photos'];
+    /******** NEW STUFF ********/
 
-    // console.log('files', req.files);
+    // add activity object
+    req.body.activity.push(newActivity);
 
-    // init photos queue
-    var uploadQueue = [];
+    next();
 
-    for(var file in files) uploadQueue.push(processAndSavePhoto(files[file]));
+    /******** NEW STUFF ********/
 
-    Q.allSettled(uploadQueue)
-      .then(function (results) {
 
-        results.forEach(function (r) {
 
-          if(r.state !== 'fulfilled') {
-            console.log(r.reason);
-            rollbar.handleError(r.reason, req);
-            res.status(500).send({ message: "Photo is not fulfilled" });
-          }
 
-          newActivity.photos.push({
-            url: r.value.url,
-            thumb: r.value.thumb,
-            exif: r.value.exif
-          });
-        });
 
-        // add ref to problems
-        // we aren't using this right now so i'll handle it later
-        // if(_.contains(problemsHandler.getProblemKeys(), newActivity.key)) {
-        //   var prob = req.user.problems.getByKey(newActivity.key);
-        //   prob.startDate = newActivity.startDate;
-        //   prob.description = newActivity.description;
-        //   prob.photos = newActivity.photos;
-        // }
-
-        // add activity object
-        req.body.activity.push(newActivity);
-
-        next();
-
-      })  // end of Q.allSettled
-      .fail(function (err) {
-
-        // s3 error
-
-        // console.log('s3 error', err);
-        rollbar.handleError(err, req);
-        res.status(500).send({ message: errorHandler.getErrorMessage(err) });
-
-      });
+    //
+    //
+    //
+    //
+    // // init photos array
+    // newActivity.photos = [];
+    //
+    // var files = req.files['photos'];
+    //
+    // // console.log('files', req.files);
+    //
+    // // init photos queue
+    // var uploadQueue = [];
+    //
+    // for(var file in files) uploadQueue.push(processAndSavePhoto(files[file]));
+    //
+    // Q.allSettled(uploadQueue)
+    //   .then(function (results) {
+    //
+    //     results.forEach(function (r) {
+    //
+    //       if(r.state !== 'fulfilled') {
+    //         console.log(r.reason);
+    //         rollbar.handleError(r.reason, req);
+    //         res.status(500).send({ message: "Photo is not fulfilled" });
+    //       }
+    //
+    //       newActivity.photos.push({
+    //         url: r.value.url,
+    //         thumb: r.value.thumb,
+    //         exif: r.value.exif
+    //       });
+    //     });
+    //
+    //     // add ref to problems
+    //     // we aren't using this right now so i'll handle it later
+    //     // if(_.contains(problemsHandler.getProblemKeys(), newActivity.key)) {
+    //     //   var prob = req.user.problems.getByKey(newActivity.key);
+    //     //   prob.startDate = newActivity.startDate;
+    //     //   prob.description = newActivity.description;
+    //     //   prob.photos = newActivity.photos;
+    //     // }
+    //
+    //     // add activity object
+    //     req.body.activity.push(newActivity);
+    //
+    //     next();
+    //
+    //   })  // end of Q.allSettled
+    //   .fail(function (err) {
+    //
+    //     // s3 error
+    //
+    //     // console.log('s3 error', err);
+    //     rollbar.handleError(err, req);
+    //     res.status(500).send({ message: errorHandler.getErrorMessage(err) });
+    //
+    //   });
 
   } else {
     res.status(400).send({

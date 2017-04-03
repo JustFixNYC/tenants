@@ -23,6 +23,8 @@ angular.module('activity').controller('ActivityController', ['$scope', '$locatio
       // $scope.activities = Activity.query();
       $scope.activities = $scope.authentication.user.activity;
 
+      console.log($scope.activities);
+
       $scope.activities.forEach(function (act) {
         $scope.photos = $scope.photos.concat(act.photos);
       });

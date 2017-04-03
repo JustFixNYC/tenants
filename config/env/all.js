@@ -46,11 +46,13 @@ module.exports = {
 				'public/lib/cartodb.js/cartodb.js',
 				'public/external/mapbox-gl.js',
 				'public/external/leaflet-mapbox-gl.js',
-				'public/lib/deep-diff/releases/deep-diff-0.3.3.min.js',
-		    'public/lib/angular-sanitize/angular-sanitize.min.js',
+				// 'public/lib/deep-diff/releases/deep-diff-0.3.3.min.js',
+		    // 'public/lib/angular-sanitize/angular-sanitize.min.js',
 		    'public/lib/angular-filter/dist/angular-filter.js',
 				'public/lib/angular-clipboard/angular-clipboard.js',
-				'https://d3gxy7nm8y4yjr.cloudfront.net/js/embed.js'
+				'https://d3gxy7nm8y4yjr.cloudfront.net/js/embed.js',
+				'public/lib/cloudinary-core/cloudinary-core-shrinkwrap.js',
+				'public/lib/cloudinary_ng/js/angular.cloudinary.js'
 		  ]
 	  },
 	  css: [
@@ -84,5 +86,10 @@ module.exports = {
 	acuity: {
 		id: process.env.ACUITY_ID,
 		key: process.env.ACUITY_API_KEY
+	},
+	cloudinary: {
+		cloudname: process.env.CLOUDINARY_CLOUD_NAME,
+		uploadpreset: process.env.CLOUDINARY_UPLOAD_PRESET,
+		albumname: process.env.CLOUDINARY_ALBUM_NAME
 	}
 };

@@ -15,14 +15,13 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     // enable this for speed enhancement b4 production push
     // $compileProvider.debugInfoEnabled(false);
   }])
-  // .config(['$tooltipProvider', function($tooltipProvider){
-  //  $tooltipProvider.setTriggers({
-  //   'mouseenter': 'mouseleave',
-  //   'click': 'mouseleave',
-  //   'focus': 'blur',
-  //   'hideonclick': 'click'
-  //  });
-  // }])
+  // cloudinary config
+  .config(['cloudinaryProvider', function (cloudinaryProvider) {
+    cloudinaryProvider
+      .set("cloud_name", window.CLOUDINARY_CLOUD_NAME)
+      .set("upload_preset", window.CLOUDINARY_UPLOAD_PRESET)
+      .set("album_name", window.CLOUDINARY_ALBUM_NAME);
+  }])
   // internationalization constants
   .constant('LOCALES', {
     'locales': {

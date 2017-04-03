@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('actions')
-  .directive('statusUpdate', ['$rootScope', '$filter', '$sce', '$timeout', 'Activity', 'Actions', 'Problems',
-    function ($rootScope, $filter, $sce, $timeout, Activity, Actions, Problems) {
+  .directive('statusUpdate', ['$rootScope', '$filter', '$sce', '$timeout', 'Activity', 'Actions', 'Problems', 'Upload', 'cloudinary',
+    function ($rootScope, $filter, $sce, $timeout, Activity, Actions, Problems, $upload, cloudinary) {
     return {
       restrict: 'E',
       templateUrl: 'modules/actions/partials/status-update.client.view.html',
@@ -15,6 +15,14 @@ angular.module('actions')
         // scope.action is a $resource!
 
         scope.problems = Problems.getUserProblems();
+
+        scope.newActivity = {
+          date: '',
+          title: 'modules.activity.other.statusUpdate',
+          key: 'statusUpdate',
+          relatedProblems: [],
+          photos: []
+        };
 
         scope.status = {
           expanded: false,
@@ -38,24 +46,27 @@ angular.module('actions')
           $timeout(function() { element[0].querySelector('textarea').focus(); }, 0);
         }
 
-        scope.newActivity = {
-          date: '',
-          title: 'modules.activity.other.statusUpdate',
-          key: 'statusUpdate',
-          relatedProblems: [],
-          photos: []
-        };
-
         scope.expand = function(event) {
           event.preventDefault();
           scope.status.expanded = true;
           // setTimeout(function() { element[0].querySelector('textarea').focus(); }, 0);
           // setTimeout(function() { element[0].querySelector('textarea').focus(); }, 0);
-        }
+        };
+
+        scope.closeAlert = function() {
+          scope.status.closeAlert = true;
+        };
+
+
+        /*
+         *
+         *    TAGGING PROBLEM AREAS
+         *
+         */
 
         scope.toggleTagging = function() {
           scope.status.tagging = !scope.status.tagging;
-        }
+        };
 
         scope.selectProblem = function(problem) {
 
@@ -67,10 +78,19 @@ angular.module('actions')
             // $scope.checklist[area].numChecked--;
           }
         };
+
         scope.isSelectedProblem = function(problem) {
           // if(!$scope.newIssue.issues[area]) return false;
           return scope.newActivity.relatedProblems.indexOf(problem) !== -1;
         };
+
+
+        /*
+         *
+         *    PHOTO UPLOADING
+         *
+         */
+
 
         scope.addPhoto = function(file) {
 
@@ -83,9 +103,74 @@ angular.module('actions')
 
         };
 
-        scope.closeAlert = function() {
-          scope.status.closeAlert = true;
+        scope.files = [];
+        scope.isUploadingFiles = false;
+
+        scope.getTotalProgress = function() {
+          var total = 0;
+          angular.forEach(scope.files, function (f) {
+            if(f.progress) total += f.progress;
+          });
+          return Math.round(total / scope.files.length);
         };
+
+        scope.uploadFiles = function(files) {
+
+          // assign files to scope for previews?
+          if (!files) return;
+
+          scope.files = scope.files.length ? scope.files.concat(files) : files;
+
+          var d = new Date();
+          scope.title = "img_" + d.getDate() + "_" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+
+          // for each file...
+          angular.forEach(files, function(file){
+            if (file && !file.$error) {
+              file.upload = $upload.upload({
+                url: "https://api.cloudinary.com/v1_1/" + cloudinary.config().cloud_name + "/upload",
+                data: {
+                  upload_preset: cloudinary.config().upload_preset,
+                  tags: cloudinary.config().album_name,
+                  context: 'photo=' + scope.title,
+                  file: file
+                }
+              }).progress(function (e) {
+
+                file.progress = Math.round((e.loaded * 100.0) / e.total);
+                scope.isUploadingFiles = true;
+
+              }).success(function (data, status, headers, config) {
+
+                scope.isUploadingFiles = false;
+
+                scope.newActivity.photos.push({
+                  url: data.url,
+                  secure_url: data.secure_url,
+                  cloudinary_public_id: data.public_id
+                });
+
+              }).error(function (data, status, headers, config) {
+
+                scope.isUploadingFiles = false;
+                file.result = data;
+                scope.uploadingFilesError = data;
+              });
+            }
+          });
+        };
+
+
+
+
+
+
+
+
+
+
+
+
 
         scope.createActivity = function(isValid) {
 
@@ -96,7 +181,7 @@ angular.module('actions')
 
             console.time("statusUpdate");
 
-            // console.log('create activity pre creation', scope.newActivity);
+            console.log('create activity pre creation', scope.newActivity);
 
             // [TODO] have an actual section for the 'area' field in the activity log
             // if(scope.newActivity.description && scope.newActivity.area) scope.newActivity.description = scope.newActivity.area + ' - ' + scope.newActivity.description;
@@ -104,7 +189,7 @@ angular.module('actions')
 
             var activity = new Activity(scope.newActivity);
 
-            // console.log('create activity post creation', scope.newActivity);
+            console.log('create activity post creation', scope.newActivity);
 
             activity.$save(function(response) {
 
