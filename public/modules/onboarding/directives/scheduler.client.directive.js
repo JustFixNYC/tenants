@@ -14,7 +14,7 @@ angular.module('onboarding').directive('scheduler', ['$sce', '$location', 'Authe
 
       scope.hasScheduled = false;
 
-      var currentLocation = $location.protocol() + '://' + $location.host() + ($location.port() !== 80 ? ':' + $location.port() : '');
+      var currentLocation = $location.protocol() + '://' + $location.host() + (($location.port() !== 80 || $location.port() !== 443) ? ':' + $location.port() : '');
 
 
       scope.acuity = 'https://app.acuityscheduling.com/schedule.php?owner=13287615';

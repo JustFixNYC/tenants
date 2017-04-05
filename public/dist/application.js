@@ -583,11 +583,12 @@ angular.module('actions')
         if($rootScope.expandStatus) {
           scope.status.expanded = true;
           scope.status.extraExpanded = true;
-          setTimeout(function() { element[0].querySelector('textarea').focus(); }, 0);
+          $timeout(function() { element[0].querySelector('textarea').focus(); }, 0);
         }
 
         if(!$rootScope.takeActionAlert) {
           scope.status.expanded = true;
+          $timeout(function() { element[0].querySelector('textarea').focus(); }, 0);
         }
 
         scope.newActivity = {
@@ -1760,7 +1761,7 @@ angular.module('advocates').controller('AdvocateController', ['$rootScope', '$sc
 		$scope.tenants = tenants;
 		$scope.bbls = {};
 
-		$scope.currentLocation = $location.protocol() + '://' + $location.host() + ($location.port() !== 80 ? ':' + $location.port() : '');
+		$scope.currentLocation = $location.protocol() + '://' + $location.host() + (($location.port() !== 80 || $location.port() !== 443) ? ':' + $location.port() : '');
 
 		// used for the bblsToAddress filter
 		angular.forEach(tenants, function(tenant) {
@@ -4335,7 +4336,7 @@ angular.module('onboarding').directive('scheduler', ['$sce', '$location', 'Authe
 
       scope.hasScheduled = false;
 
-      var currentLocation = $location.protocol() + '://' + $location.host() + ($location.port() !== 80 ? ':' + $location.port() : '');
+      var currentLocation = $location.protocol() + '://' + $location.host() + (($location.port() !== 80 || $location.port() !== 443) ? ':' + $location.port() : '');
 
 
       scope.acuity = 'https://app.acuityscheduling.com/schedule.php?owner=13287615';
