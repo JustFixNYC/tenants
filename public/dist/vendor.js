@@ -51944,25 +51944,24 @@ L.mapboxGL = function (options) {
 };
 
 /*
- AngularJS v1.6.4
- (c) 2010-2017 Google, Inc. http://angularjs.org
+ AngularJS v1.5.7
+ (c) 2010-2016 Google, Inc. http://angularjs.org
  License: MIT
 */
-(function(s,f){'use strict';function J(f){var k=[];v(k,B).chars(f);return k.join("")}var w=f.$$minErr("$sanitize"),C,k,D,E,q,B,F,G,v;f.module("ngSanitize",[]).provider("$sanitize",function(){function h(a,c){var b={},d=a.split(","),l;for(l=0;l<d.length;l++)b[c?q(d[l]):d[l]]=!0;return b}function K(a){for(var c={},b=0,d=a.length;b<d;b++){var l=a[b];c[l.name]=l.value}return c}function H(a){return a.replace(/&/g,"&amp;").replace(L,function(a){var b=a.charCodeAt(0);a=a.charCodeAt(1);return"&#"+(1024*(b-
-55296)+(a-56320)+65536)+";"}).replace(M,function(a){return"&#"+a.charCodeAt(0)+";"}).replace(/</g,"&lt;").replace(/>/g,"&gt;")}function I(a){for(;a;){if(a.nodeType===s.Node.ELEMENT_NODE)for(var c=a.attributes,b=0,d=c.length;b<d;b++){var l=c[b],e=l.name.toLowerCase();if("xmlns:ns1"===e||0===e.lastIndexOf("ns1:",0))a.removeAttributeNode(l),b--,d--}(c=a.firstChild)&&I(c);a=t("nextSibling",a)}}function t(a,c){var b=c[a];if(b&&F.call(c,b))throw w("elclob",c.outerHTML||c.outerText);return b}var x=!1;this.$get=
-["$$sanitizeUri",function(a){x&&k(p,z);return function(c){var b=[];G(c,v(b,function(b,c){return!/^unsafe:/.test(a(b,c))}));return b.join("")}}];this.enableSvg=function(a){return E(a)?(x=a,this):x};C=f.bind;k=f.extend;D=f.forEach;E=f.isDefined;q=f.lowercase;B=f.noop;G=function(a,c){null===a||void 0===a?a="":"string"!==typeof a&&(a=""+a);g.innerHTML=a;var b=5;do{if(0===b)throw w("uinput");b--;s.document.documentMode&&I(g);a=g.innerHTML;g.innerHTML=a}while(a!==g.innerHTML);for(b=g.firstChild;b;){switch(b.nodeType){case 1:c.start(b.nodeName.toLowerCase(),
-K(b.attributes));break;case 3:c.chars(b.textContent)}var d;if(!(d=b.firstChild)&&(1===b.nodeType&&c.end(b.nodeName.toLowerCase()),d=t("nextSibling",b),!d))for(;null==d;){b=t("parentNode",b);if(b===g)break;d=t("nextSibling",b);1===b.nodeType&&c.end(b.nodeName.toLowerCase())}b=d}for(;b=g.firstChild;)g.removeChild(b)};v=function(a,c){var b=!1,d=C(a,a.push);return{start:function(a,e){a=q(a);!b&&A[a]&&(b=a);b||!0!==p[a]||(d("<"),d(a),D(e,function(b,e){var f=q(e),g="img"===a&&"src"===f||"background"===
-f;!0!==u[f]||!0===n[f]&&!c(b,g)||(d(" "),d(e),d('="'),d(H(b)),d('"'))}),d(">"))},end:function(a){a=q(a);b||!0!==p[a]||!0===e[a]||(d("</"),d(a),d(">"));a==b&&(b=!1)},chars:function(a){b||d(H(a))}}};F=s.Node.prototype.contains||function(a){return!!(this.compareDocumentPosition(a)&16)};var L=/[\uD800-\uDBFF][\uDC00-\uDFFF]/g,M=/([^#-~ |!])/g,e=h("area,br,col,hr,img,wbr"),y=h("colgroup,dd,dt,li,p,tbody,td,tfoot,th,thead,tr"),m=h("rp,rt"),r=k({},m,y),y=k({},y,h("address,article,aside,blockquote,caption,center,del,dir,div,dl,figure,figcaption,footer,h1,h2,h3,h4,h5,h6,header,hgroup,hr,ins,map,menu,nav,ol,pre,section,table,ul")),
-m=k({},m,h("a,abbr,acronym,b,bdi,bdo,big,br,cite,code,del,dfn,em,font,i,img,ins,kbd,label,map,mark,q,ruby,rp,rt,s,samp,small,span,strike,strong,sub,sup,time,tt,u,var")),z=h("circle,defs,desc,ellipse,font-face,font-face-name,font-face-src,g,glyph,hkern,image,linearGradient,line,marker,metadata,missing-glyph,mpath,path,polygon,polyline,radialGradient,rect,stop,svg,switch,text,title,tspan"),A=h("script,style"),p=k({},e,y,m,r),n=h("background,cite,href,longdesc,src,xlink:href"),r=h("abbr,align,alt,axis,bgcolor,border,cellpadding,cellspacing,class,clear,color,cols,colspan,compact,coords,dir,face,headers,height,hreflang,hspace,ismap,lang,language,nohref,nowrap,rel,rev,rows,rowspan,rules,scope,scrolling,shape,size,span,start,summary,tabindex,target,title,type,valign,value,vspace,width"),
-m=h("accent-height,accumulate,additive,alphabetic,arabic-form,ascent,baseProfile,bbox,begin,by,calcMode,cap-height,class,color,color-rendering,content,cx,cy,d,dx,dy,descent,display,dur,end,fill,fill-rule,font-family,font-size,font-stretch,font-style,font-variant,font-weight,from,fx,fy,g1,g2,glyph-name,gradientUnits,hanging,height,horiz-adv-x,horiz-origin-x,ideographic,k,keyPoints,keySplines,keyTimes,lang,marker-end,marker-mid,marker-start,markerHeight,markerUnits,markerWidth,mathematical,max,min,offset,opacity,orient,origin,overline-position,overline-thickness,panose-1,path,pathLength,points,preserveAspectRatio,r,refX,refY,repeatCount,repeatDur,requiredExtensions,requiredFeatures,restart,rotate,rx,ry,slope,stemh,stemv,stop-color,stop-opacity,strikethrough-position,strikethrough-thickness,stroke,stroke-dasharray,stroke-dashoffset,stroke-linecap,stroke-linejoin,stroke-miterlimit,stroke-opacity,stroke-width,systemLanguage,target,text-anchor,to,transform,type,u1,u2,underline-position,underline-thickness,unicode,unicode-range,units-per-em,values,version,viewBox,visibility,width,widths,x,x-height,x1,x2,xlink:actuate,xlink:arcrole,xlink:role,xlink:show,xlink:title,xlink:type,xml:base,xml:lang,xml:space,xmlns,xmlns:xlink,y,y1,y2,zoomAndPan",
-!0),u=k({},n,m,r),g;(function(a){if(a.document&&a.document.implementation)a=a.document.implementation.createHTMLDocument("inert");else throw w("noinert");var c=(a.documentElement||a.getDocumentElement()).getElementsByTagName("body");1===c.length?g=c[0]:(c=a.createElement("html"),g=a.createElement("body"),c.appendChild(g),a.appendChild(c))})(s)}).info({angularVersion:"1.6.4"});f.module("ngSanitize").filter("linky",["$sanitize",function(h){var k=/((ftp|https?):\/\/|(www\.)|(mailto:)?[A-Za-z0-9._%+-]+@)\S*[^\s.;,(){}<>"\u201d\u2019]/i,
-q=/^mailto:/i,s=f.$$minErr("linky"),t=f.isDefined,x=f.isFunction,v=f.isObject,w=f.isString;return function(e,f,m){function r(a){a&&n.push(J(a))}function z(a,c){var b,d=A(a);n.push("<a ");for(b in d)n.push(b+'="'+d[b]+'" ');!t(f)||"target"in d||n.push('target="',f,'" ');n.push('href="',a.replace(/"/g,"&quot;"),'">');r(c);n.push("</a>")}if(null==e||""===e)return e;if(!w(e))throw s("notstring",e);for(var A=x(m)?m:v(m)?function(){return m}:function(){return{}},p=e,n=[],u,g;e=p.match(k);)u=e[0],e[2]||
-e[4]||(u=(e[3]?"http://":"mailto:")+u),g=e.index,r(p.substr(0,g)),z(u,e[0].replace(q,"")),p=p.substring(g+e[0].length);r(p);return h(n.join(""))}}])})(window,window.angular);
+(function(q,e){'use strict';function A(a){var c=[];v(c,e.noop).chars(a);return c.join("")}function h(a,c){var b={},d=a.split(","),l;for(l=0;l<d.length;l++)b[c?e.lowercase(d[l]):d[l]]=!0;return b}function B(a,c){null===a||void 0===a?a="":"string"!==typeof a&&(a=""+a);g.innerHTML=a;var b=5;do{if(0===b)throw w("uinput");b--;q.document.documentMode&&r(g);a=g.innerHTML;g.innerHTML=a}while(a!==g.innerHTML);for(b=g.firstChild;b;){switch(b.nodeType){case 1:c.start(b.nodeName.toLowerCase(),C(b.attributes));
+break;case 3:c.chars(b.textContent)}var d;if(!(d=b.firstChild)&&(1==b.nodeType&&c.end(b.nodeName.toLowerCase()),d=b.nextSibling,!d))for(;null==d;){b=b.parentNode;if(b===g)break;d=b.nextSibling;1==b.nodeType&&c.end(b.nodeName.toLowerCase())}b=d}for(;b=g.firstChild;)g.removeChild(b)}function C(a){for(var c={},b=0,d=a.length;b<d;b++){var l=a[b];c[l.name]=l.value}return c}function x(a){return a.replace(/&/g,"&amp;").replace(D,function(a){var b=a.charCodeAt(0);a=a.charCodeAt(1);return"&#"+(1024*(b-55296)+
+(a-56320)+65536)+";"}).replace(E,function(a){return"&#"+a.charCodeAt(0)+";"}).replace(/</g,"&lt;").replace(/>/g,"&gt;")}function v(a,c){var b=!1,d=e.bind(a,a.push);return{start:function(a,f){a=e.lowercase(a);!b&&F[a]&&(b=a);b||!0!==n[a]||(d("<"),d(a),e.forEach(f,function(b,f){var g=e.lowercase(f),h="img"===a&&"src"===g||"background"===g;!0!==G[g]||!0===y[g]&&!c(b,h)||(d(" "),d(f),d('="'),d(x(b)),d('"'))}),d(">"))},end:function(a){a=e.lowercase(a);b||!0!==n[a]||!0===z[a]||(d("</"),d(a),d(">"));a==
+b&&(b=!1)},chars:function(a){b||d(x(a))}}}function r(a){if(a.nodeType===q.Node.ELEMENT_NODE)for(var c=a.attributes,b=0,d=c.length;b<d;b++){var e=c[b],f=e.name.toLowerCase();if("xmlns:ns1"===f||0===f.lastIndexOf("ns1:",0))a.removeAttributeNode(e),b--,d--}(c=a.firstChild)&&r(c);(c=a.nextSibling)&&r(c)}var w=e.$$minErr("$sanitize"),D=/[\uD800-\uDBFF][\uDC00-\uDFFF]/g,E=/([^\#-~ |!])/g,z=h("area,br,col,hr,img,wbr"),m=h("colgroup,dd,dt,li,p,tbody,td,tfoot,th,thead,tr"),k=h("rp,rt"),u=e.extend({},k,m),
+m=e.extend({},m,h("address,article,aside,blockquote,caption,center,del,dir,div,dl,figure,figcaption,footer,h1,h2,h3,h4,h5,h6,header,hgroup,hr,ins,map,menu,nav,ol,pre,section,table,ul")),k=e.extend({},k,h("a,abbr,acronym,b,bdi,bdo,big,br,cite,code,del,dfn,em,font,i,img,ins,kbd,label,map,mark,q,ruby,rp,rt,s,samp,small,span,strike,strong,sub,sup,time,tt,u,var")),H=h("circle,defs,desc,ellipse,font-face,font-face-name,font-face-src,g,glyph,hkern,image,linearGradient,line,marker,metadata,missing-glyph,mpath,path,polygon,polyline,radialGradient,rect,stop,svg,switch,text,title,tspan"),
+F=h("script,style"),n=e.extend({},z,m,k,u),y=h("background,cite,href,longdesc,src,xlink:href"),u=h("abbr,align,alt,axis,bgcolor,border,cellpadding,cellspacing,class,clear,color,cols,colspan,compact,coords,dir,face,headers,height,hreflang,hspace,ismap,lang,language,nohref,nowrap,rel,rev,rows,rowspan,rules,scope,scrolling,shape,size,span,start,summary,tabindex,target,title,type,valign,value,vspace,width"),k=h("accent-height,accumulate,additive,alphabetic,arabic-form,ascent,baseProfile,bbox,begin,by,calcMode,cap-height,class,color,color-rendering,content,cx,cy,d,dx,dy,descent,display,dur,end,fill,fill-rule,font-family,font-size,font-stretch,font-style,font-variant,font-weight,from,fx,fy,g1,g2,glyph-name,gradientUnits,hanging,height,horiz-adv-x,horiz-origin-x,ideographic,k,keyPoints,keySplines,keyTimes,lang,marker-end,marker-mid,marker-start,markerHeight,markerUnits,markerWidth,mathematical,max,min,offset,opacity,orient,origin,overline-position,overline-thickness,panose-1,path,pathLength,points,preserveAspectRatio,r,refX,refY,repeatCount,repeatDur,requiredExtensions,requiredFeatures,restart,rotate,rx,ry,slope,stemh,stemv,stop-color,stop-opacity,strikethrough-position,strikethrough-thickness,stroke,stroke-dasharray,stroke-dashoffset,stroke-linecap,stroke-linejoin,stroke-miterlimit,stroke-opacity,stroke-width,systemLanguage,target,text-anchor,to,transform,type,u1,u2,underline-position,underline-thickness,unicode,unicode-range,units-per-em,values,version,viewBox,visibility,width,widths,x,x-height,x1,x2,xlink:actuate,xlink:arcrole,xlink:role,xlink:show,xlink:title,xlink:type,xml:base,xml:lang,xml:space,xmlns,xmlns:xlink,y,y1,y2,zoomAndPan",
+!0),G=e.extend({},y,k,u),g;(function(a){if(a.document&&a.document.implementation)a=a.document.implementation.createHTMLDocument("inert");else throw w("noinert");var c=(a.documentElement||a.getDocumentElement()).getElementsByTagName("body");1===c.length?g=c[0]:(c=a.createElement("html"),g=a.createElement("body"),c.appendChild(g),a.appendChild(c))})(q);e.module("ngSanitize",[]).provider("$sanitize",function(){var a=!1;this.$get=["$$sanitizeUri",function(c){a&&e.extend(n,H);return function(a){var d=
+[];B(a,v(d,function(a,b){return!/^unsafe:/.test(c(a,b))}));return d.join("")}}];this.enableSvg=function(c){return e.isDefined(c)?(a=c,this):a}});e.module("ngSanitize").filter("linky",["$sanitize",function(a){var c=/((ftp|https?):\/\/|(www\.)|(mailto:)?[A-Za-z0-9._%+-]+@)\S*[^\s.;,(){}<>"\u201d\u2019]/i,b=/^mailto:/i,d=e.$$minErr("linky"),g=e.isString;return function(f,h,k){function m(a){a&&p.push(A(a))}function q(a,b){var c,d=r(a);p.push("<a ");for(c in d)p.push(c+'="'+d[c]+'" ');!e.isDefined(h)||
+"target"in d||p.push('target="',h,'" ');p.push('href="',a.replace(/"/g,"&quot;"),'">');m(b);p.push("</a>")}if(null==f||""===f)return f;if(!g(f))throw d("notstring",f);for(var r=e.isFunction(k)?k:e.isObject(k)?function(){return k}:function(){return{}},s=f,p=[],t,n;f=s.match(c);)t=f[0],f[2]||f[4]||(t=(f[3]?"http://":"mailto:")+t),n=f.index,m(s.substr(0,n)),q(t,f[0].replace(b,"")),s=s.substring(n+f[0].length);m(s);return a(p.join(""))}}])})(window,window.angular);
 //# sourceMappingURL=angular-sanitize.min.js.map
 
 /**
  * Bunch of useful filters for angularJS(with no external dependencies!)
- * @version v0.5.15 - 2017-01-17 * @link https://github.com/a8m/angular-filter
+ * @version v0.5.12 - 2016-12-03 * @link https://github.com/a8m/angular-filter
  * @author Ariel Mashraki <ariel@mashraki.co.il>
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -52079,10 +52078,11 @@ if (!String.prototype.contains) {
 /**
  * @param num {Number}
  * @param decimal {Number}
+ * @param $math
  * @returns {Number}
  */
-function convertToDecimal(num, decimal){
-  return Math.round(num * Math.pow(10,decimal)) / (Math.pow(10, decimal));
+function convertToDecimal(num, decimal, $math){
+  return $math.round(num * $math.pow(10,decimal)) / ($math.pow(10,decimal));
 }
 
 /**
@@ -53317,24 +53317,36 @@ angular.module('a8m.math.abs', [])
  * Convert bytes into appropriate display 
  * 1024 bytes => 1 KB
  */
-angular.module('a8m.math.byteFmt', [])
-  .filter('byteFmt', function () {
-    var compared = [{str: 'B', val: 1024}];
-    ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'].forEach(function(el, i) {
-      compared.push({str: el, val: compared[i].val * 1024 });
-    });
+angular.module('a8m.math.byteFmt', ['a8m.math'])
+  .filter('byteFmt', ['$math', function ($math) {
     return function (bytes, decimal) {
-      if(isNumber(decimal) && isFinite(decimal) && decimal%1===0 && decimal >= 0 &&
-        isNumber(bytes) && isFinite(bytes)) {
-        var i = 0;
-        while (i < compared.length-1 && bytes >= compared[i].val) i++;
-        bytes /= i > 0 ? compared[i-1].val : 1;
-        return convertToDecimal(bytes, decimal) + ' ' + compared[i].str;
-      }
-      return 'NaN';
-    }
-  });
 
+      if(isNumber(decimal) && isFinite(decimal) && decimal % 1 === 0 && decimal >= 0 &&
+        isNumber(bytes) && isFinite(bytes)) {
+        if(bytes < 1024) { // within 1 KB so B
+          return convertToDecimal(bytes, decimal, $math) + ' B';
+        } else if(bytes < 1048576) { // within 1 MB so KB
+          return convertToDecimal((bytes / 1024), decimal, $math) + ' KB';
+        } else if(bytes < 1073741824) { // within 1 GB so MB
+          return convertToDecimal((bytes / 1048576), decimal, $math) + ' MB';
+        } else if(bytes < 1099511627776 ) { // 1 TB so GB
+          return convertToDecimal((bytes / 1073741824), decimal, $math) + ' GB';
+        } else if(bytes < 1125899906842624) { // 1 PB so TB
+          return convertToDecimal((bytes / 1099511627776), decimal, $math) + ' TB';
+        } else if(bytes < 1152921504606846976) { // 1 EB so ZB
+          return convertToDecimal((bytes / 1125899906842624), decimal, $math) + ' PB';
+        } else if(bytes < 1180591620717411303424) { // 1 ZB so EB
+          return convertToDecimal((bytes / 1152921504606846976), decimal, $math) + ' EB';
+        } else if(bytes < 1208925819614629174706176) { // 1 YB so ZB
+          return convertToDecimal((bytes / 1180591620717411303424), decimal, $math) + ' ZB';
+        } else { // 1 YB or more
+          return convertToDecimal((bytes / 1208925819614629174706176), decimal, $math) + ' YB';
+        }
+
+      }
+      return "NaN";
+    }
+  }]);
 /**
  * @ngdoc filter
  * @name degrees
@@ -53343,20 +53355,20 @@ angular.module('a8m.math.byteFmt', [])
  * @description
  * Convert angle from radians to degrees
  */
-angular.module('a8m.math.degrees', [])
-  .filter('degrees', function () {
+angular.module('a8m.math.degrees', ['a8m.math'])
+  .filter('degrees', ['$math', function ($math) {
     return function (radians, decimal) {
       // if decimal is not an integer greater than -1, we cannot do. quit with error "NaN"
       // if degrees is not a real number, we cannot do also. quit with error "NaN"
       if(isNumber(decimal) && isFinite(decimal) && decimal%1===0 && decimal >= 0 &&
         isNumber(radians) && isFinite(radians)) {
-        var degrees = (radians * 180) / Math.PI;
-        return Math.round(degrees * Math.pow(10,decimal)) / (Math.pow(10,decimal));
+        var degrees = (radians * 180) / $math.PI;
+        return $math.round(degrees * $math.pow(10,decimal)) / ($math.pow(10,decimal));
       } else {
-        return 'NaN';
+        return "NaN";
       }
     }
-  });
+  }]);
 
  
  
@@ -53369,23 +53381,44 @@ angular.module('a8m.math.degrees', [])
  * Convert bytes into appropriate display 
  * 1024 kilobytes => 1 MB
  */
-angular.module('a8m.math.kbFmt', [])
-  .filter('kbFmt', function () {
-    var compared = [{str: 'KB', val: 1024}];
-    ['MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'].forEach(function(el, i) {
-      compared.push({str: el, val: compared[i].val * 1024 });
-    });
+angular.module('a8m.math.kbFmt', ['a8m.math'])
+  .filter('kbFmt', ['$math', function ($math) {
     return function (bytes, decimal) {
+
       if(isNumber(decimal) && isFinite(decimal) && decimal%1===0 && decimal >= 0 &&
         isNumber(bytes) && isFinite(bytes)) {
-        var i = 0;
-        while (i < compared.length-1 && bytes >= compared[i].val) i++;
-        bytes /= i > 0 ? compared[i-1].val : 1;
-        return convertToDecimal(bytes, decimal) + ' ' + compared[i].str;
+        if(bytes < 1024) { // within 1 MB so KB
+          return convertToDecimal(bytes, decimal, $math) + ' KB';
+        } else if(bytes < 1048576) { // within 1 GB so MB
+          return convertToDecimal((bytes / 1024), decimal, $math) + ' MB';
+        } else if(bytes < 1073741824) { // within 1 TB so GB
+            return convertToDecimal((bytes / 1048576), decimal, $math) + ' GB';
+        } else if(bytes < 1099511627776 ) { // 1 PB so TB
+            return convertToDecimal((bytes / 1073741824), decimal, $math) + ' TB';
+        } else if(bytes < 1125899906842624) { // 1 EB so ZB
+            return convertToDecimal((bytes / 1099511627776), decimal, $math) + ' PB';
+        } else if(bytes < 1152921504606846976) { // 1 ZB so EB
+            return convertToDecimal((bytes / 1125899906842624), decimal, $math) + ' EB';
+        } else if(bytes < 1180591620717411303424) { // 1 YB so ZB
+            return convertToDecimal((bytes / 1152921504606846976), decimal, $math) + ' ZB';
+        } else { // 1 YB or more
+            return convertToDecimal((bytes / 1180591620717411303424), decimal, $math) + ' YB';
+        }
       }
-      return 'NaN';
+      return "NaN";
     }
-  });
+  }]);
+/**
+ * @ngdoc module
+ * @name math
+ * @description
+ * reference to global Math object
+ */
+angular.module('a8m.math', [])
+  .factory('$math', ['$window', function ($window) {
+    return $window.Math;
+  }]);
+
 /**
  * @ngdoc filter
  * @name max
@@ -53395,15 +53428,15 @@ angular.module('a8m.math.kbFmt', [])
  * Math.max will get an array and return the max value. if an expression
  * is provided, will return max value by expression.
  */
-angular.module('a8m.math.max', [])
-  .filter('max', ['$parse', function ($parse) {
+angular.module('a8m.math.max', ['a8m.math'])
+  .filter('max', ['$math', '$parse', function ($math, $parse) {
     return function (input, expression) {
 
       if(!isArray(input)) {
         return input;
       }
       return isUndefined(expression)
-        ? Math.max.apply(Math, input)
+        ? $math.max.apply($math, input)
         : input[indexByMax(input, expression)];
     };
 
@@ -53417,7 +53450,7 @@ angular.module('a8m.math.max', [])
       var mappedArray = array.map(function(elm){
         return $parse(exp)(elm);
       });
-      return mappedArray.indexOf(Math.max.apply(Math, mappedArray));
+      return mappedArray.indexOf($math.max.apply($math, mappedArray));
     }
   }]);
 /**
@@ -53429,15 +53462,15 @@ angular.module('a8m.math.max', [])
  * Math.min will get an array and return the min value. if an expression
  * is provided, will return min value by expression.
  */
-angular.module('a8m.math.min', [])
-  .filter('min', ['$parse', function ($parse) {
+angular.module('a8m.math.min', ['a8m.math'])
+  .filter('min', ['$math', '$parse', function ($math, $parse) {
     return function (input, expression) {
 
       if(!isArray(input)) {
         return input;
       }
       return isUndefined(expression)
-        ? Math.min.apply(Math, input)
+        ? $math.min.apply($math, input)
         : input[indexByMin(input, expression)];
     };
 
@@ -53451,7 +53484,7 @@ angular.module('a8m.math.min', [])
       var mappedArray = array.map(function(elm){
         return $parse(exp)(elm);
       });
-      return mappedArray.indexOf(Math.min.apply(Math, mappedArray));
+      return mappedArray.indexOf($math.min.apply($math, mappedArray));
     }
   }]);
 /**
@@ -53462,21 +53495,21 @@ angular.module('a8m.math.min', [])
  * @description
  * percentage between two numbers
  */
-angular.module('a8m.math.percent', [])
-  .filter('percent', function () {
+angular.module('a8m.math.percent', ['a8m.math'])
+  .filter('percent', ['$math', '$window', function ($math, $window) {
     return function (input, divided, round) {
 
-      var divider = isString(input) ? Number(input) : input;
+      var divider = isString(input) ? $window.Number(input) : input;
       divided = divided || 100;
       round = round || false;
 
-      if (!isNumber(divider) || isNaN(divider)) return input;
+      if (!isNumber(divider) || $window.isNaN(divider)) return input;
 
       return round
-        ? Math.round((divider / divided) * 100)
+        ? $math.round((divider / divided) * 100)
         : (divider / divided) * 100;
     }
-  });
+  }]);
 
 /**
  * @ngdoc filter
@@ -53486,19 +53519,19 @@ angular.module('a8m.math.percent', [])
  * @description
  * Convert angle from degrees to radians
  */
-angular.module('a8m.math.radians', [])
-  .filter('radians', function() {
+angular.module('a8m.math.radians', ['a8m.math'])
+  .filter('radians', ['$math', function ($math) {
     return function (degrees, decimal) {
       // if decimal is not an integer greater than -1, we cannot do. quit with error "NaN"
       // if degrees is not a real number, we cannot do also. quit with error "NaN"
       if(isNumber(decimal) && isFinite(decimal) && decimal%1===0 && decimal >= 0 &&
         isNumber(degrees) && isFinite(degrees)) {
         var radians = (degrees * 3.14159265359) / 180;
-        return Math.round(radians * Math.pow(10,decimal)) / (Math.pow(10,decimal));
+        return $math.round(radians * $math.pow(10,decimal)) / ($math.pow(10,decimal));
       }
-      return 'NaN';
+      return "NaN";
     }
-  });
+  }]);
 
  
  
@@ -53533,25 +53566,25 @@ angular.module('a8m.math.radix', [])
  * i.e: K for one thousand, M for Million, B for billion
  * e.g: number of users:235,221, decimal:1 => 235.2 K
  */
-angular.module('a8m.math.shortFmt', [])
-  .filter('shortFmt', function () {
+angular.module('a8m.math.shortFmt', ['a8m.math'])
+  .filter('shortFmt', ['$math', function ($math) {
     return function (number, decimal) {
       if(isNumber(decimal) && isFinite(decimal) && decimal%1===0 && decimal >= 0 &&
         isNumber(number) && isFinite(number)){
         if(number < 1e3) {
-          return '' + number;  // Coerce to string
+          return number;
         } else if(number < 1e6) {
-          return convertToDecimal((number / 1e3), decimal) + ' K';
+          return convertToDecimal((number / 1e3), decimal, $math) + ' K';
         } else if(number < 1e9){
-          return convertToDecimal((number / 1e6), decimal) + ' M';
+          return convertToDecimal((number / 1e6), decimal, $math) + ' M';
         } else {
-          return convertToDecimal((number / 1e9), decimal) + ' B';
+          return convertToDecimal((number / 1e9), decimal, $math) + ' B';
         }
 
       }
-      return 'NaN';
+      return "NaN";
     }
-  });
+  }]);
 /**
  * @ngdoc filter
  * @name sum
@@ -53762,23 +53795,6 @@ angular.module('a8m.match', [])
 
 /**
  * @ngdoc filter
- * @name phone-us
- * @kind function
- *
- * @description
- * format a string or a number into a us-style
- * phone number in the form (***) ***-****
- */
-angular.module('a8m.phoneUS', [])
-  .filter('phoneUS', function () {
-    return function(num) {
-      num += '';
-      return '(' + num.slice(0, 3) + ') ' + num.slice(3, 6) + '-' + num.slice(6);
-    }
-  });
-
-/**
- * @ngdoc filter
  * @name repeat
  * @kind function
  *
@@ -53853,47 +53869,6 @@ angular.module('a8m.slugify', [])
         : input;
     }
   }]);
-
-/**
- * @ngdoc filter
- * @name split
- * @kind function
- *
- * @description
- * split a string by a provided delimiter (none '' by default) and skip first n-delimiters
- */
-angular.module('a8m.split', [])
-  .filter('split', function () {
-    function escapeRegExp(str) {
-      return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-    }
-
-    return function (input, delimiter, skip) {
-      var _regexp, _matches, _splitted, _temp;
-
-      if (isUndefined(input) || !isString(input)) {
-        return null;
-      }
-      if (isUndefined(delimiter)) delimiter = '';
-      if (isNaN(skip)) skip = 0;
-
-      _regexp = new RegExp(escapeRegExp(delimiter), 'g');
-      _matches = input.match(_regexp);
-      
-      if (isNull(_matches) || skip >= _matches.length) {
-        return [input];
-      }
-
-      if (skip === 0) return input.split(delimiter);
-      
-      _splitted = input.split(delimiter);
-      _temp = _splitted.splice(0, skip + 1);
-      _splitted.unshift(_temp.join(delimiter));
-    
-      return _splitted;
-    };
-  })
-;
 
 /**
  * @ngdoc filter
@@ -54029,23 +54004,18 @@ angular.module('a8m.truncate', [])
  * ucfirst
  */
 angular.module('a8m.ucfirst', [])
-  .filter({
-    ucfirst: ucfirstFilter,
-    titleize: ucfirstFilter
-  });
-
-function ucfirstFilter() {
-  return function (input) {
-    return isString(input)
-      ? input
-      .split(' ')
-      .map(function (ch) {
-        return ch.charAt(0).toUpperCase() + ch.substring(1);
-      })
-      .join(' ')
-      : input;
-  }
-}
+  .filter('ucfirst', [function() {
+    return function(input) {
+      return isString(input)
+        ? input
+            .split(' ')
+            .map(function (ch) {
+              return ch.charAt(0).toUpperCase() + ch.substring(1);
+            })
+            .join(' ')
+        : input;
+    }
+  }]);
 
 /**
  * @ngdoc filter
@@ -54273,7 +54243,6 @@ angular.module('angular.filter', [
   'a8m.repeat',
   'a8m.test',
   'a8m.match',
-  'a8m.split',
 
   'a8m.to-array',
   'a8m.concat',
@@ -54307,6 +54276,7 @@ angular.module('angular.filter', [
   'a8m.join',
   'a8m.range',
 
+  'a8m.math',
   'a8m.math.max',
   'a8m.math.min',
   'a8m.math.abs',
