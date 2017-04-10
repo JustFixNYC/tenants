@@ -583,6 +583,7 @@
   	"kitchen":{
   		"title": "Kitchen",
   		"paint": "@:checklist.bedrooms.paint",
+      "cookingGas": "No Cooking Gas",
       "cracked": "@:checklist.bedrooms.cracked",
       "mold": "@:checklist.bedrooms.mold",
       "water": "@:checklist.bedrooms.water",
@@ -668,6 +669,7 @@
       "mice": "Mice",
       "rats": "Rats",
       "cockroaches": "Cockroaches",
+      "bedbugs": "Bedbugs",
       "hotWater": "No Hot water",
       "coldWater": "No Cold water",
       "heat": "No heat",

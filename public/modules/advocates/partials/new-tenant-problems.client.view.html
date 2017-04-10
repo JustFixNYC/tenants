@@ -1,24 +1,43 @@
 <div class="page-header">
-  <h3>{{'modules.onboarding.partials.onboardingProblems.header' | translate}}</h3>
+  <h3>{{'modules.onboarding.partials.onboardingDetails.header' | translate}}</h3>
   <h1>{{'modules.onboarding.partials.onboardingProblems.title' | translate}}</h1>
+  <p>Please add details about your tenants situation. You can always go back and add/remove items as things change!</p>
 </div>
 <div class="problems-container">
   <problems-checklist our-user="newTenantUser"></problems-checklist>
 </div>
+<div class="form-group form-submit-field">
+  <fieldset>
+      <div data-ng-show="error.errors" class="alert alert-danger">
+          <strong data-ng-repeat="err in error.errors">
+            <p data-ng-bind="err.message"></p>
+            <span ng-bind-html="'modules.onboarding.partials.onboardingDetails.errorMsg' | trustTranslate" compile-template></span>
+          </strong>
+      </div>
+      <div data-ng-show="error && !error.errors" class="alert alert-danger">
+          <strong>
+            <p data-ng-bind="error"></p>
+            <span ng-bind-html="'modules.onboarding.partials.onboardingDetails.errorMsg' | trustTranslate" compile-template></span>
+          </strong>
+      </div>
+      <!-- <div data-ng-show="userError" class="alert alert-danger">
+          <strong>
+            {{'modules.onboarding.partials.onboardingDetails.notComplete' | translate}}
+          </strong>
+      </div> -->
+  </fieldset>
+</div>
 <div class="form-group">
     <div class="row">
         <div class="col-xs-4">
-            <a ui-sref="advocateHome" class="btn btn-block btn-default">
+            <a ui-sref="newTenantSignup.details" class="btn btn-block btn-default">
               {{'modules.onboarding.partials.onboardingProblems.back' | translate}}
             </a>
         </div>
         <div class="col-xs-8">
-            <a ui-sref="newTenantSignup.details" class="btn btn-primary btn-block pull-right">
-              <span ng-if="newTenantUser.problems.length">
-              {{'modules.onboarding.partials.onboardingProblems.continue' | translate}}</span>
-              <span ng-if="!newTenantUser.problems.length">
-              {{'modules.onboarding.partials.onboardingProblems.skip' | translate}}</span>
-            </a>
+          <button ng-click="createNewTenant()" class="btn btn-primary btn-block pull-right">
+            {{'modules.onboarding.partials.onboardingDetails.createAcct' | translate}}
+          </button>
         </div>
     </div>
 </div>

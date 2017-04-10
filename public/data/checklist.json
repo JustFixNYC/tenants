@@ -25,6 +25,7 @@
     "title": "checklist.kitchen.title",
     "issues": [
       { "key": "checklist.kitchen.paint", "emergency": false },
+      { "key": "checklist.kitchen.cookingGas", "emergency": true },
       { "key": "checklist.kitchen.cracked", "emergency": false },
       { "key": "checklist.kitchen.mold", "emergency": true },
       { "key": "checklist.kitchen.water", "emergency": false },
@@ -119,6 +120,7 @@
       { "key": "checklist.entireHome.mice", "emergency": false },
       { "key": "checklist.entireHome.rats", "emergency": false },
       { "key": "checklist.entireHome.cockroaches", "emergency": false },
+      { "key": "checklist.entireHome.bedbugs", "emergency": false },
       { "key": "checklist.entireHome.hotWater", "emergency": false },
       { "key": "checklist.entireHome.coldWater", "emergency": false },
       { "key": "checklist.entireHome.heat", "emergency": false },

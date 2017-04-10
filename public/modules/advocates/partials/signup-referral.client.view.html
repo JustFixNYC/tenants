@@ -7,8 +7,10 @@
 
 	<div class="form-group" ng-class="{ 'has-error' : createAdvocateUserForm.$submitted && createAdvocateUserForm.code.$invalid }">
 		<label class="control-label" for="code">Create your unique Advocate Code</label>
-		<input class="form-control" placeholder="Ex: janedoe" name="code" ng-model="newAdvocateUser.code" required>
-		<p><em>Share this with your tenants when you refer them to JustFix.nyc.</em></p>
+		<p><em>
+			Share this with your tenants when you refer them to JustFix.nyc. It should be something easy to remember, like your first name and abbreviation of your organization. Example: <b>janelegalaid</b>
+		</em></p>
+		<input class="form-control" placeholder="Ex: janelegalaid" name="code" ng-model="newAdvocateUser.code" required>
 		<div ng-show="createAdvocateUserForm.$submitted || createAdvocateUserForm.code.$touched">
 			<p ng-show="createAdvocateUserForm.code.$error.required" class="text-danger">Please create an advocate code.</p>
 		</div>

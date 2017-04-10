@@ -1,6 +1,6 @@
 <div class="page-header">
-	<h3>{{'modules.onboarding.partials.onboardingDetails.header' | translate}}</h3>
-	<h1>Add New Tenant</h1>
+	<!-- <h3>{{'modules.onboarding.partials.onboardingProblems.header' | translate}}</h3> -->
+	<h1>Add New Managed Tenant</h1>
 	<p><b>Reminder:</b> This is an advocate-managed account. Only you will have access to this information!</p>
 </div>
 <form name="createUserForm" class="create-user-form" ng-submit="createNewTenant(createUserForm.$valid)" novalidate>
@@ -52,7 +52,7 @@
 
 		<div class="form-group apt-field col-xs-4" ng-class="{ 'has-error' : createUserForm.$submitted && createUserForm.unit.$invalid }">
 			<label class="control-label" for="unit">{{'modules.onboarding.partials.onboardingDetails.apt' | translate}}</label>
-			<input class="form-control" type="text" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.apt' | translate}}" name="unit" ng-model="newTenantUser.unit" required>
+			<input class="form-control" type="text" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.apt' | translate}}" name="unit" ng-model="newTenantUser.unit">
 			<div ng-show="createUserForm.$submitted || createUserForm.unit.$touched">
 				<p ng-show="createUserForm.unit.$error.required" class="text-danger">{{'modules.onboarding.partials.onboardingDetails.aptError' | translate}}</p>
 			</div>
@@ -90,12 +90,15 @@
 
     <div class="row">
       <div class="col-xs-4">
-        <a ui-sref="newTenantSignup.problems" class="btn btn-block btn-default">
+        <a ui-sref="advocateHome" class="btn btn-block btn-default">
           {{'modules.onboarding.partials.onboardingDetails.back' | translate}}
         </a>
       </div>
       <div class="col-xs-8">
-        <input type="submit"  class="btn btn-primary btn-block pull-right" value="{{'modules.onboarding.partials.onboardingDetails.createAcct' | translate}}">
+				<input type="submit"  class="btn btn-primary btn-block pull-right" value="{{'modules.onboarding.partials.onboardingDetails.createAcct' | translate}}">
+				<!-- <a ui-sref="newTenantSignup.problems" class="btn btn-block btn-primary pull-right">
+					Continue
+				</a> -->
       </div>
     </div>
 	</div>
