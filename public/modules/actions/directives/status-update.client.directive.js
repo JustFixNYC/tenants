@@ -104,7 +104,8 @@ angular.module('actions')
         };
 
         scope.files = [];
-        scope.isUploadingFiles = false;
+        scope.ustatus = {};
+        scope.ustatus.isUploadingFiles = false;
 
         scope.getTotalProgress = function() {
           var total = 0;
@@ -124,8 +125,20 @@ angular.module('actions')
           var d = new Date();
           scope.title = "img_" + d.getDate() + "_" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
 
+          var uploadTimer;
+          var uploadTimerThreshold = 1;         // in seconds
+
+          // var handleError = function(res) {
+          //   console.log('abort! abort!');
+          //
+          //   console.log(scope);
+          //   scope.isUploadingFiles = false;
+          //   scope.uploadingFilesError = res;
+          //
+          // };
+
           // for each file...
-          angular.forEach(files, function(file){
+          angular.forEach(files, function(file) {
             if (file && !file.$error) {
               file.upload = $upload.upload({
                 url: "https://api.cloudinary.com/v1_1/" + cloudinary.config().cloud_name + "/upload",
@@ -140,21 +153,43 @@ angular.module('actions')
                 file.progress = Math.round((e.loaded * 100.0) / e.total);
                 scope.isUploadingFiles = true;
 
+                console.log('progress');
+
+                if(!uploadTimer) {
+                  uploadTimer = $timeout(function () {
+                    Rollbar.warning("Request for the letter took too long to respond");
+                    // handleError('Request took too long.');
+                    // console.log('abort! abort!');
+
+                    // console.log(scope);
+                    // scope.isUploadingFiles = false;
+                    // scope.uploadingFilesError = 'Request took too long.';
+                    file.upload.abort();
+
+                  }, uploadTimerThreshold * 1000);
+                }
+
+
               }).success(function (data, status, headers, config) {
 
                 scope.isUploadingFiles = false;
-
                 scope.newActivity.photos.push({
                   url: data.url,
                   secure_url: data.secure_url,
                   cloudinary_public_id: data.public_id
                 });
-
               }).error(function (data, status, headers, config) {
 
+                console.log('data', data);
+                console.log('status', status);
+                // console.log('headers', headers);
+                console.log('config', config);
+
+                // file.upload.abort();
                 scope.isUploadingFiles = false;
+                scope.uploadingFilesError = 'hi dan';
                 file.result = data;
-                scope.uploadingFilesError = data;
+                // handleError(data);
               });
             }
           });
