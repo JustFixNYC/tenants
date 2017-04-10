@@ -3737,7 +3737,11 @@ angular.module('findhelp').directive('cartoMap', ['$rootScope', 'CartoDB', funct
           }]
         };
 
-        cartodb.createLayer(map, layerSource)
+        var cartoMapOptions = {
+          https: true
+        };
+
+        cartodb.createLayer(map, layerSource, cartoMapOptions)
           .addTo(map)
           .done(function(layer) {
             mainSublayer = layer.getSubLayer(0);
