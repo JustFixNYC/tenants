@@ -380,6 +380,7 @@
 					"getHelp": "Continuar sin código",
 					"errorSubmit": "Hubo un error con la introducción de este código. <a ui-sref=\"contact\">Contáctenos</a> si necesita asistencia.",
 					"errorCode": "¡Lo sentimos! Este código defensor no compagina con nada en nuestra base de datos – asegúrese de haber introducido el código correcto. <a ui-sref=\"contact\">Contáctenos</a> si necesita asistencia.",
+          "signIn": "¿Ya tienes una cuenta? <a ui-sref=\"signin\">Iniciar su sesión aquí.</a>",
           "learnMore": "¿Tiene interés en saber más acerca de nuestra organización? <a href=\"https://www.justfix.nyc/our-mission\">Lea nuestra misión.</a>"
 				},
 				"onboardingDetails": {
@@ -490,7 +491,7 @@
 						"password": "Contraseña",
 						"forgot": "Olvidé mi contraseña.",
 						"signIn": "@:repeating.signIn",
-						"signUp": "¿No tiene cuenta? ¡Regístrese ahora!",
+            "signUp": "¿No tiene cuenta? <a href=\"/signup\">¡Regístrese ahora!</a>",
             "contactText": "Contáctenos",
 						"contactUsFinal": " si necesita asistencia u olividó su contraseña."
 					}

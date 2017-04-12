@@ -377,6 +377,7 @@
 					"getHelp": "Continue Without Code",
 					"errorSubmit": "There was an error submitting this code. Please <a ui-sref=\"contact\">Contact Us</a> if you need assistance.",
 					"errorCode": "Sorry! This advocate code does not match anything in our database - please double check that you entered the correct code. Please <a ui-sref=\"contact\">Contact Us</a> if you need assistance.",
+          "signIn": "Already have an account? <a ui-sref=\"signin\">Sign in here!</a>",
           "learnMore": "Interested in learning more about our nonprofit organization? <a href=\"https://www.justfix.nyc/our-mission\">Read Our Mission.</a>"
 				},
 				"onboardingDetails": {
@@ -487,7 +488,7 @@
 						"password": "Password",
 						"signIn": "@:repeating.signIn",
 						"forgot": "I forgot my password.",
-						"signUp": "Don’t have an account yet? Sign up now!",
+						"signUp": "Don’t have an account yet? <a href=\"/signup\">Sign up now!</a>",
             "contactText": "Contact Us",
 						"contactUsFinal": " if you need assistance or forgot your password."
 					}
