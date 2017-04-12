@@ -24,16 +24,14 @@ angular.module('core').run(['$rootScope', '$state', '$location', '$window', 'Aut
       if(toState.user) {
 				if(!Authentication.user) {
 					// event.preventDefault();
-					// $state.go('signin');
           $location.path('/signin');
 				} else if(Authentication.user.roles.indexOf(toState.user) === -1) {
 					// event.preventDefault();
-					// $state.go('not-found');
           $location.path('/not-found');
 				}
 			}
 
-      // protected areas
+      // protected areas -- TODO: should be deprecated
       if(!Authentication.user && toState.data && toState.data.protected) {
         // event.preventDefault();
         // $state.go('signin');

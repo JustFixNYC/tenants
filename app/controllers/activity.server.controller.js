@@ -278,6 +278,8 @@ var processAndSavePhoto = function(file) {
 
 var create = function(req, res, next) {
 
+  res.status(500).send({ message: "Testing" });
+
   if(req.user) {
 
     // format req.body;

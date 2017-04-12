@@ -2280,16 +2280,14 @@ angular.module('core').run(['$rootScope', '$state', '$location', '$window', 'Aut
       if(toState.user) {
 				if(!Authentication.user) {
 					// event.preventDefault();
-					// $state.go('signin');
           $location.path('/signin');
 				} else if(Authentication.user.roles.indexOf(toState.user) === -1) {
 					// event.preventDefault();
-					// $state.go('not-found');
           $location.path('/not-found');
 				}
 			}
 
-      // protected areas
+      // protected areas -- TODO: should be deprecated
       if(!Authentication.user && toState.data && toState.data.protected) {
         // event.preventDefault();
         // $state.go('signin');
@@ -4935,8 +4933,8 @@ angular.module('tutorial').controller('TutorialController', ['$scope', '$sce', '
 angular.module('users')
 	.config(['$httpProvider', function($httpProvider) {
 			// Set the httpProvider "not authorized" interceptor
-			$httpProvider.interceptors.push(['$rootScope', '$q', '$location', 'Authentication',
-				function($rootScope, $q, $location, Authentication) {
+			$httpProvider.interceptors.push(['$rootScope', '$q', '$location', '$injector', 'Authentication',
+				function($rootScope, $q, $location, $injector, Authentication) {
 					return {
 						responseError: function(rejection) {
 
@@ -4946,20 +4944,14 @@ angular.module('users')
 									// Deauthenticate the global user
 									Authentication.user = null;
 
+									console.log('not logged in');
+
 									// Redirect to signin page
-									$location.path('/signin');
+									$injector.get('$state').transitionTo('signin');
 									break;
 								case 403:
-
-									console.log('unauthorized');
-									$location.path('/not-found');
-
-									// $rootScope.evalAsync(function () {
-									// 	// Add unauthorized behaviour
-									//
-									// });
-
-									// $state.go('not-found');
+									console.log('unauthorized or not found');
+									$injector.get('$state').transitionTo('not-found');
 									break;
 							}
 
