@@ -4947,12 +4947,12 @@ angular.module('users')
 									Authentication.user = null;
 
 									// Redirect to signin page
-									$location.path('signin');
+									$location.path('/signin');
 									break;
 								case 403:
 
 									console.log('unauthorized');
-									$location.path('not-found');
+									$location.path('/not-found');
 
 									// $rootScope.evalAsync(function () {
 									// 	// Add unauthorized behaviour
