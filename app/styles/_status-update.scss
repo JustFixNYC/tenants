@@ -13,6 +13,18 @@
     overflow: visible;
     height: auto;
   }
+  &.extra-expanded {
+    height: 67vh;
+
+    .form-control {
+      font-size: 18px !important;
+      height: 17.5em;
+    }
+
+    .status-update-open {
+      padding: 20px;
+    }
+  }
 
   &:not(.add-details) {
     @media (min-width: $screen-sm-min) {
@@ -71,6 +83,7 @@
       border: none;
       padding: 0;
       background-color: transparent;
+
     }
 
     .text-danger {

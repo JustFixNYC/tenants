@@ -1,5 +1,5 @@
-<div class="status-update" ng-class="{ 'expanded' : status.expanded }">
-  <button type="button" class="close" aria-label="Close" ng-show="status.expanded" data-ng-click="status.expanded = false" ng-cloak><span aria-hidden="true">&times;</span></button>
+<div class="status-update" ng-class="{ 'expanded' : status.expanded,  'extra-expanded' : status.extraExpanded }">
+  <button type="button" class="close" aria-label="Close" ng-show="status.expanded" data-ng-click="status.expanded = false; status.extraExpanded = false" ng-cloak><span aria-hidden="true">&times;</span></button>
   <!-- <span class="status-update-closed-icon glyphicon glyphicon-edit" ng-if="!status.expanded"></span> -->
   <span class="status-update-closed-icon glyphicon glyphicon-camera" ng-if="!status.expanded"></span>
   <!-- <div  ngf-select="addPhoto($file)"
