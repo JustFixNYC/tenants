@@ -278,8 +278,6 @@ var processAndSavePhoto = function(file) {
 
 var create = function(req, res, next) {
 
-  res.status(500).send({ message: "Testing" });
-
   if(req.user) {
 
     // format req.body;
@@ -348,7 +346,7 @@ var create = function(req, res, next) {
           if(r.state !== 'fulfilled') {
             console.log(r.reason);
             rollbar.handleError(r.reason, req);
-            res.status(500).send({ message: "Photo is not fulfilled" });
+            return res.status(500).send({ message: "Photo is not fulfilled" });
           }
 
           newActivity.photos.push({
@@ -379,12 +377,12 @@ var create = function(req, res, next) {
 
         // console.log('s3 error', err);
         rollbar.handleError(err, req);
-        res.status(500).send({ message: errorHandler.getErrorMessage(err) });
+        return res.status(500).send({ message: errorHandler.getErrorMessage(err) });
 
       });
 
   } else {
-    res.status(400).send({
+    return res.status(400).send({
       message: 'User is not signed in'
     });
   }
