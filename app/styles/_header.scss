@@ -202,8 +202,22 @@ header {
   .header-btn, .header-btn.header-btn-main, .header-btn a {
     color: $darkgray-dark;
     border-color: $darkgray-dark;
+
+    // spanish language landing page
+    body.landing & {
+      color: #fff;
+      border-color: #fff;
+
+      &:hover {
+        background-color: #fff;
+        color: $darkgray-dark;        
+      }
+    }
   }
 }
+
+
+
 #header-wrapper.inner {
 
   .header-brand > .logo > svg * {

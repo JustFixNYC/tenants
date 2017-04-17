@@ -58,6 +58,17 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 				disableBack: true
 			}
 		})
+		.state('oldLanding', {
+			url: '/espanol',
+			templateUrl: 'modules/core/views/landing.client.view.html',
+			onEnter: function(LocaleService, $state) {
+				LocaleService.setLocaleByName('es_mx');
+			},
+			data: {
+				disableBack: true
+			},
+			globalStyles: 'landing white-bg'
+		})
 		// .state('manifesto', {
 		// 	url: '/manifesto',
 		// 	templateUrl: 'modules/core/views/manifesto.client.view.html',
@@ -65,13 +76,13 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$provide
 		// 		disableBack: true
 		// 	}
 		// })
-		.state('espanol', {
-			url: '/espanol',
-			onEnter: function(LocaleService, $state) {
-				LocaleService.setLocaleByName('es_mx');
-				$state.go('landing');
-			}
-		})
+		// .state('espanol', {
+		// 	url: '/espanol',
+		// 	onEnter: function(LocaleService, $state) {
+		// 		LocaleService.setLocaleByName('es_mx');
+		// 		$state.go('landing');
+		// 	}
+		// })
 		.state('donate', {
 			url: '/donate',
 			onEnter: function($window) {

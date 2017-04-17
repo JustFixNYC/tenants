@@ -79,9 +79,10 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     // https://github.com/angular-ui/ui-router/issues/1307
     var setHeaderState = function(name) {
       switch(name) {
-        case 'landing':
+        case 'landing': case 'oldLanding':
           $rootScope.headerInner = false;
-          $rootScope.headerLightBG = true;
+          // $rootScope.headerLightBG = true;
+          $rootScope.headerLightBG = false;
           break;
         case 'manifesto':
           $rootScope.headerInner = false;
