@@ -91,7 +91,7 @@ exports.updateManagedTenant = function(req, res) {
         res.end(); // important to update session
       })
       .catch(function (err) {
-        rollbar.handleError("Error updating tenant info", req);
+        rollbar.handleError(err, req);
         res.status(400).send({ message: errorHandler.getErrorMessage(err) });
 			});
   }
