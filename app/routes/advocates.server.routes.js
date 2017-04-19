@@ -31,6 +31,7 @@ module.exports = function(app) {
 	app.route('/api/advocates/tenants/create').post(users.hasAuthorization(['advocate']), problems.updateActivitiesFromChecklist, advocates.createNewTenant);
 
 	app.route('/api/advocates/tenants/:id').post(users.hasAuthorization(['advocate']), advocates.isManagedTenant, multipartMiddleware, activity.create, advocates.updateManagedTenant);
+
 	app.route('/api/advocates/tenants/:id/checklist').put(users.hasAuthorization(['advocate']), advocates.isManagedTenant, problems.updateActivitiesFromChecklist, advocates.updateManagedTenant);
 
 

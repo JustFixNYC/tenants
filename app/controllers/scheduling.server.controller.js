@@ -42,7 +42,7 @@ exports.bookDate = function (req, res) {
       });
     })
     .catch(function (err) {
-      rollbar.handleError("Scheduling Error", { phone: req.body.appt.phone, error: err }, req);
+      rollbar.handleErrorWithPayloadData("Scheduling Error", { phone: req.body.appt.phone, error: err }, req);
       res.status(500).send({ message: errorHandler.getErrorMessage(err) });
     });
 };
