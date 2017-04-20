@@ -1,6 +1,7 @@
 'use strict';
 
-var config = require('../config/config'),
+var init = require('../config/init')(),
+	  config = require('../config/config'),
     path = require('path');
 
 var mongoose = require('mongoose');
@@ -10,11 +11,12 @@ var mongodb = null;
 mongoose.Promise = require('q').Promise;
 
 // Globbing model files
-config.getGlobbedFiles('./app/models/**/*.js').forEach(function(modelPath) {
+config.getGlobbedFiles('../app/models/**/*.js').forEach(function(modelPath) {
   require(path.resolve(modelPath));
 });
 
 console.log('Connecting to: ' + config.db);
+
 
 mongoose.connect(config.db);
 
