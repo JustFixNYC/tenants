@@ -45,7 +45,11 @@ var requestGeoclient = function(boro, address) {
       app_key: config.geoclient.key
   };
 
-  request({ url: config.geoclient.url, qs:params }, function (error, response, body) {
+  request({
+      url: config.geoclient.url,
+      qs:params,
+      agentOptions: { rejectUnauthorized: false }   // ssl is expired...
+    }, function (error, response, body) {
 
     if(error) {
       geoclient.reject('[GEOCLIENT ERROR - 0] ' + error);
