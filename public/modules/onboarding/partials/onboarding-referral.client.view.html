@@ -1,0 +1,30 @@
+<div class="page-header">
+  <img src="/modules/core/img/brand/icon_only.svg" alt="JustFix.nyc" />
+  <h1>Welcome to the JustFix.nyc Tenant App!</h1>
+
+</div>
+
+  <p>
+    JustFix.nyc is a free service that helps you get repairs in your home. Here's the information on your advocate.
+  </p>
+
+  <br />
+  <div ng-if="user.advocate">
+    <p><strong>{{'modules.users.views.settings.landing.advocateInfo' | translate}}</strong></p>
+    <p>{{user.advocate.fullName}}</p>
+    <p>{{user.advocate.organization}}</p>
+    <p><a ng-href="tel:{{user.advocate.contactPhone + (authentication.user.advocate.contactPhoneExt ? (',' + authentication.user.advocate.contactPhoneExt) : '') }}"
+          class="text-link">
+            {{user.advocate.contactPhone + (authentication.user.advocate.contactPhoneExt ? (',' + authentication.user.advocate.contactPhoneExt) : '') | tel}}
+        </a>
+    </p>
+    <p><a ng-href="mailto:{{user.advocate.email}}" class="text-link">{{user.advocate.email}}</a></p>
+    <br/>
+  </div>
+  
+  <p>
+    As you document your situation, your advocate can review everything that you upload.This evidence can be used for
+    legal cases, negotiating with your landlord, and getting public attention!
+  </p>
+  <br />
+  <button class="btn btn-primary btn-block" ui-sref="advocateSignup.details" go-to-top>Continue</button>
