@@ -59,6 +59,52 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
           disableBack: true
         }
       })
+    //kiran changes
+      .state('onboarding.referral', {
+        url: '/referral',
+        templateUrl: 'modules/onboarding/partials/onboarding-referral.client.view.html',
+        onboarding: true,
+        data: {
+          disableBack: true
+        },
+        resolve: {
+          advocate: ['$location', 'AdvocatesResource', function($location, AdvocatesResource) {
+
+            var advocateQueryString = $location.search().q;
+            //alert(advocateQueryString);
+            console.log(advocateQueryString);
+
+            var referral = new AdvocatesResource();
+            referral.$validateNewUser({ code: advocateQueryString },
+              function(success) {
+                // return advocate data
+                  if(success.advocate) {
+                          $scope.accessCode.valid = $rootScope.validated = true;
+                          $scope.accessCode.valueEntered = $scope.accessCode.value;
+                            $scope.newUser.advocate = success.advocate;
+                            $scope.newUser.advocateRole = success.advocateRole;
+                          $scope.referral = success.referral;
+                            $scope.newUser.sharing.enabled = true;
+                            //$location.path('/onboarding/success');
+                            $scope.codeError = false;
+                            $scope.codeWrong = false;
+                        } else {
+                          $scope.codeError = false;
+                          $scope.codeWrong = true;
+                    }
+                return success;
+              },
+              function(error) {
+                // redirect to the main landing page
+                $location.path('/signup');
+            
+              })
+
+
+          }]
+        }
+      })
+      //kiran changes
       .state('onboarding.scheduleNew', {
         url: '/consultation/new',
         templateUrl: 'modules/onboarding/partials/onboarding-schedule.client.view.html'
