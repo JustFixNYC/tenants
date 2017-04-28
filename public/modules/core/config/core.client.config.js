@@ -44,6 +44,11 @@ angular.module('core').run(['$rootScope', '$state', '$location', '$window', 'Aut
         $rootScope.expandStatus = true;
       }
 
+	//kiran changes
+      if($location.search().q) {
+        $location.path('/onboarding/referral');
+      }
+      //kiran changes
     });
 
     // set global styles
