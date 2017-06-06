@@ -145,6 +145,7 @@ module.exports = function(db) {
 	app.disable('x-powered-by');
 
 	// Force HTTPS
+	// disable this for ssl renewal (verifies via http)
 	if (process.env.NODE_ENV === 'production') {
 		app.use('*',function(req,res,next) {
 		  if(req.headers['x-forwarded-proto'] !== 'https') {
@@ -157,6 +158,10 @@ module.exports = function(db) {
 		});
 	}
 
+	// use this for ssl renewal
+	// app.use('/.well-known/acme-challenge/XXXXXXXXXX', function(req, res) {
+	//   res.send('YYYYYYYYYYY');
+	// });
 
 	// Globbing routing files
 	config.getGlobbedFiles('./app/routes/**/*.js').forEach(function(routePath) {
