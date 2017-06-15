@@ -47,7 +47,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 					$scope.status.loading = false;
 					$scope.status.created = true;
 					$scope.letterUrl = data;
-					Rollbar.info("New Letter of Complaint!", { phone: Authentication.user.phone, letterUrl: data });
+					Rollbar.info("New Letter of Complaint!", { name: Authentication.user.fullName, phone: Authentication.user.phone, letterUrl: data });
 					$scope.newActivity.fields.push({ title: 'letterURL', value: data });
 	  		},
 	  		function failure(error) {
