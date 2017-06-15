@@ -905,7 +905,7 @@
 	    }
 	  },
 	  "mailLetter": {
-	    "title": "Envíe una Carta de Queja Oficial (Paso 3 de 3)",
+	    "title": "Envíe una Carta de Queja Oficial",
 	    "activityTitle": "Envié una Carta de Queja Oficial",
 	    "content": "Para tener un registro formal de sus peticiones, necesitará enviar una carta al casero. <b>Hemo escrito una carta que usted puede enviar que incluye los problemas de reparaciones que indicó.</b>",
 	    "cta": {

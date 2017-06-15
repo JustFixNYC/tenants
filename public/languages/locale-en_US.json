@@ -901,7 +901,7 @@
 	    }
 	  },
 	  "mailLetter": {
-	    "title": "Mail an Official Letter of Complaint (Step 3 of 3)",
+	    "title": "Mail an Official Letter of Complaint",
 	    "activityTitle": "Created an Official Letter of Complaint",
 	    "content": "In order to have a formal record of your requests, you need to mail a letter to your landlord. <b>We've drafted a letter that you can send including the repair issues that you've selected.</b><span ng-if='!userCompletedDetails()'><br /><br />Make sure to <b>Add Details</b> (located above) first to provide the most detailed information!</span>",
 	    "cta": {

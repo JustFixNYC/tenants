@@ -129,7 +129,7 @@
     "activityTitle": "actions.contactSuper.activityTitle",
     "content": "actions.contactSuper.content",
     "key": "contactSuper",
-    "addIf": ["hasProblems"],
+    "addIf": ["DISABLED"],
     "type": "once",
     "cta": {
       "type": "modal",
@@ -146,7 +146,7 @@
     "activityTitle": "actions.emailLandlord.activityTitle",
     "content": "actions.emailLandlord.content",
     "key": "emailLandlord",
-    "addIf": ["contactSuper"],
+    "addIf": ["DISABLED"],
     "type": "once",
     "cta": {
       "type": "modal",
@@ -163,7 +163,7 @@
     "activityTitle": "actions.mailLetter.activityTitle",
     "content": "actions.mailLetter.content",
     "key": "sendLetter",
-    "addIf": ["emailLandlord"],
+    "addIf": ["hasProblems"],
     "type": "once",
     "cta": {
       "type": "modal",
