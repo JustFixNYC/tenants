@@ -34,5 +34,8 @@ module.exports = function(app) {
 
 	app.route('/api/advocates/tenants/:id/checklist').put(users.hasAuthorization(['advocate']), advocates.isManagedTenant, problems.updateActivitiesFromChecklist, advocates.updateManagedTenant);
 
+	app.route('/api/advocates/referrals/sms').post(users.hasAuthorization(['advocate']), advocates.sendReferralSMS);
+
+
 
 };

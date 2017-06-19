@@ -6,8 +6,9 @@
       <p><b>Your Advocate Code:</b> {{ user.code }}</p>
     </div>
 
-    <div>
-      <a ui-sref="newTenantSignup.details" class="btn btn-info pull-right-on-desktop">New Managed Tenant</a>
+    <div class="pull-right-on-desktop">
+      <a ui-sref="newTenantSignup.details" class="btn btn-info">New Managed Tenant</a>
+      <a ng-click="openReferralModal()" class="btn btn-success">Text Signup Link</a>
     </div>
   </div>
 
