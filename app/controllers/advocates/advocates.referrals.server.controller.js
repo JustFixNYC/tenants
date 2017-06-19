@@ -7,6 +7,7 @@ var _ = require('lodash'),
   escapeRegExp = require('lodash.escaperegexp'),
   Q = require('q'),
   errorHandler = require('../errors.server.controller'),
+  twilioHandler = require('../../services/twilio.server.service.js'),
   mongoose = require('mongoose'),
   passport = require('passport'),
   rollbar = require('rollbar'),
@@ -105,4 +106,26 @@ exports.linkToSupport = function(req, res, next) {
       req.body.advocate = advocate._id;
       next();
     });
+};
+
+exports.sendReferralSMS = function(req, res) {
+
+  var toCellNo = req.body.phone;
+  var bodyStr = req.body.message;
+
+  twilioHandler.sendSMSMessage(toCellNo, bodyStr)
+    .then(function (message) {
+      console.log('done', message);
+      res.json({
+        status: 'success'
+      });
+    })
+    .catch(function (err) {
+      rollbar.handleError("Twilio Error", { error: err }, req);
+      res.status(500).send({
+        message: 'Error with the Twilio SMS system.'
+      });
+    });
+
+
 };

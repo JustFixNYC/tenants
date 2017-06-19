@@ -44,4 +44,17 @@ angular.module('advocates').controller('AdvocateController', ['$rootScope', '$sc
 			$state.go('manageTenant.home', { id: tenant._id});
 		};
 
+		$scope.openReferralModal = function() {
+
+			var modalInstance = $modal.open({
+				//animation: false,
+				templateUrl: 'modules/advocates/partials/sms-referral.html',
+				controller: 'SMSReferralController',
+				backdrop: 'static',
+				resolve: {
+					// newActivity: function () { return scope.newActivity; }
+				}
+			});
+		};
+
 	}]);
