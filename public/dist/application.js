@@ -2035,7 +2035,7 @@ angular.module('actions').controller('SMSReferralController', ['$rootScope', '$s
 	function ($rootScope, $scope, $sce, $timeout, $modalInstance, Authentication, Advocates, $window) {
 
 		$scope.sms = {
-			phone: '8459781262',
+			phone: '',
 			userMessage: '',
       message: '',
       includeCode: true
@@ -2066,7 +2066,7 @@ angular.module('actions').controller('SMSReferralController', ['$rootScope', '$s
 
     $scope.$watch('sms.includeCode', function(newVal, oldVal) {
       if(newVal) {
-        signupLink += '&q=' + Authentication.user.code;
+        signupLink += '?q=' + Authentication.user.code;
         $scope.sms.userMessage = "Start using JustFix.nyc to send info to " + Authentication.user.firstName + " at " + Authentication.user.organization + "!";
       } else {
         signupLink = originalLink;
