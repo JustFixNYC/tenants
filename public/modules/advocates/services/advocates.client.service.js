@@ -14,6 +14,10 @@ angular.module('advocates')
 				validateNewUser: {
 					method: 'GET',
 					url: '/api/advocates/validate/new'
+				},
+				sendReferralSMS: {
+					method: 'POST',
+					url: '/api/advocates/referrals/sms'
 				}
 	      // ,
 	      // getIssues: {

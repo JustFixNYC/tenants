@@ -10,6 +10,19 @@ angular.module('core').directive('variableHeight', ['$document', '$timeout', fun
         $scope.$watch(function() {
           angular.element(parentElm).css('height', $element[0].offsetHeight + 'px');
         });
+
+        $scope.$parent.$watch("elemHasChanged", function (newVal, oldVal) {
+          if(newVal) {
+            angular.element(parentElm).css('height', $element[0].offsetHeight + 'px');
+          }
+        });
+
+
+        // $scope.$watch(function () {
+        //     return $element[0].offsetHeight;
+        //   }, function (newVal, oldVal) {
+        //     console.log(newVal, oldVal);
+        //   });
     }
   };
 }]);
