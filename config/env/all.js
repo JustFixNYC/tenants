@@ -86,8 +86,8 @@ module.exports = {
 		key: process.env.ACUITY_API_KEY
 	},
 	twilio:{
-		accountSid: process.env.ACCOUNT_SID,
-		authToken: process.env.AUTH_TOKEN,
+		accountSid: process.env.TWILIO_ACCOUNT_SID,
+		authToken: process.env.TWILIO_AUTH_TOKEN,
 		twilioNumber: process.env.TWILIO_NUMBER
 	}
 };

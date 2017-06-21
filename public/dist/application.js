@@ -1800,6 +1800,19 @@ angular.module('advocates').controller('AdvocateController', ['$rootScope', '$sc
 			$state.go('manageTenant.home', { id: tenant._id});
 		};
 
+		$scope.openReferralModal = function() {
+
+			var modalInstance = $modal.open({
+				//animation: false,
+				templateUrl: 'modules/advocates/partials/sms-referral.html',
+				controller: 'SMSReferralController',
+				backdrop: 'static',
+				resolve: {
+					// newActivity: function () { return scope.newActivity; }
+				}
+			});
+		};
+
 	}]);
 
 'use strict';
@@ -2018,6 +2031,123 @@ angular.module('advocates').controller('NewTenantSignupController', ['$rootScope
 
 'use strict';
 
+angular.module('actions').controller('SMSReferralController', ['$rootScope', '$scope', '$sce', '$timeout', '$modalInstance', 'Authentication', 'Advocates', '$window',
+	function ($rootScope, $scope, $sce, $timeout, $modalInstance, Authentication, Advocates, $window) {
+
+		$scope.sms = {
+			phone: '8459781262',
+			userMessage: '',
+      message: '',
+      includeCode: true
+		};
+
+    $scope.status = {
+			loading: false,
+			sent: false,
+			error: false
+		};
+
+    $scope.messageMaxLength = 160;
+
+    var TEXT_MAX_LENGTH = 160;
+    var signupLink = 'https://www.justfix.nyc/signup';
+    var originalLink = signupLink;
+    var signupPrompt;
+
+    var updateMessage = function() {
+
+      $scope.sms.message = $scope.sms.userMessage + signupPrompt;
+      $scope.length = $scope.sms.message.length;
+
+      // represents the max amount of characters the user can enter
+      $scope.messageMaxLength = TEXT_MAX_LENGTH - signupPrompt.length;
+    };
+
+
+    $scope.$watch('sms.includeCode', function(newVal, oldVal) {
+      if(newVal) {
+        signupLink += '&q=' + Authentication.user.code;
+        $scope.sms.userMessage = "Start using JustFix.nyc to send info to " + Authentication.user.firstName + " at " + Authentication.user.organization + "!";
+      } else {
+        signupLink = originalLink;
+        $scope.sms.userMessage = "Start using JustFix.nyc to document your issues!";
+      }
+
+      signupPrompt = ' Sign up at: ' + signupLink;
+
+      updateMessage();
+    });
+
+    $scope.$watch('sms.userMessage', function(newVal, oldVal) {
+      updateMessage();
+    });
+
+
+		var timerCountdown = 30;
+		var setCreationTimer = function() {
+			$timeout(function () {
+				if(!$scope.status.sent) {
+					$scope.status.loading = false;
+					$scope.status.error = true;
+					Rollbar.warning("Request for the sms took too long to respond");
+	  			$scope.errorCode = 'Request for the sms took too long to respond';
+				}
+			}, timerCountdown * 1000);
+		};
+
+
+    $scope.sendSMS = function() {
+
+      if($scope.sms.userMessage.length > $scope.messageMaxLength) {
+        $scope.lengthError = true;
+      } else {
+        $scope.lengthError = false;
+      }
+
+      if(!$scope.sms.phone.length) {
+        $scope.phoneError = true;
+      } else {
+        $scope.phoneError = false;
+      }
+
+			if($scope.lengthError || $scope.phoneError) {
+				// display the error messages
+				// necessary to trigger a change in height
+				$timeout(function () {
+					$scope.elemHasChanged = true;
+				});
+			} else {
+
+				$scope.status.loading = true;
+
+				Advocates.sendReferralSMS({}, { phone: $scope.sms.phone, message: $scope.sms.message},
+					function (success) {
+						setCreationTimer();
+						$scope.status.loading = false;
+						$scope.status.sent = true;
+					},
+					function (error) {
+						$scope.status.loading = false;
+						$scope.status.error = true;
+						Rollbar.error("Error with SMS referral service");
+		  			$scope.errorCode = error.data.message;
+					}
+				);
+			}
+
+    };
+
+	  $scope.cancel = function() {
+	    $modalInstance.dismiss('cancel');
+	  };
+
+		$scope.done = function() {
+			$modalInstance.close({});
+		};
+	}]);
+
+'use strict';
+
 angular.module('advocates')
   .directive('addDetails', ['$rootScope', '$filter', '$sce', '$timeout', 'Activity', 'Advocates', 'Problems',
     function ($rootScope, $filter, $sce, $timeout, Activity, Advocates, Problems) {
@@ -2184,6 +2314,10 @@ angular.module('advocates')
 				validateNewUser: {
 					method: 'GET',
 					url: '/api/advocates/validate/new'
+				},
+				sendReferralSMS: {
+					method: 'POST',
+					url: '/api/advocates/referrals/sms'
 				}
 	      // ,
 	      // getIssues: {
@@ -2210,6 +2344,8 @@ angular.module('advocates')
 
 		return {
 			query: AdvocatesResource.query,
+			validateNewUser: AdvocatesResource.validateNewUser,
+			sendReferralSMS: AdvocatesResource.sendReferralSMS,
 			setCurrentTenant: function(tenant) {
 				_this._currentTenant = tenant;
 			},
@@ -2259,21 +2395,28 @@ angular.module('advocates')
 'use strict';
 
 // Setting up route
-angular.module('core').run(['$rootScope', '$state', '$location', '$window', 'Authentication',
-  function($rootScope, $state, $location, $window, Authentication) {
+angular.module('core').run(['$rootScope', '$state', '$location', '$window', '$timeout', 'Authentication',
+  function($rootScope, $state, $location, $window, $timeout, Authentication) {
 
     // preserve query string across location redirects
     $rootScope.$on('$locationChangeStart', function(event, newUrl, oldUrl) {
 
-      if (oldUrl.indexOf('?') >= 0) {
-        var queryString =  oldUrl.split('?')[1];
-        newUrl = $location.$$path + '?' + queryString;
-        $location.url(newUrl);
+      if(!$rootScope.clearQueryString) {
+        if (oldUrl.indexOf('?') >= 0) {
+          var queryString =  oldUrl.split('?')[1];
+          newUrl = $location.$$path + '?' + queryString;
+          $location.url(newUrl);
+        }
+      } else {
+        $rootScope.clearQueryString = false;
       }
 
-      // is this necessary?
-      // event.preventDefault();
-      // return;
+    });
+
+    // Used mainly if a Promise on resolve gets rejected...
+    $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
+      Rollbar.error(error);
+      $state.go('landing');
     });
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
@@ -2301,6 +2444,12 @@ angular.module('core').run(['$rootScope', '$state', '$location', '$window', 'Aut
       if($location.search().status) {
         $rootScope.expandStatus = true;
       }
+
+      // SMS referral
+      // if($location.search().q && !$rootScope.qRedirected) {
+      //   $rootScope.qRedirected = true;
+      //   $location.path('/onboarding/referral');
+      // }
 
     });
 
@@ -3223,6 +3372,19 @@ angular.module('core').directive('variableHeight', ['$document', '$timeout', fun
         $scope.$watch(function() {
           angular.element(parentElm).css('height', $element[0].offsetHeight + 'px');
         });
+
+        $scope.$parent.$watch("elemHasChanged", function (newVal, oldVal) {
+          if(newVal) {
+            angular.element(parentElm).css('height', $element[0].offsetHeight + 'px');
+          }
+        });
+
+
+        // $scope.$watch(function () {
+        //     return $element[0].offsetHeight;
+        //   }, function (newVal, oldVal) {
+        //     console.log(newVal, oldVal);
+        //   });
     }
   };
 }]);
@@ -4084,6 +4246,10 @@ angular.module('onboarding').run(['$rootScope', '$location', 'Authentication', '
 			Users.me();
 		}
 
+		if(toState.name === 'onboarding.referral' && !$location.search().q) {
+			$location.path('/');
+		}
+
 
 
 	});
@@ -4108,7 +4274,42 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
         url: '/onboarding',
         templateUrl: 'modules/onboarding/views/onboarding.client.view.html',
         controller: 'OnboardingController',
-        abstract: true
+        abstract: true,
+        resolve: {
+          advocateData: ['$location', '$rootScope', '$q', 'Advocates', function($location, $rootScope, $q, Advocates) {
+
+            // this is ONLY for the advocate code included in the query string
+            var deferred = $q.defer();
+
+
+
+            if(!$location.search().q) {
+              // this should be typical
+              deferred.resolve({});
+            } else {
+
+              Advocates.validateNewUser({ code: $location.search().q },
+                function(success) {
+                  // ensure that only valid adv codes are sent to the referral page
+                  if(success.advocate) {
+                    deferred.resolve(success);
+                  } else {
+                    $rootScope.clearQueryString = true;
+                    $location.search('q', null);
+                    deferred.reject('Not a valid advocate code.');
+                  }
+
+                },
+                function(error) {
+                  $rootScope.clearQueryString = true;
+                  $location.search('q', null);
+                  deferred.reject(error);
+                });
+            }
+
+            return deferred.promise;
+          }]
+        }
       })
       .state('onboarding.orientation', {
         url: '/get-started',
@@ -4154,14 +4355,22 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
       .state('onboarding.scheduleNew', {
         url: '/consultation/new',
         templateUrl: 'modules/onboarding/partials/onboarding-schedule.client.view.html'
+      })
+      .state('onboarding.referral', {
+        url: '/referral',
+        templateUrl: 'modules/onboarding/partials/onboarding-referral.client.view.html',
+        onboarding: true,
+        data: {
+          disableBack: true
+        }
       });
 
 }]);
 
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$timeout', '$filter', 'Users', 'Authentication', 'AdvocatesResource', '$http', '$modal',
-	function($rootScope, $scope, $location, $timeout, $filter, Users, Authentication, AdvocatesResource, $http, $modal) {
+angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$timeout', '$filter', 'Users', 'Authentication', 'Advocates', '$http', '$modal', 'advocateData',
+	function($rootScope, $scope, $location, $timeout, $filter, Users, Authentication, Advocates, $http, $modal, advocateData) {
 
 		$scope.authentication = Authentication;
 		$scope.newUser = {};
@@ -4226,20 +4435,28 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			$scope.hasAdvocateCode = false;
 		};
 
+		var onAdvocateSuccess = function(advocateData) {
+			$scope.accessCode.valid = $rootScope.validated = true;
+			$scope.accessCode.valueEntered = $scope.accessCode.value;
+			$scope.newUser.advocate = advocateData.advocate;
+			$scope.newUser.advocateRole = advocateData.advocateRole;
+			$scope.referral = advocateData.referral;
+			$scope.newUser.sharing.enabled = true;
+		};
+
+		// if advocate data has been passed from the ui-router resolve
+		if(advocateData) {
+			onAdvocateSuccess(advocateData);
+		}
+
 	  $scope.validateCode = function() {
 			// handles back button
 			if(!$scope.accessCode.valueEntered || $scope.accessCode.valueEntered !== $scope.accessCode.value) {
 
-				var referral = new AdvocatesResource();
-		    referral.$validateNewUser({ code: $scope.accessCode.value },
+				Advocates.validateNewUser({ code: $scope.accessCode.value },
 		      function(success) {
 		        if(success.advocate) {
-		          $scope.accessCode.valid = $rootScope.validated = true;
-		          $scope.accessCode.valueEntered = $scope.accessCode.value;
-							$scope.newUser.advocate = success.advocate;
-							$scope.newUser.advocateRole = success.advocateRole;
-		          $scope.referral = success.referral;
-							$scope.newUser.sharing.enabled = true;
+							onAdvocateSuccess(success);
 							$location.path('/onboarding/success');
 							$scope.codeError = false;
 							$scope.codeWrong = false;
