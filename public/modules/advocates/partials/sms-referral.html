@@ -1,24 +1,29 @@
 <div class="modal-header">
-  <h3 class="modal-title">Send an SMS referral to JustFix.nyc</h3>
+  <h3 class="modal-title">Send a referral link</h3>
   <h3 class="modal-title text-danger" ng-if="status.error"><span class="glyphicon glyphicon-remove-sign"></span> {{'modules.actions.partials.modals.complaintLetter.error' | translate}}</h3>
 </div>
 <div class="modal-body" stop-event="touchend">
   <div id="letterSteps" class="letter-steps" inherit-height>
     <div class="letter-step ng-enter-active" ng-if="!status.loading && !status.sent && !status.error" variable-height="letterSteps">
-        <p>Fugiat quis elit Lorem mollit incididunt excepteur et dolore voluptate enim qui. Aliquip veniam quis voluptate et proident esse ut ex.</p>
         <form class="send-sms-form">
-          <div class="form-group">
-            <label class="control-label" for="phone">Tenant's phone number</label>
-            <input class="form-control" type="tel" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.phoneNumber' | translate}}" name="phone" ng-model="newAdvocateUser.phone" name="phone" required phone-input>
-            <em>(make sure this number can receive text messages!)</em>
-          </div>
-          <!-- <div class="form-group"> -->
-          <div class="checkbox">
+          <div class="form-group" ng-class="phoneError ? 'has-error': ''">
+            <label class="control-label" for="phone">Tenant's phone number <em>(make sure this number can receive text messages!)</em></label>
+            <input class="form-control" type="tel" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.phoneNumber' | translate}}" name="phone" ng-model="sms.phone" name="phone" required phone-input>
+            <p class="text-danger" ng-show="phoneError">Please add a phone number!</p>
             <label>
-              <input type="checkbox"> Check me out
+              <input type="checkbox" ng-model="sms.includeCode"> Link this tenant to my dashboard
             </label>
           </div>
-          <!-- </div> -->
+
+          <div class="form-group" ng-class="lengthError ? 'has-error': ''">
+            <label class="control-label" for="message">Message to include with the referral link</label>
+            <textarea name="description" data-ng-model="sms.userMessage" name="message" class="form-control" cols="30" rows="3" placeholder="Add an optional message to include with the share link."></textarea>
+            <span class="pull-right">
+              <span ng-class="(sms.userMessage.length > messageMaxLength) ? 'text-danger' : ''">{{ sms.userMessage.length }}</span> / {{ messageMaxLength }}
+            </span>
+            <span class="text-danger" ng-show="lengthError">Please enter a shorter message!</span>
+
+          </div>
         </form>
     </div>
   </div>
@@ -28,9 +33,9 @@
 <div class="modal-footer">
   <div ng-if="!status.loading && !status.sent && !status.error">
     <button class="btn btn-default pull-left" ng-click="cancel()">Cancel</button>
-    <button class="btn btn-primary" ng-click="sendSMS()">Send</button>
+    <button class="btn btn-success" ng-click="sendSMS()"><span class="glyphicon glyphicon-comment pull-left" style="pointer-events: none;"></span> Send SMS</button>
   </div>
-  <div ng-if="!status.loading && (status.sent || status.error)">
-    <button class="btn btn-primary btn-block" ng-click="done()">{{'modules.actions.partials.modals.complaintLetter.gotIt'| translate}}</button>
-  </div>
+  <!-- <div ng-if="!status.loading && (status.sent || status.error)">
+    <button class="btn btn-success btn-block" ng-click="done()"><span class="glyphicon glyphicon-comment pull-left" style="pointer-events: none;"></span> Send SMS</button>
+  </div> -->
 </div>
