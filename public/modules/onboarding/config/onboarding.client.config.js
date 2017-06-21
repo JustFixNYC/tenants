@@ -16,6 +16,10 @@ angular.module('onboarding').run(['$rootScope', '$location', 'Authentication', '
 			Users.me();
 		}
 
+		if(toState.name === 'onboarding.referral' && !$location.search().q) {
+			$location.path('/');
+		}
+
 
 
 	});

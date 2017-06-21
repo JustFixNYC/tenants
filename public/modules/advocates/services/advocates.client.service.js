@@ -44,6 +44,8 @@ angular.module('advocates')
 
 		return {
 			query: AdvocatesResource.query,
+			validateNewUser: AdvocatesResource.validateNewUser,
+			sendReferralSMS: AdvocatesResource.sendReferralSMS,
 			setCurrentTenant: function(tenant) {
 				_this._currentTenant = tenant;
 			},

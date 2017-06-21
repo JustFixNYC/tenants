@@ -1,21 +1,28 @@
 'use strict';
 
 // Setting up route
-angular.module('core').run(['$rootScope', '$state', '$location', '$window', 'Authentication',
-  function($rootScope, $state, $location, $window, Authentication) {
+angular.module('core').run(['$rootScope', '$state', '$location', '$window', '$timeout', 'Authentication',
+  function($rootScope, $state, $location, $window, $timeout, Authentication) {
 
     // preserve query string across location redirects
     $rootScope.$on('$locationChangeStart', function(event, newUrl, oldUrl) {
 
-      if (oldUrl.indexOf('?') >= 0) {
-        var queryString =  oldUrl.split('?')[1];
-        newUrl = $location.$$path + '?' + queryString;
-        $location.url(newUrl);
+      if(!$rootScope.clearQueryString) {
+        if (oldUrl.indexOf('?') >= 0) {
+          var queryString =  oldUrl.split('?')[1];
+          newUrl = $location.$$path + '?' + queryString;
+          $location.url(newUrl);
+        }
+      } else {
+        $rootScope.clearQueryString = false;
       }
 
-      // is this necessary?
-      // event.preventDefault();
-      // return;
+    });
+
+    // Used mainly if a Promise on resolve gets rejected...
+    $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
+      Rollbar.error(error);
+      $state.go('landing');
     });
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
@@ -43,6 +50,12 @@ angular.module('core').run(['$rootScope', '$state', '$location', '$window', 'Aut
       if($location.search().status) {
         $rootScope.expandStatus = true;
       }
+
+      // SMS referral
+      // if($location.search().q && !$rootScope.qRedirected) {
+      //   $rootScope.qRedirected = true;
+      //   $location.path('/onboarding/referral');
+      // }
 
     });
 

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('actions').controller('SMSReferralController', ['$rootScope', '$scope', '$sce', '$timeout', '$modalInstance', 'Authentication', 'AdvocatesResource', '$window',
-	function ($rootScope, $scope, $sce, $timeout, $modalInstance, Authentication, AdvocatesResource, $window) {
+angular.module('actions').controller('SMSReferralController', ['$rootScope', '$scope', '$sce', '$timeout', '$modalInstance', 'Authentication', 'Advocates', '$window',
+	function ($rootScope, $scope, $sce, $timeout, $modalInstance, Authentication, Advocates, $window) {
 
 		$scope.sms = {
 			phone: '8459781262',
@@ -89,7 +89,7 @@ angular.module('actions').controller('SMSReferralController', ['$rootScope', '$s
 
 				$scope.status.loading = true;
 
-				AdvocatesResource.sendReferralSMS({}, { phone: $scope.sms.phone, message: $scope.sms.message},
+				Advocates.sendReferralSMS({}, { phone: $scope.sms.phone, message: $scope.sms.message},
 					function (success) {
 						setCreationTimer();
 						$scope.status.loading = false;

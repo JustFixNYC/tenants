@@ -1,0 +1,21 @@
+<div class="page-header">
+  <img src="/modules/core/img/brand/icon_only.svg" alt="JustFix.nyc" />
+  <h1>Welcome to the JustFix.nyc Tenant App!</h1>
+</div>
+
+<p>
+  JustFix.nyc is a free service that helps you get repairs in your home. This referral was sent by:
+</p>
+<div>
+  <h2 class="text-center">
+    {{ referral.name }}<br />
+    {{ referral.organization }}<br />
+    {{ referral.contactPhone + (referral.contactPhoneExt ? (',' + referral.contactPhoneExt) : '') | tel }}<br />
+    {{ referral.email }}
+  </h2>
+</div>
+<p>
+  As you document your situation, {{ referral.name }} can review the information and evidence that you upload.
+</p>
+<br />
+<button class="btn btn-primary btn-block" ui-sref="onboarding.problems" go-to-top>Get Started</button>

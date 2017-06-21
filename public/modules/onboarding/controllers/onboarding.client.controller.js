@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$timeout', '$filter', 'Users', 'Authentication', 'AdvocatesResource', '$http', '$modal',
-	function($rootScope, $scope, $location, $timeout, $filter, Users, Authentication, AdvocatesResource, $http, $modal) {
+angular.module('onboarding').controller('OnboardingController', ['$rootScope', '$scope', '$location', '$timeout', '$filter', 'Users', 'Authentication', 'Advocates', '$http', '$modal', 'advocateData',
+	function($rootScope, $scope, $location, $timeout, $filter, Users, Authentication, Advocates, $http, $modal, advocateData) {
 
 		$scope.authentication = Authentication;
 		$scope.newUser = {};
@@ -66,20 +66,28 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 			$scope.hasAdvocateCode = false;
 		};
 
+		var onAdvocateSuccess = function(advocateData) {
+			$scope.accessCode.valid = $rootScope.validated = true;
+			$scope.accessCode.valueEntered = $scope.accessCode.value;
+			$scope.newUser.advocate = advocateData.advocate;
+			$scope.newUser.advocateRole = advocateData.advocateRole;
+			$scope.referral = advocateData.referral;
+			$scope.newUser.sharing.enabled = true;
+		};
+
+		// if advocate data has been passed from the ui-router resolve
+		if(advocateData) {
+			onAdvocateSuccess(advocateData);
+		}
+
 	  $scope.validateCode = function() {
 			// handles back button
 			if(!$scope.accessCode.valueEntered || $scope.accessCode.valueEntered !== $scope.accessCode.value) {
 
-				var referral = new AdvocatesResource();
-		    referral.$validateNewUser({ code: $scope.accessCode.value },
+				Advocates.validateNewUser({ code: $scope.accessCode.value },
 		      function(success) {
 		        if(success.advocate) {
-		          $scope.accessCode.valid = $rootScope.validated = true;
-		          $scope.accessCode.valueEntered = $scope.accessCode.value;
-							$scope.newUser.advocate = success.advocate;
-							$scope.newUser.advocateRole = success.advocateRole;
-		          $scope.referral = success.referral;
-							$scope.newUser.sharing.enabled = true;
+							onAdvocateSuccess(success);
 							$location.path('/onboarding/success');
 							$scope.codeError = false;
 							$scope.codeWrong = false;

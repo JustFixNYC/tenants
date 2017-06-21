@@ -16,7 +16,42 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
         url: '/onboarding',
         templateUrl: 'modules/onboarding/views/onboarding.client.view.html',
         controller: 'OnboardingController',
-        abstract: true
+        abstract: true,
+        resolve: {
+          advocateData: ['$location', '$rootScope', '$q', 'Advocates', function($location, $rootScope, $q, Advocates) {
+
+            // this is ONLY for the advocate code included in the query string
+            var deferred = $q.defer();
+
+
+
+            if(!$location.search().q) {
+              // this should be typical
+              deferred.resolve({});
+            } else {
+
+              Advocates.validateNewUser({ code: $location.search().q },
+                function(success) {
+                  // ensure that only valid adv codes are sent to the referral page
+                  if(success.advocate) {
+                    deferred.resolve(success);
+                  } else {
+                    $rootScope.clearQueryString = true;
+                    $location.search('q', null);
+                    deferred.reject('Not a valid advocate code.');
+                  }
+
+                },
+                function(error) {
+                  $rootScope.clearQueryString = true;
+                  $location.search('q', null);
+                  deferred.reject(error);
+                });
+            }
+
+            return deferred.promise;
+          }]
+        }
       })
       .state('onboarding.orientation', {
         url: '/get-started',
@@ -62,6 +97,14 @@ angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
       .state('onboarding.scheduleNew', {
         url: '/consultation/new',
         templateUrl: 'modules/onboarding/partials/onboarding-schedule.client.view.html'
+      })
+      .state('onboarding.referral', {
+        url: '/referral',
+        templateUrl: 'modules/onboarding/partials/onboarding-referral.client.view.html',
+        onboarding: true,
+        data: {
+          disableBack: true
+        }
       });
 
 }]);
