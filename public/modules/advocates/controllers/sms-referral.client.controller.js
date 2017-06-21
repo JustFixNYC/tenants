@@ -4,7 +4,7 @@ angular.module('actions').controller('SMSReferralController', ['$rootScope', '$s
 	function ($rootScope, $scope, $sce, $timeout, $modalInstance, Authentication, AdvocatesResource, $window) {
 
 		$scope.sms = {
-			phone: '',
+			phone: '8459781262',
 			userMessage: '',
       message: '',
       includeCode: true
@@ -52,11 +52,6 @@ angular.module('actions').controller('SMSReferralController', ['$rootScope', '$s
     });
 
 
-
-
-
-
-    // var user = Authentication.user;
 		var timerCountdown = 30;
 		var setCreationTimer = function() {
 			$timeout(function () {
@@ -85,57 +80,37 @@ angular.module('actions').controller('SMSReferralController', ['$rootScope', '$s
       }
 
 			if($scope.lengthError || $scope.phoneError) {
+				// display the error messages
 				// necessary to trigger a change in height
 				$timeout(function () {
 					$scope.elemHasChanged = true;
 				});
 			} else {
 
-				// $scope.status.loading = true;
+				$scope.status.loading = true;
 
 				AdvocatesResource.sendReferralSMS({}, { phone: $scope.sms.phone, message: $scope.sms.message},
 					function (success) {
-						console.log('success', success);
+						setCreationTimer();
+						$scope.status.loading = false;
+						$scope.status.sent = true;
 					},
 					function (error) {
-						console.log('error', error);
+						$scope.status.loading = false;
+						$scope.status.error = true;
+						Rollbar.error("Error with SMS referral service");
+		  			$scope.errorCode = error.data.message;
 					}
 				);
 			}
 
     };
 
-
-
-	  // $scope.createLetter = function () {
-    //
-		// 	$scope.status.loading = true;
-    //
-	  // 	Pdf.createComplaint($scope.landlord, $scope.accessDates).then(
-	  // 		function success(data) {
-		// 			setCreationTimer();
-		// 			$scope.status.loading = false;
-		// 			$scope.status.created = true;
-		// 			$scope.letterUrl = data;
-		// 			Rollbar.info("New Letter of Complaint!", { name: Authentication.user.fullName, phone: Authentication.user.phone, letterUrl: data });
-		// 			$scope.newActivity.fields.push({ title: 'letterURL', value: data });
-	  // 		},
-	  // 		function failure(error) {
-		// 			$scope.status.loading = false;
-		// 			$scope.status.error = true;
-		// 			Rollbar.error("Error with letter generation");
-	  // 			$scope.errorCode = error;
-	  // 		}
-	  // 	);
-    //
-	  //   // $modalInstance.close($scope.newActivity);
-	  // };
-
 	  $scope.cancel = function() {
 	    $modalInstance.dismiss('cancel');
 	  };
 
 		$scope.done = function() {
-			$modalInstance.close({ newActivity: $scope.newActivity, modalError: $scope.status.error });
+			$modalInstance.close({});
 		};
 	}]);

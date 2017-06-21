@@ -1,5 +1,6 @@
 <div class="modal-header">
-  <h3 class="modal-title">Send a referral link</h3>
+  <h3 class="modal-title" ng-if="!status.sent && !status.error">Send a referral link</h3>
+  <h3 class="modal-title" ng-if="status.sent"><span class="glyphicon glyphicon-ok-sign"></span> Referral link sent!</h3>
   <h3 class="modal-title text-danger" ng-if="status.error"><span class="glyphicon glyphicon-remove-sign"></span> {{'modules.actions.partials.modals.complaintLetter.error' | translate}}</h3>
 </div>
 <div class="modal-body" stop-event="touchend">
@@ -26,6 +27,39 @@
           </div>
         </form>
     </div>
+    <div class="letter-step" ng-if="status.loading">
+      <div class="letter-step-loading">
+        <div class="sk-fading-circle circle-dark">
+          <div class="sk-circle1 sk-circle"></div>
+          <div class="sk-circle2 sk-circle"></div>
+          <div class="sk-circle3 sk-circle"></div>
+          <div class="sk-circle4 sk-circle"></div>
+          <div class="sk-circle5 sk-circle"></div>
+          <div class="sk-circle6 sk-circle"></div>
+          <div class="sk-circle7 sk-circle"></div>
+          <div class="sk-circle8 sk-circle"></div>
+          <div class="sk-circle9 sk-circle"></div>
+          <div class="sk-circle10 sk-circle"></div>
+          <div class="sk-circle11 sk-circle"></div>
+          <div class="sk-circle12 sk-circle"></div>
+        </div>
+        <br />
+        <p class="lead text-center">Sending SMS...</p>
+      </div>
+    </div>
+    <div class="letter-step letter-step-created" ng-if="status.sent">
+      <p>
+        An SMS text message has been sent to <b>{{ sms.phone | tel }}</b> including your message and a link to sign up for JustFix.nyc.
+      </p>
+      <p ng-if="sms.includeCode">
+        Once they create their account, it will appear on your dashboard. After that, you will be able to view anything that they upload as they build their case!
+      </p>
+    </div>
+    <div class="letter-step" ng-if="status.error">
+      <p class="text-danger">Oops! We're sorry, the text message service is down at the moment - please try again later. The JustFix.nyc team has been notified of this issue!</p>
+      <p ng-if="errorCode" class="text-danger">Error message: {{ errorCode }}</p>
+    </div>
+
   </div>
 
 
@@ -35,7 +69,7 @@
     <button class="btn btn-default pull-left" ng-click="cancel()">Cancel</button>
     <button class="btn btn-success" ng-click="sendSMS()"><span class="glyphicon glyphicon-comment pull-left" style="pointer-events: none;"></span> Send SMS</button>
   </div>
-  <!-- <div ng-if="!status.loading && (status.sent || status.error)">
-    <button class="btn btn-success btn-block" ng-click="done()"><span class="glyphicon glyphicon-comment pull-left" style="pointer-events: none;"></span> Send SMS</button>
-  </div> -->
+  <div ng-if="!status.loading && (status.sent || status.error)">
+    <button class="btn btn-primary btn-block" ng-click="done()">Got it</button>
+  </div>
 </div>

@@ -121,6 +121,7 @@ exports.sendReferralSMS = function(req, res) {
       });
     })
     .catch(function (err) {
+      console.log(err);
       rollbar.handleError("Twilio Error", { error: err }, req);
       res.status(500).send({
         message: 'Error with the Twilio SMS system.'
