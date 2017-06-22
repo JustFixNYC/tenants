@@ -13,6 +13,18 @@
 
   }
 
+  .advocates-controls {
+
+    .btn + .btn {
+
+      margin-top: 10px;
+
+      @media (min-width: 375px) {
+        margin-top: 0;
+      }
+    }
+  }
+
   .advocates-view-toggle {
     a:hover {
       cursor: pointer;
