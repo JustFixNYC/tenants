@@ -8,6 +8,7 @@ var _ = require('lodash'),
   errorHandler = require('../errors.server.controller'),
   actionsHandler = require('../actions.server.controller'),
   addressHandler = require('../../services/address.server.service'),
+  emailHandler = require('../../services/sendgrid.server.service'),
   tenantProfileHandler = require('./tenants.profile.server.controller'),
   userAuthHandler = require('../users/users.authentication.server.controller'),
   mongoose = require('mongoose'),
@@ -59,6 +60,29 @@ var buildNewTenant = exports.buildNewTenant = function(tenant, advocate) {
   return built.promise;
 };
 
+
+// various tasks to be completed when there is a new tenant acct.
+// these should be non-blocking, i.e. no affect on the req/res flow
+var onNewTenantAcct = function(req, userObject) {
+
+  rollbar.reportMessage("New User Signup!", "info", req);
+
+  if(userObject.advocateRole === 'linked') {
+    emailHandler.sendNewSignUpEmail(userObject.advocate, userObject.fullName)
+      .then(function (response) {
+        console.log('email success', response);
+      })
+      .catch(function (error) {
+        rollbar.handleErrorWithPayloadData("Email notification error", { error: error }, req);
+        // console.log('email fail', error);
+      });
+  }
+
+
+
+};
+
+
 /**
  * Signup
  */
@@ -86,7 +110,7 @@ exports.signup = function(req, res) {
       return userAuthHandler.saveNewUser(req, identity, tenant, user);
     })
     .then(function (userObject) {
-      rollbar.reportMessage("New User Signup!", "info", req);
+      onNewTenantAcct(req, userObject);
       res.json(userObject);
     })
     .catch(function (err) {

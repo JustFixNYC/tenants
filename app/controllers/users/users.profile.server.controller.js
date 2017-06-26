@@ -6,6 +6,7 @@
 var _ = require('lodash'),
 	errorHandler = require('../errors.server.controller.js'),
 	authHandler = require('./users.authentication.server.controller'),
+	emailHandler = require('../../services/sendgrid.server.service'),
 	Q = require('q'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
@@ -87,6 +88,21 @@ exports.updateUserData = function(req, res) {
 
 	updateUser(req)
 		.then(function (user) {
+
+			// send a notification email
+			if(_.contains(user.roles, 'tenant') && user.advocateRole === 'linked' && user.sharing.enabled) {
+				emailHandler.sendUpdatedAcctEmail(user.advocate, user.fullName)
+					.then(function (response) {
+						console.log('email success', response);
+					})
+					.catch(function (error) {
+						rollbar.handleErrorWithPayloadData("Email notification error", { error: error }, req);
+						console.log('email fail', error);
+					});
+			}
+
+
+
 			res.json(user);
 			res.end(); // important to update session
 		})
