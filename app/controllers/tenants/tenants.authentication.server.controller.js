@@ -70,7 +70,7 @@ var onNewTenantAcct = function(req, userObject) {
   if(userObject.advocateRole === 'linked') {
     emailHandler.sendNewSignUpEmail(userObject.advocate, userObject.fullName)
       .then(function (response) {
-        console.log('email success', response);
+        // console.log('email success', response);
       })
       .catch(function (error) {
         rollbar.handleErrorWithPayloadData("Email notification error", { error: error }, req);

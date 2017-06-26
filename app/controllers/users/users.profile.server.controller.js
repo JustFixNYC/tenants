@@ -93,11 +93,11 @@ exports.updateUserData = function(req, res) {
 			if(_.contains(user.roles, 'tenant') && user.advocateRole === 'linked' && user.sharing.enabled) {
 				emailHandler.sendUpdatedAcctEmail(user.advocate, user.fullName)
 					.then(function (response) {
-						console.log('email success', response);
+						// console.log('email success', response);
 					})
 					.catch(function (error) {
 						rollbar.handleErrorWithPayloadData("Email notification error", { error: error }, req);
-						console.log('email fail', error);
+						// console.log('email fail', error);
 					});
 			}
 
