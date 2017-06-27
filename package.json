@@ -51,7 +51,8 @@
     "request": "latest",
     "rollbar": "^0.6.2",
     "sendgrid": "^5.1.1",
-    "swig": "~1.4.1"
+    "swig": "~1.4.1",
+    "twilio": "latest"
   },
   "devDependencies": {
     "csvtojson": "^1.1.4",
