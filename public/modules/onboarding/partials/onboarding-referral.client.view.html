@@ -1,10 +1,10 @@
 <div class="page-header">
   <img src="/modules/core/img/brand/icon_only.svg" alt="JustFix.nyc" />
-  <h1>Welcome to the JustFix.nyc Tenant App!</h1>
+  <h1 ng-bind-html="'modules.onboarding.partials.onboardingCode.title' | trustTranslate" compile-template></h1>
 </div>
 
 <p>
-  JustFix.nyc is a free service that helps you get repairs in your home. This referral was sent by:
+  <span>{{'modules.onboarding.partials.onboardingCode.enterText' | translate}}</span>. <span>{{'modules.onboarding.partials.onboardingReferral.sentBy' | translate}}</span>
 </p>
 <div>
   <h2 class="text-center">
@@ -14,8 +14,6 @@
     {{ referral.email }}
   </h2>
 </div>
-<p>
-  As you document your situation, {{ referral.name }} can review the information and evidence that you upload.
-</p>
+<p ng-bind-html="'modules.onboarding.partials.onboardingReferral.additionalInfo' | trustTranslate" compile-template></p>
 <br />
-<button class="btn btn-primary btn-block" ui-sref="onboarding.problems" go-to-top>Get Started</button>
+<button class="btn btn-primary btn-block" ui-sref="onboarding.problems" go-to-top>{{'modules.onboarding.partials.onboardingReferral.getStarted' | translate}}</button>

@@ -371,7 +371,7 @@
 				},
 				"onboardingCode": {
 					"title": "¡Bienvenidos a la<br/>aplicación móvil de JustFix.nyc!",
-					"enterText": "JustFix.nyc es un servicio gratis que le ayuda a conseguir reparaciones para su hogar. Para comenzar, cuéntenos sobre su situación:",
+					"enterText": "JustFix.nyc es un servicio gratis que le ayuda a conseguir reparaciones para su hogar. Para comenzar, cuéntenos sobre su situación",
           "hasAdvocateCode": "Recibí un Código del Defensor.",
           "organicUser": "Utilizo JustFix.nyc por cuenta propia.",
 					"accessCode": "Código defensor (opcional)",
@@ -443,7 +443,12 @@
 					"shareDesc": "Esto permite que su defensor vea las pruebas que usted subió al sitio; no le da acceso al resto de su cuenta. Usted puede desactivar luego o activarlo en cualquier momento.",
 					"back": "@:repeating.back",
 					"continue": "@:repeating.continue"
-				}
+				},
+        "onboardingReferral": {
+          "sentBy": "Esto fue enviado por:",
+          "additionalInfo": "Mientras documente su situación, <span ng-bind='referral.name'></span> puede repasar todo lo que ha subido.",
+          "getStarted": "Comenzar"
+        }
 			}
 		},
 		"problems": {

@@ -368,7 +368,7 @@
 				},
 				"onboardingCode": {
 					"title": "Welcome to the<br/>JustFix.nyc Tenant App!",
-					"enterText": "JustFix.nyc is a free service that helps you get repairs in your home. To get started, please tell us more about your situation:",
+					"enterText": "JustFix.nyc is a free service that helps you get repairs in your home. To get started, please tell us more about your situation",
           "hasAdvocateCode": "I was given an Advocate Code.",
           "organicUser": "I’m using JustFix.nyc on my own.",
 					"accessCode": "Advocate Code (optional)",
@@ -440,7 +440,12 @@
 					"shareDesc": "This allows your advocate to view the evidence you upload to the site; it does not give access to the rest of your account. You can opt out later or disable at any time.",
 					"back": "@:repeating.back",
 					"continue": "@:repeating.continue"
-				}
+				},
+        "onboardingReferral": {
+          "sentBy": "This referral was sent by:",
+          "additionalInfo": "As you document your situation, <span ng-bind='referral.name'></span> can review the information and evidence that you upload.",
+          "getStarted": "Get Started"
+        }
 			}
 		},
 		"problems": {
