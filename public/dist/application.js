@@ -365,7 +365,9 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 		$scope.msgPreview = Messages.getLandlordEmailMessage();
 
 		$scope.status = {};
+		$scope.status.created = false; // initial state
 		$scope.status.state = 'landlordInfo'; // initial state
+		// $scope.status.state = 'msgPreview'; // initial state
 
 		// landlordInfo, msgPreview,
 		// loading, msgError,
@@ -380,8 +382,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 		var setCreationTimer = function() {
 			$timeout(function () {
 				if(!$scope.status.created) {
-					$scope.status.loading = false;
-					$scope.status.error = true;
+					$scope.status.state = 'error';
 					Rollbar.warning("Request for the letter took too long to respond");
 	  			$scope.errorCode = 'Request for the letter took too long to respond';
 				}
@@ -397,6 +398,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 	  		function success(data) {
 					setCreationTimer();
 					$scope.status.state = 'msgSuccess';
+					$scope.status.created = true;
 					$scope.letterUrl = data;
 					$scope.newActivity.fields.push({ title: 'letterURL', value: data });
 	  		},
@@ -421,10 +423,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 			$scope.newActivity.fields.push({ title: 'landlordName', value: $scope.landlord.name });
 			$scope.newActivity.fields.push({ title: 'landlordAddress', value: $scope.landlord.address });
 
-			console.log($scope.newActivity);
-
 			$scope.status.state = 'letterSuccess';
-
 		};
 
 	  $scope.cancel = function() {
@@ -797,12 +796,13 @@ angular.module('actions')
 
           // prevent body scrolling, hack hack hack
           modalInstance.opened.then(function () {
-            angular.element(document).find('html').css('overflow', 'hidden');
+            angular.element(document).find('html').css({"overflow": "hidden", "position": "fixed" });
           });
 
           modalInstance.result.then(function (result) {
 
-            angular.element(document).find('html').css('overflow', 'auto');
+            angular.element(document).find('html').css({"overflow": "auto", "position": "static" });
+
 
             scope.newActivity = result.newActivity;
 
@@ -816,7 +816,7 @@ angular.module('actions')
           }, function () {
             // modal cancelled
 
-            angular.element(document).find('html').css('overflow', 'auto');
+            angular.element(document).find('html').css({"overflow": "auto", "position": "static" });
           });
         };
 

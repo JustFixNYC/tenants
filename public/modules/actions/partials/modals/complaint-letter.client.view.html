@@ -32,7 +32,7 @@
 
     </div>
     <div class="letter-step" ng-if="status.state === 'msgPreview'" variable-height="letterSteps">
-      <textarea name="description" data-ng-model="msgPreview" id="description" class="form-control" cols="30" rows="10" maxlength="500" disabled></textarea>
+      <textarea name="description" data-ng-model="msgPreview" id="description" class="form-control" cols="30" rows="10" maxlength="500" disabled  stop-event="touchend"></textarea>
       <br />
       <p>
         <b>Disclaimer:</b> Sending this letter may cause your landlord to retaliate. However, if you are in a rent stabilized apartment, you have rights that can protect you from this.
@@ -90,6 +90,7 @@
       </p>
       <div class="form-group">
           <label class="control-label" for="landlordAddr">Landlord Address:</label>
+          <br />
           <em>(this should not be a P.O. box)</em>
           <div class="controls">
               <textarea name="landlordAddr" data-ng-model="landlord.address" id="description" class="form-control" cols="30" rows="3" maxlength="500" placeholder="Enter an address"></textarea>
@@ -113,7 +114,7 @@
         You will receive a text message in a few days with your tracking number. If you have questions or comments, please call us at:
       </p>
       <div class="modal-footer">
-        <button class="btn btn-success btn-block" href="tel:6468200349">(646) 820-0349</button>
+        <a class="btn btn-success btn-block" href="tel:6468200349">(646) 820-0349</a>
         <button class="btn btn-primary btn-block" ng-click="done()">Close</button>
       </div>
     </div>

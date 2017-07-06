@@ -87,12 +87,13 @@ angular.module('actions')
 
           // prevent body scrolling, hack hack hack
           modalInstance.opened.then(function () {
-            angular.element(document).find('html').css('overflow', 'hidden');
+            angular.element(document).find('html').css({"overflow": "hidden", "position": "fixed" });
           });
 
           modalInstance.result.then(function (result) {
 
-            angular.element(document).find('html').css('overflow', 'auto');
+            angular.element(document).find('html').css({"overflow": "auto", "position": "static" });
+
 
             scope.newActivity = result.newActivity;
 
@@ -106,7 +107,7 @@ angular.module('actions')
           }, function () {
             // modal cancelled
 
-            angular.element(document).find('html').css('overflow', 'auto');
+            angular.element(document).find('html').css({"overflow": "auto", "position": "static" });
           });
         };
 
