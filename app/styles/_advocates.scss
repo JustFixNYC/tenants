@@ -25,19 +25,6 @@
     }
   }
 
-  .advocates-view-toggle {
-    a:hover {
-      cursor: pointer;
-    }
-    a.disabled {
-      color: #434A54;
-
-      &:hover {
-        cursor: default;
-      }
-    }
-  }
-
   .table {
     td {
       padding-top: 15px;
@@ -86,6 +73,21 @@
         }
       }
 
+    }
+  }
+}
+
+// language-view-toggle exists in a modal outside of #advocates
+.advocates-view-toggle, .language-view-toggle {
+
+  a:hover {
+    cursor: pointer;
+  }
+  a.disabled {
+    color: #434A54;
+
+    &:hover {
+      cursor: default;
     }
   }
 }

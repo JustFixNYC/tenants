@@ -1,13 +1,14 @@
 'use strict';
 
-angular.module('actions').controller('SMSReferralController', ['$rootScope', '$scope', '$sce', '$timeout', '$modalInstance', 'Authentication', 'Advocates', '$window',
-	function ($rootScope, $scope, $sce, $timeout, $modalInstance, Authentication, Advocates, $window) {
+angular.module('actions').controller('SMSReferralController', ['$rootScope', '$scope', '$sce', '$timeout', '$modalInstance', 'Authentication', 'Advocates', '$window', '$httpParamSerializer',
+	function ($rootScope, $scope, $sce, $timeout, $modalInstance, Authentication, Advocates, $window, $httpParamSerializer) {
 
 		$scope.sms = {
 			phone: '',
 			userMessage: '',
       message: '',
-      includeCode: true
+      includeCode: true,
+			spanish: false
 		};
 
     $scope.status = {
@@ -19,11 +20,26 @@ angular.module('actions').controller('SMSReferralController', ['$rootScope', '$s
     $scope.messageMaxLength = 160;
 
     var TEXT_MAX_LENGTH = 160;
-    var signupLink = 'https://www.justfix.nyc/signup';
-    var originalLink = signupLink;
+    var SIGNUP_LINK = 'https://www.justfix.nyc/signup';
+    // var originalLink = signupLink;
     var signupPrompt;
 
+		// this is the actual text
     var updateMessage = function() {
+
+			var qsObject = {};
+			if($scope.sms.includeCode) qsObject.q = Authentication.user.code;
+			if($scope.sms.spanish) qsObject.lang = 'es';
+
+			var qs = $httpParamSerializer(qsObject);
+
+			var signupLink = qs ? SIGNUP_LINK + '?' + qs : SIGNUP_LINK;
+
+			if($scope.sms.spanish) {
+				signupPrompt = ' Regístrate en: ' + signupLink;
+			} else {
+				signupPrompt = ' Sign up at: ' + signupLink;
+			}
 
       $scope.sms.message = $scope.sms.userMessage + signupPrompt;
       $scope.length = $scope.sms.message.length;
@@ -32,25 +48,37 @@ angular.module('actions').controller('SMSReferralController', ['$rootScope', '$s
       $scope.messageMaxLength = TEXT_MAX_LENGTH - signupPrompt.length;
     };
 
+		// this is the preformed user message
+		var updateUserMessage = function() {
+
+			if($scope.sms.includeCode && $scope.sms.spanish) {
+				$scope.sms.userMessage = 'Comience a usar JustFix.nyc para enviar fotos e información a ' + Authentication.user.firstName + ' en ' + Authentication.user.organization + ".";
+			} else if($scope.sms.includeCode && !$scope.sms.spanish) {
+				$scope.sms.userMessage = "Start using JustFix.nyc to send info to " + Authentication.user.firstName + " at " + Authentication.user.organization + "!";
+			} else if(!$scope.sms.includeCode && $scope.sms.spanish) {
+				$scope.sms.userMessage = "Comience a usar JustFix.nyc para documentar sus problemas de vivienda!";
+			} else {
+				$scope.sms.userMessage = "Start using JustFix.nyc to document your issues!";
+			}
+
+		};
+
 
     $scope.$watch('sms.includeCode', function(newVal, oldVal) {
-      if(newVal) {
-        signupLink += '?q=' + Authentication.user.code;
-        $scope.sms.userMessage = "Start using JustFix.nyc to send info to " + Authentication.user.firstName + " at " + Authentication.user.organization + "!";
-      } else {
-        signupLink = originalLink;
-        $scope.sms.userMessage = "Start using JustFix.nyc to document your issues!";
-      }
-
-      signupPrompt = ' Sign up at: ' + signupLink;
-
+			updateUserMessage();
       updateMessage();
     });
+		$scope.$watch('sms.spanish', function(newVal, oldVal) {
+			updateUserMessage();
+			updateMessage();
+		});
+		$scope.$watch('sms.userMessage', function(newVal, oldVal) {
+			updateMessage();
+		});
 
-    $scope.$watch('sms.userMessage', function(newVal, oldVal) {
-      updateMessage();
-    });
-
+		$scope.setLangSpanish = function(yn) {
+			$scope.sms.spanish = yn;
+		};
 
 		var timerCountdown = 30;
 		var setCreationTimer = function() {

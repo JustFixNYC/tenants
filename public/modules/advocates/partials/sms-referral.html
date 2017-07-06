@@ -15,6 +15,17 @@
               <input type="checkbox" ng-model="sms.includeCode"> Link this tenant to my dashboard
             </label>
           </div>
+          <div class="language-view-toggle pull-right">
+            <ul class="list-inline">
+              <li><a ng-click="setLangSpanish(false)"
+                     ng-class="{ 'disabled' : !sms.spanish }">English</a>
+              </li> /
+              <li><a ng-click="setLangSpanish(true)"
+                     ng-class="{ 'disabled' : sms.spanish }">Spanish</a>
+              </li>
+            </ul>
+          </div>
+
 
           <div class="form-group" ng-class="lengthError ? 'has-error': ''">
             <label class="control-label" for="message">Message to include with the referral link</label>
