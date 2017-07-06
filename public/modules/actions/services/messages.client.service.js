@@ -38,7 +38,7 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$timeo
 
     var getLandlordEmailMessage = function() {
 
-    	console.log($translate.getAvailableLanguageKeys());
+    	// console.log($translate.getAvailableLanguageKeys());
 
       var message = 'To whom it may regard, \n\n' +
         'I am requesting the following repairs in my apartment referenced below [and/or] in the public areas of the building:\n\n';
@@ -62,19 +62,30 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$timeo
         problemsContent += '\n';
 
       }
-      message += problemsContent + '\n\n';
+      message += problemsContent;
 
-      var superContactIdx = user.activity.map(function(i) { return i.key; }).indexOf('contactSuper');
-      if(superContactIdx !== -1) {
-        message += 'I have already contacted the person responsible for making repairs on ';
-        message += $filter('date')(user.activity[superContactIdx].createdDate, 'longDate');
-        message += ', but the issue has not been resolved. ';
-      }
+      // var superContactIdx = user.activity.map(function(i) { return i.key; }).indexOf('contactSuper');
+      // if(superContactIdx !== -1) {
+      //   message += 'I have already contacted the person responsible for making repairs on ';
+      //   message += $filter('date')(user.activity[superContactIdx].createdDate, 'longDate');
+      //   message += ', but the issue has not been resolved. ';
+      // }
 
-      message += 'In the meantime, I have recorded photo and written evidence of the violations. ' +
-                 'Please contact me as soon as possible to arrange a time to have these repairs made by replying directly to this email or calling the phone number provided below.';
+      message += 'I have already contacted the person responsible for making repairs on on several occasions, but the issue has not been resolved. In the meantime, I have recorded evidence of the violation[s] should legal action be necessary. ' +
+        'If these repairs are not made immediately I will have no choice but to use my legal remedies to get the repairs done.\n\n' +
+        'Pursuant to NYC Admin Code § 27-2115 an order of civil penalties for all existing violations for which the time to correct has expired is as follows:\n\n' +
+      	'"C" violation:\n' +
+      	'$50 per day per violation (if 1-5 units)\n' +
+      	'$50-$150 one-time penalty per violation plus $125 per day (5 or more units)\n\n' +
+      	'“B” Violation:\n' +
+      	'$25-$100 one-time penalty per violation plus $10 per day\n\n' +
+      	'“A” Violation:\n' +
+      	'$10-$50 one-time penalty per violation\n\n' +
+      	'Please be advised that NYC Admin Code § 27-2115 provides a civil penalty ' +
+      	'where a person willfully makes a false certification of correction of a violation per violation falsely certified.\n\n' +
+      	'Please contact me as soon as possible to arrange a time to have these repairs made at the number provided below.';
 
-      message += '\n\n\nRegards,\n' +
+      message += '\n\nRegards,\n' +
                   user.fullName + '\n' +
                   user.address + '\n' +
                   'Apt. ' + user.unit + '\n' +

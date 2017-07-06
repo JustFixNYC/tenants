@@ -350,8 +350,8 @@ angular.module('actions').controller('AddDetailsController', ['$scope', '$filter
 
 'use strict';
 
-angular.module('actions').controller('ComplaintLetterController', ['$rootScope', '$scope', '$sce', '$timeout', '$modalInstance', 'newActivity', 'Pdf', 'Authentication', '$window',
-	function ($rootScope, $scope, $sce, $timeout, $modalInstance, newActivity, Pdf, Authentication, $window) {
+angular.module('actions').controller('ComplaintLetterController', ['$rootScope', '$scope', '$sce', '$timeout', '$modalInstance', 'newActivity', 'Pdf', 'Messages', 'Authentication', '$window',
+	function ($rootScope, $scope, $sce, $timeout, $modalInstance, newActivity, Pdf, Messages, Authentication, $window) {
 
 	  $scope.newActivity = newActivity;
 		$scope.newActivity.fields = [];
@@ -362,16 +362,18 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 		$scope.accessDates = [];
 		$scope.accessDates.push('');
 
-		$scope.status = {
-			loading: false,
-			created: false,
-			error: false
-		}
+		$scope.msgPreview = Messages.getLandlordEmailMessage();
+
+		$scope.status = {};
+		$scope.status.state = 'landlordInfo'; // initial state
+
+		// landlordInfo, msgPreview,
+		// loading, msgError,
+		// msgSuccess, letterReview, letterSuccess
 
 		$scope.addAccessDate = function() {
 			$scope.accessDates.push('');
 		};
-
 
 	  // var user = Authentication.user;
 		var timerCountdown = 30;
@@ -389,27 +391,41 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 
 	  $scope.createLetter = function () {
 
-			$scope.status.loading = true;
+			$scope.status.state = 'loading';
 
 	  	Pdf.createComplaint($scope.landlord, $scope.accessDates).then(
 	  		function success(data) {
 					setCreationTimer();
-					$scope.status.loading = false;
-					$scope.status.created = true;
+					$scope.status.state = 'msgSuccess';
 					$scope.letterUrl = data;
-					Rollbar.info("New Letter of Complaint!", { name: Authentication.user.fullName, phone: Authentication.user.phone, letterUrl: data });
 					$scope.newActivity.fields.push({ title: 'letterURL', value: data });
 	  		},
 	  		function failure(error) {
-					$scope.status.loading = false;
-					$scope.status.error = true;
+					$scope.status.state = 'error';
 					Rollbar.error("Error with letter generation");
 	  			$scope.errorCode = error;
 	  		}
 	  	);
 
-	    // $modalInstance.close($scope.newActivity);
 	  };
+
+		$scope.sendLetter = function() {
+
+			Rollbar.info("New Letter of Complaint!", {
+				name: Authentication.user.fullName,
+				phone: Authentication.user.phone,
+				letterUrl: $scope.letterUrl,
+				landlordName: $scope.landlord.name,
+				landlordAddress: $scope.landlord.address
+			});
+			$scope.newActivity.fields.push({ title: 'landlordName', value: $scope.landlord.name });
+			$scope.newActivity.fields.push({ title: 'landlordAddress', value: $scope.landlord.address });
+
+			console.log($scope.newActivity);
+
+			$scope.status.state = 'letterSuccess';
+
+		};
 
 	  $scope.cancel = function() {
 	    $modalInstance.dismiss('cancel');
@@ -703,7 +719,7 @@ angular.module('actions')
       controller: function($scope, $element, $attrs) {
 
       	$scope.user = Authentication.user;
-      	
+
         $scope.filterTitleHTML = $scope.action.title;
         $scope.filterContentHTML =  $scope.action.content;
         $scope.filterButtonTitleHTML = $scope.action.cta.buttonTitle;
@@ -779,7 +795,15 @@ angular.module('actions')
             }
           });
 
+          // prevent body scrolling, hack hack hack
+          modalInstance.opened.then(function () {
+            angular.element(document).find('html').css('overflow', 'hidden');
+          });
+
           modalInstance.result.then(function (result) {
+
+            angular.element(document).find('html').css('overflow', 'auto');
+
             scope.newActivity = result.newActivity;
 
             // this should check for isFollowUp (or should is be hasFollowUp)
@@ -791,6 +815,8 @@ angular.module('actions')
 
           }, function () {
             // modal cancelled
+
+            angular.element(document).find('html').css('overflow', 'auto');
           });
         };
 
@@ -955,7 +981,7 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$timeo
 
     var getLandlordEmailMessage = function() {
 
-    	console.log($translate.getAvailableLanguageKeys());
+    	// console.log($translate.getAvailableLanguageKeys());
 
       var message = 'To whom it may regard, \n\n' +
         'I am requesting the following repairs in my apartment referenced below [and/or] in the public areas of the building:\n\n';
@@ -979,19 +1005,30 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$timeo
         problemsContent += '\n';
 
       }
-      message += problemsContent + '\n\n';
+      message += problemsContent;
 
-      var superContactIdx = user.activity.map(function(i) { return i.key; }).indexOf('contactSuper');
-      if(superContactIdx !== -1) {
-        message += 'I have already contacted the person responsible for making repairs on ';
-        message += $filter('date')(user.activity[superContactIdx].createdDate, 'longDate');
-        message += ', but the issue has not been resolved. ';
-      }
+      // var superContactIdx = user.activity.map(function(i) { return i.key; }).indexOf('contactSuper');
+      // if(superContactIdx !== -1) {
+      //   message += 'I have already contacted the person responsible for making repairs on ';
+      //   message += $filter('date')(user.activity[superContactIdx].createdDate, 'longDate');
+      //   message += ', but the issue has not been resolved. ';
+      // }
 
-      message += 'In the meantime, I have recorded photo and written evidence of the violations. ' +
-                 'Please contact me as soon as possible to arrange a time to have these repairs made by replying directly to this email or calling the phone number provided below.';
+      message += 'I have already contacted the person responsible for making repairs on on several occasions, but the issue has not been resolved. In the meantime, I have recorded evidence of the violation[s] should legal action be necessary. ' +
+        'If these repairs are not made immediately I will have no choice but to use my legal remedies to get the repairs done.\n\n' +
+        'Pursuant to NYC Admin Code § 27-2115 an order of civil penalties for all existing violations for which the time to correct has expired is as follows:\n\n' +
+      	'"C" violation:\n' +
+      	'$50 per day per violation (if 1-5 units)\n' +
+      	'$50-$150 one-time penalty per violation plus $125 per day (5 or more units)\n\n' +
+      	'“B” Violation:\n' +
+      	'$25-$100 one-time penalty per violation plus $10 per day\n\n' +
+      	'“A” Violation:\n' +
+      	'$10-$50 one-time penalty per violation\n\n' +
+      	'Please be advised that NYC Admin Code § 27-2115 provides a civil penalty ' +
+      	'where a person willfully makes a false certification of correction of a violation per violation falsely certified.\n\n' +
+      	'Please contact me as soon as possible to arrange a time to have these repairs made at the number provided below.';
 
-      message += '\n\n\nRegards,\n' +
+      message += '\n\nRegards,\n' +
                   user.fullName + '\n' +
                   user.address + '\n' +
                   'Apt. ' + user.unit + '\n' +
@@ -2031,14 +2068,15 @@ angular.module('advocates').controller('NewTenantSignupController', ['$rootScope
 
 'use strict';
 
-angular.module('actions').controller('SMSReferralController', ['$rootScope', '$scope', '$sce', '$timeout', '$modalInstance', 'Authentication', 'Advocates', '$window',
-	function ($rootScope, $scope, $sce, $timeout, $modalInstance, Authentication, Advocates, $window) {
+angular.module('actions').controller('SMSReferralController', ['$rootScope', '$scope', '$sce', '$timeout', '$modalInstance', 'Authentication', 'Advocates', '$window', '$httpParamSerializer',
+	function ($rootScope, $scope, $sce, $timeout, $modalInstance, Authentication, Advocates, $window, $httpParamSerializer) {
 
 		$scope.sms = {
 			phone: '',
 			userMessage: '',
       message: '',
-      includeCode: true
+      includeCode: true,
+			spanish: false
 		};
 
     $scope.status = {
@@ -2050,11 +2088,26 @@ angular.module('actions').controller('SMSReferralController', ['$rootScope', '$s
     $scope.messageMaxLength = 160;
 
     var TEXT_MAX_LENGTH = 160;
-    var signupLink = 'https://www.justfix.nyc/signup';
-    var originalLink = signupLink;
+    var SIGNUP_LINK = 'https://www.justfix.nyc/signup';
+    // var originalLink = signupLink;
     var signupPrompt;
 
+		// this is the actual text
     var updateMessage = function() {
+
+			var qsObject = {};
+			if($scope.sms.includeCode) qsObject.q = Authentication.user.code;
+			if($scope.sms.spanish) qsObject.lang = 'es';
+
+			var qs = $httpParamSerializer(qsObject);
+
+			var signupLink = qs ? SIGNUP_LINK + '?' + qs : SIGNUP_LINK;
+
+			if($scope.sms.spanish) {
+				signupPrompt = ' Regístrate en: ' + signupLink;
+			} else {
+				signupPrompt = ' Sign up at: ' + signupLink;
+			}
 
       $scope.sms.message = $scope.sms.userMessage + signupPrompt;
       $scope.length = $scope.sms.message.length;
@@ -2063,25 +2116,37 @@ angular.module('actions').controller('SMSReferralController', ['$rootScope', '$s
       $scope.messageMaxLength = TEXT_MAX_LENGTH - signupPrompt.length;
     };
 
+		// this is the preformed user message
+		var updateUserMessage = function() {
+
+			if($scope.sms.includeCode && $scope.sms.spanish) {
+				$scope.sms.userMessage = 'Comience a usar JustFix.nyc para enviar fotos e información a ' + Authentication.user.firstName + ' en ' + Authentication.user.organization + ".";
+			} else if($scope.sms.includeCode && !$scope.sms.spanish) {
+				$scope.sms.userMessage = "Start using JustFix.nyc to send info to " + Authentication.user.firstName + " at " + Authentication.user.organization + "!";
+			} else if(!$scope.sms.includeCode && $scope.sms.spanish) {
+				$scope.sms.userMessage = "Comience a usar JustFix.nyc para documentar sus problemas de vivienda!";
+			} else {
+				$scope.sms.userMessage = "Start using JustFix.nyc to document your issues!";
+			}
+
+		};
+
 
     $scope.$watch('sms.includeCode', function(newVal, oldVal) {
-      if(newVal) {
-        signupLink += '?q=' + Authentication.user.code;
-        $scope.sms.userMessage = "Start using JustFix.nyc to send info to " + Authentication.user.firstName + " at " + Authentication.user.organization + "!";
-      } else {
-        signupLink = originalLink;
-        $scope.sms.userMessage = "Start using JustFix.nyc to document your issues!";
-      }
-
-      signupPrompt = ' Sign up at: ' + signupLink;
-
+			updateUserMessage();
       updateMessage();
     });
+		$scope.$watch('sms.spanish', function(newVal, oldVal) {
+			updateUserMessage();
+			updateMessage();
+		});
+		$scope.$watch('sms.userMessage', function(newVal, oldVal) {
+			updateMessage();
+		});
 
-    $scope.$watch('sms.userMessage', function(newVal, oldVal) {
-      updateMessage();
-    });
-
+		$scope.setLangSpanish = function(yn) {
+			$scope.sms.spanish = yn;
+		};
 
 		var timerCountdown = 30;
 		var setCreationTimer = function() {
@@ -2974,7 +3039,7 @@ angular.module('core').directive('inheritHeight', ['$window', '$timeout', 'devic
       restrict: 'A',
       link: function (scope, elm, attrs) {
 
-        scope.$watch("status.loading", function(newV, oldV) {
+        scope.$watch("status.state", function(newV, oldV) {
           $timeout(function () {
             elm.css('height', elm[0].querySelector('.letter-step.ng-enter').offsetHeight + 'px');
           });

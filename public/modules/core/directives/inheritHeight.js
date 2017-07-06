@@ -5,7 +5,7 @@ angular.module('core').directive('inheritHeight', ['$window', '$timeout', 'devic
       restrict: 'A',
       link: function (scope, elm, attrs) {
 
-        scope.$watch("status.loading", function(newV, oldV) {
+        scope.$watch("status.state", function(newV, oldV) {
           $timeout(function () {
             elm.css('height', elm[0].querySelector('.letter-step.ng-enter').offsetHeight + 'px');
           });

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('actions').controller('ComplaintLetterController', ['$rootScope', '$scope', '$sce', '$timeout', '$modalInstance', 'newActivity', 'Pdf', 'Authentication', '$window',
-	function ($rootScope, $scope, $sce, $timeout, $modalInstance, newActivity, Pdf, Authentication, $window) {
+angular.module('actions').controller('ComplaintLetterController', ['$rootScope', '$scope', '$sce', '$timeout', '$modalInstance', 'newActivity', 'Pdf', 'Messages', 'Authentication', '$window',
+	function ($rootScope, $scope, $sce, $timeout, $modalInstance, newActivity, Pdf, Messages, Authentication, $window) {
 
 	  $scope.newActivity = newActivity;
 		$scope.newActivity.fields = [];
@@ -12,16 +12,18 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 		$scope.accessDates = [];
 		$scope.accessDates.push('');
 
-		$scope.status = {
-			loading: false,
-			created: false,
-			error: false
-		}
+		$scope.msgPreview = Messages.getLandlordEmailMessage();
+
+		$scope.status = {};
+		$scope.status.state = 'landlordInfo'; // initial state
+
+		// landlordInfo, msgPreview,
+		// loading, msgError,
+		// msgSuccess, letterReview, letterSuccess
 
 		$scope.addAccessDate = function() {
 			$scope.accessDates.push('');
 		};
-
 
 	  // var user = Authentication.user;
 		var timerCountdown = 30;
@@ -39,27 +41,41 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 
 	  $scope.createLetter = function () {
 
-			$scope.status.loading = true;
+			$scope.status.state = 'loading';
 
 	  	Pdf.createComplaint($scope.landlord, $scope.accessDates).then(
 	  		function success(data) {
 					setCreationTimer();
-					$scope.status.loading = false;
-					$scope.status.created = true;
+					$scope.status.state = 'msgSuccess';
 					$scope.letterUrl = data;
-					Rollbar.info("New Letter of Complaint!", { name: Authentication.user.fullName, phone: Authentication.user.phone, letterUrl: data });
 					$scope.newActivity.fields.push({ title: 'letterURL', value: data });
 	  		},
 	  		function failure(error) {
-					$scope.status.loading = false;
-					$scope.status.error = true;
+					$scope.status.state = 'error';
 					Rollbar.error("Error with letter generation");
 	  			$scope.errorCode = error;
 	  		}
 	  	);
 
-	    // $modalInstance.close($scope.newActivity);
 	  };
+
+		$scope.sendLetter = function() {
+
+			Rollbar.info("New Letter of Complaint!", {
+				name: Authentication.user.fullName,
+				phone: Authentication.user.phone,
+				letterUrl: $scope.letterUrl,
+				landlordName: $scope.landlord.name,
+				landlordAddress: $scope.landlord.address
+			});
+			$scope.newActivity.fields.push({ title: 'landlordName', value: $scope.landlord.name });
+			$scope.newActivity.fields.push({ title: 'landlordAddress', value: $scope.landlord.address });
+
+			console.log($scope.newActivity);
+
+			$scope.status.state = 'letterSuccess';
+
+		};
 
 	  $scope.cancel = function() {
 	    $modalInstance.dismiss('cancel');

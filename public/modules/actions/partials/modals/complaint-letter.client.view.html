@@ -1,13 +1,14 @@
 <div class="modal-header">
-  <h3 class="modal-title" ng-if="!status.created && !status.error">{{'modules.actions.partials.modals.complaintLetter.title' | translate}}</h3>
-  <h3 class="modal-title" ng-if="status.created"><span class="glyphicon glyphicon-ok-sign"></span>{{'modules.actions.partials.modals.complaintLetter.success' | translate}}</h3>
-  <h3 class="modal-title text-danger" ng-if="status.error"><span class="glyphicon glyphicon-remove-sign"></span> {{'modules.actions.partials.modals.complaintLetter.error' | translate}}</h3>
+  <h3 class="modal-title" ng-if="status.state === 'landlordInfo'">Landlord Information</h3>
+  <h3 class="modal-title" ng-if="status.state === 'msgPreview'">Preview Letter of Complaint</h3>
+  <h3 class="modal-title" ng-if="status.state === 'msgSuccess' || status.state === 'letterSuccess'"><span class="glyphicon glyphicon-ok-sign"></span> {{'modules.actions.partials.modals.complaintLetter.success' | translate}}</h3>
+  <h3 class="modal-title text-danger" ng-if="status.state === 'error'"><span class="glyphicon glyphicon-remove-sign"></span> {{'modules.actions.partials.modals.complaintLetter.error' | translate}}</h3>
+  <h3 class="modal-title" ng-if="status.state === 'letterReview'">Review and Send</h3>
 </div>
 <div class="modal-body" stop-event="touchend">
   <div id="letterSteps" class="letter-steps" inherit-height>
-    <div class="letter-step ng-enter-active" ng-if="!status.loading && !status.created && !status.error" variable-height="letterSteps">
-      <p>{{'modules.actions.partials.modals.complaintLetter.bodyText' | translate}} <b>{{'modules.actions.partials.modals.complaintLetter.bodyTextBold' | translate}}</b></p>
-      <!-- <p><em>This information is <u>optional</u> - look on leases and other notices.</em></p> -->
+    <div class="letter-step ng-enter-active" ng-if="status.state === 'landlordInfo'" variable-height="letterSteps">
+
       <form class="update-activity-form" novalidate>
         <div class="form-group">
             <label class="control-label" for="name">{{'modules.actions.partials.modals.complaintLetter.landlordName' | translate}}</label>
@@ -15,12 +16,6 @@
                 <input name="landlordName" type="text" data-ng-model="landlord.name" class="form-control" placeholder="{{'modules.actions.partials.modals.complaintLetter.landlordName' | translate}}">
             </div>
         </div>
-        <!-- <div class="form-group">
-            <label class="control-label" for="description">Address</label>
-            <div class="controls">
-                <textarea name="landlordAddr" data-ng-model="landlord.address" id="description" class="form-control" cols="30" rows="3" maxlength="500" placeholder="Address"></textarea>
-            </div>
-        </div> -->
         <div class="form-group">
             <label class="control-label" for="accessDates">{{'modules.actions.partials.modals.complaintLetter.accessDateTitle' | translate}}</label>
             <div class="controls">
@@ -29,8 +24,27 @@
             </div>
         </div>
       </form>
+
+      <div class="modal-footer">
+        <button class="btn btn-default pull-left" ng-click="cancel()">{{'modules.actions.partials.modals.complaintLetter.cancel'| translate}}</button>
+        <button class="btn btn-primary" ng-click="status.state = 'msgPreview'">Next</button>
+      </div>
+
     </div>
-    <div class="letter-step" ng-if="status.loading">
+    <div class="letter-step" ng-if="status.state === 'msgPreview'" variable-height="letterSteps">
+      <textarea name="description" data-ng-model="msgPreview" id="description" class="form-control" cols="30" rows="10" maxlength="500" disabled></textarea>
+      <br />
+      <p>
+        <b>Disclaimer:</b> Sending this letter may cause your landlord to retaliate. However, if you are in a rent stabilized apartment, you have rights that can protect you from this.
+      </p>
+
+      <div class="modal-footer">
+        <button class="btn btn-default pull-left" ng-click="status.state = 'landlordInfo'">Back</button>
+        <button class="btn btn-primary" ng-click="createLetter()">Create</button>
+      </div>
+
+    </div>
+    <div class="letter-step" ng-if="status.state === 'loading'">
       <div class="letter-step-loading">
         <div class="sk-fading-circle circle-dark">
           <div class="sk-circle1 sk-circle"></div>
@@ -50,25 +64,58 @@
         <p class="lead text-center">{{'modules.actions.partials.modals.complaintLetter.loaderText' | translate}}</p>
       </div>
     </div>
-    <div class="letter-step letter-step-created" ng-if="status.created">
+    <div class="letter-step" ng-if="status.state === 'error'">
+      <p class="text-danger">{{'modules.actions.partials.modals.complaintLetter.errorBody' | translate}}</p>
+      <p ng-if="errorCode" class="text-danger">Error message: {{ errorCode }}</p>
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-block" ng-click="done()">{{'modules.actions.partials.modals.complaintLetter.gotIt'| translate}}</button>
+      </div>
+    </div>
+    <div class="letter-step letter-step-created" ng-if="status.state === 'msgSuccess'">
       <p>{{'modules.actions.partials.modals.complaintLetter.successTitle' | translate}}</p>
       <span class="glyphicon glyphicon-file text-success lead"></span><a class="text-link" ng-href="{{letterUrl}}" target="_blank">{{'modules.actions.partials.modals.complaintLetter.successLinkText' | translate}}</a>
       <p
       ng-bind-html="'modules.actions.partials.modals.complaintLetter.successBody' | trustTranslate"
       compile-template></p>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-block btn-block-xtra" ng-click="status.state = 'letterReview'">Mail through JustFix.nyc</button>
+        <button class="btn btn-link btn-block" ng-click="done()">No thanks, I'll mail it myself</button>
+      </div>
     </div>
-    <div class="letter-step" ng-if="status.error">
-      <p class="text-danger">{{'modules.actions.partials.modals.complaintLetter.errorBody' | translate}}</p>
-      <p ng-if="errorCode" class="text-danger">Error message: {{ errorCode }}</p>
+
+    <div class="letter-step" ng-if="status.state === 'letterReview'" variable-height="letterSteps">
+      <p>
+        JustFix.nyc will mail this letter to your landlord on your behalf, using {{ Authentication.user.address }} as the return address
+      </p>
+      <div class="form-group">
+          <label class="control-label" for="landlordAddr">Landlord Address:</label>
+          <em>(this should not be a P.O. box)</em>
+          <div class="controls">
+              <textarea name="landlordAddr" data-ng-model="landlord.address" id="description" class="form-control" cols="30" rows="3" maxlength="500" placeholder="Enter an address"></textarea>
+          </div>
+      </div>
+      <p>
+        JustFix.nyc will verify your landlord’s address to ensure accuracy.
+      </p>
+
+      <div class="modal-footer">
+        <button class="btn btn-default pull-left" ng-click="status.state = 'msgSuccess'">Back</button>
+        <button class="btn btn-primary" ng-click="sendLetter()">Send!</button>
+      </div>
+      <p class="small">
+        <em>By clicking "Send", I release from liability and waive my right to hold responsible JustFix.nyc from any and all legal claims resulting from any action I may experience after or which may result from sending this letter to my landlord.</em>
+      </p>
     </div>
-  </div>
-</div>
-<div class="modal-footer">
-  <div ng-if="!status.loading && !status.created && !status.error">
-    <button class="btn btn-default pull-left" ng-click="cancel()">{{'modules.actions.partials.modals.complaintLetter.cancel'| translate}}</button>
-    <button class="btn btn-primary" ng-click="createLetter()">{{'modules.actions.partials.modals.complaintLetter.submit'| translate}}</button>
-  </div>
-  <div ng-if="!status.loading && (status.created || status.error)">
-    <button class="btn btn-primary btn-block" ng-click="done()">{{'modules.actions.partials.modals.complaintLetter.gotIt'| translate}}</button>
+
+    <div class="letter-step" ng-if="status.state === 'letterSuccess'" variable-height="letterSteps">
+      <p>
+        You will receive a text message in a few days with your tracking number. If you have questions or comments, please call us at:
+      </p>
+      <div class="modal-footer">
+        <button class="btn btn-success btn-block" href="tel:6468200349">(646) 820-0349</button>
+        <button class="btn btn-primary btn-block" ng-click="done()">Close</button>
+      </div>
+    </div>
   </div>
 </div>

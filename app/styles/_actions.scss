@@ -12,7 +12,7 @@
   .alert {
     max-width: 500px;
     margin-left: auto;
-    margin-right: auto;    
+    margin-right: auto;
   }
 
 }
@@ -111,6 +111,17 @@
 
   input[type="date"] {
     margin-bottom: 5px;
+  }
+
+  .modal-footer {
+    padding-left: 0;
+    padding-right: 0;
+
+    .btn-block + .btn-block {
+      margin-top: 10px;
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 }
 

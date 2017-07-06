@@ -9,7 +9,7 @@ angular.module('actions')
       controller: function($scope, $element, $attrs) {
 
       	$scope.user = Authentication.user;
-      	
+
         $scope.filterTitleHTML = $scope.action.title;
         $scope.filterContentHTML =  $scope.action.content;
         $scope.filterButtonTitleHTML = $scope.action.cta.buttonTitle;
@@ -85,7 +85,15 @@ angular.module('actions')
             }
           });
 
+          // prevent body scrolling, hack hack hack
+          modalInstance.opened.then(function () {
+            angular.element(document).find('html').css('overflow', 'hidden');
+          });
+
           modalInstance.result.then(function (result) {
+
+            angular.element(document).find('html').css('overflow', 'auto');
+
             scope.newActivity = result.newActivity;
 
             // this should check for isFollowUp (or should is be hasFollowUp)
@@ -97,6 +105,8 @@ angular.module('actions')
 
           }, function () {
             // modal cancelled
+
+            angular.element(document).find('html').css('overflow', 'auto');
           });
         };
 

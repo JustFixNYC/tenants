@@ -14,13 +14,13 @@ body {
     background-color: #fff;
   }
 
+
+
   @include transition(background-color 750ms ease);
-  // &.modal-open {
-  //   #modal-open-wrapper {
-  //     position:relative; //that's it
-  //     overflow:hidden;
-  //   }
-  // }
+
+  &.modal-open {
+    overflow: hidden !important;
+  }
 }
 
 a.text-link {
@@ -291,6 +291,9 @@ input[type="date"].date-mobile:focus:before {
 
   &.btn-link {
     max-width: none;
+  }
+  &.btn-block-xtra {
+    max-width: 240px;
   }
 
   &.initial {
