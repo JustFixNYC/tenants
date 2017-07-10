@@ -389,7 +389,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 		};
 
 		$scope.generatePreview = function() {
-			$scope.msgPreview = Messages.getLandlordEmailMessage($scope.landlord.name, $scope.accessDates);		
+			$scope.msgPreview = Messages.getLandlordEmailMessage($scope.landlord.name, $scope.accessDates);
 			$scope.status.state = 'msgPreview';
 		};
 
@@ -428,6 +428,17 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 			$scope.newActivity.fields.push({ title: 'landlordAddress', value: $scope.landlord.address });
 
 			$scope.status.state = 'letterSuccess';
+		};
+
+		$scope.mailItMyself = function() {
+			Rollbar.info("New Letter of Complaint! (mail on their own)", {
+				name: Authentication.user.fullName,
+				phone: Authentication.user.phone,
+				letterUrl: $scope.letterUrl,
+				landlordName: $scope.landlord.name,
+				landlordAddress: $scope.landlord.address
+			});
+			$scope.done();
 		};
 
 	  $scope.cancel = function() {
