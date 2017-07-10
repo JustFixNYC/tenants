@@ -111,7 +111,7 @@ var generateActions = function(user) {
     // prevents actions from being listed after completed
     // [TODO] check against time since completion
     // var reject = user.actionFlags.indexOf(action.key) !== -1 && action.type == 'once';
-    
+
     // var reject = _.contains(user.actionFlags, action.key) && action.type == 'once';
     //
     // if(add && !reject) {
@@ -131,7 +131,7 @@ var generateActions = function(user) {
     //   actions.push(action);
     // }
 
-    actions.push(action);
+    // actions.push(action);    DEBUG
 
   });
 

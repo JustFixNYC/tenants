@@ -910,7 +910,7 @@
 	    "activityTitle": "Created an Official Letter of Complaint",
 	    "content": "In order to have a formal record of your requests, you need to mail a letter to your landlord. <b>We've drafted a letter that we can help you send which includes your repair issues.</b><span ng-if='!userCompletedDetails()'><br /><br />Make sure to <b>Add Details</b> (located above) first to provide the most detailed information!</span>",
 	    "cta": {
-	      "buttonTitle": "Preview Letter"
+	      "buttonTitle": "View Letter"
 	    }
 	  },
   	"decreasedServices": {

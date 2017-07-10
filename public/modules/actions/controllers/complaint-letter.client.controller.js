@@ -13,8 +13,6 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 		$scope.accessDates = [];
 		$scope.accessDates.push('');
 
-		$scope.msgPreview = Messages.getLandlordEmailMessage();
-
 		$scope.status = {};
 		$scope.status.created = false; // initial state
 		$scope.status.state = 'landlordInfo'; // initial state
@@ -40,8 +38,13 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 			}, timerCountdown * 1000);
 		};
 
+		$scope.generatePreview = function() {
+			$scope.msgPreview = Messages.getLandlordEmailMessage($scope.landlord.name, $scope.accessDates);		
+			$scope.status.state = 'msgPreview';
+		};
 
-	  $scope.createLetter = function () {
+
+	  $scope.createLetter = function() {
 
 			$scope.status.state = 'loading';
 

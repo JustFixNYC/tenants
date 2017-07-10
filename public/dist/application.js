@@ -162,24 +162,24 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     var userLang = navigator.language || navigator.userLanguage;
 
     if(!$location.search().hasOwnProperty('lang')) { // No language selected, check if browser lang is true
-      console.log('condition 0');
+      // console.log('condition 0');
     	if(LocaleService.checkIfLocaleIsValid(userLang)) {
     		LocaleService.setLocaleByName(userLang);
     	}
     	return;
   	} else if(langQuery === 'es' || langQuery === 'es-mx') { // Spanish URL slightly wrong
-      console.log('condition 1');
+      // console.log('condition 1');
 			// $location.search('lang', 'es_mx');
 			LocaleService.setLocaleByName('es_mx');
 		}else if(langQuery === 'en' || langQuery === 'en-us') { // English url slightly wrong
-      console.log('condition 2');
+      // console.log('condition 2');
 			// $location.search('lang', 'en_US');
 			LocaleService.setLocaleByName('en_US');
 		} else if(LocaleService.checkIfLocaleIsValid(langQuery)){  // account for exactly-correct urls
-      console.log('condition 3');
+      // console.log('condition 3');
 			LocaleService.setLocaleByName(langQuery);
 		} else { 														// Totally wrong lang query, default to english
-      console.log('condition 4');
+      // console.log('condition 4');
 			$location.search('lang', '');
   	}
   });
@@ -363,8 +363,6 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 		$scope.accessDates = [];
 		$scope.accessDates.push('');
 
-		$scope.msgPreview = Messages.getLandlordEmailMessage();
-
 		$scope.status = {};
 		$scope.status.created = false; // initial state
 		$scope.status.state = 'landlordInfo'; // initial state
@@ -390,8 +388,13 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 			}, timerCountdown * 1000);
 		};
 
+		$scope.generatePreview = function() {
+			$scope.msgPreview = Messages.getLandlordEmailMessage($scope.landlord.name, $scope.accessDates);		
+			$scope.status.state = 'msgPreview';
+		};
 
-	  $scope.createLetter = function () {
+
+	  $scope.createLetter = function() {
 
 			$scope.status.state = 'loading';
 
@@ -980,12 +983,18 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$timeo
       return message;
     };
 
-    var getLandlordEmailMessage = function() {
+    var getLandlordEmailMessage = function(landlordName, accessDates) {
 
     	// console.log($translate.getAvailableLanguageKeys());
+      var message = '';
 
-      var message = 'To whom it may regard, \n\n' +
-        'I am requesting the following repairs in my apartment referenced below [and/or] in the public areas of the building:\n\n';
+      if(landlordName.length) {
+        message += 'Dear ' + landlordName + ',\n\n';
+      } else {
+        message += 'To whom it may regard,\n\n';
+      }
+
+      message += 'I am requesting the following repairs in my apartment referenced below [and/or] in the public areas of the building:\n\n';
 
       var problemsContent = '';
 
@@ -1007,6 +1016,20 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$timeo
 
       }
       message += problemsContent;
+
+      // first value starts as an empty string, so lets check if its a Date
+      // might break for non HTML5 input type=Date browsers?
+      if(accessDates.length && accessDates[0] instanceof Date) {
+
+        message += 'Access Dates\n';
+        message += 'Below are some access dates provided for when repairs can be made. Please contact (using the information provided below) in order to make arrangements. Anyone coming to perform repairs should arrive no later than 12pm during the provided dates.\n\n';
+
+        for(var k = 0; k < accessDates.length; k++) {
+          message += '- ' + $filter('date')(accessDates[k], 'longDate') + '\n';
+        }
+
+        message += '\n';
+      }
 
       // var superContactIdx = user.activity.map(function(i) { return i.key; }).indexOf('contactSuper');
       // if(superContactIdx !== -1) {

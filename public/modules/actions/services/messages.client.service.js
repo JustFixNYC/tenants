@@ -36,12 +36,18 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$timeo
       return message;
     };
 
-    var getLandlordEmailMessage = function() {
+    var getLandlordEmailMessage = function(landlordName, accessDates) {
 
     	// console.log($translate.getAvailableLanguageKeys());
+      var message = '';
 
-      var message = 'To whom it may regard, \n\n' +
-        'I am requesting the following repairs in my apartment referenced below [and/or] in the public areas of the building:\n\n';
+      if(landlordName.length) {
+        message += 'Dear ' + landlordName + ',\n\n';
+      } else {
+        message += 'To whom it may regard,\n\n';
+      }
+
+      message += 'I am requesting the following repairs in my apartment referenced below [and/or] in the public areas of the building:\n\n';
 
       var problemsContent = '';
 
@@ -63,6 +69,20 @@ angular.module('actions').factory('Messages', ['$http', '$q', '$filter', '$timeo
 
       }
       message += problemsContent;
+
+      // first value starts as an empty string, so lets check if its a Date
+      // might break for non HTML5 input type=Date browsers?
+      if(accessDates.length && accessDates[0] instanceof Date) {
+
+        message += 'Access Dates\n';
+        message += 'Below are some access dates provided for when repairs can be made. Please contact (using the information provided below) in order to make arrangements. Anyone coming to perform repairs should arrive no later than 12pm during the provided dates.\n\n';
+
+        for(var k = 0; k < accessDates.length; k++) {
+          message += '- ' + $filter('date')(accessDates[k], 'longDate') + '\n';
+        }
+
+        message += '\n';
+      }
 
       // var superContactIdx = user.activity.map(function(i) { return i.key; }).indexOf('contactSuper');
       // if(superContactIdx !== -1) {
