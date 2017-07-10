@@ -131,7 +131,7 @@ var generateActions = function(user) {
     //   actions.push(action);
     // }
 
-    // actions.push(action);    DEBUG
+    actions.push(action);   // DEBUG
 
   });
 
