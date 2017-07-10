@@ -19,7 +19,14 @@
         <div class="form-group">
             <label class="control-label" for="accessDates">{{'modules.actions.partials.modals.complaintLetter.accessDateTitle' | translate}}</label>
             <div class="controls">
-              <input ng-repeat="a in accessDates track by $index" type="date" class="form-control" name="accessDate" ng-model="accessDates[$index]" mobile-date-placeholder required />
+              <input ng-repeat="a in accessDates track by $index"
+                     type="date"
+                     class="form-control"
+                     name="accessDate"
+                     ng-model="accessDates[$index]"
+                     mobile-date-placeholder
+                     placeholder="mm/dd/yyyy"
+                     required />
               <a ng-if="accessDates.length < 4" ng-click="addAccessDate()">{{'modules.actions.partials.modals.complaintLetter.accessDateAdd' | translate}}</a>
             </div>
         </div>

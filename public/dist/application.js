@@ -4872,8 +4872,6 @@ angular.module('onboarding').directive('problemsChecklist', ['Authentication', '
       },
       link: function postLink(scope, element, attrs) {
 
-        console.log(scope.ourUser);
-
 					// problemAssembler, if we don't have the problem set we just clear it out here
 					var newProblem = function(problem) {
 
