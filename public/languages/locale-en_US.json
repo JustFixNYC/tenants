@@ -59,7 +59,7 @@
   					"bodyText": "This Letter of Complaint uses the repair issues from the checklist and the details you've added.",
   					"bodyTextBold": "Make sure to send this letter as certified mail so you can prove that your landlord has received it!",
   					"landlordName": "Landlord Name",
-  					"accessDateTitle": "Provide a few apartment access dates for when repairs can be made.",
+  					"accessDateTitle": "Provide a few access dates for when repairs can be made in your apartment: (optional)",
   					"accessDateAdd": "+ Add Access Date",
   					"loaderText": "Generating your letter...",
   					"successTitle": "Your Letter of Complaint has been created and can be viewed here:",
@@ -908,7 +908,7 @@
 	  "mailLetter": {
 	    "title": "Mail an Official Letter of Complaint",
 	    "activityTitle": "Created an Official Letter of Complaint",
-	    "content": "In order to have a formal record of your requests, you need to mail a letter to your landlord. <b>We've drafted a letter that you can send including the repair issues that you've selected.</b><span ng-if='!userCompletedDetails()'><br /><br />Make sure to <b>Add Details</b> (located above) first to provide the most detailed information!</span>",
+	    "content": "In order to have a formal record of your requests, you need to mail a letter to your landlord. <b>We've drafted a letter that we can help you send which includes your repair issues.</b><span ng-if='!userCompletedDetails()'><br /><br />Make sure to <b>Add Details</b> (located above) first to provide the most detailed information!</span>",
 	    "cta": {
 	      "buttonTitle": "Preview Letter"
 	    }

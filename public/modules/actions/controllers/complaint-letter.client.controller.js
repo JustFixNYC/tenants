@@ -3,6 +3,7 @@
 angular.module('actions').controller('ComplaintLetterController', ['$rootScope', '$scope', '$sce', '$timeout', '$modalInstance', 'newActivity', 'Pdf', 'Messages', 'Authentication', '$window',
 	function ($rootScope, $scope, $sce, $timeout, $modalInstance, newActivity, Pdf, Messages, Authentication, $window) {
 
+		$scope.user = Authentication.user;
 	  $scope.newActivity = newActivity;
 		$scope.newActivity.fields = [];
 		$scope.landlord = {

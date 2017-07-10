@@ -33,15 +33,14 @@
     </div>
     <div class="letter-step" ng-if="status.state === 'msgPreview'" variable-height="letterSteps">
       <textarea name="description" data-ng-model="msgPreview" id="description" class="form-control" cols="30" rows="10" maxlength="500" disabled  stop-event="touchend"></textarea>
-      <br />
-      <p>
-        <b>Disclaimer:</b> Sending this letter may cause your landlord to retaliate. However, if you are in a rent stabilized apartment, you have rights that can protect you from this.
-      </p>
 
       <div class="modal-footer">
         <button class="btn btn-default pull-left" ng-click="status.state = 'landlordInfo'">Back</button>
-        <button class="btn btn-primary" ng-click="createLetter()">Create</button>
+        <button class="btn btn-primary" ng-click="createLetter()">Next</button>
       </div>
+      <p class="small">
+        <em>Sending this letter may cause your landlord to retaliate. However, if you are in a rent regulated apartment, <a href="http://www1.nyc.gov/site/hpd/renters/harassment.page" target="_blank">you have rights</a> that can protect you from this.</em>
+      </p>
 
     </div>
     <div class="letter-step" ng-if="status.state === 'loading'">
@@ -79,14 +78,14 @@
       compile-template></p>
 
       <div class="modal-footer">
-        <button class="btn btn-primary btn-block btn-block-xtra" ng-click="status.state = 'letterReview'">Mail through JustFix.nyc</button>
+        <button class="btn btn-primary btn-block btn-block-xtra" ng-click="status.state = 'letterReview'">Have JustFix.nyc mail this for me</button>
         <button class="btn btn-link btn-block" ng-click="done()">No thanks, I'll mail it myself</button>
       </div>
     </div>
 
     <div class="letter-step" ng-if="status.state === 'letterReview'" variable-height="letterSteps">
       <p>
-        JustFix.nyc will mail this letter to your landlord on your behalf, using {{ Authentication.user.address }} as the return address
+        JustFix.nyc will mail this letter to your landlord on your behalf, using <em>{{ user.address }}</em> as the return address. We will verify your landlord’s address to ensure accuracy.
       </p>
       <div class="form-group">
           <label class="control-label" for="landlordAddr">Landlord Address:</label>
@@ -96,9 +95,6 @@
               <textarea name="landlordAddr" data-ng-model="landlord.address" id="description" class="form-control" cols="30" rows="3" maxlength="500" placeholder="Enter an address"></textarea>
           </div>
       </div>
-      <p>
-        JustFix.nyc will verify your landlord’s address to ensure accuracy.
-      </p>
 
       <div class="modal-footer">
         <button class="btn btn-default pull-left" ng-click="status.state = 'msgSuccess'">Back</button>
@@ -111,10 +107,9 @@
 
     <div class="letter-step" ng-if="status.state === 'letterSuccess'" variable-height="letterSteps">
       <p>
-        You will receive a text message in a few days with your tracking number. If you have questions or comments, please call us at:
+        You will receive a text message in a few days with your tracking number. If you have questions or comments, please call us at <a href="tel:6468200349">(646) 820-0349</a>.
       </p>
       <div class="modal-footer">
-        <a class="btn btn-success btn-block" href="tel:6468200349">(646) 820-0349</a>
         <button class="btn btn-primary btn-block" ng-click="done()">Close</button>
       </div>
     </div>
