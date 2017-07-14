@@ -104,34 +104,40 @@ var generateActions = function(user) {
   //iterate through full list of actions, push
   fullActions.forEach(function (action) {
 
-    // check addIf array against user.actionFlags
-    // if length = 0, means that one of the addIf flags exists for the user
-    var add = _.intersection(action.addIf, user.actionFlags).length;
+    if(!process.env.DEBUG_ACTIONS) {
 
-    // prevents actions from being listed after completed
-    // [TODO] check against time since completion
-    // var reject = user.actionFlags.indexOf(action.key) !== -1 && action.type == 'once';
+      // check addIf array against user.actionFlags
+      // if length = 0, means that one of the addIf flags exists for the user
+      var add = _.intersection(action.addIf, user.actionFlags).length;
 
-    var reject = _.contains(user.actionFlags, action.key) && action.type == 'once';
+      // prevents actions from being listed after completed
+      // [TODO] check against time since completion
+      // var reject = user.actionFlags.indexOf(action.key) !== -1 && action.type == 'once';
 
-    if(add && !reject) {
-      if(action.followUp) action.hasFollowUp = true;
-      else action.hasFollowUp = false;
+      var reject = _.contains(user.actionFlags, action.key) && action.type == 'once';
 
-      // checks if action is a followup or not
-      var followUpKeys = _.pluck(user.followUpFlags, 'key');
+      if(add && !reject) {
+        if(action.followUp) action.hasFollowUp = true;
+        else action.hasFollowUp = false;
 
-      if(_.contains(followUpKeys, action.key)) {
-        // console.log('found', _.find(user.followUpFlags, { key: action.key}).startDate);
-        action.isFollowUp = true;
-        action.startDate = _.find(user.followUpFlags, { key: action.key}).startDate;
+        // checks if action is a followup or not
+        var followUpKeys = _.pluck(user.followUpFlags, 'key');
+
+        if(_.contains(followUpKeys, action.key)) {
+          // console.log('found', _.find(user.followUpFlags, { key: action.key}).startDate);
+          action.isFollowUp = true;
+          action.startDate = _.find(user.followUpFlags, { key: action.key}).startDate;
+        }
+        else action.isFollowUp = false;
+
+        actions.push(action);
       }
-      else action.isFollowUp = false;
 
-      actions.push(action);
+    } else {
+      actions.push(action);   // DEBUG
     }
 
-    // actions.push(action);   // DEBUG
+
 
   });
 

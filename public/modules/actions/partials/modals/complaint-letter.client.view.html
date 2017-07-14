@@ -53,18 +53,10 @@
     <div class="letter-step" ng-if="status.state === 'loading'">
       <div class="letter-step-loading">
         <div class="sk-fading-circle circle-dark">
-          <div class="sk-circle1 sk-circle"></div>
-          <div class="sk-circle2 sk-circle"></div>
-          <div class="sk-circle3 sk-circle"></div>
-          <div class="sk-circle4 sk-circle"></div>
-          <div class="sk-circle5 sk-circle"></div>
-          <div class="sk-circle6 sk-circle"></div>
-          <div class="sk-circle7 sk-circle"></div>
-          <div class="sk-circle8 sk-circle"></div>
-          <div class="sk-circle9 sk-circle"></div>
-          <div class="sk-circle10 sk-circle"></div>
-          <div class="sk-circle11 sk-circle"></div>
-          <div class="sk-circle12 sk-circle"></div>
+          <!-- hacking ng-repeat for iterable elements! -->
+          <div ng-repeat="n in [].constructor(12) track by $index"
+               class="sk-circle" ng-class="'sk-circle' + ($index+1)">
+          </div>
         </div>
         <br />
         <p class="lead text-center">{{'modules.actions.partials.modals.complaintLetter.loaderText' | translate}}</p>

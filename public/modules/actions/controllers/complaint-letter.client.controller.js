@@ -16,7 +16,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 		$scope.status = {};
 		$scope.status.created = false; // initial state
 		$scope.status.state = 'landlordInfo'; // initial state
-		// $scope.status.state = 'msgPreview'; // initial state
+		// $scope.status.state = 'loading'; // initial state
 
 		// landlordInfo, msgPreview,
 		// loading, msgError,
