@@ -366,7 +366,7 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 		$scope.status = {};
 		$scope.status.created = false; // initial state
 		$scope.status.state = 'landlordInfo'; // initial state
-		// $scope.status.state = 'msgPreview'; // initial state
+		// $scope.status.state = 'loading'; // initial state
 
 		// landlordInfo, msgPreview,
 		// loading, msgError,
@@ -4545,7 +4545,8 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 		};
 
 		// if advocate data has been passed from the ui-router resolve
-		if(advocateData) {
+		// angular.equals(x,{}) will tell you if its an empty object or not
+		if(!angular.equals(advocateData, {})) {
 			onAdvocateSuccess(advocateData);
 		}
 
