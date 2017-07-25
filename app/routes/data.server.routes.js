@@ -3,10 +3,12 @@
 /**
  * Module dependencies.
  */
-var data = require('../../app/controllers/data.server.controller');
+var cors = require('cors'),
+		data = require('../../app/controllers/data.server.controller');
 
 module.exports = function(app) {
 	app.route('/api/data/bblslookup')
+		.options(cors())
 		.post(data.bblsLookup);
 
 };
