@@ -39,6 +39,7 @@
     "lodash": "~2.4.1",
     "lodash.escaperegexp": "^4.1.2",
     "method-override": "~2.3.0",
+    "mongo-sanitize": "^1.0.0",
     "mongodb": "^2.2.22",
     "mongoose": "~4.6.7",
     "morgan": "~1.4.1",
