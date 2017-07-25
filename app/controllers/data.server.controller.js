@@ -23,6 +23,11 @@ exports.bblsLookup = function(req, res) {
   // sanitize any user input
   var bbls = sanitize(req.body.bbls);
 
+  if(bbls.length <= 0) {
+    rollbar.handleError(errorHandler.getErrorMessage("No input"), req);
+    return res.status(400).send(errorHandler.getErrorMessage("No input"));    
+  }
+
   // query the tenants
   var query = { 'geo.bbl' : { $in: bbls } };
 
