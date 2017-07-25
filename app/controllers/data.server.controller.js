@@ -17,6 +17,7 @@ exports.bblsLookup = function(req, res) {
 
   // enable cors for this
   res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "POST");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
   // sanitize any user input
