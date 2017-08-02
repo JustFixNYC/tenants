@@ -11,26 +11,12 @@ mongoose.Promise = require('q').Promise;
 
 exports.bookDate = function (req, res) {
 
-  console.log(req.body.appt);
-  console.log(req.body.appt.forms.values);
-
-  // forms: [ { id: 602488, name: 'Consultation From', values: [Object] } ],
-
   var consultationForm = _.find(req.body.appt.forms, { id: 602488 }).values;
-
-  console.log(consultationForm);
-
   var tenantID = _.find(consultationForm, { fieldID: 3389743 }).value;
-
-  // var tenantId = _.find(req.body.appt.forms.values, { fieldID: "3389743" }).value;
-
-  console.log(tenantID);
 
   Tenant.findById(tenantID)
   // Tenant.findOne({ phone: req.body.appt.phone })
     .then(function (tenant) {
-
-      console.log(tenant);
 
       if(!tenant) throw new Error("No Tenant Found");
 
