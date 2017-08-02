@@ -26,7 +26,7 @@ exports.bookDate = function (req, res) {
 
   console.log(tenantID);
 
-  Tenant.findById({ tenantID })
+  Tenant.findById(tenantID)
   // Tenant.findOne({ phone: req.body.appt.phone })
     .then(function (tenant) {
 
