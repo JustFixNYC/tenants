@@ -25,6 +25,7 @@ angular.module('onboarding').directive('scheduler', ['$sce', '$location', 'Authe
         scope.acuity += '&email=' + 'support@justfix.nyc';
         scope.acuity += '&phone=' + scope.user.phone;
         scope.acuity += '&field:2631340=' + currentLocation + '/share/' + scope.user.sharing.key;
+        scope.acuity += '&field:3389743=' + scope.user._userdata;
       }
 
 

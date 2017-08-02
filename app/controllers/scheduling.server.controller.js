@@ -11,6 +11,12 @@ mongoose.Promise = require('q').Promise;
 
 exports.bookDate = function (req, res) {
 
+  console.log(req.body.appt);
+
+  var tenantId = _.find(req.body.appt.forms.values, { fieldId: "3389743" }).value;
+
+  console.log(tenantId);
+
   Tenant.findOne({ phone: req.body.appt.phone })
     .then(function (tenant) {
 
