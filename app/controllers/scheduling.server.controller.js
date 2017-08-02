@@ -13,7 +13,7 @@ exports.bookDate = function (req, res) {
 
   console.log(req.body.appt);
 
-  var tenantId = _.find(req.body.appt.forms.values, { fieldId: "3389743" }).value;
+  var tenantId = _.find(req.body.appt.forms.values, { fieldID: "3389743" }).value;
 
   console.log(tenantId);
 
