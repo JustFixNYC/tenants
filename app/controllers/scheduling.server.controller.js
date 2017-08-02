@@ -20,14 +20,17 @@ exports.bookDate = function (req, res) {
 
   console.log(consultationForm);
 
-  var tenantID = _.find(consultationForm, { fieldID: "3389743" }).value;
+  var tenantID = _.find(consultationForm, { fieldID: 3389743 }).value;
 
   // var tenantId = _.find(req.body.appt.forms.values, { fieldID: "3389743" }).value;
 
   console.log(tenantID);
 
-  Tenant.findOne({ phone: req.body.appt.phone })
+  Tenant.findById({ tenantID })
+  // Tenant.findOne({ phone: req.body.appt.phone })
     .then(function (tenant) {
+
+      console.log(tenant);
 
       if(!tenant) throw new Error("No Tenant Found");
 
