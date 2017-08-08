@@ -7,6 +7,7 @@
     </div>
 
     <div class="pull-right-on-desktop advocates-controls">
+      <a ng-if="user.specialFlags && user.specialFlags.indexOf('surveyPartner') !== -1" ui-sref="advocateSurvey" class="btn btn-info">New Survey Entry</a>
       <a ui-sref="newTenantSignup.details" class="btn btn-info">New Managed Tenant</a>
       <a ng-click="openReferralModal()" class="btn btn-success">Send Signup Link</a>
     </div>

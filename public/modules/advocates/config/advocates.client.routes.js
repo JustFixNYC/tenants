@@ -71,6 +71,11 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 				controller: 'AdvocateHelpController',
 				user: 'advocate'
 			})
+			.state('advocateSurvey', {
+				url: '/advocate/survey',
+				template: '<seth-low-survey></seth-low-survey>',
+				user: 'advocate'
+			})
 			.state('manageTenant', {
 				url: '/advocate/manage/:id',
 				templateUrl: 'modules/advocates/views/manage-tenant.client.view.html',

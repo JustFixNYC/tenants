@@ -99,7 +99,12 @@ var AdvocateSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
-  }
+  },
+  // use this to denote any special features/functionality for this advocate acct
+  specialFlags: [{
+    type: String,
+    default: []
+  }]
 });
 
 

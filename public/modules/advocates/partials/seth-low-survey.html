@@ -1,0 +1,29 @@
+<section id="seth-low-survey">
+
+	<div class="page-header">
+		<h1 class="text-center" ng-if="!hasSubmittedForm">Seth Low TA Survey</h1>
+		<h1 class="text-center" ng-if="hasSubmittedForm">Survey Completed!</h1>
+	</div>
+
+	<div ng-if="!hasSubmittedForm">
+		<typeform-embed
+		    tf-id="T48wjb"
+		    tf-text="Any text that you want"
+		    tf-style="height:500px; width:100%;">
+		</typeform-embed>
+	</div>
+	<div ng-if="hasSubmittedForm" class="text-center">
+		<p>
+			If this person requires further support or assistance, click here to start a JustFix.nyc Case:
+		</p>
+		<a ui-sref="newTenantSignup.details" class="btn btn-info">New Managed Tenant</a>
+		<br />
+		<br />
+		<br />
+		<p>
+			Click here to reload the survey for the next person:
+		</p>
+		<a ng-click="refresh()" class="btn btn-primary">New Survey Entry</a>
+	</div>
+
+</section>

@@ -50,7 +50,8 @@ module.exports = {
 		    'public/lib/angular-sanitize/angular-sanitize.min.js',
 		    'public/lib/angular-filter/dist/angular-filter.js',
 				'public/lib/angular-clipboard/angular-clipboard.js',
-				'https://d3gxy7nm8y4yjr.cloudfront.net/js/embed.js'
+				'https://d3gxy7nm8y4yjr.cloudfront.net/js/embed.js',
+				'public/lib/angular-typeform/angular-typeform.js'
 		  ]
 	  },
 	  css: [
