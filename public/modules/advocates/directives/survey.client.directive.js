@@ -8,17 +8,15 @@ angular.module('advocates').directive('sethLowSurvey', ['$timeout', '$state', '$
 
       scope.user = Authentication.user;
 
-      scope.hasSubmittedForm = true;
+      scope.hasSubmittedForm = false;
 
       scope.refresh = function() {
         $state.reload();
-        // $window.location.reload();
       };
 
       window.addEventListener("message", function(e) {
         if(e.data && typeof e.data === 'string') {
           if(e.origin === 'https://justfix.typeform.com' && e.data === 'form-submit') {
-            console.log(e);
             $timeout(function () {
               scope.hasSubmittedForm = true;
             });

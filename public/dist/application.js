@@ -20,7 +20,8 @@ var ApplicationConfiguration = (function() {
 		'pascalprecht.translate',	// angular-translate
  		'tmh.dynamicLocale',// angular-dynamic-locale
 		'angular.filter',
-		'angular-clipboard'
+		'angular-clipboard',
+		'angularTypeform'
  		/* 'ngSanitize'*/ // Santize translations -> /application.js at line ~40
 	];
 // 'ngAnimate',  'ngTouch', , 'bootstrapLightbox' , 'angularModalService'
@@ -59,6 +60,9 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     // enable this for speed enhancement b4 production push
     // $compileProvider.debugInfoEnabled(false);
   }])
+  .config(function (typeformConfigProvider) {
+    typeformConfigProvider.setAccount('justfix');
+  })
   // .config(['$tooltipProvider', function($tooltipProvider){
   //  $tooltipProvider.setTriggers({
   //   'mouseenter': 'mouseleave',
@@ -1712,6 +1716,11 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
 				controller: 'AdvocateHelpController',
 				user: 'advocate'
 			})
+			.state('advocateSurvey', {
+				url: '/advocate/survey',
+				template: '<seth-low-survey></seth-low-survey>',
+				user: 'advocate'
+			})
 			.state('manageTenant', {
 				url: '/advocate/manage/:id',
 				templateUrl: 'modules/advocates/views/manage-tenant.client.view.html',
@@ -2389,6 +2398,35 @@ angular.module('advocates')
       }
     };
   }]);
+
+'use strict';
+
+angular.module('advocates').directive('sethLowSurvey', ['$timeout', '$state', '$window', 'Authentication', 'Users', function scheduler($timeout, $state, $window, Authentication, Users) {
+  return {
+    templateUrl: 'modules/advocates/partials/seth-low-survey.html',
+    restrict: 'E',
+    link: function postLink(scope, element, attrs) {
+
+      scope.user = Authentication.user;
+
+      scope.hasSubmittedForm = false;
+
+      scope.refresh = function() {
+        $state.reload();
+      };
+
+      window.addEventListener("message", function(e) {
+        if(e.data && typeof e.data === 'string') {
+          if(e.origin === 'https://justfix.typeform.com' && e.data === 'form-submit') {
+            $timeout(function () {
+              scope.hasSubmittedForm = true;
+            });
+          }
+        }
+      }, false);
+    }
+  };
+}]);
 
 'use strict';
 
