@@ -1,11 +1,13 @@
 'use strict';
 
 //Setting up route
-angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
-	function($stateProvider, $urlRouterProvider) {
+angular.module('advocates').config(['$stateProvider', '$urlRouterProvider', 'typeformConfigProvider',
+	function($stateProvider, $urlRouterProvider, typeformConfigProvider) {
 
 		// Jump to first child state
     // $urlRouterProvider.when('/advocate/signup', '/advocate/signup/create');
+
+		typeformConfigProvider.setAccount('laymanlee');
 
 		// Advocate state routing
 		$stateProvider
