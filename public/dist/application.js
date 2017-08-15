@@ -60,9 +60,6 @@ angular.module(ApplicationConfiguration.applicationModuleName)
     // enable this for speed enhancement b4 production push
     // $compileProvider.debugInfoEnabled(false);
   }])
-  .config(function (typeformConfigProvider) {
-    typeformConfigProvider.setAccount('justfix');
-  })
   // .config(['$tooltipProvider', function($tooltipProvider){
   //  $tooltipProvider.setTriggers({
   //   'mouseenter': 'mouseleave',
@@ -1646,11 +1643,13 @@ angular.module('admin').factory('Passwords', ['$resource',
 'use strict';
 
 //Setting up route
-angular.module('advocates').config(['$stateProvider', '$urlRouterProvider',
-	function($stateProvider, $urlRouterProvider) {
+angular.module('advocates').config(['$stateProvider', '$urlRouterProvider', 'typeformConfigProvider',
+	function($stateProvider, $urlRouterProvider, typeformConfigProvider) {
 
 		// Jump to first child state
     // $urlRouterProvider.when('/advocate/signup', '/advocate/signup/create');
+
+		typeformConfigProvider.setAccount('justfix');
 
 		// Advocate state routing
 		$stateProvider

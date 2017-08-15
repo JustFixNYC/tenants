@@ -7,7 +7,7 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider', 'typ
 		// Jump to first child state
     // $urlRouterProvider.when('/advocate/signup', '/advocate/signup/create');
 
-		typeformConfigProvider.setAccount('laymanlee');
+		typeformConfigProvider.setAccount('justfix');
 
 		// Advocate state routing
 		$stateProvider
