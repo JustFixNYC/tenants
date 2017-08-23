@@ -14,8 +14,8 @@ angular.module('advocates').controller('ManageTenantController', [
 		// }, true);
 
 	}])
-	.controller('ManageTenantHomeController', ['$scope', '$stateParams', '$filter', 'deviceDetector', 'Advocates', 'Lightbox',
-		function($scope, $stateParams, $filter, deviceDetector, Advocates, Lightbox) {
+	.controller('ManageTenantHomeController', ['$scope', '$stateParams', '$filter', '$modal', 'deviceDetector', 'Advocates', 'Lightbox',
+		function($scope, $stateParams, $filter, $modal, deviceDetector, Advocates, Lightbox) {
 
 
 
@@ -41,6 +41,19 @@ angular.module('advocates').controller('ManageTenantController', [
 
 			$scope.openLightboxModal = function (photos, index) {
 				Lightbox.openModal(photos, index);
+			};
+
+			$scope.openSethLowReferralModal = function() {
+
+				var modalInstance = $modal.open({
+					//animation: false,
+					templateUrl: 'modules/advocates/partials/seth-low-sms-referral.html',
+					controller: 'SethLowSMSReferralController',
+					backdrop: 'static',
+					resolve: {
+						tenantPhone: function () { return $scope.tenant.phone; }
+					}
+				});
 			};
 
 

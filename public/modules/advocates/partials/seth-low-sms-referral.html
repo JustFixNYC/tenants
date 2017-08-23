@@ -1,0 +1,78 @@
+<div class="modal-header">
+  <h3 class="modal-title" ng-if="!status.sent && !status.error">Send a referral link</h3>
+  <h3 class="modal-title" ng-if="status.sent"><span class="glyphicon glyphicon-ok-sign"></span> Referral link sent!</h3>
+  <h3 class="modal-title text-danger" ng-if="status.error"><span class="glyphicon glyphicon-remove-sign"></span> {{'modules.actions.partials.modals.complaintLetter.error' | translate}}</h3>
+</div>
+<div class="modal-body" stop-event="touchend">
+  <div id="letterSteps" class="letter-steps" inherit-height>
+    <div class="letter-step ng-enter-active" ng-if="!status.loading && !status.sent && !status.error" variable-height="letterSteps">
+        <form class="send-sms-form">
+          <div class="form-group" ng-class="phoneError ? 'has-error': ''">
+            <label class="control-label" for="phone">Tenant's phone number <em>(make sure this number can receive text messages!)</em></label>
+            <input class="form-control" type="tel" ng-attr-placeholder="{{'modules.onboarding.partials.onboardingDetails.phoneNumber' | translate}}" name="phone" ng-model="sms.phone" name="phone" required phone-input>
+            <p class="text-danger" ng-show="phoneError">Please add a phone number!</p>
+          </div>
+          <div class="form-group" ng-class="lengthError ? 'has-error': ''">
+            <label class="control-label">What type of information do you want to send?</em></label>
+            <div class="row">
+              <div class="col-xs-6">
+                <button class="btn btn-block"
+                        ng-class="sms.type == 'job' ? 'btn-primary' : 'btn-default'"
+                        ng-click="selectMessageType('job')">
+                    Employment
+                </button>
+              </div>
+              <div class="col-xs-6">
+                <button class="btn btn-block"
+                        ng-class="sms.type == 'legal' ? 'btn-primary' : 'btn-default'"
+                        ng-click="selectMessageType('legal')">
+                  Legal Assistance
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+    </div>
+    <div class="letter-step" ng-if="status.loading">
+      <div class="letter-step-loading">
+        <div class="sk-fading-circle circle-dark">
+          <div class="sk-circle1 sk-circle"></div>
+          <div class="sk-circle2 sk-circle"></div>
+          <div class="sk-circle3 sk-circle"></div>
+          <div class="sk-circle4 sk-circle"></div>
+          <div class="sk-circle5 sk-circle"></div>
+          <div class="sk-circle6 sk-circle"></div>
+          <div class="sk-circle7 sk-circle"></div>
+          <div class="sk-circle8 sk-circle"></div>
+          <div class="sk-circle9 sk-circle"></div>
+          <div class="sk-circle10 sk-circle"></div>
+          <div class="sk-circle11 sk-circle"></div>
+          <div class="sk-circle12 sk-circle"></div>
+        </div>
+        <br />
+        <p class="lead text-center">Sending SMS...</p>
+      </div>
+    </div>
+    <div class="letter-step letter-step-created" ng-if="status.sent">
+      <p>
+        An SMS text message has been sent to <b>{{ sms.phone | tel }}</b> including your referral information.
+      </p>
+    </div>
+    <div class="letter-step" ng-if="status.error">
+      <p class="text-danger">Oops! We're sorry, the text message service is down at the moment - please try again later. The JustFix.nyc team has been notified of this issue!</p>
+      <p ng-if="errorCode" class="text-danger">Error message: {{ errorCode }}</p>
+    </div>
+
+  </div>
+
+
+</div>
+<div class="modal-footer">
+  <div ng-if="!status.loading && !status.sent && !status.error">
+    <button class="btn btn-default pull-left" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-success" ng-class="sms.message.length ? '' : 'disabled'" ng-click="sendSMS()"><span class="glyphicon glyphicon-comment pull-left" style="pointer-events: none;"></span> Send SMS</button>
+  </div>
+  <div ng-if="!status.loading && (status.sent || status.error)">
+    <button class="btn btn-primary btn-block" ng-click="done()">Got it</button>
+  </div>
+</div>

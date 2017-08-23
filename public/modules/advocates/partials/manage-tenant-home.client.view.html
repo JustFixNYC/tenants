@@ -21,6 +21,9 @@
                                     caselink:'https://beta.justfix.nyc/share/{{tenant.sharing.key}}'
                                   })"
           class="btn btn-info">New Survey Entry</a>
+      <a  ng-if="user.specialFlags && user.specialFlags.indexOf('surveyPartner') !== -1"
+          ng-click="openSethLowReferralModal()"
+          class="btn btn-success">Send Referral Info</a>
       <a ng-href="tel:{{ tenant.phone }}" class="btn btn-success btn-block pull-right" ng-if="!isDesktop">
           Call {{ tenant.firstName }}
       </a>
