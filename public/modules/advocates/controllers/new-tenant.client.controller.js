@@ -70,7 +70,7 @@ angular.module('advocates').controller('NewTenantSignupController', ['$rootScope
 					if(typeof DEBUG !== 'undefined' && DEBUG == true) console.log('create account post save', response);
 
 					// $state.go('advocateHome');
-					console.log(response);
+					// console.log(response);
 
 					// $state.go('advocateHome');
 					Advocates.setCurrentTenant(response);

@@ -1718,6 +1718,15 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider', 'typ
 			.state('advocateSurvey', {
 				url: '/advocate/survey',
 				template: '<seth-low-survey></seth-low-survey>',
+				params: {
+					phone: null,
+					firstname: null,
+					lastname: null,
+					address: null,
+					unit: null,
+					id: null,
+					caselink: null
+				},
 				user: 'advocate'
 			})
 			.state('manageTenant', {
@@ -1905,7 +1914,7 @@ angular.module('advocates').controller('ManageTenantController', [
 		$scope.device = deviceDetector;
 		$scope.tenant = tenant;
 
-		// 
+		//
 		// $scope.$watch('tenant', function (tenant) {
 		// 	console.log('change in root', tenant);
 		// }, true);
@@ -1988,7 +1997,7 @@ angular.module('advocates').controller('ManageTenantController', [
 
 				$scope.saveProblems = function () {
 
-					console.log('before', $scope.tenant);
+					// console.log('before', $scope.tenant);
 
 					$rootScope.loading = true;
 					$scope.problemsAlert = false;
@@ -1996,7 +2005,7 @@ angular.module('advocates').controller('ManageTenantController', [
 					var tenant = new ProblemsResource($scope.tenant);
 					tenant.$updateManagedChecklist({ id: $scope.tenant._id },
 						function(response) {
-							console.log('after', response);
+							// console.log('after', response);
 
 							// need to use angular.extend rather than scope.tenant = response
 							// this will actually update all the attributes
@@ -2088,7 +2097,7 @@ angular.module('advocates').controller('NewTenantSignupController', ['$rootScope
 					if(typeof DEBUG !== 'undefined' && DEBUG == true) console.log('create account post save', response);
 
 					// $state.go('advocateHome');
-					console.log(response);
+					// console.log(response);
 
 					// $state.go('advocateHome');
 					Advocates.setCurrentTenant(response);
@@ -2400,31 +2409,50 @@ angular.module('advocates')
 
 'use strict';
 
-angular.module('advocates').directive('sethLowSurvey', ['$timeout', '$state', '$window', 'Authentication', 'Users', function scheduler($timeout, $state, $window, Authentication, Users) {
-  return {
-    templateUrl: 'modules/advocates/partials/seth-low-survey.html',
-    restrict: 'E',
-    link: function postLink(scope, element, attrs) {
+angular.module('advocates').directive('sethLowSurvey', ['$rootScope', '$stateParams', '$httpParamSerializer', '$timeout', '$state', '$window', 'Authentication', 'Users', 'Activity',
+  function scheduler($rootScope, $stateParams, $httpParamSerializer, $timeout, $state, $window, Authentication, Users, Activity) {
+    return {
+      templateUrl: 'modules/advocates/partials/seth-low-survey.html',
+      restrict: 'E',
+      link: function postLink(scope, element, attrs) {
 
-      scope.user = Authentication.user;
+        scope.tfHiddenFields = $httpParamSerializer($stateParams);
 
-      scope.hasSubmittedForm = false;
+        scope.user = Authentication.user;
 
-      scope.refresh = function() {
-        $state.reload();
-      };
+        scope.hasSubmittedForm = false;
 
-      window.addEventListener("message", function(e) {
-        if(e.data && typeof e.data === 'string') {
-          if(e.origin === 'https://justfix.typeform.com' && e.data === 'form-submit') {
-            $timeout(function () {
-              scope.hasSubmittedForm = true;
-            });
+        scope.refresh = function() {
+          $state.reload();
+        };
+
+        window.addEventListener("message", function(e) {
+          if(e.data && typeof e.data === 'string') {
+            if(e.origin === 'https://justfix.typeform.com' && e.data === 'form-submit') {
+
+              var newActivity = {
+                date: '',
+                title: 'Completed Survey',
+                key: 'surveyCompleted',
+                relatedProblems: [],
+                photos: []
+              };
+
+              $rootScope.loading = true;
+
+              var activity = new Activity(newActivity);
+
+              activity.$saveManagedByID({ id: $stateParams.id }, function(response) {
+                $rootScope.loading = false;
+                $rootScope.newSurvey = true;
+                $state.go('advocateHome');
+                // $state.go('manageTenant.home', { id: $stateParams.id });
+              });
+            }
           }
-        }
-      }, false);
-    }
-  };
+        }, false);
+      }
+    };
 }]);
 
 'use strict';

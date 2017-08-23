@@ -135,9 +135,7 @@ var TenantSchema = new Schema({
     type: String,
     unique: true,
     trim: true,
-    default: '',
-    validate: [validatePhone, 'Please fill a valid phone number'],
-    required: [true, 'Please fill in your phone number']
+    default: ''
   },
   updated: {
     type: Date

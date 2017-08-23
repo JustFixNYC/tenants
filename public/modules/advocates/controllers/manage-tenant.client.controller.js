@@ -8,7 +8,7 @@ angular.module('advocates').controller('ManageTenantController', [
 		$scope.device = deviceDetector;
 		$scope.tenant = tenant;
 
-		// 
+		//
 		// $scope.$watch('tenant', function (tenant) {
 		// 	console.log('change in root', tenant);
 		// }, true);
@@ -91,7 +91,7 @@ angular.module('advocates').controller('ManageTenantController', [
 
 				$scope.saveProblems = function () {
 
-					console.log('before', $scope.tenant);
+					// console.log('before', $scope.tenant);
 
 					$rootScope.loading = true;
 					$scope.problemsAlert = false;
@@ -99,7 +99,7 @@ angular.module('advocates').controller('ManageTenantController', [
 					var tenant = new ProblemsResource($scope.tenant);
 					tenant.$updateManagedChecklist({ id: $scope.tenant._id },
 						function(response) {
-							console.log('after', response);
+							// console.log('after', response);
 
 							// need to use angular.extend rather than scope.tenant = response
 							// this will actually update all the attributes

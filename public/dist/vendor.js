@@ -54436,9 +54436,12 @@ return angular.module('angular-clipboard', [])
 						q=gt.call(d,"script")[0];
 						q.parentNode.insertBefore(js,q);
 				} else {
+
+					var tfIdAndHidden = $scope.tfHidden ? $scope.tfId + '?' + $scope.tfHidden : $scope.tfId;
+
 					//For angular apps
 					// new Typeform.Widget
-					var typeFormUrl = 'https://' + $scope.accountId + '.typeform.com/to/' + $scope.tfId;
+					var typeFormUrl = 'https://' + $scope.accountId + '.typeform.com/to/' + tfIdAndHidden;
 					new window.typeformEmbed.makeWidget($element[0], typeFormUrl);
 				}
 			}
@@ -54455,15 +54458,18 @@ return angular.module('angular-clipboard', [])
 				replace: true,
 				scope: {
 					tfId: '@',
+					tfHidden: '@',
 					tfText: '@',
 					tfStyle: '@'
 				},
-				template: '<div class="typeform-widget" ng-attr-data-url="https://{{accountId}}.typeform.com/to/{{tfId}}" ng-attr-data-text="{{tfText}}" ng-attr-style="{{style}}"></div>',
+				template: '<div class="typeform-widget" ng-attr-data-url="https://{{accountId}}.typeform.com/to/{{tfIdAndHidden}}" ng-attr-data-text="{{tfText}}" ng-attr-style="{{style}}"></div>',
 				controller: 'ControllerEmbed',
 				link: function (scope, element, attrs) {
 
 					var defaultStyle = "height:100%; margin:0;";
 					scope.style= scope.tfStyle ? scope.tfStyle : defaultStyle;
+
+					scope.tfIdAndHidden = scope.tfHidden ? scope.tfId + '?' + scope.tfHidden : scope.tfId;
 				}
 			};
 		});

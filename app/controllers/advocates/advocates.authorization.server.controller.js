@@ -26,7 +26,6 @@ exports.isManagedTenant = function(req, res, next) {
         rollbar.handleError("Unauthorized tenant access", req);
         res.status(400).send({ message: errorHandler.getErrorMessage("Unauthorized tenant access") });
       } else {
-				console.log('tenant', tenant);
         res.locals.tenant = tenant;
         next();
       }

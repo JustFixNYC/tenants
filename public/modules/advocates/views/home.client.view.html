@@ -7,11 +7,17 @@
     </div>
 
     <div class="pull-right-on-desktop advocates-controls">
-      <a ng-if="user.specialFlags && user.specialFlags.indexOf('surveyPartner') !== -1" ui-sref="advocateSurvey" class="btn btn-info">New Survey Entry</a>
       <a ui-sref="newTenantSignup.details" class="btn btn-info">New Managed Tenant</a>
       <a ng-click="openReferralModal()" class="btn btn-success">Send Signup Link</a>
     </div>
   </div>
+
+  <alert
+        data-ng-show="$root.newSurvey"
+        type="success"
+        close="$root.newSurvey = false">
+    New survey entry has been recorded on typeform!
+  </alert>
 
   <div class="alert alert-warning text-center" data-ng-if="!tenants.length">
     You don't have any tenants linked to your account yet! <a ui-sref="advocateHelp">Click here</a> to read more about linked and managed tenant accounts.

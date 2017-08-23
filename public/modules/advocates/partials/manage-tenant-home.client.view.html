@@ -6,19 +6,44 @@
     <p class="text-center">{{ tenant.borough }}, NY {{ tenant.geo.zip }}</p>
 </div>
 <div class="row">
-  <div class="col-xs-6">
-    <a ui-sref="manageTenant.problems({ id: tenant._id })" class="btn btn-primary btn-block pull-left">
-      Issue Checklist
-    </a>
-  </div>
-  <div class="col-xs-6">
-    <a ng-href="tel:{{ tenant.phone }}" class="btn btn-success btn-block pull-right" ng-if="!isDesktop">
-        Call {{ tenant.firstName }}
-    </a>
-    <button class="btn btn-primary btn-block pull-right" ng-if="isDesktop" print-button user-id="tenant.sharing.key">
-        {{'modules.activity.views.listActivity.print' | translate}}
-    </button>
-  </div>
+  <span ng-if="user.specialFlags && user.specialFlags.indexOf('surveyPartner') !== -1" class="center-block text-center">
+    <div class="btn-group">
+      <a ui-sref="manageTenant.problems({ id: tenant._id })" class="btn btn-primary">
+        Issue Checklist
+      </a>
+      <a  ng-if="user.specialFlags && user.specialFlags.indexOf('surveyPartner') !== -1"
+          ui-sref="advocateSurvey({ phone:'{{tenant.phone}}',
+                                    firstname:'{{tenant.firstName}}',
+                                    lastname:'{{tenant.lastName}}',
+                                    address:'{{tenant.address}}',
+                                    unit:'{{tenant.unit}}',
+                                    id:'{{tenant._id}}',
+                                    caselink:'https://beta.justfix.nyc/share/{{tenant.sharing.key}}'
+                                  })"
+          class="btn btn-info">New Survey Entry</a>
+      <a ng-href="tel:{{ tenant.phone }}" class="btn btn-success btn-block pull-right" ng-if="!isDesktop">
+          Call {{ tenant.firstName }}
+      </a>
+      <button class="btn btn-primary" ng-if="isDesktop" print-button user-id="tenant.sharing.key">
+          {{'modules.activity.views.listActivity.print' | translate}}
+      </button>
+    </div>
+  </span>
+  <span ng-if="!user.specialFlags || user.specialFlags.indexOf('surveyPartner') === -1">
+    <div class="col-xs-6">
+      <a ui-sref="manageTenant.problems({ id: tenant._id })" class="btn btn-primary btn-block pull-left">
+        Issue Checklist
+      </a>
+    </div>
+    <div class="col-xs-6">
+      <a ng-href="tel:{{ tenant.phone }}" class="btn btn-success btn-block pull-right" ng-if="!isDesktop">
+          Call {{ tenant.firstName }}
+      </a>
+      <button class="btn btn-primary btn-block pull-right" ng-if="isDesktop" print-button user-id="tenant.sharing.key">
+          {{'modules.activity.views.listActivity.print' | translate}}
+      </button>
+    </div>
+  </span>
 </div>
 <add-details tenant="tenant"></add-details>
 <alert

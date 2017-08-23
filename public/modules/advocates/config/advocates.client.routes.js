@@ -76,6 +76,15 @@ angular.module('advocates').config(['$stateProvider', '$urlRouterProvider', 'typ
 			.state('advocateSurvey', {
 				url: '/advocate/survey',
 				template: '<seth-low-survey></seth-low-survey>',
+				params: {
+					phone: null,
+					firstname: null,
+					lastname: null,
+					address: null,
+					unit: null,
+					id: null,
+					caselink: null
+				},
 				user: 'advocate'
 			})
 			.state('manageTenant', {
