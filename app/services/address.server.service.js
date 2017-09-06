@@ -3,6 +3,7 @@
 var _ = require('lodash'),
     Q = require('q'),
     request = require('request'),
+    rollbar = require('rollbar'),
     mongoose = require('mongoose'),
     config = require('../../config/config');
 
@@ -76,6 +77,12 @@ var requestGeoclient = function(boro, address) {
           cd: json.communityDistrict,
           bin : json.giBuildingIdentificationNumber1
         };
+
+      if(!geo.bbl || geo.bbl === '' ||
+         !geo.lat || geo.lat === '' ||
+         !geo.lon || geo.lon === '')   {
+        rollbar.handleErrorWithPayloadData("Geoclient failed.", { error: error, addr: addr, boro: boro });
+      }
 
       geoclient.resolve(geo);
 
