@@ -60,7 +60,7 @@ var requestGeoclient = function(boro, address) {
       var json = JSON.parse(body).address;
 
       // address not found in geoclient
-      if(json.geosupportReturnCode !== '00')  {
+      if(json.geosupportReturnCode !== '00' && json.geosupportReturnCode !== '01')  {
         geoclient.reject('[GEOCLIENT ERROR - 1] ' + json.message);
       }
 
