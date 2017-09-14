@@ -65,7 +65,7 @@ var requestGeoclient = function(boro, address) {
       } else if(!json.bbl || json.bbl === '' ||
                 !json.latitudeInternalLabel || json.latitudeInternalLabel === '' ||
                 !json.longitudeInternalLabel || json.longitudeInternalLabel === '') {
-        rollbar.reportMessageWithPayloadData("Geoclient failed.", { level: "info", error: error, addr: addr, boro: boro });
+        rollbar.reportMessageWithPayloadData("Geoclient failed.", { level: "warning", addr: addr, boro: boro });
       }
 
       // address found in geoclient
