@@ -62,6 +62,10 @@ var requestGeoclient = function(boro, address) {
       // address not found in geoclient
       if(json.geosupportReturnCode !== '00' && json.geosupportReturnCode !== '01')  {
         geoclient.reject('[GEOCLIENT ERROR - 1] ' + json.message);
+      } else if(!json.bbl || json.bbl === '' ||
+                !json.latitudeInternalLabel || json.latitudeInternalLabel === '' ||
+                !json.longitudeInternalLabel || json.longitudeInternalLabel === '') {
+        rollbar.reportMessageWithPayloadData("Geoclient failed.", { level: "info", error: error, addr: addr, boro: boro });
       }
 
       // address found in geoclient
@@ -77,13 +81,6 @@ var requestGeoclient = function(boro, address) {
           cd: json.communityDistrict,
           bin : json.giBuildingIdentificationNumber1
         };
-
-      if(!geo.bbl || geo.bbl === '' ||
-         !geo.lat || geo.lat === '' ||
-         !geo.lon || geo.lon === '')   {
-        rollbar.handleErrorWithPayloadData("Geoclient failed.", { error: error, addr: addr, boro: boro });
-      }
-
       geoclient.resolve(geo);
 
     } else {
