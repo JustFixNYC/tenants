@@ -245,7 +245,7 @@
   				"title": "Contáctenos",
   				"body": "Para ayuda con la aplicación de JustFix.nyc o para reportar un error, contáctenos a:",
   				"phone": "(646) 820-0349",
-  				"email": "hello@justfix.nyc",
+  				"email": "support@justfix.nyc",
           "findhelp": "Si necesita <b>ayuda inmediata</b> o desea hablar con una persona acerca de su situación de vivienda, visite la sección <b>Buscar ayuda</b> en nuestra página para conectarse con recursos comunitarios y líneas de asistencia para inquilinos:",
   				"findhelpActual": "@:repeating.findHelp"
   			},
@@ -316,7 +316,7 @@
   				"approachBodyThree": "We believe in using transparency and organization as a tactic in providing a clear, irrefutable story, backed by awareness of one’s rights, with the goal to ensure that  healthy and safe homes are guaranteed for all.",
   				"about": "About Us",
   				"aboutBodyOne": "For the past year, Dan has been actively involved with civic technologists and tenant organizers in approaching the task of further utilizing open datasets in the interest of more transparency in the housing process. Georges is a product manager and the founder of <a href=\"http://www.unifischolars.org/\" target=\"_blank\">UniFi Scholars</a>, a non-profit focused on teaching financial literacy skills to high school juniors and seniors in NYC. Ashley is a UX designer and researcher with a background in information design and data visualization. She recently got her master's degree in data visualization from Northeastern and was previously working at a design consultancy in Boston called Dockyard. Through the <a href=\"http://labs.robinhood.org\" target=\"_blank\">Blue Ridge Labs fellowship</a>, we began to conduct more in-depth user research (including interviews, focus groups, and case management) and sought expert advice (housing court judges, legal experts, and tenant organizers) to further validate our approach and discover problems that could be addressed in part by technology. The fellowship is a 12-week program for teams to build digital products aimed at addressing key issues faced by low-income New Yorkers, with an approach focused on human-centered design, testing, and outreach work.",
-  				"aboutBodyTwo": "<b>We are currently seeking partnerships and further collaboration with any groups dedicated to tenant’s rights in New York City, and are hoping to establish initial pilot programs in 2016-2017 to continue building, testing, and refining JustFix.nyc. Please <a href=\"mailto:hello@justfix.nyc?subject=Tell me more about JustFix.nyc!\" target=\"_blank\">contact us</a> if you are interested in discussing further or would like a demonstration.</b>"
+  				"aboutBodyTwo": "<b>We are currently seeking partnerships and further collaboration with any groups dedicated to tenant’s rights in New York City, and are hoping to establish initial pilot programs in 2016-2017 to continue building, testing, and refining JustFix.nyc. Please <a href=\"mailto:support@justfix.nyc?subject=Tell me more about JustFix.nyc!\" target=\"_blank\">contact us</a> if you are interested in discussing further or would like a demonstration.</b>"
   			}
   		}
   	},
