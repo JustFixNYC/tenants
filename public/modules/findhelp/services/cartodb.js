@@ -11,7 +11,8 @@ angular.module('findhelp')
   .service('CartoDB', [function () {
 
     //var cartoUrl = "https://dan-kass.cartodb.com/api/v2/sql?q=";
-    var cartoSQL = new cartodb.SQL({ user: 'dan-kass' });
+    // var cartoSQL = new cartodb.SQL({ user: 'dan-kass' });
+    var cartoSQL = new cartodb.SQL({ user: 'justfixnyc' });
 
     // sql.execute(query)
     //   .done(function(data) {
