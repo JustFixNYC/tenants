@@ -158,6 +158,9 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 					$rootScope.loading = false;
 					$rootScope.takeActionAlert = true;
 
+					// fire gtag to confirm acct signup
+					gtag('event', 'conversion', {'send_to': 'AW-866926627/tkJ8CIqJkHsQo4CxnQM'});
+
 					// Advocate code user
 					if($rootScope.validated) {
 						$location.path('/home');
