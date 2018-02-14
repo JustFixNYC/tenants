@@ -58,7 +58,7 @@
             <tr class="tenant-list-item" ng-repeat="t in tenants | orderBy:['!updated', '-updated']">
               <td class="table-desktop-view" ng-bind="t.fullName"></td>
               <td class="table-desktop-view">{{ t.updated ? (t.updated | date:'short') : (t.created | date:'short') }}</td>
-              <td class="table-desktop-view">{{ t.geo.bbl | toAddress:bbls }}</td>
+              <td class="table-desktop-view"><a ng-href="http://whoownswhat.justfix.nyc/address/{{ t.borough | uppercase }}/{{ t.geo.streetNum }}/{{ t.geo.streetName }}" target="_blank">{{ t.geo.bbl | toAddress:bbls }}</a></td>
               <td class="table-desktop-view"><span ng-if="t.actionFlags.indexOf('isRentStabilized') !== -1" class="glyphicon glyphicon glyphicon-ok"></span></td>
               <td class="table-desktop-view"><span ng-if="t.actionFlags.indexOf('isHarassmentElligible') !== -1" class="glyphicon glyphicon glyphicon-ok"></span></td>
               <td class="table-desktop-view">{{ t.phone | tel }}</td>

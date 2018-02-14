@@ -19,6 +19,8 @@ angular.module('advocates').controller('AdvocateController', ['$rootScope', '$sc
 				})
 				.join(' ');
 			$scope.bbls[tenant.geo.bbl] = tenant.geo.streetNum + ' ' + streetName;
+
+			console.log(tenant);
 		});
 
 		$scope.view = 'individual';
