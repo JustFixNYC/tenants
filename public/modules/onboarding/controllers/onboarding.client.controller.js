@@ -161,6 +161,9 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 					// fire gtag to confirm acct signup
 					gtag('event', 'conversion', {'send_to': 'AW-866926627/tkJ8CIqJkHsQo4CxnQM'});
 
+					// try facebook pixel
+					fbq('track', 'CompleteRegistration');
+
 					// Advocate code user
 					if($rootScope.validated) {
 						$location.path('/home');
