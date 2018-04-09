@@ -59,7 +59,7 @@
   					"bodyText": "This Letter of Complaint uses the repair issues from the checklist and the details you've added.",
   					"bodyTextBold": "Make sure to send this letter as certified mail so you can prove that your landlord has received it!",
   					"landlordName": "Landlord Name",
-  					"accessDateTitle": "Provide a few access dates for when repairs can be made in your apartment: (optional)",
+  					"accessDateTitle": "Provide a few access dates for when repairs can be made in your apartment: (must be at least 1 week in advance)",
   					"accessDateAdd": "+ Add Access Date",
   					"loaderText": "Generating your letter...",
   					"successTitle": "Your Letter of Complaint has been created and can be viewed here:",

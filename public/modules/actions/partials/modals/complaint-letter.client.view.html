@@ -24,6 +24,8 @@
                      class="form-control"
                      name="accessDate"
                      ng-model="accessDates[$index]"
+                     min="{{weekFromNow | date:'yyyy-MM-dd'}}"
+                     ng-min="weekFromNow"
                      mobile-date-placeholder
                      placeholder="mm/dd/yyyy"
                      required />

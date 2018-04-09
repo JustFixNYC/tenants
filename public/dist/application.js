@@ -373,6 +373,9 @@ angular.module('actions').controller('ComplaintLetterController', ['$rootScope',
 		// loading, msgError,
 		// msgSuccess, letterReview, letterSuccess
 
+		var today = new Date();
+		$scope.weekFromNow = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7);
+
 		$scope.addAccessDate = function() {
 			$scope.accessDates.push('');
 		};
