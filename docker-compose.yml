@@ -1,0 +1,23 @@
+version: '3'
+services:
+  web:
+    build: .
+    volumes:
+      - .:/tenants:delegated
+      - node_modules:/tenants/node_modules
+    working_dir: /tenants
+    command: grunt
+    links:
+      - db
+    ports:
+      - "3000:3000"
+      - "35729:35729"   # livereload
+    environment:
+      NODE_ENV: development
+      MONGODB_URI: mongodb://db
+  db:
+    image: mongo
+    ports:
+      - "27017:27017"
+volumes:
+  node_modules:

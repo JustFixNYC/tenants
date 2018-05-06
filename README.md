@@ -4,6 +4,22 @@ This is the codebase for the JustFix.nyc platform, including the Tenant Webapp, 
 
 This guide assumes that you are using a [UNIX](http://i.imgur.com/uE6fkx7.gif) system (most likely macOS), but everything is available on Windows if you follow the appropriate guides thru the links below.
 
+There are two ways to get started. Both require a bit of common setup.
+
+### Common setup
+
+1. Get a copy of the code!
+
+  ```
+  git clone https://github.com/JustFixNYC/tenants.git
+  ```
+
+2. You should have a `development.js` copy from me. (If not, email me at [dan@justfix.nyc](mailto:dan@justfix.nyc)). Place that file in `config/env`.
+
+Now you have the option to set up and run everything locally, or use Docker.
+
+### Option 1: Run everything locally
+
 #### Build tools and languages
 
 0. Open terminal. Some of these steps may require `sudo` in order to install.
@@ -35,28 +51,20 @@ This guide assumes that you are using a [UNIX](http://i.imgur.com/uE6fkx7.gif) s
 
 #### Download and install libraries
 
-1. Get a copy of the code!
-
-  ```
-  git clone https://github.com/JustFixNYC/tenants.git
-  ```  
-
-2. You should have a `development.js` copy from me. (If not, email me at [dan@justfix.nyc](mailto:dan@justfix.nyc)). Place that file in `config/env`.
-
-3. Use npm to install the needed back-end and buildtool libraries. It should trigger a `bower install` for front-end dependencies automatically. Make sure you're in the root directory for the project - i.e. the same level as the `package.json` file.
+Use npm to install the needed back-end and buildtool libraries. It should trigger a `bower install` for front-end dependencies automatically. Make sure you're in the root directory for the project - i.e. the same level as the `package.json` file.
 
   ```
   npm install
   ```  
 
-#### Regular use
+#### Start everything up
 
 1. To start, you'll need an active mongodb instance running. I like to do this in a folder within `app` - e.g. `app/mongodb` but it can be run globally or anywhere else.
 
   ```
   mongod --dbpath . &
   ```
-Open a new terminal window and make sure its running:
+Open a new terminal window and make sure it's running:
   ```
   ps aux | grep mongo
   ```
@@ -73,9 +81,43 @@ You should see the process running, as well as the `grep mongo` command process 
   grunt
   ```
 
-3. Go to `http://localhost:3000` to see your development version! Grunt will watch for any changes you make to the code and automatically restart the server for live development.
+### Option 2: Use Docker
 
-#### More Questions
+1. Download [Docker Community Edition](https://www.docker.com/community-edition).
+
+2. Run `bash docker-update.sh`.
+
+   Note that in the future, you'll want to run this whenever you update the repository or switch branches, too, to make sure you have all the latest dependencies.
+
+3. Run `docker-compose up`.
+
+### Visit your local server
+
+Now that you've got everything up and running, go to `http://localhost:3000` to see your development version! Grunt will watch for any changes you make to the code and automatically restart the server for live development.
+
+### Tips on using Docker
+
+If you decided to go the Docker route but aren't very familiar with Docker, here are some tips.
+
+#### Running command-line tools
+
+If you ever want to run an individual command-line tool on the project, such as a specific grunt task or linter, you can dive into your Docker's main `web` container by running:
+
+```
+docker-compose run web bash
+```
+
+You will be in the container's `/tenants` directory, which maps to the root of your repository on your local machine.
+
+Alternatively, you can run individual commands just by running `docker-compose run web <command name>`. Some people do this so often that they create a shell alias called `dcr` that's short for `docker-compose run`.
+
+#### Uninstalling or starting from scratch
+
+If you ever get your Docker setup into a weird state where nothing works, or if you're done with the project and want to free all resources used by Docker, run `docker-compose down -v`.
+
+You'll then need to re-run `bash docker-update.sh` set everything up again.
+
+### More Questions
 
 Check out [MEAN.JS](http://meanjs.org/docs/0.3.x/) - will have more tutorials on the architecture setup and things for troubleshooting.
 
