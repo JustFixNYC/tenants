@@ -805,7 +805,15 @@
 	      }
   		}
   	},
-  	"contactHarassment": {
+  	"contactNeighbors": {
+		"title": "Contact your neighbors",
+		"activityTitle": "Um contact your neighbors",
+		"content": "<b>Other JustFix users are in your building.</b> Maybe you should form a tenants' association?",
+		"cta": {
+			"buttonTitle": "Organize!"
+		}
+	},
+	"contactHarassment": {
   		"title": "Call Tenant Harassment Hotline",
     	"activityTitle": "Called Tenant Harassment Hotline",
     	"content": "It looks like you live in an area that experiences a <b>large amount of turnover and harassment</b> and are eligible to call the New York City Tenant Protection Hotline. Hours: Monday – Friday (10AM – 4PM)",
