@@ -58,10 +58,28 @@ describe('Tenant', () => {
     });
   });
 
-  it('should not have hasNeighbors set by default', done => {
+  it('should set hasNeighbors properly', done => {
     const tenant = new Tenant(EXAMPLE_TENANT);
     tenant.save().then((tenant) => {
       assert.equal(tenant.actionFlags.indexOf('hasNeighbors'), -1);
+      return tenant.save();
+    }).then((tenant) => {
+      // Ensure that the tenant excludes itself from potential neighbors.
+      assert.equal(tenant.actionFlags.indexOf('hasNeighbors'), -1);
+
+      // Now create a neighbor...
+      const neighbor = new Tenant(EXAMPLE_TENANT);
+      neighbor.phone = '9315139044';
+      return neighbor.save();
+    }).then((neighbor) => {
+      // Our new neighbor should have hasNeighbors set!
+      assert.equal(neighbor.actionFlags.filter(f => f === 'hasNeighbors').length, 1);
+
+      return neighbor.save();
+    }).then((neighbor) => {
+      // Ensure that saving the neighbor again doesn't give it an extra hasNeighbors
+      // action flag.
+      assert.equal(neighbor.actionFlags.filter(f => f === 'hasNeighbors').length, 1);
       done();
     }).catch(done);
   });

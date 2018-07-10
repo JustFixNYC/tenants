@@ -306,4 +306,23 @@ TenantSchema.pre('save', function(next) {
 
 });
 
+TenantSchema.pre('save', function(next) {
+  if (_.isEmpty(this.geo)) {
+    return next();
+  }
+
+  this.constructor.findOne({
+    _id: { $ne: this._id },
+    'geo.bbl': this.geo.bbl
+  }, (err, doc) => {
+    if (err) return next(err);
+    if (doc !== null) {
+      if (this.actionFlags.indexOf('hasNeighbors') === -1) {
+        this.actionFlags.push('hasNeighbors');
+      }
+    }
+    next();
+  });
+});
+
 mongoose.model('Tenant', TenantSchema);
