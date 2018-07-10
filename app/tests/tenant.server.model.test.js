@@ -57,4 +57,12 @@ describe('Tenant', () => {
       });
     });
   });
+
+  it('should not have hasNeighbors set by default', done => {
+    const tenant = new Tenant(EXAMPLE_TENANT);
+    tenant.save().then((tenant) => {
+      assert.equal(tenant.actionFlags.indexOf('hasNeighbors'), -1);
+      done();
+    }).catch(done);
+  });
 });
