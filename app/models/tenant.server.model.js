@@ -317,7 +317,8 @@ TenantSchema.pre('save', function(next) {
   }, (err, doc) => {
     if (err) return next(err);
     if (doc !== null) {
-      if (this.actionFlags.indexOf('hasNeighbors') === -1) {
+      if (this.actionFlags.indexOf('hasNeighbors') === -1 &&
+          !this.activity.some(a => a.key === 'contactNeighbors')) {
         this.actionFlags.push('hasNeighbors');
       }
     }

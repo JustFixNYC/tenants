@@ -807,10 +807,13 @@
   	},
   	"contactNeighbors": {
 		"title": "Contact your neighbors",
-		"activityTitle": "Um contact your neighbors",
+		"activityTitle": "Contacted neighbors",
 		"content": "<b>Other JustFix users are in your building.</b> Maybe you should form a tenants' association?",
 		"cta": {
 			"buttonTitle": "Organize!"
+		},
+		"followUp": {
+			"title": "Did you contact your neighbors?"
 		}
 	},
 	"contactHarassment": {

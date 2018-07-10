@@ -1,6 +1,7 @@
 const assert = require('assert');
 const mongoose = require('mongoose');
 const Tenant = mongoose.model('Tenant');
+const Activity = mongoose.model('Activity');
 
 const EXAMPLE_TENANT = {
   "phone" : "9315139043", 
@@ -37,6 +38,23 @@ const EXAMPLE_TENANT = {
   "firstName" : "Dan",
   "currentAcuityEventId" : "",
   "advocateRole" : "none",
+};
+
+const EXAMPLE_ACTIVITY = {
+  "relatedProblems" : [
+  ],
+  "fields" : [
+      {
+          "title" : "modules.actions.partials.toDoItem.occurredDate",
+          "value" : "July 10, 2018",
+      }
+  ],
+  "photos" : [
+  ],
+  "loggedBy" : "Dan Stevenson",
+  "description" : "I contacted my neighbors and we formed a tenants' association.",
+  "title" : "actions.contactNeighbors.activityTitle",
+  "key" : "contactNeighbors",
 };
 
 describe('Tenant', () => {
@@ -80,6 +98,15 @@ describe('Tenant', () => {
       // Ensure that saving the neighbor again doesn't give it an extra hasNeighbors
       // action flag.
       assert.equal(neighbor.actionFlags.filter(f => f === 'hasNeighbors').length, 1);
+
+      // Now pretend we've just done the follow-up.
+      neighbor.actionFlags = [];
+      const activity = new Activity(EXAMPLE_ACTIVITY);
+      neighbor.activity = [activity];
+      return neighbor.save();
+    }).then((neighbor) => {
+      // Ensure that the neighbor didn't have hasNeighbors re-added.
+      assert.equal(neighbor.actionFlags.indexOf('hasNeighbors'), -1);
       done();
     }).catch(done);
   });

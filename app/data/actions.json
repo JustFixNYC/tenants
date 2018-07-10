@@ -27,13 +27,15 @@
     "content": "actions.contactNeighbors.content",
     "key": "contactNeighbors",
     "addIf": ["hasNeighbors"],
-    "type": "recurring",
+    "type": "once",
     "cta": {
       "type": "link",
       "buttonTitle": "actions.contactNeighbors.cta.buttonTitle",
       "url": "http://ww.metcouncilonhousing.org/help_and_answers/tenants_associations"
     },
-    "hasFollowUp": false
+    "followUp": {
+      "title": "actions.contactNeighbors.followUp.title"
+    }
   },
   {
     "title": "actions.contactHarassment.title",
