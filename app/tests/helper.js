@@ -8,7 +8,3 @@ beforeEach(done => {
     });
   });
 });
-
-afterEach(done => {
-  done();
-});
