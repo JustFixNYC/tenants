@@ -15,6 +15,7 @@ services:
     environment:
       NODE_ENV: development
       MONGODB_URI: mongodb://db
+      CHOKIDAR_USEPOLLING: 1
   db:
     image: mongo
     ports:
