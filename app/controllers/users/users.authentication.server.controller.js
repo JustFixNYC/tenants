@@ -132,16 +132,9 @@ var saveNewUser = exports.saveNewUser = function(req, identity, userdata, user) 
  * appropriate authentication controller
  */
 
-/**
- * Signin after passport authentication
- *
- * This looks/feels wonky bc we want to make sure that the unpopulated User
- * is what actually gets sent to req.login
- */
-exports.signin = function(req, res, next) {
-
+function authWithPassport(strategy, req, res, next) {
   // sign in, returns the identity object
-  passport.authenticate('local', function(err, identity, info) {
+  passport.authenticate(strategy, function(err, identity, info) {
     if (err || !identity) {
       rollbar.handleError(info, req);
       res.status(400).send(info);
@@ -183,6 +176,20 @@ exports.signin = function(req, res, next) {
         });
     } // no error from passport
   })(req, res, next);
+}
+
+exports.autoSignin = function(req, res, next) {
+  authWithPassport('auto-local', req, res, next);
+}
+
+/**
+ * Signin after passport authentication
+ *
+ * This looks/feels wonky bc we want to make sure that the unpopulated User
+ * is what actually gets sent to req.login
+ */
+exports.signin = function(req, res, next) {
+  authWithPassport('local', req, res, next);
 };
 
 /**
