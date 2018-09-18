@@ -81,6 +81,15 @@ You should see the process running, as well as the `grep mongo` command process 
   grunt
   ```
 
+#### Set environment variables
+
+Set the `MONGODB_TEST_URI` environment variable to point to a test database
+that will be wiped every time the test suite is run, e.g.:
+
+```
+export MONGODB_TEST_URI=mongodb://localhost:27017/unittests
+```
+
 ### Option 2: Use Docker
 
 1. Download [Docker Community Edition](https://www.docker.com/community-edition).
@@ -116,6 +125,14 @@ Alternatively, you can run individual commands just by running `docker-compose r
 If you ever get your Docker setup into a weird state where nothing works, or if you're done with the project and want to free all resources used by Docker, run `docker-compose down -v`.
 
 You'll then need to re-run `bash docker-update.sh` set everything up again.
+
+### Running the test suite
+
+To run the test suite, run:
+
+```
+npm test
+```
 
 ### More Questions
 

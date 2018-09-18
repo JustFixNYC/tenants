@@ -22,6 +22,22 @@
     }
   },
   {
+    "title": "actions.contactNeighbors.title",
+    "activityTitle": "actions.contactNeighbors.activityTitle",
+    "content": "actions.contactNeighbors.content",
+    "key": "contactNeighbors",
+    "addIf": ["hasNeighbors"],
+    "type": "once",
+    "cta": {
+      "type": "link",
+      "buttonTitle": "actions.contactNeighbors.cta.buttonTitle",
+      "url": "http://ww.metcouncilonhousing.org/help_and_answers/tenants_associations"
+    },
+    "followUp": {
+      "title": "actions.contactNeighbors.followUp.title"
+    }
+  },
+  {
     "title": "actions.contactHarassment.title",
     "activityTitle": "actions.contactHarassment.activityTitle",
     "content": "actions.contactHarassment.content",
