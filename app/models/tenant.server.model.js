@@ -266,9 +266,10 @@ TenantSchema.pre('save', function(next) {
     _.pull(this.actionFlags, 'allInitial');
   }
 
-  if(this.advocateRole === 'none' && this.currentAcuityEventId === '' && !_.contains(this.actionFlags, 'scheduleLater')) {
-    this.actionFlags.push('scheduleLater');
-  }
+  // disabling scheduler
+  // if(this.advocateRole === 'none' && this.currentAcuityEventId === '' && !_.contains(this.actionFlags, 'scheduleLater')) {
+  //   this.actionFlags.push('scheduleLater');
+  // }
 
 
   // check NYCHA housing

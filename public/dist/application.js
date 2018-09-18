@@ -4791,11 +4791,14 @@ angular.module('onboarding').controller('OnboardingController', ['$rootScope', '
 					fbq('track', 'CompleteRegistration');
 
 					// Advocate code user
-					if($rootScope.validated) {
-						$location.path('/home');
-					} else {
-						$location.path('/onboarding/consultation');
-					}
+					// if($rootScope.validated) {
+					// 	$location.path('/home');
+					// } else {
+					// 	$location.path('/onboarding/consultation');
+					// }
+
+					// We're disabling consultations while winding down this version
+					$location.path('/home');
 
 
 
