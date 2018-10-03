@@ -30,6 +30,7 @@ module.exports = function(app) {
 
 	// Setting up the users authentication api
 	// app.route('/api/auth/signup').post(problems.updateActivitiesFromChecklist, users.signup);
+	app.route('/api/auth/auto-signin').post(users.autoSignin);
 	app.route('/api/auth/signin').post(users.signin);
 	app.route('/api/auth/signout').get(users.signout);
 
