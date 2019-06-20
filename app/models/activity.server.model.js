@@ -67,6 +67,8 @@ var ActivitySchema = new Schema({
     }
 });
 
+ActivitySchema.set('usePushEach', true);
+
 mongoose.model('Activity', ActivitySchema);
 
 module.exports = ActivitySchema;

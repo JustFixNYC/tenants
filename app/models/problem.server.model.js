@@ -62,4 +62,6 @@ var ProblemSchema = new Schema({
     issues: [IssueSchema]
 });
 
+ProblemSchema.set('usePushEach', true);
+
 module.exports = ProblemSchema;

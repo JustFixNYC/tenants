@@ -164,6 +164,9 @@ var TenantSchema = new Schema({
 });
 
 
+TenantSchema.set('usePushEach', true);
+
+
 /**
  * Only query geoclient if its detected that address has changed
  */
