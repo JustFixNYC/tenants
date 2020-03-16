@@ -27,4 +27,8 @@
     background: pink;
     padding: 20px;
     margin-bottom: 20px;
+
+    p:last-child {
+        margin-bottom: 0;
+    }
 }
